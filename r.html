@@ -1,0 +1,427 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; connect-src https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'none'"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow"><title>Request · BOEKI CLOUD 2.0</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap"><style>html,
+body {
+  margin: 0;
+  background: #f4f6f9;
+}
+</style></head><body><main id="rq"></main><script>
+"use strict";
+var RQC = {
+    b64(buf) { const u = new Uint8Array(buf); let s = ""; for (let i = 0; i < u.length; i += 0x8000)
+        s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); },
+    unb64(s) { const b = atob(String(s || "")); const u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++)
+        u[i] = b.charCodeAt(i); return u.buffer; },
+    b64u(buf) { return RQC.b64(buf).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); },
+    unb64u(s) { s = String(s || "").replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4)
+        s += "="; return RQC.unb64(s); },
+    hex(n) { const u = crypto.getRandomValues(new Uint8Array(n)); return Array.from(u, x => x.toString(16).padStart(2, "0")).join(""); },
+    newKey() { return RQC.b64u(crypto.getRandomValues(new Uint8Array(32))); },
+    async key(k) { return crypto.subtle.importKey("raw", RQC.unb64u(k), "AES-GCM", false, ["encrypt", "decrypt"]); },
+    async encBuf(key, buf) { const iv = crypto.getRandomValues(new Uint8Array(12)); const ct = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, buf); return RQC.b64(iv) + "." + RQC.b64(ct); },
+    async decBuf(key, s) { const p = String(s || "").split("."); return crypto.subtle.decrypt({ name: "AES-GCM", iv: new Uint8Array(RQC.unb64(p[0])) }, key, RQC.unb64(p[1])); },
+    async enc(key, obj) { return RQC.encBuf(key, new TextEncoder().encode(JSON.stringify(obj))); },
+    async dec(key, s) { return JSON.parse(new TextDecoder().decode(await RQC.decBuf(key, s))); }
+};
+var RQP_L = {
+    ja: { lang: "表示言語", from: "依頼元", due: "回答の期限", left: "あと{n}日", today: "今日まで", save: "途中で保存", send: "提出する", resend: "もう一度提出する", saved: "保存しました（このリンクから続きを入力できます）", sent: "提出しました。ありがとうございました。",
+        sentNote: "期限までは、直してもう一度提出できます。", req: "必須", need: "必須の項目に入力してください", files: "ファイル", addf: "ファイルを追加", drop: "またはここにドラッグ", fmax: "1件 10MB まで・最大 {n} 件", rmf: "削除",
+        name: "お名前", co: "会社名", note: "そのほかのご連絡（任意）", priv: "入力した内容とファイルは暗号化して送られ、依頼元だけが読めます。",
+        none: "このリンクの依頼は見つかりません。リンクが正しいか、依頼元にご確認ください。", closed: "この依頼は締め切られました。", expired: "この依頼の回答期限が過ぎました。必要な場合は依頼元にご連絡ください。",
+        err: "送れませんでした。通信の状態を確認して、もう一度お試しください。", bad: "リンクが正しくありません（最後まで貼り付けられているかご確認ください）。", big: "ファイルが大きすぎます（10MB まで）", lerr: "依頼を読み込めませんでした。通信の状態を確認して、ページを再読み込みしてください。", fcnt: "ファイルは1つの依頼に{n}件までです。", abig: "回答が長すぎます。長い文章はファイルにして添付してください。", acnt: "保存の回数が上限に達しました。依頼元にご連絡ください。", already: "すでに提出済みです。直した内容は「もう一度提出する」で送ってください。", fgone: "そのファイルはすでに削除されています。",
+        upl: "送っています…", st_draft: "途中保存", st_sent: "提出済み", pv: "試しの画面です（実際には送られません）", pw: "Powered by BOEKI CLOUD 2.0",
+        steps: "回答の手順", s1: "内容を確認", s2: "回答を入力", s3: "提出", prog: "あなたの回答 {a}/{n}", rql: "必須の残り {n}", okall: "必須の項目はすべて入力済み" },
+    en: { lang: "Language", from: "Request from", due: "Please reply by", left: "{n} days left", today: "Due today", save: "Save draft", send: "Submit", resend: "Submit again", saved: "Saved. You can continue from this link.", sent: "Submitted. Thank you.",
+        sentNote: "You can edit and submit again until the deadline.", req: "Required", need: "Please fill in the required fields.", files: "Files", addf: "Add files", drop: "or drag them here", fmax: "Up to 10 MB each, {n} files max", rmf: "Remove",
+        name: "Your name", co: "Company", note: "Anything else? (optional)", priv: "Your answers and files are encrypted before sending; only the requester can read them.",
+        none: "This request could not be found. Please check the link or contact the requester.", closed: "This request has been closed.", expired: "The reply deadline has passed. Please contact the requester if needed.",
+        err: "Could not send. Please check your connection and try again.", bad: "This link is incomplete. Please make sure you copied the whole link.", big: "File too large (10 MB max)", lerr: "Could not load this request. Please check your connection and reload the page.", fcnt: "Up to {n} files per request.", abig: "Your answer is too long. Please attach long text as a file.", acnt: "The save limit has been reached. Please contact the requester.", already: "Already submitted. To send changes, use \u201cSubmit again\u201d.", fgone: "That file has already been removed.",
+        upl: "Sending…", st_draft: "Draft", st_sent: "Submitted", pv: "Preview only (nothing is sent)", pw: "Powered by BOEKI CLOUD 2.0",
+        steps: "Steps", s1: "Review", s2: "Answer", s3: "Submit", prog: "Your answers {a}/{n}", rql: "{n} required left", okall: "All required fields are filled in" },
+    zh: { lang: "语言", from: "请求方", due: "回复期限", left: "还剩{n}天", today: "今天截止", save: "保存草稿", send: "提交", resend: "再次提交", saved: "已保存。可通过此链接继续填写。", sent: "已提交，谢谢。",
+        sentNote: "截止日前可以修改后再次提交。", req: "必填", need: "请填写必填项目。", files: "文件", addf: "添加文件", drop: "或拖放到此处", fmax: "每个文件不超过10MB，最多{n}个", rmf: "删除",
+        name: "您的姓名", co: "公司名称", note: "其他事项（选填）", priv: "您填写的内容和文件会加密后发送，只有请求方能够阅读。",
+        none: "找不到该请求。请确认链接或联系请求方。", closed: "该请求已截止。", expired: "回复期限已过。如有需要，请联系请求方。",
+        err: "发送失败。请检查网络后重试。", bad: "链接不完整，请确认已复制完整链接。", big: "文件过大（不超过10MB）", lerr: "无法加载该请求。请检查网络后刷新页面。", fcnt: "每个请求最多{n}个文件。", abig: "回复内容过长，请将较长的文字作为文件附加。", acnt: "保存次数已达上限，请联系请求方。", already: "已经提交。修改后请点击\u201c再次提交\u201d。", fgone: "该文件已被删除。",
+        upl: "正在发送…", st_draft: "草稿", st_sent: "已提交", pv: "预览（不会实际发送）", pw: "Powered by BOEKI CLOUD 2.0",
+        steps: "回复步骤", s1: "查看内容", s2: "填写回复", s3: "提交", prog: "您的回答 {a}/{n}", rql: "还有 {n} 项必填", okall: "必填项已全部填写" },
+    es: { lang: "Idioma", from: "Solicitud de", due: "Responder antes del", left: "Quedan {n} días", today: "Vence hoy", save: "Guardar borrador", send: "Enviar", resend: "Enviar de nuevo", saved: "Guardado. Puede continuar desde este enlace.", sent: "Enviado. Muchas gracias.",
+        sentNote: "Puede corregir y volver a enviar hasta la fecha límite.", req: "Obligatorio", need: "Complete los campos obligatorios.", files: "Archivos", addf: "Añadir archivos", drop: "o arrástrelos aquí", fmax: "Hasta 10 MB cada uno, máximo {n}", rmf: "Quitar",
+        name: "Su nombre", co: "Empresa", note: "¿Algo más? (opcional)", priv: "Sus respuestas y archivos se cifran antes de enviarse; solo el solicitante puede leerlos.",
+        none: "No se encontró esta solicitud. Revise el enlace o contacte al solicitante.", closed: "Esta solicitud está cerrada.", expired: "La fecha límite ya pasó. Contacte al solicitante si es necesario.",
+        err: "No se pudo enviar. Revise su conexión e inténtelo de nuevo.", bad: "El enlace está incompleto. Asegúrese de copiarlo completo.", big: "Archivo demasiado grande (máx. 10 MB)", lerr: "No se pudo cargar la solicitud. Revise su conexión y vuelva a cargar la página.", fcnt: "Máximo {n} archivos por solicitud.", abig: "La respuesta es demasiado larga. Adjunte los textos largos como archivo.", acnt: "Se alcanzó el límite de guardados. Contacte al solicitante.", already: "Ya se envió. Para enviar cambios, use \u00abEnviar de nuevo\u00bb.", fgone: "Ese archivo ya se quitó.",
+        upl: "Enviando…", st_draft: "Borrador", st_sent: "Enviado", pv: "Vista previa (no se envía nada)", pw: "Powered by BOEKI CLOUD 2.0",
+        steps: "Pasos", s1: "Revisar", s2: "Responder", s3: "Enviar", prog: "Sus respuestas {a}/{n}", rql: "Faltan {n} obligatorios", okall: "Todos los campos obligatorios están completos" }
+};
+var RQP = {
+    LANGS: [["ja", "日本語"], ["en", "English"], ["zh", "中文"], ["es", "Español"]],
+    esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]); },
+    pick(v, lg) { if (v == null)
+        return ""; if (typeof v === "string")
+        return v; return v[lg] || v.en || v.ja || v.zh || v.es || Object.values(v)[0] || ""; },
+    t(lg, k, n) { const d = RQP_L[lg] || RQP_L.en; return String(d[k] != null ? d[k] : (RQP_L.en[k] || k)).replace("{n}", n); },
+    day(ms, lg) { try {
+        return new Date(+ms).toLocaleDateString({ ja: "ja-JP", en: "en-US", zh: "zh-CN", es: "es-ES" }[lg] || "en-US", { year: "numeric", month: "short", day: "numeric" });
+    }
+    catch (e) {
+        return new Date(+ms).toDateString();
+    } },
+    css: `.rqp{--rq-ink:#16212e;--rq-ink2:#4a5868;--rq-line:#d6dde6;--rq-bg:#f4f6f9;--rq-card:#fff;--rq-acc:#1f3a5f;--rq-or:#e8742a;--rq-good:#1f7a4d;--rq-crit:#b42318;
+    font:16px/1.65 "Noto Sans JP","Noto Sans SC","Noto Sans",system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--rq-ink);background:var(--rq-bg);padding:20px 16px 40px;min-height:100%}
+  .rqp *{box-sizing:border-box}.rqp-w{max-width:680px;margin:0 auto;display:grid;gap:14px}
+  .rqp-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.rqp-brand{font-size:13px;color:var(--rq-ink2);letter-spacing:.02em}
+  .rqp-lg{display:flex;align-items:center;gap:8px;font-size:14px}.rqp-lg select{font:inherit;padding:6px 10px;border:1px solid var(--rq-line);border-radius:8px;background:#fff;color:var(--rq-ink)}
+  .rqp-c{background:var(--rq-card);border:1px solid var(--rq-line);border-radius:14px;padding:20px 22px}
+  .rqp-h{font-size:22px;line-height:1.4;margin:2px 0 6px;font-weight:700;text-wrap:balance}.rqp-from{font-size:14px;color:var(--rq-ink2)}
+  .rqp-due{display:inline-flex;gap:8px;align-items:center;margin-top:10px;font-size:14px;font-weight:700;padding:5px 12px;border-radius:999px;background:#fff4ec;color:#8a3d0c;border:1px solid #f3c7a6}
+  .rqp-note{white-space:pre-wrap;margin:12px 0 0;font-size:15px}
+  .rqp-q{display:grid;gap:6px;padding:14px 0;border-top:1px solid var(--rq-line)}.rqp-q:first-child{border-top:0;padding-top:0}
+  .rqp-q label{font-weight:700;font-size:15px}.rqp-rq{font-size:12px;font-weight:700;color:var(--rq-crit);margin-left:8px}
+  .rqp-help{font-size:13px;color:var(--rq-ink2)}
+  .rqp input[type=text],.rqp input[type=number],.rqp input[type=date],.rqp textarea,.rqp select.rqp-in{font:inherit;width:100%;padding:10px 12px;border:1.5px solid #8d99a8;border-radius:10px;background:#fff;color:var(--rq-ink)}
+  .rqp textarea{min-height:96px;resize:vertical}.rqp input:focus,.rqp textarea:focus,.rqp select:focus,.rqp button:focus-visible{outline:3px solid #9cc2ff;outline-offset:1px}
+  .rqp-bad{border-color:var(--rq-crit)!important}
+  .rqp-fz{border:1.5px dashed #8d99a8;border-radius:12px;padding:14px;text-align:center;font-size:14px;color:var(--rq-ink2)}.rqp-fz.on{background:#eef4ff;border-color:var(--rq-acc)}
+  .rqp-fl{display:grid;gap:6px;margin-top:10px;text-align:left}.rqp-f{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:14px;padding:8px 10px;border:1px solid var(--rq-line);border-radius:8px;background:#fafbfc}
+  .rqp-f span{overflow-wrap:anywhere}
+  .rqp-b{font:inherit;font-weight:700;font-size:15px;padding:11px 20px;border-radius:10px;border:1px solid var(--rq-acc);background:var(--rq-acc);color:#fff;cursor:pointer;min-height:44px}
+  .rqp-b.g{background:#fff;color:var(--rq-acc)}.rqp-b:disabled{opacity:.55;cursor:default}.rqp-b.s{font-size:13px;padding:6px 12px;min-height:34px}
+  .rqp-act{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+  .rqp-msg{font-size:14px;font-weight:700;padding:10px 12px;border-radius:10px}.rqp-msg.ok{background:#e9f6ef;color:var(--rq-good)}.rqp-msg.ng{background:#fdecea;color:var(--rq-crit)}
+  .rqp-priv{font-size:13px;color:var(--rq-ink2)}.rqp-st{font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;background:#e9f6ef;color:var(--rq-good);margin-left:8px;vertical-align:middle}
+  .rqp-pv{font-size:13px;font-weight:700;color:#8a3d0c;background:#fff4ec;border:1px solid #f3c7a6;border-radius:10px;padding:8px 12px}
+  .rqp-steps{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:0 0 14px;padding:0;font-size:13px;color:var(--rq-ink2)}
+  .rqp-steps li{display:inline-flex;align-items:center;gap:6px}.rqp-steps li+li::before{content:"";display:inline-block;width:16px;height:1px;background:#b8c2ce;margin-right:2px}
+  .rqp-steps .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;border:1.5px solid #b8c2ce;font-size:12px;font-weight:700;background:#fff;color:var(--rq-ink2)}
+  .rqp-steps .on{color:var(--rq-ink);font-weight:700}.rqp-steps .on .n{border-color:var(--rq-acc);background:var(--rq-acc);color:#fff}
+  .rqp-steps .ok .n{border-color:var(--rq-good);background:var(--rq-good);color:#fff}
+  .rqp-bar{position:sticky;bottom:0;z-index:2;display:grid;gap:8px;margin:16px -22px -20px;padding:12px 22px 14px;background:var(--rq-card);border-top:1px solid var(--rq-line);border-radius:0 0 14px 14px;box-shadow:0 -8px 14px -10px rgba(22,33,46,.22)}
+  .rqp-prog{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;align-items:baseline;font-size:14px}.rqp-prog b{font-size:16px;font-variant-numeric:tabular-nums}
+  .rqp-left{color:var(--rq-crit);font-weight:700;font-size:13px}.rqp-okall{color:var(--rq-good);font-weight:700;font-size:13px}
+  .rqp-pb{height:6px;border-radius:999px;background:#e3e8ee;overflow:hidden}.rqp-pb i{display:block;height:100%;width:0;background:var(--rq-acc);border-radius:999px;transition:width .2s}
+  .rqp-b.q{background:none;border-color:transparent;color:var(--rq-acc);text-decoration:underline;text-underline-offset:3px;padding-left:8px;padding-right:8px}
+  .rqp-g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:560px){.rqp-g2{grid-template-columns:1fr}.rqp-c{padding:16px}.rqp-h{font-size:20px}.rqp-bar{margin:14px -16px -16px;padding:10px 16px 12px}.rqp-act .rqp-b:not(.q){flex:1 1 auto}}
+  @media (prefers-reduced-motion:reduce){.rqp-pb i{transition:none}}`,
+    async mount(el, io, opt) {
+        opt = opt || {};
+        const S = { lg: "en", req: null, ans: null, state: "", files: [], busy: false, msg: null };
+        if (!document.getElementById("rqpcss")) {
+            const st = document.createElement("style");
+            st.id = "rqpcss";
+            st.textContent = RQP.css;
+            document.head.appendChild(st);
+        }
+        el.classList.add("rqp");
+        const T = (k, n) => RQP.t(S.lg, k, n), E = RQP.esc;
+        const EM = (x) => {
+            const k = { none: "none", closed: "closed", expired: "expired", sent: "already", abig: "abig", acnt: "acnt", fbig: "big", fcnt: "fcnt", fgone: "fgone" }[x && x.reason];
+            if (k)
+                return T(k, 10);
+            if (S.lg === "ja" && x && x.msg)
+                return String(x.msg);
+            return T("err");
+        };
+        const fail = (k) => { try {
+            if (!opt.preview)
+                document.documentElement.lang = S.lg;
+        }
+        catch (e) { } el.innerHTML = `<div class="rqp-w"><div class="rqp-c"><p class="rqp-msg ng">${E(T(k))}</p></div><p class="rqp-brand">${E(T("pw"))}</p></div>`; };
+        let r;
+        try {
+            r = await io.get();
+        }
+        catch (e) {
+            S.lg = opt.lang || RQP.savedLang() || RQP.navLang();
+            fail("lerr");
+            return;
+        }
+        if (!r || !r.ok) {
+            S.lg = opt.lang || RQP.savedLang() || RQP.navLang();
+            const rk = r && r.reason;
+            fail(rk === "none" || rk === "closed" || rk === "expired" || rk === "bad" ? rk : r ? "none" : "lerr");
+            return;
+        }
+        S.req = r.req;
+        S.ans = r.ans || null;
+        S.state = r.state || "";
+        S.files = r.files || [];
+        S.lg = opt.lang || RQP.savedLang() || S.req.lang || RQP.navLang();
+        const draw = () => {
+            const q = S.req.q || [], A = (S.ans && S.ans.a) || {}, left = Math.ceil(((+S.req.exp || 0) - Date.now()) / 864e5), sent = S.state === "sent";
+            const fOn = S.req.files && S.req.files.on, fMax = (S.req.files && S.req.files.max) || 5;
+            const cjk = S.lg === "ja" || S.lg === "zh", CO = cjk ? "：" : ": ", PO = cjk ? "（" : " (", PC = cjk ? "）" : ")";
+            const st = RQP.stepOf(S);
+            try {
+                if (!opt.preview)
+                    document.documentElement.lang = S.lg;
+            }
+            catch (e) { }
+            el.innerHTML = `<div class="rqp-w">
+        <div class="rqp-top"><span class="rqp-brand">${E(S.req.from && S.req.from.co || "")}</span>
+          <label class="rqp-lg">${E(T("lang"))}<select id="rqplg">${RQP.LANGS.map(([k, n]) => `<option value="${k}"${k === S.lg ? " selected" : ""}>${n}</option>`).join("")}</select></label></div>
+        ${opt.preview ? `<p class="rqp-pv">${E(T("pv"))}</p>` : ""}
+        <section class="rqp-c"><ol class="rqp-steps" id="rqpsteps" aria-label="${E(T("steps"))}">${["s1", "s2", "s3"].map((k, i) => `<li class="${st > i + 1 || sent ? "ok" : st === i + 1 ? "on" : ""}"${st === i + 1 && !sent ? ' aria-current="step"' : ""}><span class="n">${st > i + 1 || sent ? "✓" : i + 1}</span>${E(T(k))}</li>`).join("")}</ol>
+          <p class="rqp-from">${E(T("from"))}${CO}${E([S.req.from && S.req.from.co, S.req.from && S.req.from.who].filter(Boolean).join(" / "))}</p>
+          <h1 class="rqp-h">${E(RQP.pick(S.req.title, S.lg))}${sent ? `<span class="rqp-st">${E(T("st_sent"))}</span>` : S.state === "draft" ? `<span class="rqp-st" style="background:#fff4ec;color:#8a3d0c">${E(T("st_draft"))}</span>` : ""}</h1>
+          ${S.req.item ? `<p class="rqp-from">${E(RQP.pick(S.req.item, S.lg))}</p>` : ""}
+          <span class="rqp-due">${E(T("due"))}${CO}${E(RQP.day(S.req.exp, S.lg))}${PO}${E(left <= 0 ? T("today") : T("left", left))}${PC}</span>
+          ${S.req.note ? `<p class="rqp-note">${E(RQP.pick(S.req.note, S.lg))}</p>` : ""}</section>
+        <form class="rqp-c" id="rqpf" novalidate>
+          <div class="rqp-g2" style="margin-bottom:6px"><div class="rqp-q"><label for="rqp_name">${E(T("name"))}</label><input type="text" id="rqp_name" autocomplete="name" value="${E((S.ans && S.ans.name) || "")}"></div>
+            <div class="rqp-q" style="border-top:0;padding-top:0"><label for="rqp_co">${E(T("co"))}</label><input type="text" id="rqp_co" autocomplete="organization" value="${E((S.ans && S.ans.co) || (S.req.to && S.req.to.co) || "")}"></div></div>
+          ${q.map((x, i) => {
+                const id = "rqpq" + i, v = A[x.k] != null ? A[x.k] : "", lab = RQP.pick(x.label, S.lg), help = RQP.pick(x.help, S.lg);
+                const inp = x.type === "textarea" ? `<textarea id="${id}" data-k="${E(x.k)}">${E(v)}</textarea>`
+                    : x.type === "select" ? `<select class="rqp-in" id="${id}" data-k="${E(x.k)}"><option value=""></option>${(x.opts || []).map(o => { const ov = typeof o === "string" ? o : (o.v || RQP.pick(o.l, "en")); return `<option value="${E(ov)}"${ov === v ? " selected" : ""}>${E(typeof o === "string" ? o : RQP.pick(o.l, S.lg))}</option>`; }).join("")}</select>`
+                        : `<input type="${x.type === "date" ? "date" : x.type === "number" ? "number" : "text"}" id="${id}" data-k="${E(x.k)}" value="${E(v)}"${x.type === "number" ? ' inputmode="decimal" step="any"' : ""}>`;
+                return `<div class="rqp-q"><label for="${id}">${E(lab)}${x.req ? `<span class="rqp-rq">${E(T("req"))}</span>` : ""}</label>${help ? `<span class="rqp-help" id="${id}h">${E(help)}</span>` : ""}${inp}</div>`;
+            }).join("")}
+          ${fOn ? `<div class="rqp-q"><label>${E(RQP.pick(S.req.files.label, S.lg) || T("files"))}</label>${S.req.files.help ? `<span class="rqp-help">${E(RQP.pick(S.req.files.help, S.lg))}</span>` : ""}
+            <div class="rqp-fz" id="rqpfz"><button type="button" class="rqp-b g s" id="rqpfb">${E(T("addf"))}</button> ${E(T("drop"))}<br><small>${E(T("fmax", fMax))}</small><input type="file" id="rqpfi" multiple hidden>
+            <div class="rqp-fl">${S.files.map(f => `<div class="rqp-f"><span>${E((f.m && f.m.name) || f.id)}（${Math.max(1, Math.round(((f.m && f.m.size) || f.size || 0) / 1024))} KB）</span><button type="button" class="rqp-b g s" data-rmf="${E(f.id)}">${E(T("rmf"))}</button></div>`).join("")}</div></div></div>` : ""}
+          <div class="rqp-q"><label for="rqp_note">${E(T("note"))}</label><textarea id="rqp_note">${E((S.ans && S.ans.note) || "")}</textarea></div>
+          <p class="rqp-priv">${E(T("priv"))}${sent ? " " + E(T("sentNote")) : ""}</p>
+          <div class="rqp-bar">${S.msg ? `<p class="rqp-msg ${S.msg[0]}" role="status">${E(S.msg[1])}</p>` : ""}
+            <div class="rqp-prog"><span id="rqpprog"></span><span id="rqpleft"></span></div><div class="rqp-pb" aria-hidden="true"><i id="rqppb"></i></div>
+            <div class="rqp-act">${sent ? "" : `<button type="button" class="rqp-b q" id="rqpsave">${E(T("save"))}</button>`}<button type="submit" class="rqp-b" id="rqpsend">${E(sent ? T("resend") : T("send"))}</button></div></div></form>
+        <p class="rqp-brand">${E(T("pw"))}</p></div>`;
+            el.querySelector("#rqplg").onchange = e => { S.lg = e.target.value; RQP.saveLang(S.lg); keep(); draw(); };
+            {
+                const fm = el.querySelector("#rqpf");
+                const up = () => { keep(); paint(); };
+                fm.addEventListener("input", up);
+                fm.addEventListener("change", up);
+                paint();
+            }
+            el.querySelector("#rqpf").onsubmit = e => { e.preventDefault(); go("sent"); };
+            const sv = el.querySelector("#rqpsave");
+            if (sv)
+                sv.onclick = () => go("draft");
+            if (fOn) {
+                const fi = el.querySelector("#rqpfi"), fz = el.querySelector("#rqpfz");
+                el.querySelector("#rqpfb").onclick = () => fi.click();
+                fi.onchange = () => addFiles([...fi.files]);
+                fz.addEventListener("dragover", e => { e.preventDefault(); fz.classList.add("on"); });
+                fz.addEventListener("dragleave", () => fz.classList.remove("on"));
+                fz.addEventListener("drop", e => { e.preventDefault(); fz.classList.remove("on"); addFiles([...(e.dataTransfer && e.dataTransfer.files || [])]); });
+                el.querySelectorAll("[data-rmf]").forEach(b => b.onclick = async () => { if (S.busy)
+                    return; S.busy = true; try {
+                    const x = await io.fdel(b.dataset.rmf);
+                    if (x && x.ok)
+                        S.files = S.files.filter(f => f.id !== b.dataset.rmf);
+                    else
+                        S.msg = ["ng", EM(x)];
+                }
+                catch (e) {
+                    S.msg = ["ng", T("err")];
+                } S.busy = false; keep(); draw(); });
+            }
+        };
+        const paint = () => {
+            const p = RQP.count(S), raw = (k) => String((RQP_L[S.lg] || RQP_L.en)[k] || RQP_L.en[k] || k);
+            const a = el.querySelector("#rqpprog"), l = el.querySelector("#rqpleft"), b = el.querySelector("#rqppb");
+            if (a)
+                a.innerHTML = E(raw("prog")).replace("{a}/{n}", `<b>${p.a}/${p.n}</b>`);
+            if (l) {
+                l.className = p.reqLeft ? "rqp-left" : "rqp-okall";
+                l.textContent = p.reqLeft ? T("rql", p.reqLeft) : (p.req ? T("okall") : "");
+            }
+            if (b)
+                b.style.width = (p.n ? Math.round(p.a / p.n * 100) : 0) + "%";
+            const ol = el.querySelector("#rqpsteps");
+            if (ol) {
+                const st = RQP.stepOf(S), sent = S.state === "sent";
+                [...ol.children].forEach((li, i) => { const ok = sent || st > i + 1, on = !sent && st === i + 1; li.className = ok ? "ok" : on ? "on" : ""; if (on)
+                    li.setAttribute("aria-current", "step");
+                else
+                    li.removeAttribute("aria-current"); const n = li.querySelector(".n"); if (n)
+                    n.textContent = ok ? "✓" : String(i + 1); });
+            }
+        };
+        const keep = () => {
+            const f = el.querySelector("#rqpf");
+            if (!f)
+                return;
+            const a = {};
+            f.querySelectorAll("[data-k]").forEach(x => { a[x.dataset.k] = x.value; });
+            S.ans = Object.assign({}, S.ans || {}, { a, name: (f.querySelector("#rqp_name") || {}).value || "", co: (f.querySelector("#rqp_co") || {}).value || "", note: (f.querySelector("#rqp_note") || {}).value || "" });
+        };
+        const addFiles = async (list) => {
+            keep();
+            const max = (S.req.files && S.req.files.max) || 5;
+            for (const f of list) {
+                if (S.files.length >= max) {
+                    S.msg = ["ng", T("fcnt", max)];
+                    break;
+                }
+                if (f.size > 10 * 1024 * 1024) {
+                    S.msg = ["ng", T("big") + (S.lg === "ja" || S.lg === "zh" ? "：" : ": ") + f.name];
+                    continue;
+                }
+                S.msg = ["ok", T("upl")];
+                draw();
+                try {
+                    const x = await io.fput(f);
+                    if (x && x.ok)
+                        S.files.push({ id: x.id, size: f.size, m: { name: f.name, type: f.type, size: f.size } });
+                    else {
+                        S.msg = ["ng", EM(x)];
+                        if (x && (x.reason === "closed" || x.reason === "expired" || x.reason === "fcnt"))
+                            break;
+                    }
+                }
+                catch (e) {
+                    S.msg = ["ng", T("err")];
+                }
+            }
+            if (S.msg && S.msg[1] === T("upl"))
+                S.msg = null;
+            draw();
+        };
+        const go = async (state) => {
+            if (S.busy)
+                return;
+            keep();
+            const f = el.querySelector("#rqpf");
+            let bad = false;
+            f.querySelectorAll("[data-k]").forEach(x => { const q = (S.req.q || []).find(y => y.k === x.dataset.k); const no = state === "sent" && q && q.req && !String(x.value || "").trim(); x.classList.toggle("rqp-bad", !!no); x.setAttribute("aria-invalid", no ? "true" : "false"); if (no && !bad) {
+                bad = true;
+                x.focus();
+            } });
+            if (bad) {
+                S.msg = ["ng", T("need")];
+                const m = el.querySelector(".rqp-msg");
+                if (m) {
+                    m.className = "rqp-msg ng";
+                    m.textContent = T("need");
+                    return;
+                }
+                draw();
+                const A2 = (S.ans && S.ans.a) || {};
+                const k = (S.req.q || []).find(y => y.req && !String(A2[y.k] == null ? "" : A2[y.k]).trim());
+                const x = k && [...el.querySelectorAll("[data-k]")].find(i => i.dataset.k === k.k);
+                if (x) {
+                    x.classList.add("rqp-bad");
+                    x.setAttribute("aria-invalid", "true");
+                    try {
+                        x.focus({ preventScroll: true });
+                        x.scrollIntoView({ block: "center" });
+                    }
+                    catch (e) { }
+                }
+                return;
+            }
+            S.busy = true;
+            const b1 = el.querySelector("#rqpsend"), b2 = el.querySelector("#rqpsave");
+            if (b1)
+                b1.disabled = true;
+            if (b2)
+                b2.disabled = true;
+            try {
+                const x = await io.ans(Object.assign({}, S.ans, { lang: S.lg, files: S.files.map(f => ({ fid: f.id, name: f.m && f.m.name, size: f.m && f.m.size, type: f.m && f.m.type })), at: Date.now() }), state);
+                if (x && x.ok) {
+                    S.state = state;
+                    S.msg = ["ok", state === "sent" ? T("sent") : T("saved")];
+                }
+                else
+                    S.msg = ["ng", EM(x)];
+            }
+            catch (e) {
+                S.msg = ["ng", T("err")];
+            }
+            S.busy = false;
+            draw();
+            try {
+                el.scrollIntoView({ block: "end" });
+            }
+            catch (e) { }
+        };
+        draw();
+    },
+    count(S) {
+        const q = (S.req && S.req.q) || [], A = (S.ans && S.ans.a) || {};
+        let a = 0, req = 0, left = 0;
+        q.forEach(x => { const v = String(A[x.k] == null ? "" : A[x.k]).trim(); if (v)
+            a++; if (x.req) {
+            req++;
+            if (!v)
+                left++;
+        } });
+        let n = q.length;
+        if (S.req && S.req.files && S.req.files.on) {
+            n++;
+            if ((S.files || []).length)
+                a++;
+        }
+        return { a, n, req, reqLeft: left };
+    },
+    stepOf(S) { if (S.state === "sent")
+        return 3; const p = RQP.count(S); const nm = S.ans && (String(S.ans.name || "").trim() || String(S.ans.note || "").trim()); return (p.a || nm || S.state === "draft") ? 2 : 1; },
+    navLang() { const l = String((navigator.languages && navigator.languages[0]) || navigator.language || "en").toLowerCase(); return l.startsWith("ja") ? "ja" : l.startsWith("zh") ? "zh" : l.startsWith("es") ? "es" : "en"; },
+    savedLang() { try {
+        return localStorage.getItem("rqp_lang") || "";
+    }
+    catch (e) {
+        return "";
+    } },
+    saveLang(l) { try {
+        localStorage.setItem("rqp_lang", l);
+    }
+    catch (e) { } },
+    async boot(el, url) {
+        const h = String(location.hash || "").replace(/^#/, ""), m = /^([0-9a-f]{32})\.([A-Za-z0-9_-]{40,60})$/.exec(h);
+        if (!m) {
+            RQP.mount(el, { get: async () => ({ ok: false, reason: "bad" }) });
+            return;
+        }
+        const id = m[1];
+        let key;
+        try {
+            key = await RQC.key(m[2]);
+        }
+        catch (e) {
+            RQP.mount(el, { get: async () => ({ ok: false, reason: "bad" }) });
+            return;
+        }
+        const call = async (op, b) => { const r = await fetch(url, { method: "POST", mode: "cors", redirect: "follow", headers: { "Content-Type": "text/plain;charset=UTF-8" }, body: JSON.stringify(Object.assign({ op, v: 1, t: Date.now(), id }, b || {})) }); return r.json(); };
+        const io = {
+            get: async () => {
+                const r = await call("req_get");
+                if (!r || !r.ok)
+                    return r || { ok: false, reason: "none" };
+                const req = await RQC.dec(key, r.enc);
+                req.exp = r.exp || req.exp;
+                let ans = null, state = "";
+                if (r.ans && r.ans.enc) {
+                    try {
+                        ans = await RQC.dec(key, r.ans.enc);
+                        state = r.ans.state;
+                    }
+                    catch (e) { }
+                }
+                const files = [];
+                for (const f of (r.files || [])) {
+                    let mm = null;
+                    try {
+                        mm = f.m ? await RQC.dec(key, f.m) : null;
+                    }
+                    catch (e) { }
+                    files.push({ id: f.id, size: f.size, m: mm });
+                }
+                return { ok: true, req, ans, state, files };
+            },
+            ans: async (a, state) => call("req_ans", { enc: await RQC.enc(key, a), state }),
+            fput: async (f) => {
+                const fid = RQC.hex(16);
+                const buf = await f.arrayBuffer();
+                const blob = await RQC.encBuf(key, buf);
+                const x = await call("req_fput", { fid, blob, m: await RQC.enc(key, { name: f.name, type: f.type, size: f.size }) });
+                if (x && x.ok)
+                    x.id = fid;
+                return x;
+            },
+            fdel: async (fid) => call("req_fdel", { fid })
+        };
+        RQP.mount(el, io);
+    }
+};
+RQP.boot(document.getElementById("rq"), "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec");
+</script></body></html>
