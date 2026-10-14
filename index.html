@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="fe98ccfe02a4";
+const BC20_BUILD="857c9fae8c58";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -11654,11 +11654,37 @@ function ansPrice(q) {
         a += `<br><br>リードタイムは <b>${esc(D.lead)}</b> です。`;
     return { a, c: `根拠：価格表 ${D.priceRows.length}行${qty ? "／ご指定数量 " + qty.n : ""}${ctry ? "／規制調査（" + ctry + "）" : ""}` };
 }
+function v51E(s) { return (typeof esc === "function") ? esc(String(s == null ? "" : s)) : String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v51Btn(pg, label, focus, cty) {
+    try {
+        if ((typeof v49FwdOn === "function" && v49FwdOn()) || (typeof v49Avail === "function" && !v49Avail({ pg, acts: [] })))
+            return "";
+        return `<div class="v49act"><button type="button" class="btn" data-v49go="${v51E(pg)}"${focus ? ` data-v49focus="${v51E(focus)}"` : ""}${cty ? ` data-v49cty="${v51E(cty)}"` : ""}>${v51E(label)}${cty ? `（${v51E(cty)}）` : ""}</button></div>`;
+    }
+    catch (e) {
+        return "";
+    }
+}
+function v51CtyBtn(c) { return v51Btn("cty", "販売先国の選定を開く", "#ctysel", c || ""); }
+function v51CtySteps(c, has) {
+    const C = v51E(c || "");
+    return (c ? `<b>${C}の規制を調べるには</b><br>1. 「販売先国の選定」の「① 候補国」に${C}を追加して、「この候補で分析（4つの観点）」を押します。`
+        : `1. 「販売先国の選定」で「🤖 AI商社マンにおまかせ（1クリック）」を押すか、「① 候補国」に国を追加して「この候補で分析（4つの観点）」を押します。`) +
+        `<br>2. ${c ? `分析の結果で${C}にチェックを入れて` : "推奨の国を確かめて"}「✅ この3か国で確定」を押すと、進出希望国になります（確定できるのは3か国まで${has ? "で、進出希望国は確定した国に置き換わります" : "です"}）。` +
+        `<br>3. 「貿易実務・書類・出荷」の「1 規制を調べる」で${c ? C + "を" : "国を"}選ぶと、関税率・必要書類・通関にかかる日数が出ます。`;
+}
+function v51RegNo(c) {
+    const L = Object.keys(D.regs || {});
+    if (!L.length)
+        return { a: `まだ<b>進出希望国が決まっていない</b>ため、規制（関税率・必要書類・通関にかかる日数）を調べた国がありません。<br><br>` + v51CtySteps(c, false) + v51CtyBtn(c),
+            c: "根拠：規制調査 0か国" };
+    return { a: `<b>${v51E(c)}</b>は、まだ進出希望国に入っていないため、規制（関税率・必要書類・通関にかかる日数）を調べていません。いま調べられるのは <b>${v51E(L.join("・"))}</b> です。<br><br>` + v51CtySteps(c, true) + v51CtyBtn(c),
+        c: `根拠：規制調査 ${L.length}か国（${c}は未調査）` };
+}
 function ansReg(q) {
     const c = pickCountry(q);
     if (!D.regs || !Object.keys(D.regs).length)
-        return { a: `まだ<b>進出希望国が登録されていません</b>。国を教えていただければ、関税率と必要書類をお調べします。`,
-            c: "根拠：規制調査 0か国" };
+        return v51RegNo(c);
     if (!c) {
         const rows = Object.entries(D.regs);
         return { a: `調査済みの<b>${rows.length}か国</b>の状況です。<br><br>` +
@@ -11668,9 +11694,7 @@ function ansReg(q) {
     }
     const r = D.regs[c];
     if (!r)
-        return { a: `<b>${c}</b>はまだ調査していません。「商品情報を登録」で進出希望国に追加していただければ、
-    関税率・必要書類・所要期間をお調べします。<br><br>いま調査済みなのは
-    ${Object.keys(D.regs).join("・")} です。`, c: `根拠：規制調査 ${Object.keys(D.regs).length}か国（${c}は未調査）` };
+        return v51RegNo(c);
     return { a: `<b>${c}向け</b>（${tm("HSコード")} ${D.hs}）<br><br>
     <b>関税率　${r.duty}</b>${r.duty === "0%" ? "（かかりません）" : "　卸価格への影響を確認してください。"}<br>
     <b>通関</b>　${esc(r.lead)}<br><br>
@@ -11850,7 +11874,7 @@ function brain(q) {
                 c: `根拠：商品マスタ（MOQ・リードタイム）` };
         }
         case "market": return (D.aiq && D.aiq[0]) ? { a: D.aiq[0].a, c: D.aiq[0].c } :
-            { a: `進出希望国が未登録です。国を教えていただければ規制を調べます。`, c: "根拠：進出希望国 未登録" };
+            { a: `まだ<b>進出希望国が決まっていません</b>。<br>「販売先国の選定」で「🤖 AI商社マンにおまかせ（1クリック）」を押すと、市場性・規制・競合・拠点の4つの観点で採点して、推奨の3か国と理由を出します。確かめて「✅ この3か国で確定」を押すと、進出希望国として規制・価格・物流・出荷に反映されます。` + v51CtyBtn(""), c: "根拠：進出希望国 未登録" };
         case "lost": return (D.aiq && D.aiq[2]) ? { a: D.aiq[2].a, c: D.aiq[2].c } :
             { a: `まだ失注の記録がありません。`, c: "根拠：失注 0件" };
         case "prep": return (D.aiq && D.aiq[1]) ? { a: D.aiq[1].a, c: D.aiq[1].c } :
@@ -11876,7 +11900,7 @@ function brain(q) {
         case "ddp": {
             const L = (typeof ddpPxList === "function") ? ddpPxList() : [];
             if (!L.length)
-                return { a: `確定した現地販売価格（DDP／DAP など）は<b>まだありません</b>。<br>「商品情報 › ②価格表・寸法」の<b>🚚 現地販売価格をAI商社マンと試算</b>で仕向地・条件を指定して試算し、<b>✔ この価格で確定</b>すると国ごとに記録され、外国語営業資料・PI/CI に自動反映されます。`, c: "根拠：確定価格 0か国" };
+                return { a: `確定した現地販売価格（DDP／DAP など）は<b>まだありません</b>。<br>「商品情報」の「② 価格表・寸法」にある<b>🚚 現地販売価格をAI商社マンと試算</b>で、仕向地・数量・利益率などを入れて試算し、<b>✔ この価格を「（国名）」の確定価格にする</b>を押すと、国ごとに記録され、外国語営業資料・PI/CI に自動反映されます。` + v51Btn("item", "現地販売価格を試算する", "text:現地販売価格をAI商社マンと試算", ""), c: "根拠：確定価格 0か国" };
             return { a: `確定済みの現地販売価格は <b>${L.length}か国</b>です。<br>${L.map(r => `・<b>${esc(r.cty)}（${esc(r.city || "")}）</b> ${esc(r.term)}／${esc(r.route)}：<b>¥${Number(r.priceJpy || 0).toLocaleString()}</b>（1${esc(r.unit)} ¥${Number(r.perJpy || 0).toLocaleString()}・${esc(String(r.qty))}${esc(r.unit)}・利益率${esc(String(r.margin))}%・${esc(r.at)}確定）`).join("<br>")}<br><br>前提（運賃・為替・関税）は各国の記録に残しています。変更は同じパネルから再試算→再確定してください。`,
                 c: `根拠：確定価格 ${L.length}か国（国別記録）` };
         }
@@ -30813,7 +30837,7 @@ function v16CasesAnswer(cty) {
     if (!C.total) {
         const ctys = [...new Set((dd.fb || []).map(f => f.c).filter(Boolean))];
         const regs = Object.keys(dd.regs || {});
-        return { a: `貴社のデータに<b>「${esc(cty)}」向けの記録はまだありません</b>（商談・受注・出荷・規制調査・やりとり・会議メモ・タスク・資料を横断して確認）。<br><br>いまある記録：商談記録 ${(dd.fb || []).length}件${ctys.length ? "（" + esc(ctys.slice(0, 6).join("・")) + "）" : ""}／規制調査 ${regs.length}か国${regs.length ? "（" + esc(regs.slice(0, 6).join("・")) + "）" : ""}／会議メモ ${kbMemoList().length}件。<br><br>${esc(cty)}向けに進めるなら：「商談・バイヤー」で商談記録を残す、「貿易実務 › 規制」で進出希望国に追加して規制調査を依頼する、「バイヤーネットワーク・拠点」で「${esc(cty)}のバイヤーは？」と照会する、が次の一手です。${v16Offline() ? "<br><span style='color:var(--ink-3)'>AIエンジンに接続した端末（PCの管理コンソールで接続、または「AI接続の共有」）では、Web検索と一般的な貿易知識で補足して答えます。</span>" : ""}`,
+        return { a: `貴社のデータに<b>「${esc(cty)}」向けの記録はまだありません</b>（商談・受注・出荷・規制調査・やりとり・会議メモ・タスク・資料を横断して確認）。<br><br>いまある記録：商談記録 ${(dd.fb || []).length}件${ctys.length ? "（" + esc(ctys.slice(0, 6).join("・")) + "）" : ""}／規制調査 ${regs.length}か国${regs.length ? "（" + esc(regs.slice(0, 6).join("・")) + "）" : ""}／会議メモ ${kbMemoList().length}件。<br><br>${esc(cty)}向けに進めるなら：「商談・バイヤー」で商談記録を残す、「販売先国の選定」で${esc(cty)}を確定して「貿易実務・書類・出荷」の「1 規制を調べる」で関税率・必要書類を確かめる、「バイヤーネットワーク・拠点」で「${esc(cty)}のバイヤーは？」と照会する、が次の一手です。${v16Offline() ? "<br><span style='color:var(--ink-3)'>AIエンジンに接続した端末（PCの管理コンソールで接続、または「AI接続の共有」）では、Web検索と一般的な貿易知識で補足して答えます。</span>" : ""}${(typeof v51CtyBtn === "function") ? v51CtyBtn(cty) : ""}`,
             c: `根拠：蓄積データを「${cty}」で横断検索（該当0件）` + v16WebNote() };
     }
     const L = [];
