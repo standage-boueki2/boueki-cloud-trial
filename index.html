@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="50b0a1a74f97";
+const BC20_BUILD="ca6c0fffe37d";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -79407,6 +79407,253 @@ if (typeof openNotif === "function") {
             [V53N.on, "Browser notifications are on (new notices will be shown when they arrive)", "已开启浏览器通知（有新通知时会显示）", "Notificaciones del navegador activadas (se mostrarán los nuevos avisos)"],
             [V53N.fail, "Could not turn on notifications", "无法开启通知", "No se pudieron activar las notificaciones"]
         ]);
+    }
+    catch (e) { }
+})();
+const V531 = { ok: "", mask: (function () { try {
+        return !!(window.CSS && CSS.supports && (CSS.supports("-webkit-text-security", "disc") || CSS.supports("text-security", "disc")));
+    }
+    catch (e) {
+        return false;
+    } })() };
+const V531_FMT = { perplexity: { pre: ["pplx-"] }, openai: { pre: ["sk-"], not: ["sk-ant-"] }, gemini: { pre: ["AIza", "AQ."] }, anthropic: { pre: ["sk-ant-"] } };
+(function () {
+    try {
+        if (document.getElementById("v531css"))
+            return;
+        const s = document.createElement("style");
+        s.id = "v531css";
+        s.textContent = ".v531key{-webkit-text-security:disc;text-security:disc}.v531key::placeholder{-webkit-text-security:none;text-security:none}" +
+            ".v531bad{outline:2px solid var(--crit);outline-offset:1px}#ppres .v531ln{display:block}#ppres .v531bt{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}";
+        (document.head || document.documentElement).appendChild(s);
+    }
+    catch (e) { }
+})();
+function v531Nm(k) { return (typeof PROV !== "undefined" && PROV[k] && PROV[k].short) || k; }
+function v531Fit(k, v) { const f = V531_FMT[k]; return !!f && f.pre.some(x => v.startsWith(x)) && !(f.not || []).some(x => v.startsWith(x)); }
+function v531Hard(v) {
+    v = String(v == null ? "" : v).trim();
+    if (!v)
+        return "";
+    if (/[^\x21-\x7e]/.test(v))
+        return "chars";
+    if (v.length < 20)
+        return "short";
+    try {
+        const c = typeof v42AdmCred === "function" ? String(v42AdmCred() || "") : "";
+        if (c && v === c)
+            return "admin";
+    }
+    catch (e) { }
+    return "";
+}
+function v531Soft(k, v) {
+    v = String(v == null ? "" : v).trim();
+    if (!v)
+        return "";
+    if (V531_FMT[k] && !v531Fit(k, v))
+        return "pre";
+    if (/[^A-Za-z0-9._\-]/.test(v))
+        return "chars";
+    if (v.length > 400)
+        return "long";
+    return "";
+}
+function v531Why(b) {
+    const nm = v531Nm(b.k), v = String(b.el.value || "").trim();
+    if (b.hard)
+        return nm + "：この値は API キーではありません（短すぎる・空白や全角を含む など）。ブラウザのパスワードの自動入力が入った可能性があります。欄を空にして、正しいキーを入れてください。";
+    const o = Object.keys(V531_FMT).find(x => x !== b.k && v531Fit(x, v));
+    if (o)
+        return nm + "：この値は " + v531Nm(o) + " の API キーの形です。" + v531Nm(o) + " の欄に入れてください。";
+    const f = V531_FMT[b.k];
+    if (f)
+        return nm + "：この値は " + nm + " の API キーの形（" + f.pre.join("／") + " で始まる）ではありません。ブラウザの自動入力などで別の値が入っていないか確かめてください。";
+    return nm + "：この値は API キーの形ではありません。ブラウザの自動入力などで別の値が入っていないか確かめてください。";
+}
+function v531Attrs(k) {
+    const m = V531.mask;
+    return '<input class="sel' + (m ? " v531key" : "") + '" type="' + (m ? "text" : "password") + '" data-ppkey="' + k + '" autocomplete="' + (m ? "off" : "new-password") + '"' +
+        ' autocapitalize="off" autocorrect="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-form-type="other"' + (m ? "" : " readonly");
+}
+if (typeof ppCardHtml === "function") {
+    const __ppCard531 = ppCardHtml;
+    ppCardHtml = function () {
+        const h = __ppCard531.apply(this, arguments);
+        try {
+            return String(h).replace(/<input class="sel" type="password" data-ppkey="([a-z]+)"([^>]*?) autocomplete="off"([^>]*)>/g, (x, k, a, b) => v531Attrs(k) + a + b + ">");
+        }
+        catch (e) {
+            return h;
+        }
+    };
+}
+function v531Inputs() { try {
+    return Object.keys(PROV).map(k => [k, document.querySelector('[data-ppkey="' + k + '"]')]).filter(x => x[1]);
+}
+catch (e) {
+    return [];
+} }
+function v531Sig(act) { const s = act + "\n" + v531Inputs().map(([k, el]) => k + "=" + String(el.value || "").trim()).join("\n"); let h = 5381; for (let i = 0; i < s.length; i++)
+    h = ((h << 5) + h + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36) + ":" + s.length; }
+function v531Find() {
+    const out = [];
+    v531Inputs().forEach(([k, el]) => {
+        const v = String(el.value || "").trim();
+        if (!v)
+            return;
+        if (v531Hard(v))
+            out.push({ k, el, hard: 1 });
+        else if (v531Soft(k, v))
+            out.push({ k, el, hard: 0 });
+    });
+    return out;
+}
+function v531Unmark(el) { (el ? [el] : v531Inputs().map(x => x[1])).forEach(e => { e.classList.remove("v531bad"); e.removeAttribute("aria-invalid"); }); }
+function v531Show(bad, act, only) {
+    v531Unmark();
+    bad.forEach(b => { b.el.classList.add("v531bad"); b.el.setAttribute("aria-invalid", "true"); });
+    const box = document.getElementById("ppres");
+    if (!box)
+        return;
+    const hard = bad.some(b => b.hard);
+    const head = act === "save" ? "保存していません。" : act === "test" ? "テストしていません。" : "保存されている設定を確かめてください。";
+    const go = !hard && act !== "saved" ? '<button class="btn g" id="v531go" style="padding:3px 10px;font-size:11px">' + (act === "test" ? "このままテストする" : "このまま保存する") + "</button>" : "";
+    box.style.color = "var(--crit)";
+    box.innerHTML = '<b class="v531ln">' + esc(head) + "</b>" + bad.map(b => '<span class="v531ln">' + esc(v531Why(b)) + "</span>").join("") +
+        '<span class="v531bt"><button class="btn g" id="v531clr" style="padding:3px 10px;font-size:11px">形の合わない欄を空にする</button>' + go + "</span>";
+    const clr = document.getElementById("v531clr");
+    if (clr)
+        clr.onclick = () => {
+            bad.forEach(b => { b.el.value = ""; });
+            v531Unmark();
+            V531.ok = "";
+            box.style.color = "var(--ink-2)";
+            box.textContent = act === "test" ? "欄を空にしました。正しいキーを入れて「テスト」を押してください。" : "欄を空にしました。正しいキーを入れて「保存」を押してください。";
+        };
+    const g = document.getElementById("v531go");
+    if (g)
+        g.onclick = () => { V531.ok = v531Sig(act + (only || "")); const b = act === "test" ? document.querySelector('[data-pptest="' + only + '"]') : document.getElementById("ppsave"); if (b)
+            b.click(); };
+}
+function v531Gate(act, only) {
+    const bad = v531Find();
+    if (!bad.length) {
+        V531.ok = "";
+        v531Unmark();
+        return true;
+    }
+    const ok = V531.ok;
+    V531.ok = "";
+    if (!bad.some(b => b.hard) && ok && ok === v531Sig(act + (only || "")))
+        return true;
+    v531Show(bad, act, only);
+    try {
+        toast(act === "test" ? "テストしていません。APIキーの欄を確かめてください" : "保存していません。APIキーの欄を確かめてください");
+    }
+    catch (e) { }
+    return false;
+}
+function v531Bind() {
+    v531Inputs().forEach(([k, el]) => {
+        if (el.dataset.v531)
+            return;
+        el.dataset.v531 = "1";
+        if (V531.mask)
+            ["copy", "cut"].forEach(t => el.addEventListener(t, e => e.preventDefault()));
+        else if (el.readOnly) {
+            const un = () => { el.readOnly = false; };
+            el.addEventListener("focus", un, { once: true });
+            el.addEventListener("pointerdown", un, { once: true });
+        }
+        el.addEventListener("input", () => { v531Unmark(el); V531.ok = ""; });
+    });
+    const sv = document.getElementById("ppsave");
+    if (sv && !sv.dataset.v531) {
+        sv.dataset.v531 = "1";
+        const o = sv.onclick;
+        sv.onclick = function (ev) { if (!v531Gate("save"))
+            return; return o ? o.call(this, ev) : undefined; };
+    }
+    document.querySelectorAll("[data-pptest]").forEach(b => {
+        if (b.dataset.v531)
+            return;
+        b.dataset.v531 = "1";
+        const o = b.onclick;
+        b.onclick = function (ev) { if (!v531Gate("test", b.dataset.pptest))
+            return; return o ? o.call(this, ev) : undefined; };
+    });
+    const old = v531Inputs().filter(([k]) => { try {
+        return !!v531Hard(llmKeyOf(k));
+    }
+    catch (e) {
+        return false;
+    } }).map(([k, el]) => ({ k, el, hard: 1 }));
+    if (old.length)
+        v531Show(old, "saved");
+}
+if (typeof ppBind === "function") {
+    const __ppBind531 = ppBind;
+    ppBind = function () { const r = __ppBind531.apply(this, arguments); try {
+        v531Bind();
+    }
+    catch (e) { } return r; };
+}
+function v531ShareProvs() { let a = []; try {
+    a = llmActive();
+}
+catch (e) { } return a.filter(k => { try {
+    return !v531Hard(llmKeyOf(k));
+}
+catch (e) {
+    return false;
+} }); }
+if (typeof llmSharePayload === "function") {
+    const __pay531 = llmSharePayload;
+    llmSharePayload = function () {
+        const p = __pay531.apply(this, arguments), act = v531ShareProvs();
+        if (!act.length)
+            throw new Error("送れるAPIキーがありません");
+        const pick = o => { const r = {}; act.forEach(k => { if (o && o[k] != null && String(o[k]).trim() !== "")
+            r[k] = o[k]; }); return r; };
+        const L = Object.assign({}, p.llm);
+        L.keys = pick(LLM.keys);
+        L.models = pick(LLM.models);
+        L.eps = pick(LLM.eps);
+        L.act = {};
+        act.forEach(k => { L.act[k] = true; });
+        L.on = true;
+        if (!act.includes(L.prov))
+            L.prov = act[0];
+        p.llm = L;
+        return p;
+    };
+}
+if (typeof v53Act === "function") {
+    v53Act = function () { return v531ShareProvs(); };
+}
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !Array.isArray(I18N.pat))
+            return;
+        const P = (re, en, zh, es) => ({ re, en, zh, es }), E = "(Perplexity|ChatGPT|Gemini|Claude)";
+        const L = [
+            P(/^保存していません。$/, "Not saved.", "未保存。", "No se guardó."),
+            P(/^テストしていません。$/, "Not tested.", "未测试。", "No se probó."),
+            P(/^保存されている設定を確かめてください。$/, "Please check the saved settings.", "请检查已保存的设置。", "Revise la configuración guardada."),
+            P(new RegExp("^" + E + "：この値は API キーではありません（短すぎる・空白や全角を含む など）。ブラウザのパスワードの自動入力が入った可能性があります。欄を空にして、正しいキーを入れてください。$"), "$1: this value is not an API key (too short, or contains spaces or full-width characters). Your browser's password autofill may have entered it. Clear the field and enter the correct key.", "$1：此值不是 API 密钥（太短，或含有空格、全角字符等）。可能是浏览器的密码自动填充填入的。请清空该栏并输入正确的密钥。", "$1: este valor no es una clave de API (demasiado corto, o contiene espacios o caracteres de ancho completo). Puede haberlo introducido el autocompletado de contraseñas del navegador. Vacíe el campo e introduzca la clave correcta."),
+            P(new RegExp("^" + E + "：この値は " + E + " の API キーの形です。" + E + " の欄に入れてください。$"), "$1: this value looks like a $2 API key. Enter it in the $3 field.", "$1：此值是 $2 的 API 密钥格式。请填入 $3 一栏。", "$1: este valor tiene el formato de una clave de API de $2. Introdúzcalo en el campo de $3."),
+            P(new RegExp("^" + E + "：この値は " + E + " の API キーの形（(\\S+) で始まる）ではありません。ブラウザの自動入力などで別の値が入っていないか確かめてください。$"), "$1: this value is not in the form of a $2 API key (starting with $3). Check that your browser's autofill or similar has not entered a different value.", "$1：此值不是 $2 的 API 密钥格式（以 $3 开头）。请确认是否被浏览器的自动填充等填入了其他值。", "$1: este valor no tiene el formato de una clave de API de $2 (que empieza por $3). Compruebe que el autocompletado del navegador u otro no haya introducido otro valor."),
+            P(/^形の合わない欄を空にする$/, "Clear the fields that don't match", "清空格式不符的栏", "Vaciar los campos que no coinciden"),
+            P(/^このまま保存する$/, "Save anyway", "仍然保存", "Guardar de todos modos"),
+            P(/^このままテストする$/, "Test anyway", "仍然测试", "Probar de todos modos"),
+            P(/^欄を空にしました。正しいキーを入れて「保存」を押してください。$/, "Cleared. Enter the correct key and press “Save”.", "已清空。请输入正确的密钥并点击“保存”。", "Campo vaciado. Introduzca la clave correcta y pulse «Guardar»."),
+            P(/^欄を空にしました。正しいキーを入れて「テスト」を押してください。$/, "Cleared. Enter the correct key and press “Test”.", "已清空。请输入正确的密钥并点击“测试”。", "Campo vaciado. Introduzca la clave correcta y pulse «Probar»."),
+            P(/^保存していません。APIキーの欄を確かめてください$/, "Not saved. Please check the API key fields", "未保存。请检查 API 密钥栏", "No se guardó. Revise los campos de clave de API"),
+            P(/^テストしていません。APIキーの欄を確かめてください$/, "Not tested. Please check the API key fields", "未测试。请检查 API 密钥栏", "No se probó. Revise los campos de clave de API"),
+            P(/^設定できませんでした：送れるAPIキーがありません$/, "Could not set: there is no API key that can be shared", "无法设置：没有可发送的 API 密钥", "No se pudo configurar: no hay ninguna clave de API que se pueda compartir")
+        ];
+        L.slice().reverse().forEach(p => I18N.pat.unshift(p));
     }
     catch (e) { }
 })();
