@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="3bcd4d707564";
+const BC20_BUILD="50b0a1a74f97";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -79086,6 +79086,327 @@ function v52Css() {
             P(/^Google ドライブに「(.+)」フォルダが (\d+) 個あります。使っていない古いフォルダの中身は、この操作では消しません（手で確かめてください）$/, "There are $2 “$1” folders in Google Drive. The contents of unused old folders are not deleted by this operation (check them by hand)", "Google 云端硬盘中有 $2 个“$1”文件夹。此操作不会删除未使用的旧文件夹中的内容（请手动确认）", "Hay $2 carpetas «$1» en Google Drive. Esta operación no elimina el contenido de las carpetas antiguas sin uso (revíselas a mano)")
         ];
         L.slice().reverse().forEach(p => I18N.pat.unshift(p));
+    }
+    catch (e) { }
+})();
+const V53 = { kids: null, at: 0, seq: 0, busy: null };
+function v53Adm() { try {
+    return typeof SES !== "undefined" && !!SES && SES.t === "admin" && typeof syncOn === "function" && syncOn();
+}
+catch (e) {
+    return false;
+} }
+function v53Act() { try {
+    return llmActive();
+}
+catch (e) {
+    return [];
+} }
+async function v53ListNow() {
+    if (!v53Adm())
+        return null;
+    const seq = V53.seq;
+    const r = await syncCall("llm_list", { pw: SES.apw || "" });
+    if (!r || r.ok !== true || !Array.isArray(r.kids))
+        return null;
+    V53.at = Date.now();
+    if (seq !== V53.seq)
+        return { ch: false, stale: 1 };
+    V53.kids = new Set(r.kids.map(x => String(x)));
+    return await v53Apply();
+}
+function v53List(force) {
+    if (!force && V53.at && Date.now() - V53.at < 60000)
+        return Promise.resolve(null);
+    if (!V53.busy)
+        V53.busy = v53ListNow().catch(() => null).finally(() => { V53.busy = null; });
+    return V53.busy;
+}
+async function v53Apply() {
+    if (!V53.kids || typeof ADB === "undefined" || !ADB || !Array.isArray(ADB.accounts))
+        return { ch: false, n: 0 };
+    const seq = V53.seq, want = [];
+    for (const a of ADB.accounts) {
+        if (!a || !a.code)
+            continue;
+        let kid = "";
+        try {
+            kid = await v213Kid(a.code);
+        }
+        catch (e) {
+            continue;
+        }
+        want.push([a, V53.kids.has(kid) ? 1 : 0]);
+    }
+    if (seq !== V53.seq)
+        return { ch: false, stale: 1 };
+    let n = 0;
+    const B = (typeof V213 !== "undefined" && V213 && V213.admBase) || null;
+    want.forEach(([a, on]) => {
+        const old = a.llmShare;
+        if ((old ? 1 : 0) === on)
+            return;
+        let s0 = null;
+        try {
+            s0 = v213AdmSig(a);
+        }
+        catch (e) { }
+        a.llmShare = on;
+        n++;
+        try {
+            if (B && B[a.code] && s0 !== null && B[a.code].s === s0)
+                B[a.code].s = v213AdmSig(a);
+        }
+        catch (e) { }
+    });
+    if (n) {
+        try {
+            v213SaveADB();
+        }
+        catch (e) { }
+    }
+    return { ch: n > 0, n };
+}
+function v53Shared() { return ((typeof ADB !== "undefined" && ADB && ADB.accounts) || []).filter(a => a && a.llmShare); }
+function v53Note() {
+    try {
+        const card = document.getElementById("admshare");
+        if (!card)
+            return;
+        let el = document.getElementById("v53llmnote");
+        const n = v53Shared().length, show = n > 0 && !v53Act().length;
+        if (!show) {
+            if (el)
+                el.remove();
+            return;
+        }
+        const t = `共有中の ${n}件は、前に預けた設定で動いています。この端末で下の「AIエンジン設定」にキーを入れて「保存」すると、共有中のアカウントにも新しい設定が届きます。`;
+        if (!el) {
+            el = document.createElement("p");
+            el.id = "v53llmnote";
+            el.className = "nn";
+            el.style.cssText = "margin-top:6px;color:var(--ink-2)";
+            const tw = card.querySelector(".tw");
+            if (tw)
+                tw.before(el);
+            else
+                card.appendChild(el);
+        }
+        if (el.dataset.t !== t) {
+            el.dataset.t = t;
+            el.textContent = t;
+        }
+    }
+    catch (e) { }
+}
+function v53Paint() { try {
+    if (typeof admShareRefresh === "function")
+        admShareRefresh();
+}
+catch (e) { } v53Note(); }
+if (typeof v213AdmPull === "function") {
+    const __pull53 = v213AdmPull;
+    v213AdmPull = async function () {
+        const x = await __pull53.apply(this, arguments);
+        try {
+            if (x && x.r)
+                v53List(false).then(y => { if (y && y.ch)
+                    v53Paint(); });
+        }
+        catch (e) { }
+        return x;
+    };
+}
+if (typeof admShareToggle === "function") {
+    const __tog53 = admShareToggle;
+    admShareToggle = async function (code, on) {
+        V53.seq++;
+        const a = await __tog53.apply(this, arguments);
+        V53.seq++;
+        try {
+            if (V53.kids && a && a.code) {
+                const kid = await v213Kid(a.code);
+                if (on)
+                    V53.kids.add(kid);
+                else
+                    V53.kids.delete(kid);
+            }
+        }
+        catch (e) { }
+        try {
+            v53Note();
+        }
+        catch (e) { }
+        return a;
+    };
+}
+if (typeof llmSharePushAll === "function") {
+    llmSharePushAll = function () {
+        if (!v53Adm())
+            return;
+        clearTimeout(__llmShareT);
+        __llmShareT = setTimeout(async () => {
+            try {
+                await v53List(true);
+            }
+            catch (e) { }
+            v53Paint();
+            const A = v53Shared();
+            if (!A.length)
+                return;
+            if (!v53Act().length) {
+                toast(`この端末のAIエンジンが未接続のため、共有中の ${A.length}件には送りませんでした（お客様の端末は前の設定のまま使えます。共有をやめるときは、アカウントごとに外してください）`);
+                return;
+            }
+            let n = 0;
+            for (const a of A) {
+                try {
+                    await llmShareSet(a.code, true);
+                    n++;
+                }
+                catch (e) { }
+            }
+            if (n === A.length)
+                toast(`AI接続の共有 ${n}件を最新の設定で更新しました`);
+            else
+                toast(`AI接続の共有：${n}件を更新し、${A.length - n}件は送れませんでした（通信を確かめて、もう一度「保存」してください）`);
+        }, 1500);
+    };
+}
+if (typeof renderAdmin === "function") {
+    const __ra53 = renderAdmin;
+    renderAdmin = function () { const r = __ra53.apply(this, arguments); try {
+        v53Note();
+    }
+    catch (e) { } return r; };
+}
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !Array.isArray(I18N.pat))
+            return;
+        const P = (re, en, zh, es) => ({ re, en, zh, es });
+        const L = [
+            P(/^共有中の (\d+)件は、前に預けた設定で動いています。この端末で下の「AIエンジン設定」にキーを入れて「保存」すると、共有中のアカウントにも新しい設定が届きます。$/, "The $1 shared account(s) are running on the settings you shared earlier. Enter a key in “AI engine settings” below on this device and press “Save” to send the new settings to the shared accounts as well.", "共享中的 $1 个账户正在使用之前共享的设置。在本设备下方的“AI引擎设置”中输入密钥并点击“保存”，新设置也会发送到共享中的账户。", "Las $1 cuentas compartidas usan la configuración que compartió antes. Escriba una clave en «Configuración del motor de IA» en este dispositivo y pulse «Guardar» para enviarles también la nueva configuración."),
+            P(/^この端末のAIエンジンが未接続のため、共有中の (\d+)件には送りませんでした（お客様の端末は前の設定のまま使えます。共有をやめるときは、アカウントごとに外してください）$/, "The AI engine on this device is not connected, so nothing was sent to the $1 shared account(s) (customers' devices keep working with the previous settings. To stop sharing, turn it off for each account)", "本设备的AI引擎未连接，因此没有发送给共享中的 $1 个账户（客户的设备仍可使用之前的设置。如需停止共享，请逐个账户关闭）", "El motor de IA de este dispositivo no está conectado, así que no se envió nada a las $1 cuentas compartidas (los dispositivos de los clientes siguen con la configuración anterior. Para dejar de compartir, desactívelo en cada cuenta)"),
+            P(/^AI接続の共有 (\d+)件を最新の設定で更新しました$/, "Updated $1 shared AI connection(s) with the latest settings", "已用最新设置更新 $1 个AI连接共享", "Se actualizaron $1 conexiones de IA compartidas con la configuración más reciente"),
+            P(/^AI接続の共有：(\d+)件を更新し、(\d+)件は送れませんでした（通信を確かめて、もう一度「保存」してください）$/, "AI connection sharing: updated $1, could not send $2 (check the connection and press “Save” again)", "AI连接共享：已更新 $1 个，$2 个未能发送（请检查网络后再次点击“保存”）", "Conexión de IA compartida: se actualizaron $1 y no se pudieron enviar $2 (revise la conexión y pulse «Guardar» otra vez)")
+        ];
+        L.slice().reverse().forEach(p => I18N.pat.unshift(p));
+    }
+    catch (e) { }
+})();
+function v53NPerm() { try {
+    if (typeof Notification === "undefined")
+        return "unsupported";
+    return String(Notification.permission || "default");
+}
+catch (e) {
+    return "unsupported";
+} }
+function v53NFramed() { try {
+    return window.self !== window.top;
+}
+catch (e) {
+    return true;
+} }
+function v53NDB() { try {
+    return notifDB();
+}
+catch (e) {
+    return {};
+} }
+const V53N = {
+    framed: "埋め込みの画面では、ブラウザ通知を出せません。ブラウザで直接開いた画面で有効にしてください",
+    denied: "このブラウザでは、このサイトの通知がブロックされています。アドレスバーの左のマーク（鍵など）から「通知」を「許可」にしてから、もう一度押してください",
+    unsup: "このブラウザは通知に対応していません",
+    ask: "この端末（ブラウザ）では、まだ通知が許可されていません。「🔔 ブラウザ通知を有効化」を押して許可してください（ほかの端末の設定はそのままです）",
+    no: "ブラウザの通知が許可されませんでした",
+    on: "ブラウザ通知を有効にしました（新しい通知が届くと表示されます）",
+    fail: "通知を有効化できませんでした"
+};
+function v53NWhyNot(p) { if (p === "unsupported")
+    return V53N.unsup; if (p === "denied")
+    return v53NFramed() ? V53N.framed : V53N.denied; return ""; }
+if (typeof notifBrowserToggle === "function") {
+    const __nbt53 = notifBrowserToggle;
+    notifBrowserToggle = async function () {
+        const db = v53NDB(), p = v53NPerm();
+        if (p === "granted")
+            return __nbt53.apply(this, arguments);
+        const why = v53NWhyNot(p);
+        if (why) {
+            toast(why);
+            try {
+                openNotif();
+            }
+            catch (e) { }
+            return;
+        }
+        if (!db.browser)
+            return __nbt53.apply(this, arguments);
+        try {
+            const r = await Notification.requestPermission();
+            if (r !== "granted") {
+                toast(r === "denied" ? (v53NFramed() ? V53N.framed : V53N.denied) : V53N.no);
+                try {
+                    openNotif();
+                }
+                catch (e) { }
+                return;
+            }
+            toast(V53N.on);
+            try {
+                openNotif();
+            }
+            catch (e) { }
+        }
+        catch (e) {
+            toast(V53N.fail);
+        }
+    };
+}
+function v53NPaint() {
+    try {
+        const pn = document.getElementById("pn");
+        if (!pn)
+            return;
+        const b = pn.querySelector('button[onclick="notifBrowserToggle()"]');
+        if (!b)
+            return;
+        const db = v53NDB(), p = v53NPerm();
+        const old = pn.querySelector("#v53nnote");
+        if (old)
+            old.remove();
+        if (!db.browser || p === "granted")
+            return;
+        b.textContent = "🔔 ブラウザ通知を有効化";
+        const n = document.createElement("p");
+        n.id = "v53nnote";
+        n.style.cssText = "font-size:9.5px;color:var(--ink-2);margin:4px 0 0;line-height:1.6";
+        n.textContent = v53NWhyNot(p) || V53N.ask;
+        const row = b.closest(".rw");
+        if (row)
+            row.after(n);
+        else
+            b.after(n);
+    }
+    catch (e) { }
+}
+if (typeof openNotif === "function") {
+    const __on53 = openNotif;
+    openNotif = function () { const r = __on53.apply(this, arguments); v53NPaint(); return r; };
+}
+(function () {
+    try {
+        v30I18n([
+            [V53N.framed, "Browser notifications cannot be shown in an embedded screen. Turn them on in a screen opened directly in the browser", "嵌入的画面无法显示浏览器通知。请在浏览器中直接打开的画面中开启", "Las notificaciones no se pueden mostrar en una pantalla incrustada. Actívelas en una pantalla abierta directamente en el navegador"],
+            [V53N.denied, "Notifications for this site are blocked in this browser. Allow “Notifications” from the icon at the left of the address bar (such as the lock), then press it again", "此浏览器已屏蔽本网站的通知。请从地址栏左侧的图标（如锁形图标）将“通知”设为“允许”，然后再次点击", "Las notificaciones de este sitio están bloqueadas en este navegador. Permita «Notificaciones» desde el icono a la izquierda de la barra de direcciones (como el candado) y vuelva a pulsar"],
+            [V53N.unsup, "This browser does not support notifications", "此浏览器不支持通知", "Este navegador no admite notificaciones"],
+            [V53N.ask, "Notifications are not allowed on this device (browser) yet. Press “🔔 Turn on browser notifications” and allow them (settings on other devices stay as they are)", "此设备（浏览器）尚未允许通知。请点击“🔔 开启浏览器通知”并允许（其他设备的设置保持不变）", "Este dispositivo (navegador) aún no permite notificaciones. Pulse «🔔 Activar notificaciones del navegador» y permítalas (la configuración de otros dispositivos no cambia)"],
+            [V53N.no, "Browser notifications were not allowed", "浏览器未允许通知", "No se permitieron las notificaciones del navegador"],
+            [V53N.on, "Browser notifications are on (new notices will be shown when they arrive)", "已开启浏览器通知（有新通知时会显示）", "Notificaciones del navegador activadas (se mostrarán los nuevos avisos)"],
+            [V53N.fail, "Could not turn on notifications", "无法开启通知", "No se pudieron activar las notificaciones"]
+        ]);
     }
     catch (e) { }
 })();
