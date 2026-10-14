@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="857c9fae8c58";
+const BC20_BUILD="3bcd4d707564";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -78132,6 +78132,960 @@ catch (e) { }
         if (typeof I18N !== "undefined" && I18N && I18N.dict)
             R.forEach(r => { ["en", "zh", "es"].forEach((l, i) => { if (r[i + 1] && I18N.dict[l])
                 I18N.dict[l][r[0]] = r[i + 1]; }); });
+    }
+    catch (e) { }
+})();
+var V52 = { box: null, lang: "", tok: "", srv: "", days: null, daysAsk: 0, logN: -1, busy: "", list: null, need: [], running: [], folders: 0, sel: null, plan: null, planAt: 0, rec: null, chk: null, log: null, logOpen: false, open: new Set(), lchk: null, labels: {}, m: {} };
+const V52_OLD = "同期サーバーがデータの削除に対応していません（同期サーバーを v2.18 にすると使えます）";
+const V52_ST = { disabled: "停止済み", deleted: "台帳から外した", none: "台帳に無い（データだけ残っている）" };
+const V52_LBL = [
+    ["acct", "本体のデータ（暗号化）", "Main data (encrypted)", "主体数据（已加密）", "Datos principales (cifrados)"],
+    ["files", "書類の目録", "Document index", "文件目录", "Índice de documentos"],
+    ["decks", "営業資料の目録", "Sales deck index", "销售资料目录", "Índice de presentaciones"],
+    ["rqs", "依頼ページの目録", "Request page index", "请求页面目录", "Índice de páginas de solicitud"],
+    ["file", "書類（ファイル）", "Documents (files)", "文件（文件本身）", "Documentos (archivos)"],
+    ["deck", "外国語営業資料", "Foreign-language sales decks", "外语销售资料", "Presentaciones en otros idiomas"],
+    ["req", "依頼ページ", "Request pages", "请求页面", "Páginas de solicitud"],
+    ["reqFile", "依頼ページに出されたファイル", "Files submitted on request pages", "通过请求页面提交的文件", "Archivos enviados en páginas de solicitud"],
+    ["orphan", "（うち目録に無かった取り残し）", "(of which leftovers not in the index)", "（其中不在目录中的残留）", "(de ellos, restos fuera del índice)"],
+    ["mail", "メール中継の記録", "Mail relay records", "邮件中继记录", "Registros del relé de correo"],
+    ["mailThread", "Gmail のスレッド（中継で送った・届いたメール）", "Gmail threads (mail sent and received via the relay)", "Gmail 会话（经中继发送・收到的邮件）", "Hilos de Gmail (correos enviados y recibidos por el relé)"],
+    ["mailSkip", "ほかのアカウントの鍵も入っていたため残したスレッド", "Threads kept because they also contain another account's key", "因含有其他账户的密钥而保留的会话", "Hilos conservados porque contienen la clave de otra cuenta"],
+    ["notice", "送ったメール通知の控え", "Copies of notification emails sent", "已发送通知邮件的副本", "Copias de los avisos enviados por correo"],
+    ["noticeSkip", "会社名で見分けられず残した通知の控え", "Notification copies kept (the company could not be identified)", "无法按公司名区分而保留的通知副本", "Copias de avisos conservadas (no se pudo identificar la empresa)"],
+    ["lw", "LINE・WhatsApp で届いたメッセージ", "Messages received via LINE/WhatsApp", "通过 LINE・WhatsApp 收到的消息", "Mensajes recibidos por LINE/WhatsApp"],
+    ["lwProp", "LINE・WhatsApp の接続の設定", "LINE/WhatsApp connection settings", "LINE・WhatsApp 连接设置", "Configuración de conexión de LINE/WhatsApp"],
+    ["llm", "AI 接続の設定（暗号化）", "AI connection settings (encrypted)", "AI 连接设置（已加密）", "Configuración de conexión de IA (cifrada)"],
+    ["export", "自動化向けのスナップショット", "Snapshot for automation", "用于自动化的快照", "Instantánea para automatización"],
+    ["digest", "メール通知の設定", "Email notification settings", "邮件通知设置", "Configuración de avisos por correo"],
+    ["token", "搬出トークン", "Export tokens", "导出令牌", "Tokens de exportación"],
+    ["pool", "全社の集計に預けた匿名の集計", "Anonymous aggregates shared with the company-wide pool", "存入全公司汇总的匿名统计", "Agregados anónimos del conjunto común"],
+    ["usage", "利用の記録", "Usage records", "使用记录", "Registros de uso"],
+    ["session", "ログイン中の端末の記録", "Logged-in device records", "登录中设备的记录", "Registros de dispositivos conectados"],
+    ["fwdReq", "物流の見積依頼", "Freight quote requests", "物流报价请求", "Solicitudes de cotización de flete"],
+    ["fwdReqDel", "物流の見積依頼の削除の印", "Deletion marks of freight quote requests", "物流报价请求的删除标记", "Marcas de eliminación de solicitudes de flete"],
+    ["fwdRate", "物流のレート", "Freight rates", "物流费率", "Tarifas de flete"],
+    ["fwdSitu", "物流の情勢メモ", "Freight market notes", "物流行情备忘", "Notas del mercado de fletes"],
+    ["fwdBox", "物流会社の箱（相談・操作の履歴）", "Forwarder workspace (consultations and activity history)", "物流公司专区（咨询・操作记录）", "Espacio del transitario (consultas e historial)"],
+    ["fwdTo", "見積依頼の届け先の印", "Recipient marks on quote requests", "报价请求的收件方标记", "Marcas de destinatario en solicitudes de cotización"],
+    ["reg", "台帳のアカウント", "Ledger account", "台账中的账户", "Cuenta del registro"],
+    ["regSnap", "台帳の控え（元に戻す用）", "Ledger backup (for restoring)", "台账备份（用于恢复）", "Copia del registro (para restaurar)"],
+    ["reglog", "台帳の変更履歴のアクセスコード（先頭だけ残す）", "Access codes in the ledger history (only the first characters are kept)", "台账变更记录中的访问码（只保留开头）", "Códigos de acceso del historial del registro (solo se conserva el inicio)"],
+    ["reqOther", "目録にあったがほかのアカウントの依頼ページ（残した）", "Request pages in the index that belonged to another account (kept)", "目录中属于其他账户的请求页面（保留）", "Páginas de solicitud del índice que eran de otra cuenta (conservadas)"]
+];
+function v52E(s) { return v33Esc(s); }
+function v52T(s) { return v33T(s); }
+function v52Lang() { try {
+    return (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v52Day(t) { return +t ? new Date(+t + 9 * 3600e3).toISOString().slice(0, 10) : ""; }
+function v52DT(t) { return +t ? new Date(+t + 9 * 3600e3).toISOString().slice(0, 16).replace("T", " ") : ""; }
+function v52Lbl(k) { const r = V52_LBL.find(x => x[0] === k); return v52T(r ? r[1] : ((V52.labels && V52.labels[k]) || k)); }
+function v52Join(a) { const l = v52Lang(); return a.filter(Boolean).map(x => v52T(x)).join(l === "ja" || l === "zh" ? "" : " "); }
+function v52Co(co) { return co ? `<b data-noi18n>${v52E(co)}</b>` : `<b>${v52E(v52T("（会社名なし）"))}</b>`; }
+function v52Sep() { return v52Lang() === "ja" ? " ・ " : " · "; }
+function v52Days(n) { const l = v52Lang(); return l === "en" ? n + " days" : l === "zh" ? n + " 天" : l === "es" ? n + " días" : n + "日"; }
+function v52Items(n) { const l = v52Lang(); return l === "en" ? n + (+n === 1 ? " item" : " items") : l === "zh" ? n + " 条" : l === "es" ? n + (+n === 1 ? " elemento" : " elementos") : n + " 件"; }
+function v52Srv() {
+    try {
+        if (!(typeof syncOn === "function" && syncOn()))
+            return "off";
+    }
+    catch (e) {
+        return "off";
+    }
+    try {
+        if (typeof SYNC !== "undefined" && SYNC && SYNC.relStr)
+            return v33SrvAtLeast("2.18") ? "ok" : "old";
+    }
+    catch (e) { }
+    return V52.srv || "?";
+}
+function v52Off() { const s = v52Srv(); return s === "old" || s === "off"; }
+function v52Pw() { try {
+    return (typeof v42AdmCred === "function" && v42AdmCred()) || ((typeof SES !== "undefined" && SES && SES.t === "admin" && SES.apw) || "");
+}
+catch (e) {
+    return "";
+} }
+function v52ErrText(e) {
+    const m = String((e && e.message) || e || "");
+    if (e && e.old)
+        return V52_OLD;
+    if ((e && e.name === "AbortError") || /abort/i.test(m))
+        return "接続がタイムアウトしました";
+    if (/Failed to fetch|NetworkError|Load failed/i.test(m))
+        return "サーバーに接続できませんでした（通信状況を確かめて、もう一度お試しください）";
+    return m || "通信できませんでした";
+}
+async function v52Call(op, body, ms) {
+    if (v52Srv() === "off")
+        throw new Error("同期サーバーにつながっていないため、データの削除は使えません。");
+    const pw = v52Pw();
+    if (!pw)
+        throw new Error("管理者としてログインしてから使ってください");
+    let r = null;
+    try {
+        r = await syncCall(op, Object.assign({ pw, dev: (typeof syncDev === "function") ? syncDev() : {} }, body || {}), { timeout: ms || 60000 });
+    }
+    catch (e) {
+        if (/unknown op/i.test(String((e && e.message) || e))) {
+            V52.srv = "old";
+            const x = new Error(V52_OLD);
+            x.old = 1;
+            throw x;
+        }
+        throw e;
+    }
+    if (!r)
+        return { ok: false, msg: "応答が読めませんでした" };
+    if (r.rel) {
+        try {
+            V52.srv = (typeof hf21151Rel === "function" && hf21151Rel(r.rel) < hf21151Rel("2.18")) ? "old" : "ok";
+        }
+        catch (e) { }
+    }
+    if (typeof r.days === "number" && isFinite(r.days))
+        V52.days = r.days;
+    if (r.labels && typeof r.labels === "object")
+        V52.labels = r.labels;
+    return r;
+}
+function v52Msg(k, s, bad) { V52.m[k] = s ? { s, bad: bad || 0 } : null; }
+function v52MsgHtml(k) {
+    const m = V52.m[k];
+    if (!m)
+        return "";
+    const cls = m.bad === 1 ? " bad" : m.bad === 2 ? " ok" : m.bad === 3 ? " warn" : "";
+    return `<div class="v52msg${cls}" role="${m.bad === 1 ? "alert" : "status"}">${v52E(v52Join(Array.isArray(m.s) ? m.s : [m.s]))}</div>`;
+}
+function v52StopAt(code) { try {
+    const L = (typeof V33ADM !== "undefined" && V33ADM && V33ADM.last && V33ADM.last.accounts) || [];
+    const a = L.find(x => x && x.code === code);
+    return (a && +a.stopAt) || 0;
+}
+catch (e) {
+    return 0;
+} }
+function v52StopNote(a, kind) {
+    if (v52Off())
+        return "";
+    const d = V52.days;
+    if (kind === "short")
+        return d == null ? "停止から決まりの日数でデータを削除します（「期限切れ・削除」の「データの削除」から）" : d > 0 ? "停止から" + d + "日でデータを削除します（「期限切れ・削除」の「データの削除」から）" : "停止したら、すぐにデータを削除できます（「期限切れ・削除」の「データの削除」から）";
+    if (kind === "table")
+        return d == null ? "無効化（停止）したアカウントは、決まりの日数がたった後にデータを削除します（「期限切れ・削除」の「データの削除（契約終了）」）。" : d > 0 ? "無効化（停止）したアカウントは、停止から" + d + "日でデータを削除します（「期限切れ・削除」の「データの削除（契約終了）」）。" : "無効化（停止）したアカウントは、すぐにデータを削除できます（「期限切れ・削除」の「データの削除（契約終了）」）。";
+    if (!a || a.st === "active")
+        return d == null ? "無効化（停止）すると、決まりの日数がたった後にデータを削除します（契約終了時の決まり）。削除は「期限切れ・削除」の「データの削除（契約終了）」で、確認コードとアクセスコードを入れて行います。"
+            : d > 0 ? "無効化（停止）すると、停止から" + d + "日でデータを削除します（契約終了時の決まり）。削除は「期限切れ・削除」の「データの削除（契約終了）」で、確認コードとアクセスコードを入れて行います。"
+                : "無効化（停止）すると、すぐにデータを削除できます（契約終了時の決まり）。削除は「期限切れ・削除」の「データの削除（契約終了）」で、確認コードとアクセスコードを入れて行います。";
+    const s = v52StopAt(a.code);
+    if (s && d != null) {
+        const until = s + d * 864e5;
+        return Date.now() >= until ? "停止日 " + v52Day(s) + "。データを削除できます（「期限切れ・削除」の「データの削除（契約終了）」）。" : "停止日 " + v52Day(s) + "。" + v52Day(until) + " から、データを削除できます（「期限切れ・削除」の「データの削除（契約終了）」）。";
+    }
+    return d == null ? "停止から決まりの日数がたつと、データを削除できます（「期限切れ・削除」の「データの削除（契約終了）」）。" : "停止から" + d + "日たつと、データを削除できます（「期限切れ・削除」の「データの削除（契約終了）」）。";
+}
+function v52DrawerNote(code) {
+    const tg = document.getElementById("dw-tgl");
+    if (!tg)
+        return;
+    const a = (typeof findAcct === "function") ? findAcct(code) : null;
+    let n = document.getElementById("v52stopdw");
+    const txt = a ? v52StopNote(a) : "";
+    if (!txt) {
+        if (n)
+            n.remove();
+        return;
+    }
+    if (!n) {
+        n = document.createElement("p");
+        n.id = "v52stopdw";
+        n.className = "v52stop";
+        const row = tg.closest(".rw") || tg.parentNode;
+        row.insertAdjacentElement("afterend", n);
+    }
+    n.dataset.code = code;
+    n.textContent = v52T(txt);
+}
+function v52TableNotes() {
+    const w = document.getElementById("well");
+    if (!w || !v33AdmOn())
+        return;
+    const short = v52StopNote(null, "short"), tbl = v52StopNote(null, "table");
+    w.querySelectorAll("[data-tgl]").forEach(b => {
+        const a = (typeof findAcct === "function") ? findAcct(b.dataset.tgl) : null;
+        if (!a)
+            return;
+        if (b.hasAttribute("title") && !b.dataset.v52t)
+            return;
+        if (a.st === "active" && short) {
+            b.title = v52T(short);
+            b.dataset.v52t = "1";
+        }
+        else if (b.dataset.v52t) {
+            b.removeAttribute("title");
+            delete b.dataset.v52t;
+        }
+    });
+    const acc = document.getElementById("accounts");
+    let n = document.getElementById("v52stoptbl");
+    if (!acc || !tbl) {
+        if (n)
+            n.remove();
+        return;
+    }
+    if (!n || !acc.contains(n)) {
+        n = document.createElement("p");
+        n.id = "v52stoptbl";
+        n.className = "nn v52stop";
+        const p0 = acc.querySelector("p.nn");
+        if (p0)
+            p0.insertAdjacentElement("afterend", n);
+        else
+            acc.insertAdjacentElement("afterbegin", n);
+    }
+    n.textContent = v52T(tbl);
+}
+function v52StopRefresh() { try {
+    v52TableNotes();
+    const n = document.getElementById("v52stopdw");
+    if (n && n.dataset.code)
+        v52DrawerNote(n.dataset.code);
+}
+catch (e) { } }
+function v52DaysEnsure() {
+    if (V52.days != null || V52.daysAsk || V52.busy || v52Off() || !v52Pw())
+        return;
+    V52.daysAsk = 1;
+    v52Call("purge_log", {}, 60000).then(r => { if (r && r.ok && Array.isArray(r.list)) {
+        if (!V52.log)
+            V52.log = r.list;
+        if (V52.logN < 0)
+            V52.logN = r.list.length;
+    }
+    else if (!(r && r.ok))
+        V52.daysAsk = 0; })
+        .catch(e => { if (!(e && e.old))
+        V52.daysAsk = 0; })
+        .finally(() => { v52PaintAll(); v52StopRefresh(); });
+}
+function v52Keep() {
+    const b = V52.box;
+    if (!b)
+        return {};
+    const o = {};
+    ["v52otp", "v52conf", "v52rep", "v52lcode"].forEach(id => { const e = b.querySelector("#" + id); if (e)
+        o[id] = e.value; });
+    const c = b.querySelector("#v52early");
+    if (c)
+        o.v52early = c.checked;
+    const f = document.activeElement;
+    if (f && b.contains(f) && f.id)
+        o._focus = f.id;
+    return o;
+}
+function v52Restore(o) {
+    const b = V52.box;
+    if (!b || !o)
+        return;
+    Object.keys(o).forEach(id => { if (id === "_focus")
+        return; const e = b.querySelector("#" + id); if (!e)
+        return; if (id === "v52early")
+        e.checked = !!o[id];
+    else if (o[id] != null && !e.disabled)
+        e.value = o[id]; });
+    if (o._focus) {
+        const f = b.querySelector("#" + o._focus);
+        if (f && !f.disabled)
+            try {
+                f.focus({ preventScroll: true });
+            }
+            catch (e) { }
+    }
+}
+function v52PaintAll(reset) {
+    if (!V52.box)
+        return;
+    const k = reset ? null : v52Keep();
+    V52.lang = v52Lang();
+    if (!V52.box.querySelector("#v52head"))
+        V52.box.innerHTML = `<h4 id="v52h">${v52E(v52T("データの削除（契約終了）"))}</h4><div id="v52head"></div><div id="v52list" aria-live="polite"></div><div id="v52plan" aria-live="polite"></div><div id="v52run"></div><div id="v52out" aria-live="polite"></div><div id="v52log" aria-live="polite"></div>`;
+    else {
+        const h = V52.box.querySelector("#v52h");
+        if (h)
+            h.textContent = v52T("データの削除（契約終了）");
+    }
+    v52PaintHead();
+    v52PaintList();
+    v52PaintPlan();
+    v52PaintRun();
+    v52PaintOut();
+    v52PaintLog();
+    v52Restore(k);
+}
+function v52PaintHead() {
+    const el = V52.box && V52.box.querySelector("#v52head");
+    if (!el)
+        return;
+    const E = v52E, T = v52T, st = v52Srv(), d = V52.days;
+    let h = `<p class="v33mute">${E(T("契約が終わって停止したアカウントのデータを消します。消したデータは Google ドライブ・Gmail のごみ箱に入り、30日で自動で完全に消えます（それ以降は当社でも戻せません）。削除の記録には件数と日時だけが残ります。"))}</p>`;
+    if (st === "off")
+        h += `<p class="v33note">${E(T("同期サーバーにつながっていないため、データの削除は使えません。"))}</p>`;
+    else if (st === "old")
+        h += `<p class="v33note v33note-crit" id="v52old">${E(T(V52_OLD))}</p>`;
+    else {
+        if (d != null)
+            h += `<p class="v52when">${E(T(d > 0 ? "消す時期：停止から" + d + "日（同期サーバーの決まり）。お客様の依頼があれば、早めに消せます（記録に残ります）。" : "消す時期：停止したら、すぐに消せます（同期サーバーの決まり）。"))}</p>`;
+        h += `<div class="v33row"><button class="btn" type="button" id="v52scan"${V52.busy ? " disabled" : ""}>${E(T("① 消せるアカウントを読む"))}</button>` +
+            `<button class="btn g" type="button" id="v52logb" aria-expanded="${V52.logOpen ? "true" : "false"}"${V52.busy ? " disabled" : ""}>${E(T("削除の記録"))}${V52.logN >= 0 ? ` <span class="v33cnt">${E(V52.logN)}</span>` : ""}</button></div>`;
+    }
+    el.innerHTML = h;
+    const b1 = el.querySelector("#v52scan");
+    if (b1)
+        b1.onclick = () => v52Scan();
+    const b2 = el.querySelector("#v52logb");
+    if (b2)
+        b2.onclick = () => v52LogToggle();
+}
+function v52PaintList() {
+    const el = V52.box && V52.box.querySelector("#v52list");
+    if (!el)
+        return;
+    if (v52Off()) {
+        el.innerHTML = "";
+        return;
+    }
+    const E = v52E, T = v52T;
+    let h = v52MsgHtml("list");
+    if (V52.list) {
+        const L = V52.list;
+        h += `<h5 class="v52h5">${E(T("消せるアカウント"))}<span class="v33cnt">${L.length}</span></h5>`;
+        if (!L.length)
+            h += `<p class="v33empty">${E(T("消せるアカウントはありません（停止したアカウントが、ここに出ます）"))}</p>`;
+        else
+            h += `<ul class="v33list v52list">${L.map(x => {
+                const sel = !!(V52.sel && V52.sel.kid === x.kid);
+                const code = x.code ? `<span class="acode" data-noi18n>${E(x.code)}</span>` : `<span class="acode" data-noi18n>kid ${E(String(x.kid || "").slice(0, 8))}…</span>`;
+                const tags = [T(V52_ST[x.st] || x.st)].concat(x.pub ? [T("共通アカウント")] : []).concat(x.role === "fwd" ? [T("物流会社")] : []);
+                const stop = x.stopAt ? T("停止日 " + v52Day(x.stopAt) + (x.since > 0 ? "（" + x.since + "日たった）" : x.since === 0 ? "（今日）" : "")) : T("停止日 不明");
+                const how = x.how === "log" ? T("停止日は台帳の変更履歴から") : x.how === "mod" ? T("停止日は台帳の最終変更の日（目安）") : x.how === "del" ? T("台帳から外した日を停止日とします") : "";
+                const ok = x.eligible ? `<span class="v33lv v33lv-crit">${E(T("消せます"))}</span>` : `<span class="v33lv v33lv-mute">${E(T(v52Day(x.until) + " から消せます"))}</span>`;
+                const pg = x.purged ? `<span class="v33lv v33lv-warn">${E(T("削除番号 " + x.purged + " の残り"))}</span>` : "";
+                const sp = v52Sep();
+                return `<li class="v33li${sel ? " v52sel" : ""}"><div class="v33li-m">${v52Co(x.co)}<span class="v33mute">${code}${sp}${E(tags.join(v52Lang() === "ja" ? "・" : " · "))}</span>` +
+                    `<span class="v33mute">${E(stop)}${how ? sp + E(how) : ""}${sp}${E(T("ファイル " + (+x.nf || 0) + " 件"))}</span></div>${ok}${pg}` +
+                    `<button class="btn${sel ? "" : " g"}" type="button" data-v52pick="${E(x.kid)}" aria-pressed="${sel ? "true" : "false"}"${V52.busy ? " disabled" : ""}>${E(T(sel ? "選んでいます" : "選ぶ"))}</button></li>`;
+            }).join("")}</ul>`;
+        if (V52.need.length)
+            h += `<div class="v52box v52needbox"><h5 class="v52h5">${E(T("期限切れのまま停止していないアカウント"))}<span class="v33cnt">${V52.need.length}</span></h5>` +
+                `<p class="v33mute">${E(T("データを消すには、先に「無効化」してください（停止した日から数えます）。"))}</p><ul class="v33list">${V52.need.map(x => `<li class="v33li"><div class="v33li-m">${v52Co(x.co)}` +
+                    `<span class="v33mute"><span class="acode" data-noi18n>${E(x.code || "")}</span>${v52Sep()}${E(T("期限 " + v52Day(x.expires)))}</span></div>${(x.code && typeof findAcct === "function" && findAcct(x.code)) ? `<button class="btn g" type="button" data-v52det="${E(x.code)}">${E(T("詳細を開く"))}</button>` : ""}</li>`).join("")}</ul></div>`;
+        if (V52.running.length)
+            h += `<p class="v52note v52warn">${E(T("途中まで消したものがあります：" + V52.running.map(x => x.id + "（" + x.ref + "）").join("、") + "（同じアカウントを選んで「消すものを数える」から続きを消してください）"))}</p>`;
+        if (V52.folders > 1)
+            h += `<p class="v52note v52warn">${E(T("Google ドライブに bc20-sync フォルダが " + V52.folders + " 個あります（古いフォルダの中は消しません。手で確かめてください）"))}</p>`;
+    }
+    el.innerHTML = h;
+    el.querySelectorAll("[data-v52pick]").forEach(b => b.onclick = () => v52Pick(b.dataset.v52pick));
+    el.querySelectorAll("[data-v52det]").forEach(b => b.onclick = () => { try {
+        admDetail(b.dataset.v52det);
+    }
+    catch (e) { } });
+}
+function v52PaintPlan() {
+    const el = V52.box && V52.box.querySelector("#v52plan");
+    if (!el)
+        return;
+    if (v52Off() || !V52.sel) {
+        el.innerHTML = "";
+        return;
+    }
+    const E = v52E, T = v52T, x = V52.sel, d = V52.days;
+    let h = `<div class="v52box"><h5 class="v52h5">${E(T("② 選んだアカウント"))}</h5><p class="v52who">${v52Co(x.co)} <span class="acode" data-noi18n>${E(x.code || ("kid " + String(x.kid || "").slice(0, 8) + "…"))}</span></p>`;
+    if (!V52.rec) {
+        if (!x.eligible)
+            h += `<label class="v52chk"><input type="checkbox" id="v52early"${V52.busy ? " disabled" : ""}> <span>${E(T(d != null ? "早めに消す（停止から" + d + "日より前。お客様の依頼などのとき。記録に「早めの削除」と残ります）" : "早めに消す（お客様の依頼などのとき。記録に「早めの削除」と残ります）"))}</span></label>`;
+        h += `<div class="v33row"><button class="btn" type="button" id="v52count"${V52.busy ? " disabled" : ""}>${E(T(V52.plan ? "もう一度数える（確認コードを送り直す）" : "消すものを数える（確認コードをメールで送る）"))}</button></div>` +
+            `<p class="v33mute">${E(T("数えるだけでは何も消えません。削除の確認コードが管理者のメールに届きます（10分間有効）。"))}</p>`;
+    }
+    h += v52MsgHtml("plan") + `</div>`;
+    el.innerHTML = h;
+    const b = el.querySelector("#v52count");
+    if (b)
+        b.onclick = () => v52Plan();
+}
+function v52CntTable(n) {
+    const ix = k => { const i = V52_LBL.findIndex(x => x[0] === k); return i < 0 ? 999 : i; };
+    const rows = Object.keys(n || {}).filter(k => +n[k]).sort((a, b) => ix(a) - ix(b)).map(k => `<tr><td>${v52E(v52Lbl(k))}</td><td class="n">${v52E(n[k])}</td></tr>`).join("");
+    return rows ? `<table class="v52cnt"><tbody>${rows}</tbody></table>` : "";
+}
+function v52PaintRun() {
+    const el = V52.box && V52.box.querySelector("#v52run");
+    if (!el)
+        return;
+    if (v52Off() || !V52.plan || !V52.sel) {
+        el.innerHTML = "";
+        return;
+    }
+    const E = v52E, T = v52T, p = V52.plan, x = V52.sel, fin = !!V52.rec;
+    let h = `<div class="v52box v52danger"><h5 class="v52h5">${E(T("③ 消すもの：合計 " + (+p.total || 0) + " 件"))}${p.early ? `<span class="v33lv v33lv-warn">${E(T("早めの削除"))}</span>` : ""}${p.cont ? `<span class="v33lv v33lv-warn">${E(T("途中まで消したものの続き"))}</span>` : ""}</h5>`;
+    h += v52CntTable(p.n) || `<p class="v33mute">${E(T("消すデータは見つかりませんでした（台帳と記録だけを整理します）"))}</p>`;
+    const notes = (p.notes || []).filter(n => !/ pub は、/.test(String(n)));
+    if (p.pub)
+        notes.unshift("共通アカウントです（物流の見本データ pub は、ほかの共通アカウントと共有のため残します）");
+    notes.forEach(n => { h += `<p class="v52note v52warn">※ ${E(T(n))}</p>`; });
+    if (!fin) {
+        h += `<p class="v52sent">${E(T("確認コードを " + (p.to || "") + " に送りました（" + v52DT(V52.planAt + 600000).slice(11) + " まで有効）。"))}</p>` +
+            `<div class="v52fields"><label>${E(T("確認コード（6桁）"))}<input class="v33in" id="v52otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6"></label>` +
+            `<label>${E(T(p.confirm === "code" ? "このアカウントのアクセスコード" : "kid の先頭8文字（" + String(p.kid || x.kid || "").slice(0, 8) + "）"))}<input class="v33in" id="v52conf" autocomplete="off" autocapitalize="characters" spellcheck="false"></label></div>` +
+            `<p class="v52note v52crit">${E(T("「削除する」を押すと、上のデータをごみ箱へ移します。ごみ箱は30日で自動で空になり、それ以降は当社でも戻せません。"))}</p>` +
+            `<div class="v33row"><button class="btn v52go" type="button" id="v52go"${V52.busy ? " disabled" : ""}>${E(T("削除する（元に戻せません）"))}</button></div>`;
+    }
+    h += `</div>`;
+    el.innerHTML = h;
+    const b = el.querySelector("#v52go");
+    if (b)
+        b.onclick = () => v52Run();
+}
+function v52ChkHtml(c) {
+    const E = v52E, T = v52T;
+    if (!c)
+        return "";
+    if (c.busy)
+        return `<p class="v52note">${E(T("サーバーに残っていないかを確かめています…"))}</p>`;
+    if (c.err)
+        return `<p class="v52note v52warn">${E(v52Join(["確かめられませんでした：", c.err]))}</p>`;
+    const recs = c.recs || [], ok = +c.left === 0 && !c.inReg;
+    const parts = [recs.length ? "削除の記録 " + recs.length + " 件（" + recs.map(r => r.id).join("、") + "）" : "削除の記録はありません", "残っているファイル " + (+c.left || 0) + " 件", c.inReg ? "台帳に残っています" : "台帳にありません"];
+    return `<p class="v52note ${ok ? "v52ok" : "v52warn"}">${ok ? "✓ " : "⚠ "}${E(parts.map(x => T(x)).join(v52Sep()))}</p>`;
+}
+function v52PaintOut() {
+    const el = V52.box && V52.box.querySelector("#v52out");
+    if (!el)
+        return;
+    if (v52Off()) {
+        el.innerHTML = "";
+        return;
+    }
+    const E = v52E, T = v52T, r = V52.rec;
+    let h = v52MsgHtml("out");
+    if (r) {
+        h += `<div class="v52box v52done"><h5 class="v52h5">${E(T("④ 削除しました：削除番号 " + r.id))}</h5>` +
+            `<p class="v52note">${E(T("削除の日時 " + v52DT(r.done) + "・ごみ箱からも完全に消える日 " + v52Day(r.trashUntil)))}</p>${v52CntTable(r.n)}` +
+            (V52.chk ? `<p class="v52sub">${E(T("サーバーでの確かめ"))}</p>${v52ChkHtml(V52.chk)}` : "") +
+            `<h5 class="v52h5">${E(T(v52Lang() === "ja" ? "お客様への報告の下書き" : "お客様への報告の下書き（日本語）"))}</h5>` +
+            `<p class="v33mute">${E(T("会社名を確かめ、送る前に読み直してください（社外への送信です）。この下書きはどこにも保存されません。"))}</p>` +
+            `<textarea class="v33in v52rep" id="v52rep" rows="16" spellcheck="false" data-noi18n aria-label="${E(T("お客様への報告の下書き"))}">${E(v52Report(r))}</textarea>` +
+            `<div class="v33row"><button class="btn g" type="button" id="v52copy">${E(T("下書きをコピー"))}</button></div>` +
+            `<p class="v33mute">${E(T("社内の記録（トライアルアカウントの発行の記録）に、削除番号と日付を残してください。"))}</p></div>`;
+    }
+    el.innerHTML = h;
+    const c = el.querySelector("#v52copy");
+    if (c)
+        c.onclick = () => { const t = (el.querySelector("#v52rep") || {}).value || ""; try {
+            if (typeof copyTxt === "function")
+                copyTxt(t);
+            else
+                navigator.clipboard.writeText(t);
+        }
+        catch (e) { } };
+}
+function v52PaintLog() {
+    const el = V52.box && V52.box.querySelector("#v52log");
+    if (!el)
+        return;
+    if (v52Off() || !V52.logOpen) {
+        el.innerHTML = "";
+        return;
+    }
+    const E = v52E, T = v52T, L = V52.log;
+    let h = `<div class="v52box"><h5 class="v52h5">${E(T("削除の記録（新しい順）"))}</h5><p class="v33mute">${E(T("記録に残るのは、削除番号・日時・件数・アクセスコードの先頭だけです（会社名・データの中身は残りません）。"))}</p>` + v52MsgHtml("log");
+    if (L) {
+        h += L.length ? `<ul class="v33list v52log">${L.map(x => {
+            const tot = Object.keys(x.n || {}).filter(k => k !== "orphan" && k !== "mailSkip" && k !== "noticeSkip" && k !== "reqOther").reduce((a, k) => a + (+x.n[k] || 0), 0);
+            const dl = [["停止日", x.stopAt ? v52Day(x.stopAt) : T("不明")], ["決まりの日数", x.waitDays != null ? v52Days(x.waitDays) : ""], ["早めの削除", T(x.early ? "はい" : "いいえ")], ["削除の日時", x.done ? v52DT(x.done) : T("途中")],
+                ["ごみ箱からも完全に消える日", x.trashUntil ? v52Day(x.trashUntil) : ""], ["操作した端末", x.by || "", 1], ["サーバーの版", x.rel || "", 1]].filter(y => y[1] !== "");
+            const sp = v52Sep();
+            return `<li class="v33li"><details data-v52rec="${E(x.id)}"${V52.open.has(x.id) ? " open" : ""}><summary><b>${E(x.id)}</b> <span class="acode" data-noi18n>${E(x.ref || "")}</span>${sp}${E(v52DT(x.done || x.t))}${x.done ? "" : " " + E(T("（途中）"))}${x.early ? sp + E(T("早めの削除")) : ""}${sp}${E(v52Items(tot))}</summary>` +
+                `<dl class="v33dl">${dl.map(y => `<dt>${E(T(y[0]))}</dt><dd${y[2] ? " data-noi18n" : ""}>${E(y[1])}</dd>`).join("")}</dl>${v52CntTable(x.n)}</details></li>`;
+        }).join("")}</ul>` : `<p class="v33empty">${E(T("まだありません"))}</p>`;
+    }
+    h += `<form class="v52lchk" id="v52lchkf" autocomplete="off"><label>${E(T("アクセスコードで確かめる（削除の記録と残っているファイルの数）"))}<input class="v33in" id="v52lcode" spellcheck="false" autocapitalize="characters" placeholder="BC-XXXX-XXXX-XXXX"></label>` +
+        `<button class="btn g" type="submit"${V52.busy ? " disabled" : ""}>${E(T("確かめる"))}</button></form>${V52.lchk ? v52ChkHtml(V52.lchk) : ""}</div>`;
+    el.innerHTML = h;
+    const f = el.querySelector("#v52lchkf");
+    if (f)
+        f.onsubmit = e => { e.preventDefault(); v52LogCheck(); };
+    el.querySelectorAll("details[data-v52rec]").forEach(d => d.ontoggle = () => { if (d.open)
+        V52.open.add(d.dataset.v52rec);
+    else
+        V52.open.delete(d.dataset.v52rec); });
+}
+async function v52Scan(quiet) {
+    if (V52.busy || v52Off())
+        return;
+    V52.busy = "scan";
+    if (!quiet)
+        v52Msg("list", "読んでいます…");
+    v52PaintAll();
+    try {
+        const r = await v52Call("purge_scan", {}, 120000);
+        if (!r.ok) {
+            v52Msg("list", r.msg || "読めませんでした", 1);
+            return;
+        }
+        V52.list = Array.isArray(r.list) ? r.list : [];
+        V52.need = Array.isArray(r.needStop) ? r.needStop : [];
+        V52.running = Array.isArray(r.running) ? r.running : [];
+        V52.folders = +r.folders || 0;
+        if (r.logs != null)
+            V52.logN = +r.logs || 0;
+        v52Msg("list", null);
+        if (V52.sel && !V52.rec) {
+            const s = V52.list.find(y => y.kid === V52.sel.kid);
+            if (s)
+                V52.sel = s;
+            else {
+                V52.sel = null;
+                V52.plan = null;
+            }
+        }
+    }
+    catch (e) {
+        v52Msg("list", v52ErrText(e), 1);
+    }
+    finally {
+        V52.busy = "";
+        v52PaintAll();
+        v52StopRefresh();
+    }
+}
+function v52Pick(kid) {
+    if (V52.busy)
+        return;
+    const x = (V52.list || []).find(y => y.kid === kid);
+    if (!x)
+        return;
+    V52.sel = x;
+    V52.plan = null;
+    V52.rec = null;
+    V52.chk = null;
+    v52Msg("plan", null);
+    v52Msg("out", null);
+    v52PaintAll(true);
+    const b = V52.box && V52.box.querySelector("#v52plan");
+    if (b && b.scrollIntoView)
+        try {
+            b.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        }
+        catch (e) { }
+}
+async function v52Plan() {
+    const x = V52.sel;
+    if (!x || V52.busy || v52Off())
+        return;
+    const c = V52.box.querySelector("#v52early"), early = !!(c && c.checked);
+    V52.busy = "plan";
+    V52.plan = null;
+    V52.rec = null;
+    V52.chk = null;
+    v52Msg("out", null);
+    v52Msg("plan", "数えています（Gmail と Drive を見るため、少し時間がかかります）…");
+    v52PaintAll();
+    try {
+        const r = await v52Call("acct_purge", { kid: x.kid, step: "plan", early: early ? 1 : 0 }, 330000);
+        if (!r.ok) {
+            v52Msg("plan", r.msg || "数えられませんでした", 1);
+            return;
+        }
+        if (r.already) {
+            v52Msg("plan", "このアカウントは消し終わっています（削除番号 " + r.id + "）。", 2);
+            return;
+        }
+        V52.plan = r;
+        V52.planAt = Date.now();
+        v52Msg("plan", null);
+    }
+    catch (e) {
+        v52Msg("plan", v52ErrText(e), 1);
+    }
+    finally {
+        V52.busy = "";
+        v52PaintAll(true);
+        if (c && V52.box.querySelector("#v52early"))
+            V52.box.querySelector("#v52early").checked = early;
+        const o = V52.box.querySelector("#v52otp");
+        if (o)
+            try {
+                o.focus({ preventScroll: false });
+            }
+            catch (e) { }
+    }
+}
+async function v52Run() {
+    const x = V52.sel, p = V52.plan;
+    if (!x || !p || V52.busy || V52.rec || v52Off())
+        return;
+    const otp = String((V52.box.querySelector("#v52otp") || {}).value || "").replace(/[^0-9]/g, ""), conf = String((V52.box.querySelector("#v52conf") || {}).value || "").trim();
+    if (otp.length !== 6) {
+        v52Msg("out", "メールで届いた確認コード（6桁）を入れてください", 1);
+        v52PaintOut();
+        const o = V52.box.querySelector("#v52otp");
+        if (o)
+            o.focus();
+        return;
+    }
+    if (!conf) {
+        v52Msg("out", p.confirm === "code" ? "このアカウントのアクセスコードを入れてください" : "kid の先頭8文字を入れてください", 1);
+        v52PaintOut();
+        const o = V52.box.querySelector("#v52conf");
+        if (o)
+            o.focus();
+        return;
+    }
+    V52.busy = "run";
+    let r = null;
+    try {
+        for (let pass = 1; pass <= 12; pass++) {
+            v52Msg("out", "削除しています（" + pass + "回目）…");
+            v52PaintAll();
+            r = await v52Call("acct_purge", pass === 1 ? { kid: x.kid, step: "run", nonce: p.nonce, otp, confirm: conf } : { kid: x.kid, step: "run", nonce: p.nonce }, 330000);
+            if (!r.ok || r.done)
+                break;
+        }
+    }
+    catch (e) {
+        V52.busy = "";
+        v52Msg("out", [v52ErrText(e), "（もう一度「削除する」を押すと、続きから消します）"], 1);
+        v52PaintAll();
+        return;
+    }
+    V52.busy = "";
+    if (!r || !r.ok) {
+        v52Msg("out", (r && r.msg) || "削除できませんでした", 1);
+        if (r && r.reason === "nonce") {
+            V52.plan = null;
+            v52Msg("plan", (r && r.msg) || "", 1);
+            v52Msg("out", null);
+        }
+        v52PaintAll();
+        return;
+    }
+    if (!r.done) {
+        v52Msg("out", r.msg || "まだ続きがあります。もう一度「削除する」を押してください", 3);
+        v52PaintAll();
+        return;
+    }
+    V52.rec = Object.assign({}, r.rec || {}, { id: r.id || (r.rec && r.rec.id), co: r.co || x.co || "", code: r.code || x.code || "" });
+    V52.chk = { busy: 1 };
+    v52Msg("out", null);
+    v52Msg("plan", null);
+    v52Forget(V52.rec.code);
+    v52PaintAll(true);
+    try {
+        const c = await v52Call("purge_log", { kid: x.kid }, 60000);
+        V52.chk = (c && c.ok && c.check) ? c.check : { err: (c && c.msg) || "確かめられませんでした" };
+        if (c && c.ok && Array.isArray(c.list))
+            V52.log = c.list;
+    }
+    catch (e) {
+        V52.chk = { err: v52ErrText(e) };
+    }
+    v52PaintAll();
+    try {
+        if (typeof v213AdmPull === "function") {
+            const y = await v213AdmPull();
+            if (y && y.ch && typeof renderAdmin === "function")
+                renderAdmin();
+        }
+    }
+    catch (e) { }
+    await v52Scan(true);
+}
+function v52Forget(code) { if (!code)
+    return; try {
+    const L = JSON.parse(localStorage.getItem("bc20_v33admdel") || "[]") || [];
+    const L2 = L.filter(y => y && y.code !== code);
+    if (L2.length !== L.length)
+        localStorage.setItem("bc20_v33admdel", JSON.stringify(L2));
+}
+catch (e) { } }
+async function v52LogToggle() {
+    if (V52.busy)
+        return;
+    V52.logOpen = !V52.logOpen;
+    if (!V52.logOpen) {
+        v52PaintAll();
+        return;
+    }
+    V52.busy = "log";
+    v52Msg("log", "読んでいます…");
+    v52PaintAll();
+    try {
+        const r = await v52Call("purge_log", {}, 60000);
+        if (!r.ok) {
+            v52Msg("log", r.msg || "読めませんでした", 1);
+            return;
+        }
+        V52.log = Array.isArray(r.list) ? r.list : [];
+        if (V52.logN < V52.log.length)
+            V52.logN = V52.log.length;
+        v52Msg("log", null);
+    }
+    catch (e) {
+        v52Msg("log", v52ErrText(e), 1);
+    }
+    finally {
+        V52.busy = "";
+        v52PaintAll();
+    }
+}
+async function v52LogCheck() {
+    if (V52.busy)
+        return;
+    const code = String((V52.box.querySelector("#v52lcode") || {}).value || "").trim().toUpperCase();
+    if (!code)
+        return;
+    V52.busy = "chk";
+    V52.lchk = { busy: 1 };
+    v52PaintAll();
+    try {
+        const kid = await v213Kid(code);
+        const r = await v52Call("purge_log", { kid }, 60000);
+        V52.lchk = (r && r.ok && r.check) ? r.check : { err: (r && r.msg) || "確かめられませんでした" };
+    }
+    catch (e) {
+        V52.lchk = { err: v52ErrText(e) };
+    }
+    finally {
+        V52.busy = "";
+        v52PaintAll();
+    }
+}
+function v52Report(rec) {
+    const n = rec.n || {}, f = k => +n[k] || 0, mails = f("mailThread") + f("notice");
+    const dp = [f("file") ? "書類 " + f("file") + " 件" : "", f("deck") ? "外国語営業資料 " + f("deck") + " 件" : "", f("req") ? "依頼ページ " + f("req") + " 件" : "", f("reqFile") ? "依頼ページでお取引先からご提出いただいたファイル " + f("reqFile") + " 件" : ""].filter(Boolean);
+    return ["件名：【貿易クラウド2.0】ご契約終了に伴うデータ削除完了のご報告", "", (rec.co || "（会社名）") + " 御中", "",
+        "いつも大変お世話になっております。株式会社STANDAGE です。", "貿易クラウド2.0 のご契約終了に伴い、貴社のアカウントのデータを削除いたしましたので、ご報告いたします。", "",
+        "1. 対象：アクセスコード " + String(rec.code || "").slice(0, 7) + "…", "2. 削除日時：" + v52DT(rec.done) + "（削除番号 " + rec.id + "）", "3. 削除したデータ",
+        "　・クラウドに保存していた貴社のデータ（商品・バイヤー・やり取りなど。保存時に暗号化しているもの）",
+        dp.length ? "　・お預かりしたファイル（" + dp.join("・") + "）" : null,
+        mails ? "　・バイヤーへの直接メールの記録と送受信したメール、メール通知の控え（" + mails + " 件）" : null,
+        (f("lw") || f("lwProp")) ? "　・LINE・WhatsApp の受信の記録と接続の設定" : null,
+        (f("digest") || f("llm") || f("export") || f("token")) ? "　・メール通知の設定、AI 接続の設定、自動化向けのデータと搬出用のトークン" : null,
+        (f("usage") || f("session") || f("pool")) ? "　・利用状況・ログインの記録、全社の集計にお預かりした匿名の集計" : null,
+        (f("fwdReq") || f("fwdRate") || f("fwdBox")) ? "　・物流の見積依頼・レート・相談の記録（物流会社・荷主の画面からも見えなくなります）" : null,
+        "4. 削除の方法：当社の管理者が、2段階の認証と確認コードによる承認のうえで削除しました。削除したデータはクラウドのごみ箱で保管された後、" + v52Day(rec.trashUntil) + " までに自動的に完全に消去され、それ以降は当社でも復元できません（クラウド事業者〔Google〕の内部の予備の写しは、同社の規定に従って消去されます）。",
+        "5. 当社に残る記録：削除の日時と件数だけの記録です（貴社のデータの中身は含みません）。",
+        "6. お願い：貴社の端末（ブラウザ）に残る写しは、端末側での削除が必要です（ブラウザの設定から、貿易クラウド2.0 のサイトのデータを削除してください）。お取引先に送付済みのメール・資料は、先方での管理となります。",
+        "", "ご不明な点がございましたら、担当までお問い合わせください。"].filter(l => l !== null).join("\n");
+}
+function v52Mount() {
+    if (!v33AdmOn())
+        return;
+    const card = document.getElementById("v33admexp");
+    if (!card)
+        return;
+    v52Css();
+    const tk = v52Pw();
+    if (V52.tok && V52.tok !== tk) {
+        Object.assign(V52, { srv: "", days: null, daysAsk: 0, logN: -1, busy: "", list: null, need: [], running: [], folders: 0, sel: null, plan: null, planAt: 0, rec: null, chk: null, log: null, logOpen: false, open: new Set(), lchk: null, m: {} });
+        if (V52.box)
+            V52.box.innerHTML = "";
+    }
+    V52.tok = tk;
+    if (!V52.box) {
+        V52.box = document.createElement("section");
+        V52.box.className = "v52";
+        V52.box.id = "v52purge";
+        V52.box.setAttribute("aria-labelledby", "v52h");
+    }
+    if (!V52.box.querySelector("#v52head"))
+        v52PaintAll(true);
+    else if (V52.lang !== v52Lang())
+        v52PaintAll();
+    else
+        v52PaintHead();
+    if (V52.box.parentNode !== card)
+        card.appendChild(V52.box);
+    v52DaysEnsure();
+}
+if (typeof renderAdmin === "function") {
+    const __ra52 = renderAdmin;
+    renderAdmin = function () { const r = __ra52.apply(this, arguments); try {
+        v52Mount();
+        v52TableNotes();
+    }
+    catch (e) {
+        console.warn("v52 purge", e);
+    } return r; };
+}
+if (typeof admDetail === "function") {
+    const __ad52 = admDetail;
+    admDetail = function (code) { const r = __ad52.apply(this, arguments); try {
+        v52DrawerNote(code);
+    }
+    catch (e) {
+        console.warn("v52 stop note", e);
+    } return r; };
+}
+function v52Css() {
+    if (document.getElementById("v52css"))
+        return;
+    const st = document.createElement("style");
+    st.id = "v52css";
+    st.textContent = `
+.v52{margin-top:18px;padding-top:12px;border-top:2px solid var(--line)}
+.v52 h4{font-size:16px}
+.v52h5{margin:10px 0 6px;font-size:14.5px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.v52box{border:1px solid var(--line);border-radius:var(--r2);padding:10px 12px;margin:10px 0;background:var(--surface-2)}
+.v52danger{border-color:var(--crit)}.v52done{border-color:var(--good)}.v52needbox{border-color:var(--warn)}
+.v52msg{padding:8px 10px;border-radius:var(--r2);background:var(--bl-soft);font-size:14px;line-height:1.6;margin:8px 0;overflow-wrap:anywhere}
+.v52msg.bad{background:var(--crit-soft);color:var(--v33-crit-t)}.v52msg.ok{background:var(--good-soft);color:var(--v33-good-t)}.v52msg.warn{background:var(--warn-soft);color:var(--v33-warn-t)}
+.v52note{font-size:13.5px;line-height:1.6;margin:6px 0;overflow-wrap:anywhere}
+.v52warn{color:var(--v33-warn-t)}.v52ok{color:var(--v33-good-t);font-weight:700}.v52crit{color:var(--v33-crit-t)}
+.v52when,.v52who,.v52sent{font-size:14px;line-height:1.6;margin:4px 0 8px;overflow-wrap:anywhere}
+.v52sub{font-size:13px;font-weight:700;color:var(--ink-2);margin:10px 0 0}
+.v52sel{background:var(--bl-soft)}
+.v52cnt{border-collapse:collapse;width:100%;max-width:620px;font-size:13.5px;margin:4px 0 8px}
+.v52cnt td{padding:4px 6px;border-bottom:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}
+.v52cnt td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;width:4.5em}
+.v52fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0}
+.v52fields label,.v52lchk label{display:grid;gap:4px;font-size:13.5px;font-weight:700;color:var(--ink-2)}
+.v52chk{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;line-height:1.6;margin:6px 0 8px;color:var(--v33-warn-t)}
+.v52chk input{margin-top:4px}
+.btn.v52go{background:var(--crit);border-color:var(--crit);color:#fff}
+.btn.v52go:disabled{opacity:.5;cursor:not-allowed}
+.v52rep{min-height:320px;font-size:13.5px;line-height:1.7;white-space:pre-wrap}
+.v52lchk{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-top:12px}
+.v52lchk label{flex:1 1 240px}
+.v52log details{width:100%}.v52log summary{cursor:pointer;line-height:1.6;overflow-wrap:anywhere}
+.v52stop{font-size:13px;line-height:1.6;color:var(--ink-2);margin:8px 0 0;overflow-wrap:anywhere}
+@media (max-width:640px){.v52fields{grid-template-columns:1fr}.v52 .v33row .btn{flex:1 1 auto}}`;
+    document.head.appendChild(st);
+}
+(function () {
+    try {
+        v30I18n(V52_LBL.map(r => r.slice(1)));
+    }
+    catch (e) { }
+    try {
+        v30I18n([
+            ["データの削除（契約終了）", "Data deletion (end of contract)", "删除数据（合同结束）", "Eliminación de datos (fin del contrato)"],
+            ["契約が終わって停止したアカウントのデータを消します。消したデータは Google ドライブ・Gmail のごみ箱に入り、30日で自動で完全に消えます（それ以降は当社でも戻せません）。削除の記録には件数と日時だけが残ります。", "Deletes the data of accounts that were stopped after their contract ended. Deleted data goes to the Google Drive and Gmail trash and is permanently erased automatically after 30 days (after that, not even we can restore it). The deletion record keeps only the counts and the date and time.", "删除合同结束后已停用账户的数据。删除的数据会进入 Google 云端硬盘・Gmail 的回收站，30天后自动彻底删除（之后本公司也无法恢复）。删除记录中只保留件数和日期时间。", "Elimina los datos de las cuentas desactivadas al terminar el contrato. Los datos eliminados van a la papelera de Google Drive y Gmail y se borran definitivamente a los 30 días (después ni nosotros podemos recuperarlos). El registro de eliminación solo guarda los recuentos y la fecha y hora."],
+            ["同期サーバーにつながっていないため、データの削除は使えません。", "Data deletion is not available because the sync server is not connected.", "未连接同步服务器，无法使用删除数据。", "La eliminación de datos no está disponible porque el servidor de sincronización no está conectado."],
+            [V52_OLD, "The sync server does not support data deletion (update the sync server to v2.18 to use it)", "同步服务器不支持删除数据（将同步服务器更新到 v2.18 后可以使用）", "El servidor de sincronización no admite la eliminación de datos (actualícelo a la v2.18 para usarla)"],
+            ["消す時期：停止したら、すぐに消せます（同期サーバーの決まり）。", "When to delete: right after the account is stopped (sync server rule).", "删除时间：停用后即可删除（同步服务器的规定）。", "Cuándo eliminar: justo después de desactivar la cuenta (regla del servidor)."],
+            ["① 消せるアカウントを読む", "① Load deletable accounts", "① 读取可删除的账户", "① Cargar cuentas eliminables"], ["削除の記録", "Deletion records", "删除记录", "Registros de eliminación"],
+            ["読んでいます…", "Loading…", "正在读取…", "Cargando…"], ["読めませんでした", "Could not load", "无法读取", "No se pudo cargar"], ["消せるアカウント", "Deletable accounts", "可删除的账户", "Cuentas eliminables"],
+            ["消せるアカウントはありません（停止したアカウントが、ここに出ます）", "No accounts can be deleted (stopped accounts appear here)", "没有可删除的账户（已停用的账户会显示在这里）", "No hay cuentas eliminables (aquí aparecen las cuentas desactivadas)"],
+            ["停止済み", "Stopped", "已停用", "Desactivada"], ["台帳から外した", "Removed from the ledger", "已从台账移除", "Quitada del registro"], ["台帳に無い（データだけ残っている）", "Not in the ledger (only data remains)", "不在台账中（只剩数据）", "No está en el registro (solo quedan datos)"],
+            ["共通アカウント", "Shared account", "公共账户", "Cuenta compartida"], ["物流会社", "Forwarder", "物流公司", "Transitario"],
+            ["共通アカウントです（物流の見本データ pub は、ほかの共通アカウントと共有のため残します）", "This is a shared account (the sample freight data “pub” is kept because other shared accounts use it)", "这是公共账户（物流样本数据 pub 与其他公共账户共用，因此保留）", "Es una cuenta compartida (los datos de flete de muestra «pub» se conservan porque los usan otras cuentas compartidas)"], ["（会社名なし）", "(no company name)", "（无公司名）", "(sin nombre de empresa)"],
+            ["停止日 不明", "Stopped on: unknown", "停用日期：不明", "Desactivada el: desconocido"], ["停止日は台帳の変更履歴から", "Stop date taken from the ledger history", "停用日期取自台账变更记录", "Fecha tomada del historial del registro"],
+            ["停止日は台帳の最終変更の日（目安）", "Stop date = last ledger change (approximate)", "停用日期为台账最后修改日（参考）", "Fecha = último cambio del registro (aprox.)"], ["台帳から外した日を停止日とします", "The day it was removed from the ledger counts as the stop date", "以从台账移除的日期作为停用日期", "Se toma como fecha de desactivación el día en que se quitó del registro"],
+            ["消せます", "Can be deleted", "可以删除", "Se puede eliminar"], ["選ぶ", "Select", "选择", "Elegir"], ["選んでいます", "Selected", "已选择", "Elegida"],
+            ["期限切れのまま停止していないアカウント", "Expired accounts that have not been stopped", "已过期但未停用的账户", "Cuentas vencidas sin desactivar"],
+            ["データを消すには、先に「無効化」してください（停止した日から数えます）。", "To delete their data, first disable them (the period counts from the stop date).", "要删除数据，请先“停用”（从停用之日起计算）。", "Para eliminar sus datos, primero desactívelas (el plazo cuenta desde la fecha de desactivación)."],
+            ["詳細を開く", "Open details", "打开详情", "Abrir detalles"], ["② 選んだアカウント", "② Selected account", "② 选择的账户", "② Cuenta elegida"],
+            ["早めに消す（お客様の依頼などのとき。記録に「早めの削除」と残ります）", "Delete early (e.g. at the customer's request; recorded as “early deletion”)", "提前删除（如客户要求等。记录中会留下“提前删除”）", "Eliminar antes (p. ej. a petición del cliente; queda registrado como «eliminación anticipada»)"],
+            ["消すものを数える（確認コードをメールで送る）", "Count what will be deleted (email a confirmation code)", "统计要删除的内容（通过邮件发送确认码）", "Contar lo que se eliminará (enviar un código por correo)"],
+            ["もう一度数える（確認コードを送り直す）", "Count again (resend the confirmation code)", "重新统计（重新发送确认码）", "Contar de nuevo (reenviar el código)"],
+            ["数えるだけでは何も消えません。削除の確認コードが管理者のメールに届きます（10分間有効）。", "Counting does not delete anything. A deletion confirmation code is sent to the administrator's email (valid for 10 minutes).", "仅统计不会删除任何内容。删除确认码会发送到管理员的邮箱（10分钟内有效）。", "Contar no elimina nada. Se envía un código de confirmación al correo del administrador (válido 10 minutos)."],
+            ["数えています（Gmail と Drive を見るため、少し時間がかかります）…", "Counting (this takes a little while because Gmail and Drive are checked)…", "正在统计（需要查看 Gmail 和 Drive，请稍候）…", "Contando (tarda un poco porque se revisan Gmail y Drive)…"],
+            ["数えられませんでした", "Could not count", "无法统计", "No se pudo contar"], ["早めの削除", "Early deletion", "提前删除", "Eliminación anticipada"], ["途中まで消したものの続き", "Continuing a partly finished deletion", "继续未完成的删除", "Continuación de una eliminación a medias"],
+            ["消すデータは見つかりませんでした（台帳と記録だけを整理します）", "No data to delete was found (only the ledger and records are tidied up)", "没有找到要删除的数据（只整理台账和记录）", "No se encontraron datos que eliminar (solo se ordenan el registro y los registros)"],
+            ["確認コード（6桁）", "Confirmation code (6 digits)", "确认码（6位）", "Código de confirmación (6 dígitos)"], ["このアカウントのアクセスコード", "Access code of this account", "此账户的访问码", "Código de acceso de esta cuenta"],
+            ["「削除する」を押すと、上のデータをごみ箱へ移します。ごみ箱は30日で自動で空になり、それ以降は当社でも戻せません。", "Pressing “Delete” moves the data above to the trash. The trash is emptied automatically after 30 days; after that, not even we can restore it.", "点击“删除”后，上述数据会移入回收站。回收站30天后自动清空，之后本公司也无法恢复。", "Al pulsar «Eliminar», los datos de arriba pasan a la papelera. La papelera se vacía sola a los 30 días; después ni nosotros podemos recuperarlos."],
+            ["削除する（元に戻せません）", "Delete (cannot be undone)", "删除（无法撤销）", "Eliminar (no se puede deshacer)"],
+            ["メールで届いた確認コード（6桁）を入れてください", "Enter the 6-digit confirmation code from the email", "请输入邮件中收到的确认码（6位）", "Introduzca el código de 6 dígitos del correo"],
+            ["このアカウントのアクセスコードを入れてください", "Enter the access code of this account", "请输入此账户的访问码", "Introduzca el código de acceso de esta cuenta"], ["kid の先頭8文字を入れてください", "Enter the first 8 characters of the kid", "请输入 kid 的前8个字符", "Introduzca los 8 primeros caracteres del kid"],
+            ["（もう一度「削除する」を押すと、続きから消します）", "(Press “Delete” again to continue from where it stopped)", "（再次点击“删除”将从中断处继续）", "(Pulse «Eliminar» otra vez para continuar donde se quedó)"],
+            ["削除できませんでした", "Could not delete", "无法删除", "No se pudo eliminar"], ["まだ続きがあります。もう一度「削除する」を押してください", "There is more to delete. Press “Delete” again", "还有未删除的部分。请再次点击“删除”", "Aún queda por eliminar. Pulse «Eliminar» otra vez"],
+            ["サーバーでの確かめ", "Check on the server", "服务器上的确认", "Comprobación en el servidor"], ["サーバーに残っていないかを確かめています…", "Checking that nothing is left on the server…", "正在确认服务器上是否还有残留…", "Comprobando que no quede nada en el servidor…"],
+            ["確かめられませんでした：", "Could not check: ", "无法确认：", "No se pudo comprobar: "], ["確かめられませんでした", "Could not check", "无法确认", "No se pudo comprobar"], ["削除の記録はありません", "No deletion record", "没有删除记录", "No hay registro de eliminación"],
+            ["台帳に残っています", "Still in the ledger", "仍在台账中", "Sigue en el registro"], ["台帳にありません", "Not in the ledger", "不在台账中", "No está en el registro"],
+            ["お客様への報告の下書き", "Report draft for the customer", "给客户的报告草稿", "Borrador del informe para el cliente"], ["お客様への報告の下書き（日本語）", "Report draft for the customer (in Japanese)", "给客户的报告草稿（日语）", "Borrador del informe para el cliente (en japonés)"],
+            ["会社名を確かめ、送る前に読み直してください（社外への送信です）。この下書きはどこにも保存されません。", "Check the company name and reread it before sending (it goes outside the company). This draft is not saved anywhere.", "请确认公司名称，并在发送前重新阅读（这是对外发送）。此草稿不会保存在任何地方。", "Compruebe el nombre de la empresa y reléalo antes de enviarlo (es un envío externo). Este borrador no se guarda en ningún sitio."],
+            ["下書きをコピー", "Copy the draft", "复制草稿", "Copiar el borrador"], ["社内の記録（トライアルアカウントの発行の記録）に、削除番号と日付を残してください。", "Write the deletion number and date in the internal record (trial account issuance record).", "请在公司内部记录（试用账户发放记录）中写下删除编号和日期。", "Anote el número de eliminación y la fecha en el registro interno (registro de emisión de cuentas de prueba)."],
+            ["削除の記録（新しい順）", "Deletion records (newest first)", "删除记录（按时间倒序）", "Registros de eliminación (más recientes primero)"],
+            ["記録に残るのは、削除番号・日時・件数・アクセスコードの先頭だけです（会社名・データの中身は残りません）。", "Records keep only the deletion number, date and time, counts and the first characters of the access code (no company names or data contents).", "记录中只保留删除编号・日期时间・件数・访问码开头（不保留公司名称和数据内容）。", "Los registros solo guardan el número de eliminación, la fecha y hora, los recuentos y el inicio del código de acceso (sin nombres de empresa ni contenido)."],
+            ["まだありません", "None yet", "暂无", "Aún no hay"], ["停止日", "Stopped on", "停用日期", "Desactivada el"], ["決まりの日数", "Waiting period", "规定天数", "Plazo establecido"], ["削除の日時", "Deleted at", "删除日期时间", "Eliminada el"],
+            ["ごみ箱からも完全に消える日", "Permanently erased from the trash on", "从回收站彻底删除的日期", "Se borra definitivamente de la papelera el"], ["操作した端末", "Device used", "操作设备", "Dispositivo usado"], ["サーバーの版", "Server version", "服务器版本", "Versión del servidor"],
+            ["不明", "Unknown", "不明", "Desconocido"], ["途中", "In progress", "进行中", "En curso"], ["（途中）", "(in progress)", "（进行中）", "(en curso)"],
+            ["アクセスコードで確かめる（削除の記録と残っているファイルの数）", "Check by access code (deletion records and the number of files left)", "用访问码确认（删除记录和剩余文件数）", "Comprobar con el código de acceso (registros y archivos restantes)"], ["確かめる", "Check", "确认", "Comprobar"],
+            ["接続がタイムアウトしました", "The connection timed out", "连接超时", "Se agotó el tiempo de conexión"], ["サーバーに接続できませんでした（通信状況を確かめて、もう一度お試しください）", "Could not connect to the server (check your connection and try again)", "无法连接服务器（请检查网络后重试）", "No se pudo conectar con el servidor (revise la conexión e inténtelo de nuevo)"],
+            ["通信できませんでした", "Communication failed", "通信失败", "Falló la comunicación"], ["応答が読めませんでした", "Could not read the response", "无法读取响应", "No se pudo leer la respuesta"], ["管理者としてログインしてから使ってください", "Log in as an administrator first", "请先以管理员身份登录", "Inicie sesión como administrador primero"],
+            ["無効化（停止）すると、決まりの日数がたった後にデータを削除します（契約終了時の決まり）。削除は「期限切れ・削除」の「データの削除（契約終了）」で、確認コードとアクセスコードを入れて行います。", "Once disabled (stopped), the data is deleted after the set waiting period (end-of-contract rule). Deletion is done in “Expired and deleted” › “Data deletion (end of contract)” by entering a confirmation code and the access code.", "停用后，经过规定天数会删除数据（合同结束时的规定）。删除在“过期・删除”的“删除数据（合同结束）”中输入确认码和访问码进行。", "Al desactivarla, sus datos se eliminan pasado el plazo establecido (regla de fin de contrato). La eliminación se hace en «Vencidas y eliminadas» › «Eliminación de datos (fin del contrato)» con un código de confirmación y el código de acceso."],
+            ["無効化（停止）すると、すぐにデータを削除できます（契約終了時の決まり）。削除は「期限切れ・削除」の「データの削除（契約終了）」で、確認コードとアクセスコードを入れて行います。", "Once disabled (stopped), the data can be deleted right away (end-of-contract rule). Deletion is done in “Expired and deleted” › “Data deletion (end of contract)” by entering a confirmation code and the access code.", "停用后即可删除数据（合同结束时的规定）。删除在“过期・删除”的“删除数据（合同结束）”中输入确认码和访问码进行。", "Al desactivarla, sus datos se pueden eliminar enseguida (regla de fin de contrato). La eliminación se hace en «Vencidas y eliminadas» › «Eliminación de datos (fin del contrato)» con un código de confirmación y el código de acceso."],
+            ["停止から決まりの日数でデータを削除します（「期限切れ・削除」の「データの削除」から）", "Data is deleted after the set waiting period from the stop (from “Expired and deleted” › “Data deletion”)", "停用后经过规定天数删除数据（在“过期・删除”的“删除数据”中）", "Los datos se eliminan pasado el plazo desde la desactivación (en «Vencidas y eliminadas» › «Eliminación de datos»)"],
+            ["停止したら、すぐにデータを削除できます（「期限切れ・削除」の「データの削除」から）", "Data can be deleted right after the stop (from “Expired and deleted” › “Data deletion”)", "停用后即可删除数据（在“过期・删除”的“删除数据”中）", "Los datos se pueden eliminar justo tras desactivarla (en «Vencidas y eliminadas» › «Eliminación de datos»)"],
+            ["無効化（停止）したアカウントは、決まりの日数がたった後にデータを削除します（「期限切れ・削除」の「データの削除（契約終了）」）。", "For disabled (stopped) accounts, data is deleted after the set waiting period (“Expired and deleted” › “Data deletion (end of contract)”).", "已停用的账户经过规定天数后删除数据（“过期・删除”的“删除数据（合同结束）”）。", "En las cuentas desactivadas, los datos se eliminan pasado el plazo establecido («Vencidas y eliminadas» › «Eliminación de datos (fin del contrato)»)."],
+            ["無効化（停止）したアカウントは、すぐにデータを削除できます（「期限切れ・削除」の「データの削除（契約終了）」）。", "Data of disabled (stopped) accounts can be deleted right away (“Expired and deleted” › “Data deletion (end of contract)”).", "已停用账户的数据可以立即删除（“过期・删除”的“删除数据（合同结束）”）。", "Los datos de las cuentas desactivadas se pueden eliminar enseguida («Vencidas y eliminadas» › «Eliminación de datos (fin del contrato)»)."],
+            ["停止から決まりの日数がたつと、データを削除できます（「期限切れ・削除」の「データの削除（契約終了）」）。", "Data can be deleted once the set waiting period has passed since the stop (“Expired and deleted” › “Data deletion (end of contract)”).", "停用后经过规定天数即可删除数据（“过期・删除”的“删除数据（合同结束）”）。", "Los datos se pueden eliminar cuando pase el plazo desde la desactivación («Vencidas y eliminadas» › «Eliminación de datos (fin del contrato)»)."],
+            ["このアカウントは有効のままです。先に管理コンソールで「無効化（停止）」してください（データの削除は停止したアカウントだけ）", "This account is still active. First disable (stop) it in the admin console (data can only be deleted for stopped accounts)", "此账户仍为有效。请先在管理控制台中“停用”（只有已停用的账户才能删除数据）", "Esta cuenta sigue activa. Primero desactívela en la consola de administración (solo se eliminan datos de cuentas desactivadas)"],
+            ["確認コードの送信が続いたため、15分ほど待ってからもう一度お試しください", "Too many confirmation codes were sent. Please wait about 15 minutes and try again", "确认码发送次数过多，请等待约15分钟后再试", "Se enviaron demasiados códigos. Espere unos 15 minutos y vuelva a intentarlo"],
+            ["確認コードの送り先がありません（スクリプトプロパティ ADMIN_MFA_TO にメールアドレスを設定してください）", "There is no address to send the confirmation code to (set an email address in the script property ADMIN_MFA_TO)", "没有确认码的收件地址（请在脚本属性 ADMIN_MFA_TO 中设置邮箱地址）", "No hay dirección para enviar el código (configure un correo en la propiedad ADMIN_MFA_TO)"],
+            ["確認コードのメールを送れませんでした（メールの1日の上限の可能性）。しばらくしてからお試しください", "Could not send the confirmation code email (the daily email limit may have been reached). Please try again later", "无法发送确认码邮件（可能已达到每日邮件上限）。请稍后再试", "No se pudo enviar el correo con el código (quizá se alcanzó el límite diario). Inténtelo más tarde"],
+            ["削除の準備の有効期限が切れました（10分）。「消すものを数える」からやり直してください", "The deletion preparation has expired (10 minutes). Start again from “Count what will be deleted”", "删除准备已过期（10分钟）。请从“统计要删除的内容”重新开始", "La preparación caducó (10 minutos). Empiece de nuevo desde «Contar lo que se eliminará»"],
+            ["アクセスコードが一致しません（消すアカウントのアクセスコードを、そのまま入力してください）", "The access code does not match (enter the access code of the account to delete exactly as it is)", "访问码不一致（请原样输入要删除账户的访问码）", "El código de acceso no coincide (escriba exactamente el código de la cuenta que va a eliminar)"],
+            ["確認の文字が一致しません（kid の先頭8文字を入力してください）", "The confirmation text does not match (enter the first 8 characters of the kid)", "确认字符不一致（请输入 kid 的前8个字符）", "El texto de confirmación no coincide (escriba los 8 primeros caracteres del kid)"],
+            ["確認コードの誤りが続いたため、この削除の準備を無効にしました。「消すものを数える」からやり直してください", "Too many wrong confirmation codes, so this deletion preparation was cancelled. Start again from “Count what will be deleted”", "确认码多次错误，已作废此次删除准备。请从“统计要删除的内容”重新开始", "Demasiados códigos incorrectos: se anuló esta preparación. Empiece de nuevo desde «Contar lo que se eliminará»"],
+            ["消すアカウント（kid）の指定がありません", "No account (kid) to delete was specified", "未指定要删除的账户（kid）", "No se indicó la cuenta (kid) que eliminar"], ["kid の形が正しくありません", "The kid format is not valid", "kid 的格式不正确", "El formato del kid no es válido"],
+            ["管理者の2段階のログイン（スクリプトプロパティ ADMIN_MFA）が切れているため、データの削除はできません", "Two-step admin login (script property ADMIN_MFA) is turned off, so data cannot be deleted", "管理员的两步登录（脚本属性 ADMIN_MFA）已关闭，因此无法删除数据", "El inicio de sesión en dos pasos (propiedad ADMIN_MFA) está desactivado, así que no se pueden eliminar datos"],
+            ["データの削除には、2段階（パスワード＋メールの確認コード）でログインした管理者の鍵が要ります。いったんログアウトし、ログインし直してください", "Deleting data requires an admin key from a two-step login (password + emailed confirmation code). Log out and log in again", "删除数据需要通过两步登录（密码＋邮件确认码）获得的管理员密钥。请先退出，再重新登录", "Para eliminar datos hace falta una clave de administrador de un inicio en dos pasos (contraseña + código por correo). Cierre sesión y vuelva a entrar"],
+            ["管理者のログインの有効期限が切れたか、ログインの仕方が新しくなりました。いったんログアウトし、管理者としてログインし直してください（確認コードがメールで届きます）", "Your admin login has expired or the login method has changed. Log out and log in again as an administrator (a confirmation code will be emailed)", "管理员登录已过期或登录方式已更新。请先退出，再以管理员身份重新登录（确认码会通过邮件发送）", "Su sesión de administrador caducó o cambió el método de acceso. Cierre sesión y vuelva a entrar como administrador (recibirá un código por correo)"],
+            ["管理者パスワードが一致しません", "The administrator password does not match", "管理员密码不一致", "La contraseña de administrador no coincide"],
+            ["操作が多すぎるため、一時的に受け付けを止めています。1分ほど待ってからもう一度お試しください", "Too many operations; requests are paused for now. Please wait about a minute and try again", "操作过多，暂时停止受理。请等待约1分钟后再试", "Demasiadas operaciones; se pausaron temporalmente. Espere un minuto y vuelva a intentarlo"],
+            ["Gmail のスレッドは数えきれませんでした（削除のときには全部消します）", "Not all Gmail threads could be counted (all of them will be deleted)", "未能统计全部 Gmail 会话（删除时会全部删除）", "No se pudieron contar todos los hilos de Gmail (se eliminarán todos)"],
+            ["送ったメール通知の控えは数えきれませんでした（削除のときには全部消します）", "Not all copies of sent notifications could be counted (all of them will be deleted)", "未能统计全部已发送通知的副本（删除时会全部删除）", "No se pudieron contar todas las copias de avisos enviados (se eliminarán todas)"]
+        ]);
+    }
+    catch (e) { }
+    try {
+        if (typeof I18N === "undefined" || !Array.isArray(I18N.pat))
+            return;
+        const P = (re, en, zh, es) => ({ re, en, zh, es });
+        const D = "(\\d{4}-\\d\\d-\\d\\d)";
+        const L = [
+            P(new RegExp("^消す時期：停止から(\\d+)日（同期サーバーの決まり）。お客様の依頼があれば、早めに消せます（記録に残ります）。$"), "When to delete: $1 days after the stop (sync server rule). At the customer's request, it can be deleted earlier (this is recorded).", "删除时间：停用后 $1 天（同步服务器的规定）。如客户要求，可以提前删除（会留下记录）。", "Cuándo eliminar: $1 días después de la desactivación (regla del servidor). A petición del cliente se puede eliminar antes (queda registrado)."),
+            P(new RegExp("^停止日 " + D + "（(\\d+)日たった）$"), "Stopped on $1 ($2 days ago)", "停用日期 $1（已过 $2 天）", "Desactivada el $1 (hace $2 días)"), P(new RegExp("^停止日 " + D + "$"), "Stopped on $1", "停用日期 $1", "Desactivada el $1"),
+            P(new RegExp("^停止日 " + D + "（今日）$"), "Stopped on $1 (today)", "停用日期 $1（今天）", "Desactivada el $1 (hoy)"),
+            P(new RegExp("^" + D + " から消せます$"), "Can be deleted from $1", "$1 起可以删除", "Se puede eliminar desde el $1"), P(/^ファイル (\d+) 件$/, "Files: $1", "文件 $1 个", "Archivos: $1"),
+            P(/^削除番号 (\S+) の残り$/, "Leftovers of deletion $1", "删除编号 $1 的残留", "Restos de la eliminación $1"), P(new RegExp("^期限 " + D + "$"), "Expired on $1", "期限 $1", "Venció el $1"),
+            P(/^途中まで消したものがあります：(.+)（同じアカウントを選んで「消すものを数える」から続きを消してください）$/, "Some deletions are partly finished: $1 (select the same account and continue from “Count what will be deleted”)", "有删除到一半的账户：$1（请选择同一账户，从“统计要删除的内容”继续删除）", "Hay eliminaciones a medias: $1 (elija la misma cuenta y continúe desde «Contar lo que se eliminará»)"),
+            P(/^Google ドライブに bc20-sync フォルダが (\d+) 個あります（古いフォルダの中は消しません。手で確かめてください）$/, "There are $1 bc20-sync folders in Google Drive (old folders are not cleared; check them by hand)", "Google 云端硬盘中有 $1 个 bc20-sync 文件夹（旧文件夹中的内容不会删除，请手动确认）", "Hay $1 carpetas bc20-sync en Google Drive (las antiguas no se vacían; revíselas a mano)"),
+            P(/^早めに消す（停止から(\d+)日より前。お客様の依頼などのとき。記録に「早めの削除」と残ります）$/, "Delete early (before $1 days from the stop, e.g. at the customer's request; recorded as “early deletion”)", "提前删除（停用后未满 $1 天。如客户要求等。记录中会留下“提前删除”）", "Eliminar antes (antes de $1 días desde la desactivación, p. ej. a petición del cliente; queda como «eliminación anticipada»)"),
+            P(/^このアカウントは消し終わっています（削除番号 (\S+)）。$/, "This account has already been deleted (deletion number $1).", "此账户已删除完毕（删除编号 $1）。", "Esta cuenta ya se eliminó (número de eliminación $1)."),
+            P(/^③ 消すもの：合計 (\d+) 件$/, "③ To be deleted: $1 items in total", "③ 要删除的内容：共 $1 件", "③ Se eliminará: $1 elementos en total"),
+            P(/^確認コードを (\S+) に送りました（(\d\d:\d\d) まで有効）。$/, "The confirmation code was sent to $1 (valid until $2).", "确认码已发送至 $1（$2 前有效）。", "El código se envió a $1 (válido hasta las $2)."),
+            P(/^kid の先頭8文字（([0-9a-f]{8})）$/, "First 8 characters of the kid ($1)", "kid 的前8个字符（$1）", "Los 8 primeros caracteres del kid ($1)"),
+            P(/^削除しています（(\d+)回目）…$/, "Deleting (pass $1)…", "正在删除（第 $1 次）…", "Eliminando (pasada $1)…"),
+            P(/^④ 削除しました：削除番号 (\S+)$/, "④ Deleted: deletion number $1", "④ 已删除：删除编号 $1", "④ Eliminado: número de eliminación $1"),
+            P(new RegExp("^削除の日時 (\\d{4}-\\d\\d-\\d\\d \\d\\d:\\d\\d)・ごみ箱からも完全に消える日 " + D + "$"), "Deleted at $1 · permanently erased from the trash on $2", "删除时间 $1・从回收站彻底删除的日期 $2", "Eliminado el $1 · se borra definitivamente de la papelera el $2"),
+            P(/^削除の記録 (\d+) 件（(.+)）$/, "Deletion records: $1 ($2)", "删除记录 $1 条（$2）", "Registros de eliminación: $1 ($2)"), P(/^残っているファイル (\d+) 件$/, "Files left: $1", "剩余文件 $1 个", "Archivos restantes: $1"),
+            P(/^無効化（停止）すると、停止から(\d+)日でデータを削除します（契約終了時の決まり）。削除は「期限切れ・削除」の「データの削除（契約終了）」で、確認コードとアクセスコードを入れて行います。$/, "Once disabled (stopped), the data is deleted $1 days after the stop (end-of-contract rule). Deletion is done in “Expired and deleted” › “Data deletion (end of contract)” by entering a confirmation code and the access code.", "停用后，从停用之日起 $1 天删除数据（合同结束时的规定）。删除在“过期・删除”的“删除数据（合同结束）”中输入确认码和访问码进行。", "Al desactivarla, sus datos se eliminan $1 días después (regla de fin de contrato). La eliminación se hace en «Vencidas y eliminadas» › «Eliminación de datos (fin del contrato)» con un código de confirmación y el código de acceso."),
+            P(/^停止から(\d+)日でデータを削除します（「期限切れ・削除」の「データの削除」から）$/, "Data is deleted $1 days after the stop (from “Expired and deleted” › “Data deletion”)", "停用后 $1 天删除数据（在“过期・删除”的“删除数据”中）", "Los datos se eliminan $1 días después de desactivarla (en «Vencidas y eliminadas» › «Eliminación de datos»)"),
+            P(/^無効化（停止）したアカウントは、停止から(\d+)日でデータを削除します（「期限切れ・削除」の「データの削除（契約終了）」）。$/, "For disabled (stopped) accounts, data is deleted $1 days after the stop (“Expired and deleted” › “Data deletion (end of contract)”).", "已停用的账户在停用 $1 天后删除数据（“过期・删除”的“删除数据（合同结束）”）。", "En las cuentas desactivadas, los datos se eliminan $1 días después («Vencidas y eliminadas» › «Eliminación de datos (fin del contrato)»)."),
+            P(new RegExp("^停止日 " + D + "。データを削除できます（「期限切れ・削除」の「データの削除（契約終了）」）。$"), "Stopped on $1. The data can now be deleted (“Expired and deleted” › “Data deletion (end of contract)”).", "停用日期 $1。可以删除数据（“过期・删除”的“删除数据（合同结束）”）。", "Desactivada el $1. Ya se pueden eliminar sus datos («Vencidas y eliminadas» › «Eliminación de datos (fin del contrato)»)."),
+            P(new RegExp("^停止日 " + D + "。" + D + " から、データを削除できます（「期限切れ・削除」の「データの削除（契約終了）」）。$"), "Stopped on $1. The data can be deleted from $2 (“Expired and deleted” › “Data deletion (end of contract)”).", "停用日期 $1。$2 起可以删除数据（“过期・删除”的“删除数据（合同结束）”）。", "Desactivada el $1. Sus datos se pueden eliminar desde el $2 («Vencidas y eliminadas» › «Eliminación de datos (fin del contrato)»)."),
+            P(/^停止から(\d+)日たつと、データを削除できます（「期限切れ・削除」の「データの削除（契約終了）」）。$/, "Data can be deleted $1 days after the stop (“Expired and deleted” › “Data deletion (end of contract)”).", "停用 $1 天后可以删除数据（“过期・删除”的“删除数据（合同结束）”）。", "Los datos se pueden eliminar $1 días después de desactivarla («Vencidas y eliminadas» › «Eliminación de datos (fin del contrato)»)."),
+            P(new RegExp("^停止から(\\d+)日たっていません（" + D + " から消せます）。お客様の依頼などで早めに消すときは「早めに消す」を選んでください$"), "It has not been $1 days since the stop (deletable from $2). To delete early, e.g. at the customer's request, choose “Delete early”", "停用后还未满 $1 天（$2 起可以删除）。如因客户要求等需要提前删除，请选择“提前删除”", "Aún no han pasado $1 días desde la desactivación (se puede eliminar desde el $2). Para eliminar antes, p. ej. a petición del cliente, elija «Eliminar antes»"),
+            P(/^停止から(\d+)日たっていません$/, "It has not been $1 days since the stop", "停用后还未满 $1 天", "Aún no han pasado $1 días desde la desactivación"),
+            P(/^確認コードが違います（あと(\d+)回）$/, "Wrong confirmation code ($1 tries left)", "确认码错误（还剩 $1 次）", "Código incorrecto (quedan $1 intentos)"),
+            P(/^時間がかかるため、途中まで消しました。もう一度「削除する」を押すと、続きから消します(.*)$/, "This takes time, so part of the data was deleted. Press “Delete” again to continue from where it stopped$1", "由于耗时较长，已删除一部分。再次点击“删除”将从中断处继续$1", "Como tarda, se eliminó una parte. Pulse «Eliminar» otra vez para continuar donde se quedó$1"),
+            P(/^管理者パスワードの誤りが続いたため、管理操作を15分間止めています（(\d\d:\d\d) まで）$/, "Admin operations are paused for 15 minutes after repeated wrong passwords (until $1)", "因管理员密码多次错误，管理操作已暂停15分钟（至 $1）", "Las operaciones de administración están pausadas 15 minutos por contraseñas incorrectas (hasta las $1)"),
+            P(/^kid の無い古い物流の見積依頼（v2\.15 より前の形）のうち、社名が同じものが (\d+) 件あります（社名だけでは本人と言い切れないため自動では消しません。fwdAudit で確かめてください）$/, "There are $1 old freight quote requests without a kid (pre-v2.15 format) with the same company name (not deleted automatically, because a name alone does not prove they are theirs; check with fwdAudit)", "没有 kid 的旧物流报价请求（v2.15 之前的格式）中，有 $1 条公司名称相同（仅凭公司名称无法断定是本人，因此不会自动删除。请用 fwdAudit 确认）", "Hay $1 solicitudes antiguas de flete sin kid (formato anterior a v2.15) con el mismo nombre de empresa (no se eliminan solas porque el nombre no basta para saber que son suyas; compruébelo con fwdAudit)"),
+            P(/^ほかのアカウントの鍵も入った Gmail のスレッドが (\d+) 件あります（残します）$/, "$1 Gmail threads also contain another account's key (they are kept)", "有 $1 个 Gmail 会话中也含有其他账户的密钥（保留）", "$1 hilos de Gmail contienen también la clave de otra cuenta (se conservan)"),
+            P(/^同じ宛先をほかのアカウントも使っていて、会社名で見分けられない通知の控えが (\d+) 件あります（残します）$/, "$1 notification copies go to an address another account also uses and cannot be told apart by company name (they are kept)", "有 $1 份通知副本的收件地址也被其他账户使用，无法按公司名区分（保留）", "$1 copias de avisos van a una dirección que usa otra cuenta y no se distinguen por el nombre de la empresa (se conservan)"),
+            P(/^目録にあった依頼ページのうち (\d+) 件は、中身がほかのアカウントのものでした（残します）$/, "$1 request pages in the index actually belonged to another account (they are kept)", "目录中的请求页面有 $1 个实际属于其他账户（保留）", "$1 páginas de solicitud del índice eran en realidad de otra cuenta (se conservan)"),
+            P(/^Google ドライブに「(.+)」フォルダが (\d+) 個あります。使っていない古いフォルダの中身は、この操作では消しません（手で確かめてください）$/, "There are $2 “$1” folders in Google Drive. The contents of unused old folders are not deleted by this operation (check them by hand)", "Google 云端硬盘中有 $2 个“$1”文件夹。此操作不会删除未使用的旧文件夹中的内容（请手动确认）", "Hay $2 carpetas «$1» en Google Drive. Esta operación no elimina el contenido de las carpetas antiguas sin uso (revíselas a mano)")
+        ];
+        L.slice().reverse().forEach(p => I18N.pat.unshift(p));
     }
     catch (e) { }
 })();
