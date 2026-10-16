@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="cd79125d8bf4";
+const BC20_BUILD="f27927eee0d4";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -19648,7 +19648,7 @@ async function llmAsk(q, maxTok, opts) {
             parts.push({ inline_data: { mime_type: att.mime, data: att.b64 } });
         const body = { system_instruction: { parts: [{ text: sys }] },
             contents: [{ role: "user", parts }],
-            generationConfig: { maxOutputTokens: (maxTok || 900) + (/-3\.5|pro|think/i.test(model) ? 8000 : 0), temperature: 0.2 } };
+            generationConfig: Object.assign({ maxOutputTokens: (maxTok || 900) + (/gemini-(?:[3-9]|\d{2,})|-3\.5|pro|think/i.test(model) ? 8000 : 0) }, /gemini-(?:[3-9]|\d{2,})/i.test(model) ? {} : { temperature: 0.2 }) };
         if (webOK && !att)
             body.tools = [{ google_search: {} }];
         req = fetch(ep + "/models/" + encodeURIComponent(model) + ":generateContent", { method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": key },
@@ -80607,6 +80607,312 @@ const V538 = { ver: "21.53.8", miss: [], hit: {}, cty: null };
         V538.err = String(e && e.message || e);
     }
 })();
+const V5311 = { proAll: true, fwd: true, want: 0, cap: null, toPro: 60000 };
+function v5311T(s) { try {
+    return typeof v30T === "function" ? v30T(s) : s;
+}
+catch (e) {
+    return s;
+} }
+function v5311E(s) { try {
+    return esc(s);
+}
+catch (e) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+} }
+try {
+    if (typeof PLANS !== "undefined" && PLANS.pro && PLANS.pro.models && PLANS.pro.models.gemini === "gemini-3.5-flash")
+        PLANS.pro.models.gemini = "gemini-3.8-flash";
+}
+catch (e) { }
+try {
+    if (typeof PROV !== "undefined" && PROV.gemini && Array.isArray(PROV.gemini.models)) {
+        if (!PROV.gemini.models.includes("gemini-3.8-flash"))
+            PROV.gemini.models.unshift("gemini-3.8-flash");
+        const k = PROV.gemini.models.indexOf("gemini-3.5-flash");
+        if (k >= 0)
+            PROV.gemini.models.splice(k, 1);
+    }
+}
+catch (e) { }
+function v5311ShipperPro() {
+    try {
+        if (!V5311.proAll)
+            return false;
+        if (typeof USERPLAN === "undefined" || USERPLAN !== "pro")
+            return false;
+        if (typeof FWDON !== "undefined" && FWDON)
+            return false;
+        if (typeof SES !== "undefined" && SES && SES.t === "admin")
+            return false;
+        return true;
+    }
+    catch (e) {
+        return false;
+    }
+}
+if (typeof llmRoute === "function") {
+    const __lr5311 = llmRoute;
+    llmRoute = function (opts) {
+        let up = false;
+        try {
+            opts = opts || {};
+            if (!opts.planTier && !opts.model && v5311ShipperPro()) {
+                opts = Object.assign({}, opts, { planTier: "pro" });
+                up = true;
+            }
+        }
+        catch (e) { }
+        const r = __lr5311.call(this, opts);
+        try {
+            if (up && r && !/プレミアム/.test(r.why || ""))
+                r.why = (r.why || "") + "・プレミアムの上位モデル";
+        }
+        catch (e) { }
+        return r;
+    };
+}
+const V5311_CTY_Q = /の販売先国を、候補\d+か国から3か国に絞り込む/;
+if (typeof llmAsk === "function") {
+    const __la5311 = llmAsk;
+    llmAsk = async function (q, maxTok, opts) {
+        let isCty = false;
+        try {
+            isCty = !!V5311.want && V5311_CTY_Q.test(String(q || "").slice(0, 600));
+        }
+        catch (e) {
+            isCty = false;
+        }
+        try {
+            const o = opts || {};
+            if (!o.planTier && !o.model && !o.timeout && !o.prov && v5311ShipperPro())
+                opts = Object.assign({}, o, { timeout: V5311.toPro });
+        }
+        catch (e) { }
+        const r = await __la5311.call(this, q, maxTok, opts);
+        if (isCty) {
+            try {
+                V5311.cap = { prov: r.prov || "", model: r.model || "", why: r.why || "" };
+            }
+            catch (e) { }
+        }
+        return r;
+    };
+}
+if (typeof ctyAnalyzeAI === "function") {
+    const __caa5311 = ctyAnalyzeAI;
+    ctyAnalyzeAI = async function (rec) {
+        V5311.cap = null;
+        V5311.want = 1;
+        try {
+            const ai = await __caa5311.apply(this, arguments);
+            try {
+                const c = V5311.cap;
+                if (ai && c) {
+                    ai.prov = c.prov;
+                    ai.model = c.model;
+                    ai.why = c.why;
+                    ai.plan = (typeof USERPLAN !== "undefined") ? USERPLAN : "";
+                    if (c.model && ai.eng && ai.eng.indexOf("（") < 0)
+                        ai.eng = ai.eng + "（" + c.model + "）";
+                }
+            }
+            catch (e) { }
+            return ai;
+        }
+        finally {
+            V5311.want = 0;
+            V5311.cap = null;
+        }
+    };
+}
+if (typeof vCty === "function") {
+    const __vc5311 = vCty;
+    vCty = function (p) {
+        let h = __vc5311.apply(this, arguments);
+        try {
+            if (typeof CTY_VIEW !== "undefined" && CTY_VIEW && CTY_VIEW.c)
+                return h;
+            const s = ctyStore();
+            const why = String(s && s.ai && s.ai.why || "");
+            if (s && s.ai && !window.__ctyBusy && /がエラーのため自動切替/.test(why)) {
+                const m = why.match(/(\S+がエラーのため自動切替)/);
+                const k = v5311E(s.ai.eng) + "が判断";
+                h = String(h);
+                const a = h.indexOf(k);
+                if (m && a >= 0 && h.indexOf('id="v5311why"') < 0)
+                    h = h.slice(0, a + k.length) + '<span id="v5311why">（' + v5311E(v5311T(m[1])) + "）</span>" + h.slice(a + k.length);
+            }
+        }
+        catch (e) { }
+        return h;
+    };
+}
+function v5311Act() { try {
+    return (typeof llmActive === "function") ? llmActive() : [];
+}
+catch (e) {
+    return [];
+} }
+function v5311PlanModels(k) {
+    try {
+        const pref = ["gemini", "anthropic", "perplexity", "openai"];
+        const ix = x => { const i = pref.indexOf(x); return i < 0 ? 99 : i; };
+        return v5311Act().slice().sort((a, b) => ix(a) - ix(b)).map(p => ((PROV[p] && PROV[p].short) || p) + " " + llmModelOf(p, k)).join("／");
+    }
+    catch (e) {
+        return "";
+    }
+}
+function v5311Cards(h, attr, PL) {
+    return String(h).replace(new RegExp('(' + attr + '="(\\w+)"[\\s\\S]*?<span style="font-size:10\\.5px;color:var\\(--ink-2\\);display:block">)([\\s\\S]*?)(</span>)', "g"), (m, a, k, body, z) => {
+        const P = PL[k];
+        if (!P)
+            return m;
+        const md = (k !== "lite" && PLANS[k] && PLANS[k].models) ? v5311PlanModels(k) : "";
+        return a + v5311E(P.eng) + (md ? '<span class="v5311mdl">（' + v5311E(md) + "）</span>" : "") + z;
+    });
+}
+if (typeof planCardHtml === "function" && typeof PLANS !== "undefined") {
+    const __pc5311 = planCardHtml;
+    planCardHtml = function () {
+        let h = String(__pc5311.apply(this, arguments));
+        try {
+            h = v5311Cards(h, "data-plan", PLANS);
+            if (v5311Act().length)
+                h = h.replace(/<p class="nn" style="margin-top:8px;color:var\(--warn\)">⚠ このプランの実AIは[\s\S]*?<\/p>/, "");
+            const how = V5311.proAll
+                ? "スタンダードでは、ふつうの質問や販売先国の分析は高速モデル、契約書のチェックや外国語の営業資料づくりなど複雑な判断は上位モデルで答えます。プレミアムでは、すべての質問に上位モデルを使います。"
+                : "AIは質問の内容に合わせてモデルを使い分けます。ふつうの質問や販売先国の分析は高速モデル、契約書のチェックや外国語の営業資料づくりなど複雑な判断は上位モデルで答えます（いまはプランによらず同じ使い分けです）。";
+            const note = '<p class="v5311plan" id="v5311plannote">' + v5311E(v5311T(how)) + '</p><p class="v5311plan" id="v5311plannote2">' + v5311E(v5311T("実際に使ったAIエンジンとモデルは、回答や分析結果の下に出します（つながらないときは、別のエンジンに自動で切り替えます）。")) + "</p>";
+            const z = h.lastIndexOf("</div>");
+            if (z > 0)
+                h = h.slice(0, z) + note + h.slice(z);
+        }
+        catch (e) { }
+        return h;
+    };
+}
+if (V5311.fwd && typeof fwdAiCard === "function" && typeof FWDPLANS !== "undefined" && typeof PLANS !== "undefined") {
+    const __fc5311 = fwdAiCard;
+    fwdAiCard = function () {
+        let h = String(__fc5311.apply(this, arguments));
+        try {
+            h = v5311Cards(h, "data-fwdplan", FWDPLANS);
+        }
+        catch (e) { }
+        return h;
+    };
+}
+if (V5311.fwd && typeof fwdModel === "function" && typeof llmRoute === "function") {
+    const __fm5311 = fwdModel;
+    fwdModel = function () {
+        try {
+            if (typeof FWDPLAN !== "undefined" && FWDPLAN !== "lite") {
+                const rt = llmRoute({ planTier: FWDPLAN === "pro" ? "pro" : "std" });
+                if (rt && rt.model)
+                    return rt.model;
+            }
+        }
+        catch (e) { }
+        return __fm5311.apply(this, arguments);
+    };
+}
+if (typeof ppBind === "function" && typeof llmModelOf === "function") {
+    const __pb5311 = ppBind;
+    ppBind = function () {
+        const r = __pb5311.apply(this, arguments);
+        try {
+            document.querySelectorAll("[data-pptest]").forEach(b => {
+                const orig = b.onclick;
+                if (typeof orig !== "function" || b.dataset.v5311)
+                    return;
+                b.dataset.v5311 = "1";
+                b.onclick = async function (ev) {
+                    const r0 = orig.call(this, ev);
+                    if (r0 === undefined)
+                        return;
+                    await r0;
+                    try {
+                        const k = b.dataset.pptest, out = document.getElementById("ppres");
+                        if (!out || !/^✓/.test(out.textContent.trim()))
+                            return;
+                        if (document.querySelector(".v531bad"))
+                            return;
+                        const done = llmModelOf(k), std = llmModelOf(k, "std"), pro = llmModelOf(k, "pro");
+                        const other = done === pro ? std : pro;
+                        if (!other || other === done)
+                            return;
+                        const lbl = other === pro ? "上位モデル" : "標準モデル";
+                        const keepAct = LLM.act[k], keepOn = LLM.on;
+                        LLM.act[k] = true;
+                        LLM.on = true;
+                        const add = document.createElement("span");
+                        add.id = "v5311pptest2";
+                        add.style.display = "block";
+                        try {
+                            const r2 = await llmAsk("接続テストです。「接続OK」とだけ日本語で答えてください。", 300, { noWeb: 1, prov: k, model: other });
+                            add.style.color = "var(--good)";
+                            add.textContent = "✓ " + v5311T(lbl) + "（model: " + (r2.model || other) + "）" + v5311T("も接続できました。");
+                        }
+                        catch (e) {
+                            add.style.color = "var(--crit)";
+                            add.textContent = "✗ " + v5311T(lbl) + "（model: " + other + "）" + v5311T("は接続できませんでした：") + String(e && e.message || e).slice(0, 140);
+                        }
+                        finally {
+                            LLM.act[k] = keepAct;
+                            LLM.on = keepOn;
+                        }
+                        const old = document.getElementById("v5311pptest2");
+                        if (old)
+                            old.remove();
+                        out.appendChild(add);
+                    }
+                    catch (e) { }
+                };
+            });
+        }
+        catch (e) { }
+        return r;
+    };
+}
+(function () {
+    try {
+        if (document.getElementById("v5311css"))
+            return;
+        const st = document.createElement("style");
+        st.id = "v5311css";
+        st.textContent =
+            ".v5311mdl{font-size:10px;color:var(--ink-3)}.v5311plan{margin-top:6px;font-size:11px;line-height:1.7;color:var(--ink-2)}";
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+try {
+    if (typeof v30I18n === "function")
+        v30I18n([
+            ["AIは質問の内容に合わせてモデルを使い分けます。ふつうの質問や販売先国の分析は高速モデル、契約書のチェックや外国語の営業資料づくりなど複雑な判断は上位モデルで答えます（いまはプランによらず同じ使い分けです）。",
+                "The AI picks the model for each question: everyday questions and the target-market analysis use the fast model; complex judgements such as contract checks or foreign-language sales materials use the higher-tier model (currently the same on every plan).",
+                "AI会根据问题内容区分使用模型：日常问题和目标市场分析使用高速模型，合同检查、外语营销资料制作等复杂判断使用上位模型（目前各方案相同）。",
+                "La IA elige el modelo según la pregunta: las preguntas habituales y el análisis de mercados usan el modelo rápido; los juicios complejos (revisión de contratos, materiales de venta en otros idiomas) usan el modelo superior (por ahora igual en todos los planes)."],
+            ["スタンダードでは、ふつうの質問や販売先国の分析は高速モデル、契約書のチェックや外国語の営業資料づくりなど複雑な判断は上位モデルで答えます。プレミアムでは、すべての質問に上位モデルを使います。",
+                "On Standard, everyday questions and the target-market analysis use the fast model, and complex judgements such as contract checks or foreign-language sales materials use the higher-tier model. On Premium, every question uses the higher-tier model.",
+                "标准版：日常问题和目标市场分析使用高速模型，合同检查、外语营销资料制作等复杂判断使用上位模型。高级版：所有问题都使用上位模型。",
+                "En Estándar, las preguntas habituales y el análisis de mercados usan el modelo rápido, y los juicios complejos usan el modelo superior. En Premium, todas las preguntas usan el modelo superior."],
+            ["実際に使ったAIエンジンとモデルは、回答や分析結果の下に出します（つながらないときは、別のエンジンに自動で切り替えます）。",
+                "The AI engine and model actually used are shown under each answer and analysis result (if one engine cannot be reached, another is used automatically).",
+                "实际使用的AI引擎和模型显示在回答和分析结果下方（无法连接时会自动切换到其他引擎）。",
+                "El motor y el modelo de IA usados se muestran bajo cada respuesta y análisis (si un motor no responde, se usa otro automáticamente)."],
+            ["Geminiがエラーのため自動切替", "switched automatically because Gemini returned an error", "因Gemini出错已自动切换", "cambio automático porque Gemini dio error"],
+            ["ChatGPTがエラーのため自動切替", "switched automatically because ChatGPT returned an error", "因ChatGPT出错已自动切换", "cambio automático porque ChatGPT dio error"],
+            ["Claudeがエラーのため自動切替", "switched automatically because Claude returned an error", "因Claude出错已自动切换", "cambio automático porque Claude dio error"],
+            ["Perplexityがエラーのため自動切替", "switched automatically because Perplexity returned an error", "因Perplexity出错已自动切换", "cambio automático porque Perplexity dio error"],
+            ["プレミアムの上位モデル", "Premium higher-tier model", "高级版上位模型", "modelo superior Premium"],
+            ["上位モデル", "Higher-tier model", "上位模型", "Modelo superior"], ["標準モデル", "Standard model", "标准模型", "Modelo estándar"],
+            ["も接続できました。", " also connected.", " 也已连接。", " también se conectó."], ["は接続できませんでした：", " could not connect: ", " 无法连接：", " no se pudo conectar: "]
+        ]);
+}
+catch (e) { }
 try {
     if (typeof v35Restore === "function")
         v35Restore();
