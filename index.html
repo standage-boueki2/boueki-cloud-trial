@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="bee8c01ee8ff";
+const BC20_BUILD="cd79125d8bf4";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -80393,6 +80393,220 @@ try {
         V534.hint = V539.hint;
 }
 catch (e) { }
+const V538 = { ver: "21.53.8", miss: [], hit: {}, cty: null };
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N || !Array.isArray(I18N.pat) || !I18N.dict)
+            return;
+        const L3 = ["en", "zh", "es"];
+        const TS = (s, d) => { try {
+            const r = i18nStr(s, d);
+            return r == null ? s : r;
+        }
+        catch (e) {
+            return s;
+        } };
+        const TP = (s, d) => { const m = String(s).match(/^([^\p{L}\p{N}]*)([\s\S]*)$/u); return m ? m[1] + TS(m[2], d) : TS(s, d); };
+        const cty = () => {
+            if (V538.cty)
+                return V538.cty;
+            const S = new Set();
+            try {
+                if (typeof KNOWN_CTY !== "undefined")
+                    KNOWN_CTY.forEach(x => S.add(x));
+            }
+            catch (e) { }
+            try {
+                if (typeof BN_CTY !== "undefined")
+                    BN_CTY.forEach(x => S.add(x[0]));
+            }
+            catch (e) { }
+            try {
+                if (typeof CTRY !== "undefined")
+                    CTRY.forEach(x => S.add(Array.isArray(x) ? x[0] : x));
+            }
+            catch (e) { }
+            try {
+                if (typeof DM_LANG !== "undefined")
+                    Object.keys(DM_LANG).forEach(x => S.add(x));
+            }
+            catch (e) { }
+            try {
+                if (typeof DDP_CTY_EN !== "undefined")
+                    Object.keys(DDP_CTY_EN).forEach(x => S.add(x));
+            }
+            catch (e) { }
+            try {
+                if (typeof FWD_POD !== "undefined")
+                    Object.keys(FWD_POD).forEach(x => S.add(x));
+            }
+            catch (e) { }
+            V538.cty = S;
+            return S;
+        };
+        const run = (o, m, d) => typeof o === "function" ? o(m, d) : String(o).replace(/\$(\d)/g, (x, i) => m[+i] == null ? "" : m[+i]);
+        const wrap = (re, fn) => {
+            const L = I18N.pat.filter(p => p && p.re && p.re.source === re.source && p.re.flags === re.flags);
+            if (!L.length) {
+                V538.miss.push(re.source);
+                return;
+            }
+            L.forEach(p => { if (p.__v538)
+                return; p.__v538 = 1; L3.forEach(l => { const o = p[l]; if (o == null)
+                return; p[l] = function (m, d) { return fn(m, d, l, (m2, d2) => run(o, m2 || m, d2 || d)); }; }); });
+            V538.hit[re.source] = L.length;
+        };
+        const rows = [
+            ["デモ環境", "Demo environment", "演示环境", "Entorno de demostración"],
+            ["平均コスト／回", "Avg. cost / call", "平均成本／次", "Costo medio / llamada"],
+            ["本日のAI調査はまだありません", "No AI research yet today", "今日尚无AI调查", "Aún no hay investigación de IA hoy"],
+            ["貴社カテゴリのバイヤー", "Buyers in your category", "贵公司品类的买家", "Compradores de su categoría"],
+            ["貴社専用のバイヤー", "Your own buyers", "贵公司专属买家", "Compradores propios"],
+            ["プロジェクト詳細", "Project details", "项目详情", "Detalles del proyecto"], ["ガントチャート", "Gantt chart", "甘特图", "Diagrama de Gantt"],
+            ["サイドバー", "Sidebar", "侧边栏", "Barra lateral"], ["スケジュール", "Schedule", "日程", "Calendario"], ["商品リスト", "Product list", "商品列表", "Lista de productos"],
+            ["マネジメント", "Management", "管理", "Gestión"], ["グローバルナビ", "Global navigation", "全局导航", "Navegación global"],
+            ["プライベートチャット", "Private chat", "私聊", "Chat privado"], ["プライベートメモ", "Private notes", "私密备注", "Notas privadas"],
+            ["フィードバック", "Feedback", "反馈", "Comentarios"], ["バイヤーフィードバック", "Buyer feedback", "买家反馈", "Comentarios de compradores"], ["商品マスタ", "Product master", "商品主数据", "Maestro de productos"],
+            ["米国", "United States", "美国", "Estados Unidos"], ["新潟港", "Niigata Port", "新潟港", "Puerto de Niigata"], ["博多港", "Hakata Port", "博多港", "Puerto de Hakata"],
+            ["清水港", "Shimizu Port", "清水港", "Puerto de Shimizu"], ["北九州港", "Kitakyushu Port", "北九州港", "Puerto de Kitakyushu"], ["那覇港", "Naha Port", "那霸港", "Puerto de Naha"],
+            ["関西国際空港", "Kansai International Airport", "关西国际机场", "Aeropuerto Internacional de Kansai"], ["中部国際空港", "Chubu Centrair International Airport", "中部国际机场", "Aeropuerto Internacional de Chubu"],
+            ["福岡空港", "Fukuoka Airport", "福冈机场", "Aeropuerto de Fukuoka"],
+            ["材質・素材表", "Materials sheet", "材质・素材表", "Ficha de materiales"], ["素材・仕様表", "Materials / spec sheet", "素材・规格表", "Materiales / especificaciones"],
+            ["🔒 ステップ2以降に進んだため確定（変更する場合は「この案件を最初から」）", "🔒 Locked because this case is past step 2 (to change it, use “Start over” for this case)", "🔒 已进入第2步之后，因此已确定（如需更改，请对此案件“重新开始”）", "🔒 Fijado porque el caso ya pasó del paso 2 (para cambiarlo, use «Desde el inicio» en este caso)"],
+            ["🔒 確定済み・変更不可", "🔒 Confirmed · cannot be changed", "🔒 已确定・不可更改", "🔒 Confirmado · no se puede cambiar"]
+        ];
+        rows.forEach(r => L3.forEach((l, i) => { const D = I18N.dict[l]; if (D && D[r[0]] == null)
+            D[r[0]] = r[i + 1]; }));
+        const SEP = { en: " / ", zh: "／", es: " / " }, DOT = { en: " · ", zh: "・", es: " · " };
+        const parts = (s, d, l) => String(s).split("／").map(x => d[x] || x).join(SEP[l]);
+        const route = (s, d, l) => {
+            const m = String(s).match(/^([^→「」]+?) → ([^→「」]+)$/);
+            if (!m)
+                return null;
+            let ok = true;
+            const side = x => x.split("／").map(a => a.split("・").map(t => { t = t.trim(); const v = d[t]; if (!v)
+                ok = false; return v || t; }).join(DOT[l])).join(SEP[l]);
+            const r = side(m[1]) + " → " + side(m[2]);
+            return ok ? r : null;
+        };
+        const lane = (it, d, l) => {
+            const m = String(it).match(/^(.+?) (\d+)社・(推奨|選択) (.+)$/);
+            if (!m)
+                return null;
+            const C = d[m[1]] || m[1], N = TP(m[4], d), n = m[2], rec = m[3] === "推奨";
+            return l === "en" ? C + ": " + n + (n === "1" ? " co." : " cos.") + " · " + (rec ? "recommended: " : "selected: ") + N
+                : l === "zh" ? C + " " + n + "家・" + (rec ? "推荐 " : "已选 ") + N
+                    : C + ": " + n + (n === "1" ? " empresa" : " empresas") + " · " + (rec ? "recomendada: " : "elegida: ") + N;
+        };
+        const NEWP = [
+            { re: /^🏢 (.+?)[　 ]+·[　 ]+本日のAI調査はまだありません$/, en: (m, d) => "🏢 " + parts(m[1], d, "en") + " · No AI research yet today", zh: (m, d) => "🏢 " + parts(m[1], d, "zh") + " · 今日尚无AI调查", es: (m, d) => "🏢 " + parts(m[1], d, "es") + " · Aún no hay investigación de IA hoy" },
+            { re: /^[^／]+? \d+社・(?:推奨|選択) [^／]+(?:／[^／]+? \d+社・(?:推奨|選択) [^／]+)*$/,
+                en: (m, d) => { const a = m[0].split("／").map(x => lane(x, d, "en")); return a.every(x => x) ? a.join(" / ") : null; },
+                zh: (m, d) => { const a = m[0].split("／").map(x => lane(x, d, "zh")); return a.every(x => x) ? a.join("／") : null; },
+                es: (m, d) => { const a = m[0].split("／").map(x => lane(x, d, "es")); return a.every(x => x) ? a.join(" / ") : null; } },
+            { re: /^([^→「」]+?) → ([^→「」]+)$/, en: (m, d) => route(m[0], d, "en"), zh: (m, d) => route(m[0], d, "zh"), es: (m, d) => route(m[0], d, "es") },
+            { re: /^(\d{4}[-/]\d{1,2}[-/]\d{1,2}) ・ (.+?) ・ (.+)$/, en: (m, d) => { const r = route(m[2], d, "en"); return r == null ? null : m[1] + " · " + r + " · " + TS(m[3], d); },
+                zh: (m, d) => { const r = route(m[2], d, "zh"); return r == null ? null : m[1] + " ・ " + r + " ・ " + TS(m[3], d); }, es: (m, d) => { const r = route(m[2], d, "es"); return r == null ? null : m[1] + " · " + r + " · " + TS(m[3], d); } },
+            { re: /^(.+?)（シート([①-⑩]|\d+)）$/, en: (m, d) => d[m[1]] ? d[m[1]] + " (sheet " + m[2] + ")" : null, zh: (m, d) => d[m[1]] ? d[m[1]] + "（表" + m[2] + "）" : null, es: (m, d) => d[m[1]] ? d[m[1]] + " (hoja " + m[2] + ")" : null },
+            { re: /^登録に(\d+)〜(\d+)ヶ月$/, en: "registration takes $1–$2 months", zh: "注册需$1〜$2个月", es: "registro: $1–$2 meses" },
+            { re: /^届出に(\d+)〜(\d+)週間$/, en: "notification takes $1–$2 weeks", zh: "备案需$1〜$2周", es: "notificación: $1–$2 semanas" },
+            { re: /^ID ([A-Z]{2,3}-\d{2,})・往復 (\d+)通$/, en: m => "ID " + m[1] + " · " + m[2] + (m[2] === "1" ? " message" : " messages"), zh: "ID $1・往来 $2 条", es: m => "ID " + m[1] + " · " + m[2] + (m[2] === "1" ? " mensaje" : " mensajes") },
+            { re: /^(.+?)／(.+?)（ID ([A-Z]{2,3}-\d{2,})・往復 (\d+)通）$/,
+                en: (m, d) => (d[m[1]] || m[1]) + " / " + (d[m[2]] || m[2]) + " (ID " + m[3] + " · " + m[4] + (m[4] === "1" ? " message)" : " messages)"),
+                zh: (m, d) => (d[m[1]] || m[1]) + "／" + (d[m[2]] || m[2]) + "（ID " + m[3] + "・往来 " + m[4] + " 条）",
+                es: (m, d) => (d[m[1]] || m[1]) + " / " + (d[m[2]] || m[2]) + " (ID " + m[3] + " · " + m[4] + (m[4] === "1" ? " mensaje)" : " mensajes)") },
+            { re: /^(.+) を取り込みました（(\d+)シート）$/, en: "Imported $1 ($2 sheets)", zh: "已导入 $1（$2个工作表）", es: "Importado $1 ($2 hojas)" },
+            { re: /^期限切れ (\d+)本$/, en: m => m[1] + (m[1] === "1" ? " lane expired" : " lanes expired"), zh: "$1条已过期", es: m => m[1] + (m[1] === "1" ? " ruta vencida" : " rutas vencidas") }
+        ];
+        I18N.pat.unshift(...NEWP);
+        const SENT = /[「」『』。]|を|が|です|ます|ません|ください/;
+        wrap(/^([^／]+)／([^／]+)$/, (m, d, l) => {
+            if (/[　 ]·[　 ]| ・ /.test(m[0]))
+                return null;
+            const a = TP(m[1], d), b = TS(m[2], d);
+            if (a === m[1] && b === m[2])
+                return null;
+            if ((a === m[1] && SENT.test(m[1])) || (b === m[2] && SENT.test(m[2])))
+                return null;
+            return a + SEP[l] + b;
+        });
+        [/^(.+?)（デモ）$/, /^(.+?)（サンプル）$/].forEach(re => wrap(re, (m, d, l, f) => /／|（デモ）|（サンプル）/.test(m[1]) ? null : f()));
+        [/^(.+?)（(.+?)・サンプル）$/, /^(.+?)（(.+?)・デモ）$/].forEach(re => wrap(re, (m, d, l, f) => /／/.test(m[1] + m[2]) ? null : f()));
+        wrap(/^🔒 (.+?)の(.+)$/, (m, d, l, f) => { const C = cty(); if (!d[m[1]] || !d[m[2]] || (C.size && !C.has(m[1])))
+            return null; return f(); });
+        wrap(/^(食品|化粧品|工業部品|酒類|医療・衛生用品|アパレル|日用雑貨|中古車・車両)\s+(.+)$/, (m, d, l, f) => /^[·・／|｜]/.test(m[2]) ? null : f());
+        wrap(/^(.+)のバイヤー$/, (m, d, l, f) => d[m[1]] ? f() : null);
+        wrap(/^こんにちは。(.+?)さん専用のAIです。$/, (m, d, l, f) => { const r = f(); return typeof r === "string" ? r.replace(/\.\.$/, ".") : r; });
+        wrap(/^(.+)を取るかどうか決める$/, (m, d, l, f) => { if (!d[m[1]])
+            return f(); const m2 = m.slice(); m2[1] = d[m[1]]; return f(m2); });
+        wrap(/^規制調査（(.+)）$/, (m, d, l, f) => {
+            if (d[m[1]] || !/・/.test(m[1]))
+                return f();
+            const a = m[1].split("・");
+            if (!a.every(x => d[x]))
+                return f();
+            const m2 = m.slice();
+            m2[1] = a.map(x => d[x]).join(DOT[l]);
+            return f(m2);
+        });
+        wrap(/^レート表に「(.+)」を登録して見積を出す$/, (m, d, l, f) => { const r = route(m[1], d, l); if (r == null)
+            return f(); const m2 = m.slice(); m2[1] = r; return f(m2); });
+        const HON = /^(〜)?([\d,]+)本$/, HONPRE = /(レーン|区間|レート|レート表)(は|が|の)?[\s　]*$/;
+        const honT = (n, k) => {
+            const p = n.parentElement;
+            if (!p)
+                return null;
+            let prev = p.previousSibling;
+            if (!prev || prev.nodeType !== 3) {
+                const q = n.previousSibling;
+                prev = q && q.nodeType === 3 ? q : prev;
+            }
+            let src = "";
+            if (prev && prev.nodeType === 3) {
+                src = prev.nodeValue;
+                try {
+                    if (I18N.orig && I18N.orig.has(prev))
+                        src = I18N.orig.get(prev);
+                    else if (typeof AI18N !== "undefined" && AI18N.map && AI18N.map.has(prev))
+                        src = AI18N.map.get(prev).o;
+                }
+                catch (e) { }
+            }
+            const pm = String(src || "").match(HONPRE);
+            if (!pm)
+                return null;
+            const m = k.match(HON), x = (m[1] || "") + m[2], one = m[2] === "1", rate = /レート/.test(pm[1]), l = I18N.lang;
+            return l === "en" ? x + (rate ? (one ? " rate" : " rates") : (one ? " lane" : " lanes")) : l === "zh" ? x + "条" : l === "es" ? x + (rate ? (one ? " tarifa" : " tarifas") : (one ? " ruta" : " rutas")) : null;
+        };
+        if (typeof i18nText === "function") {
+            const __it538 = i18nText;
+            i18nText = function (n, d) {
+                try {
+                    if (I18N.lang !== "ja" && n && n.nodeType === 3 && !(I18N.elNodes && I18N.elNodes.has(n))) {
+                        const src = I18N.orig.has(n) ? I18N.orig.get(n) : n.nodeValue;
+                        const k = String(src == null ? "" : src).trim();
+                        if (k && HON.test(k)) {
+                            const t = honT(n, k);
+                            if (t != null) {
+                                if (!I18N.orig.has(n))
+                                    I18N.orig.set(n, n.nodeValue);
+                                const nv = String(src).replace(k, t);
+                                if (n.nodeValue !== nv)
+                                    n.nodeValue = nv;
+                                return;
+                            }
+                        }
+                    }
+                }
+                catch (e) { }
+                return __it538.apply(this, arguments);
+            };
+        }
+    }
+    catch (e) {
+        V538.err = String(e && e.message || e);
+    }
+})();
 try {
     if (typeof v35Restore === "function")
         v35Restore();
