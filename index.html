@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="ca6c0fffe37d";
+const BC20_BUILD="bee8c01ee8ff";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -7250,7 +7250,7 @@ function buildSummary(t, s) {
         : `<b>{HSコード}が未登録です。</b>これが決まらないと関税率も必要書類も出せません。`);
     if (s.missing.length)
         P.push(`<b>足りないのは${s.missing.length}項目</b>（${s.missing.slice(0, 4).map(m => m.n).join("・")}${s.missing.length > 4 ? " ほか" : ""}）。
-    「商品情報を登録」の画面で、1問ずつ伺います。`);
+    「商品情報を登録」の画面で、1問ずつ伺います。${(typeof v536TgHint === "function") ? v536TgHint(s, 1) : ""}`);
     else
         P.push(`<b>必要な情報はすべて揃っています。</b>貿易クラウドはフルパワーで動きます。`);
     return P.join("<br><br>");
@@ -7276,7 +7276,7 @@ function buildAiq(t, s) {
         out.push({ q: "フルパワーで動かすには何が足りませんか？",
             a: `いまの充足度は<b>${s.pct}%</b>。足りないのは<b>${s.missing.length}項目</b>です。<br><br>` +
                 s.missing.sort((a, b) => b.w - a.w).map(m => `<b>${m.n}</b>　→ ${m.use}`).join("<br>") +
-                `<br><br>「商品情報を登録」の画面から、1問ずつ埋められます。`,
+                `<br><br>「商品情報を登録」の画面から、1問ずつ埋められます。${(typeof v536TgHint === "function") ? v536TgHint(s) : ""}`,
             c: `根拠：必要項目 ${NEED.length}件中 ${s.filled.length}件が登録済み` });
     else
         out.push({ q: "いま何ができますか？",
@@ -7330,7 +7330,7 @@ function buildShip(d, t) {
             ["ジャパン・フレイト・パートナーズ", "¥68,000", "¥39,000", "¥107,000", "（想定）", addDays(TODAYS, 19).slice(5), addDays(TODAYS, 26).slice(5), 0],
             ["サクラ・グローバル・ロジ", "¥57,000", "¥53,000", "¥110,000", "（想定）", addDays(TODAYS, 22).slice(5), addDays(TODAYS, 30).slice(5), 0]],
         pick: "オーシャンリンク物流",
-        reason: `<b>これは想定シナリオです。</b>実際の運賃は、貨物の確定寸法と本船スケジュールが決まってから3社に照会します。<br><br>
+        reason: `<b>これは想定シナリオです（見本の3社の見積）。</b>実際の運賃は、「＋ 新しくAI見積を依頼」で、貿易クラウド内の物流会社（AI物流マン）へ見積を出して確かめます。<br><br>
       いま登録されている寸法（${esc((t.dimRows[0] || []).filter(Boolean).join("／"))}）と
       ${esc(t.moq || "最小ロット")}を前提に、${c}向けの標準的な条件で試算しました。`,
         docs: (r.docs || []).map(x => [x, "", GL[x] || "この国の通関で求められる書類です"]).slice(0, 7),
@@ -11087,7 +11087,7 @@ function deckCheck() {
         { k: "strengths", req: 1, n: "商品の強み（3件以上）", ok: stN >= 3, how: `現在${stN}件。「商品情報を登録」→強み、または⚡公式サイトで資料を強化` },
         { k: "spec", req: 1, n: "規格・成分 or 梱包寸法", ok: !!((D.compRows && D.compRows.length) || (D.dimRows && D.dimRows.length)), how: "「商品情報を登録」に成分表・寸法表をアップロード" },
         { k: "price", req: 1, n: "価格表 or 取引条件（MOQ等）", ok: !!((D.priceRows && D.priceRows.length) || D.moq || D.term), how: "「商品情報を登録」に価格表を追加" },
-        { k: "market", req: 1, n: "ターゲット国（1か国以上）", ok: !!Object.keys(D.regs || {}).length, how: "「商品情報を登録」で進出希望国を登録" },
+        { k: "market", req: 1, n: "ターゲット国（1か国以上）", ok: !!Object.keys(D.regs || {}).length, how: "「販売先国の選定」で国を確定（進出希望国になります）" },
         { k: "logo", req: 1, n: "会社・ブランドロゴ", ok: !!(A.logo && A.logo.b64), how: "下の「ロゴ・商品写真」から設定（公式サイトから自動取得も可）" },
         { k: "phq", req: 1, n: "納品品質の商品写真（1枚以上）", ok: goodPh >= 1,
             how: anyPh ? "現在の写真は低解像度または日本語文字入りです。公式サイトの大きな商品単体写真、またはお手元の写真をアップロード" : "アップロード または 🏠公式サイトから取得" },
@@ -11612,6 +11612,27 @@ const INTENTS = [
     ["ddp", ["ddp", "dap", "現地価格", "現地販売価格", "着地価格", "確定価格", "提示価格", "確定した価格"]],
     ["terms", ["支払条件", "取引条件", "建値", "インコタームズ", "賞味期限", "消費期限", "産地", "原産", "仕出港", "積み地", "保存方法", "保管"]],
 ];
+function v21533Ddp(q) {
+    try {
+        const t = String(q == null ? "" : q).normalize("NFKC").toLowerCase(), s = t.replace(/\s+/g, "");
+        const K = [[/(?:^|[^a-z])ddp(?![a-z])/, t, /(?:^|[^a-z])ddp(?![a-z])/], [/(?:^|[^a-z])dap(?![a-z])/, t, /(?:^|[^a-z])dap(?![a-z])/],
+            [/現地(?:での|の|で)?(?:販売)?(?:価格|値段|売価)/, s, /現地/], [/着地価格|着値/, s, /着地|着値/], [/関税込み?の?(?:価格|値段|単価)/, s, /関税込/]];
+        const hit = K.filter(k => k[0].test(k[1]));
+        const fix = /確定(?:済み?|した)?の?(?:現地|ddp|dap)?(?:での|の)?(?:販売)?価格/.test(s);
+        if (!hit.length) {
+            if (!fix && !/提示価格/.test(s))
+                return false;
+            return !(/(?:^|[^a-z])(?:fob|exw|fca|fas)(?![a-z])/.test(t) || /国内|工場渡|本船渡|価格表|卸/.test(s));
+        }
+        if (fix)
+            return true;
+        const cols = ((typeof D !== "undefined" && D && D.priceCols) || []).map(c => String(c == null ? "" : c).normalize("NFKC").toLowerCase()).join("\n");
+        return !(cols && hit.some(k => k[2].test(cols)));
+    }
+    catch (e) {
+        return false;
+    }
+}
 function detectIntent(q) {
     const s = norm2(q), sc = {};
     INTENTS.forEach(([k, ws]) => { sc[k] = ws.reduce((a, w) => a + (s.includes(norm2(w)) ? 1 : 0), 0); });
@@ -11622,6 +11643,8 @@ function detectIntent(q) {
     if (pickQty(q) && /いくら|価格|単価|見積|金額/.test(s))
         sc.price += 2;
     const best = Object.entries(sc).sort((a, b) => b[1] - a[1])[0];
+    if ((!best || !(best[1] > 0) || best[0] === "price") && v21533Ddp(q))
+        return "ddp";
     return best && best[1] > 0 ? best[0] : null;
 }
 function ansPrice(q) {
@@ -11713,20 +11736,51 @@ function ansDocs(q) {
             `<br><br>これらは<b>すべて自動で作成できます</b>。「出荷を進める」からどうぞ。`,
         c: `根拠：規制調査（${S.country}）／受注 ${S.no}／商品マスタ` };
 }
+function v536Smp(S) { return /^（想定）/.test(String((S && S.buyer) || "")) || ((S && S.quotes) || []).some(q => String((q && q[4]) || "") === "（想定）"); }
+function v536QuoteSrc(S) {
+    const L = (S && S.quotes) || [], n = L.length;
+    if (L.some(q => /（AI物流マン）/.test(String((q && q[0]) || ""))))
+        return `物流会社のAI見積（${n}件）`;
+    return v536Smp(S) ? `想定シナリオの見積（見本の${n}社）` : `物流会社の見積（${n}社）`;
+}
+function v536QuoteNote(S) {
+    if (!v536Smp(S) || /新しくAI見積を依頼/.test(String((S && S.reason) || "")))
+        return "";
+    return `<br><br>この見積は想定シナリオの見本です。実際の見積は、「貿易実務・書類・出荷」の「3 出荷を進める」で「＋ 新しくAI見積を依頼」を押すと、物流会社が登録したレートから国ごとに届きます。`;
+}
+function v536LogiNoShip() {
+    const n = (typeof v536Need === "function") ? v536Need() : { pd: false, tg: false };
+    const lt = `<br>リードタイムは <b>${esc(D.lead || "未登録")}</b> です。`;
+    const how = "「貿易実務・書類・出荷」の「3 出荷を進める」で「＋ 新しくAI見積を依頼」を押すと、物流会社が登録したレートから国ごとの見積（物流会社・金額・所要日数）が届きます。";
+    if (n.tg)
+        return { a: `寸法は登録済みです。見積の送り先になる<b>進出希望国がまだ決まっていません</b>。<br>「販売先国の選定」で国を確定してから、${how}` + lt + ((typeof v51CtyBtn === "function") ? v51CtyBtn("") : ""), c: "根拠：商品マスタ（寸法）" };
+    if (n.pd)
+        return { a: `寸法は登録済みです。価格表を「商品情報を登録」で入れると出荷の案件ができ、${how}` + lt, c: "根拠：商品マスタ（寸法）" };
+    return { a: `寸法は登録済みです。${how}` + lt, c: "根拠：商品マスタ（寸法）" };
+}
+function v536TgHint(s, noBtn) {
+    try {
+        if (!(s && (s.missing || []).some(m => m && m.k === "targets")))
+            return "";
+        return `<br>進出希望国は「販売先国の選定」で、AI商社マンが市場性・規制・競合・拠点の4つの観点で推奨する国から確定できます。` + ((!noBtn && typeof v51CtyBtn === "function") ? v51CtyBtn("") : "");
+    }
+    catch (e) {
+        return "";
+    }
+}
 function ansLogi(q) {
     const S = D.ship, c = pickCountry(q);
     if (!D.dimRows || !D.dimRows.length)
         return { a: `<b>寸法・重量が登録されていないため、運賃の見積が出せません。</b><br>
-      外装カートンのサイズと重量を登録していただければ、フォワーダー3社へ同時に見積を依頼できます。`,
+      外装カートンのサイズと重量を「商品情報を登録」で登録していただくと、「貿易実務・書類・出荷」の「3 出荷を進める」で「＋ 新しくAI見積を依頼」を押して、物流会社が登録したレートから進出希望国ごとの見積（物流会社・金額・所要日数）を取れます。`,
             c: "根拠：商品マスタ（寸法 未登録）" };
     if (!S || !S.quotes)
-        return { a: `寸法は登録済みです。受注が決まれば、そのままフォワーダーへ見積を依頼できます。<br>
-    リードタイムは <b>${esc(D.lead || "未登録")}</b> です。`, c: "根拠：商品マスタ（寸法）" };
+        return v536LogiNoShip();
     const best = S.quotes.find(x => x[7]) || S.quotes[0];
-    return { a: `${S.pol} → ${S.pod}（${esc(S.cargo)}）の見積です。<br><br>` +
+    return { a: `${S.pol} → ${S.pod}（${esc(S.cargo)}）の${v536Smp(S) ? "想定シナリオの見積（見本）" : "見積"}です。<br><br>` +
             S.quotes.map(q2 => `${q2[7] ? "<b>" : ""}${esc(q2[0])}　<b>${q2[3]}</b>　${q2[5]}発 → ${q2[6]}着${q2[7] ? "　← おすすめ</b>" : ""}`).join("<br>") +
-            `<br><br><b>AIの判断</b><br>${S.reason}`,
-        c: `根拠：フォワーダー3社の見積／商品マスタ（${esc(S.cargo)}）／希望着荷 ${S.want}` };
+            `<br><br><b>AIの判断</b><br>${S.reason}${v536QuoteNote(S)}`,
+        c: `根拠：${v536QuoteSrc(S)}／商品マスタ（${esc(S.cargo)}）／希望着荷 ${S.want}` };
 }
 function ansSpec() {
     if (!D.dimRows || !D.dimRows.length)
@@ -11819,7 +11873,7 @@ function ansMissing() {
         return { a: `<b>すべて揃っています（充足度 100%）。</b>`, c: "根拠：必要項目 " + NEED.length + "件" };
     return { a: `いまの充足度は <b>${s.pct}%</b>。足りないのは<b>${s.missing.length}項目</b>です。<br><br>` +
             s.missing.sort((a, b) => b.w - a.w).map(m => `<b>${m.n}</b>　→ ${m.use}`).join("<br>") +
-            `<br><br>「商品情報を登録」の画面から、1問ずつ埋められます。`,
+            `<br><br>「商品情報を登録」の画面から、1問ずつ埋められます。${v536TgHint(s)}`,
         c: `根拠：必要項目 ${NEED.length}件中 ${s.filled.length}件が登録済み` };
 }
 function ansHelp() {
@@ -14331,7 +14385,7 @@ function vItemBench() {
         <td style="font-size:10.5px;color:var(--ink-2);white-space:normal">${r.landed
         ? "統計の平均輸出単価（同HS・同国向け）と比べて高ければ、強みの根拠を営業資料で先回り"
         : "価格表とHSコードが揃うと自動計算されます"}</td></tr>`).join("")}
-    </tbody></table></div>` : `<p class="nn" style="margin-top:9px">進出希望国を登録すると、国別の「関税込み概算単価」がここに並び、統計の実勢単価と比べられます。</p>`}
+    </tbody></table></div>` : `<p class="nn" style="margin-top:9px">「販売先国の選定」で進出希望国を確定すると、国別の「関税込み概算単価」がここに並び、統計の実勢単価と比べられます。</p>`}
     <div class="rw" style="margin-top:9px">
       <button class="btn" onclick="benchAI()">🤖 AIで価格設定・競合を分析</button>
       <span class="nn" style="margin:0">統計側で同じHSコードの<b>国別数量・平均単価の推移</b>を確認し、AIの分析と突き合わせるのがおすすめです。</span></div>
@@ -14952,10 +15006,30 @@ function openStepEdit(i) {
 function vShip(p) {
     return ph(p, "<b>この画面でできること：</b>受注が決まったあとの手続きを、AIと会話するだけで最後まで終わらせます。運送会社への見積依頼、書類づくり、関係先へのデータ送信まで全部です。") + vShipBody();
 }
+function v536Ok(v) { return Array.isArray(v) ? v.length > 0 : !!(v && String(v).trim()); }
+function v536Need() {
+    const t = (typeof TEN !== "undefined" && TEN && TEN.src !== "sample") ? TEN : null, d = (typeof D !== "undefined" && D) ? D : {};
+    if (t)
+        return { pd: !(v536Ok(t.priceRows) && v536Ok(t.dimRows)), tg: !v536Ok(t.targets) };
+    return { pd: !(v536Ok(d.priceRows) && v536Ok(d.dimRows)), tg: !Object.keys(d.regs || {}).length };
+}
+function v536CtyOn() { try {
+    const nav = document.querySelectorAll("#nav [data-p]");
+    return !nav.length || !!document.querySelector('#nav [data-p="cty"]');
+}
+catch (e) {
+    return true;
+} }
+function v536NeedGo() { const n = v536Need(); return (n.tg && !n.pd && v536CtyOn()) ? "cty" : "up"; }
+function v536NeedBtns() {
+    const n = v536Need(), tg = n.tg && v536CtyOn(), pd = n.pd || !tg;
+    return (pd ? `<button class="btn" onclick="go('up')">足りない情報を埋める</button>` : "") + (tg ? `<button class="btn${pd ? " g" : ""}" onclick="go('cty')">販売先国の選定を開く</button>` : "");
+}
 function vShipBody() {
     if (!D.ship)
         return `<div class="c"><h3>まだ出荷のシナリオを組めません</h3>
-     <p class="nn" style="margin-top:6px">運送会社への見積依頼と船積書類の作成には、少なくとも<b>価格表・寸法／重量・進出希望国</b>の3つが必要です。</p>
+     <p class="nn" style="margin-top:6px">物流会社へのAI見積と船積書類の作成には、少なくとも<b>価格表・寸法／重量・進出希望国</b>の3つが必要です。</p>
+     <p class="nn" style="margin-top:2px">価格表・寸法／重量は「商品情報を登録」から、進出希望国は「販売先国の選定」で国を確定すると入ります。</p>
      <div class="g3" style="margin-top:11px">${[["価格表", "priceRows"], ["寸法・重量", "dimRows"], ["進出希望国", "targets"]]
             .map(([n, k]) => {
             const ok = TEN && has(TEN[k]);
@@ -14963,7 +15037,7 @@ function vShipBody() {
          background:${ok ? "var(--good-soft)" : "var(--surface-2)"}"><b style="font-size:12px">${ok ? "✓ " : "○ "}${n}</b>
          <p style="font-size:10.5px;color:var(--ink-2);margin-top:4px">${ok ? "登録済み" : "未登録"}</p></div>`;
         }).join("")}</div>
-     <div class="rw" style="margin-top:12px"><button class="btn" onclick="go('up')">足りない情報を埋める</button>
+     <div class="rw" style="margin-top:12px">${v536NeedBtns()}
        <button class="btn g" onclick="openAskAI()">🤖 AIに聞いてみる</button></div></div>`;
     shipEnsure();
     const S = D.ship, ST = shipSteps();
@@ -15629,9 +15703,9 @@ function vOpsDoc() {
     const S = D.ship;
     if (!S)
         return `<div class="c"><h3>書類を自動でつくる</h3>
-    <p class="nn" style="margin-top:6px">書類の自動作成には <b>価格表・寸法・進出希望国</b> が必要です。<br>
-      「商品情報を登録」から埋めていただくと、ここで見積書・請求書・梱包明細が作れるようになります。</p>
-    <div class="rw" style="margin-top:11px"><button class="btn" onclick="go('up')">足りない情報を埋める</button></div></div>`;
+    <p class="nn" style="margin-top:6px">書類の自動作成には <b>価格表・寸法・進出希望国</b> が必要です。</p>
+    <p class="nn" style="margin-top:2px">価格表・寸法は「商品情報を登録」から、進出希望国は「販売先国の選定」で国を確定すると入り、ここで見積書・請求書・梱包明細が作れるようになります。</p>
+    <div class="rw" style="margin-top:11px">${v536NeedBtns()}</div></div>`;
     return `<div class="g2" style="align-items:start">
     <div class="c">
       <div class="rw" style="justify-content:space-between;margin-bottom:2px"><h3>書類を自動でつくる</h3>
@@ -15664,9 +15738,8 @@ function rReg() {
     opsRegI = $("#rI") ? $("#rI").value : "";
     if (!r) {
         $("#rO").innerHTML = `<div style="padding:14px;border:1px dashed var(--line);border-radius:var(--r2);
-    text-align:center;color:var(--ink-3);font-size:12px">まだ<b style="color:var(--ink-2)">進出希望国が登録されていません</b>。<br>
-    国を登録すると、関税率・必要書類・所要期間がここに出ます。
-    <div class="rw" style="justify-content:center;margin-top:10px"><button class="btn" onclick="go('up')">進出希望国を登録する</button></div></div>`;
+    text-align:center;color:var(--ink-3);font-size:12px"><p style="margin:0">まだ<b style="color:var(--ink-2)">進出希望国が決まっていません</b>。<br>「販売先国の選定」で候補の国を分析し、「✅ この3か国で確定」を押すと、確定した国をここで選べるようになり、関税率・必要書類・通関にかかる日数が出ます。</p>
+    <div class="rw" style="justify-content:center;margin-top:10px">${v536CtyOn() ? `<button class="btn" onclick="go('cty')">販売先国の選定を開く</button>` : `<button class="btn" onclick="go('up')">足りない情報を埋める</button>`}</div></div>`;
         return;
     }
     $("#rO").innerHTML = `<div class="g3" style="gap:8px">
@@ -18715,7 +18788,7 @@ function todayStepsOf(x) {
     if (M(/仕様|価格|MOQ|未登録|収集|充足|不足|埋め/) && sc && (sc.filled.length + sc.missing.length)) {
         const V202T = { priceRows: 1, dimRows: 1, compRows: 1, strengths: 1, targets: 1 };
         sc.filled.slice(0, 13).forEach(f => add("f_" + f.k, f.n + " を登録する", V202T[f.k] ? { auto: 1, ok: true, go: "item", goNm: "商品情報で確認" } : { auto: 1, ok: true, go: "fill", fk: f.k, goNm: "AI商社マンと確認" }));
-        sc.missing.slice(0, 13).forEach(f => add("m_" + f.k, f.n + " を登録する", { auto: 1, ok: false, go: "fill", fk: f.k, goNm: "AI商社マンと登録" }));
+        sc.missing.slice(0, 13).forEach(f => add("m_" + f.k, f.n + " を登録する", (f.k === "targets" && (typeof v536CtyOn !== "function" || v536CtyOn())) ? { auto: 1, ok: false, go: "cty", goNm: "販売先国の選定", v536: 1 } : { auto: 1, ok: false, go: "fill", fk: f.k, goNm: "AI商社マンと登録" }));
         add("req", "不足分を担当者へ依頼する", { go: "msg", goNm: "やりとり" });
     }
     else if (M(/規制|HS|INCI|事前教示|認証|証明/)) {
@@ -18725,7 +18798,7 @@ function todayStepsOf(x) {
         add("docs", "必要書類・証明書をリスト化する", { go: "ops", goNm: "貿易実務・書類・出荷" });
     }
     else if (M(/提案|候補|バイヤー|英語|外国語|営業資料/)) {
-        add("tgt", "進出したい国を決める", { auto: 1, ok: !!((t0 && t0.targets && t0.targets.length) || (typeof D !== "undefined" && D && Object.keys(D.regs || {}).length)), go: "up", goNm: "商品情報を登録" });
+        add("tgt", "進出したい国を決める", { auto: 1, ok: !!((t0 && t0.targets && t0.targets.length) || (typeof D !== "undefined" && D && Object.keys(D.regs || {}).length)), go: "cty", goNm: "販売先国の選定", v536: 1 });
         let deckOK = false;
         try {
             deckOK = (typeof deckMissReq === "function") && deckMissReq().length === 0;
@@ -21551,7 +21624,7 @@ ${facts}
 async function fwdRequest(opts) {
     opts = opts || {};
     if (!D || !D.ship) {
-        toast("先に価格表・寸法・進出希望国を登録してください");
+        toast("先に価格表・寸法（「商品情報を登録」）と進出希望国（「販売先国の選定」で確定）を登録してください");
         return;
     }
     fwdLoad();
@@ -39559,7 +39632,7 @@ function v202RowOf(k, label) {
     const t0 = (typeof TEN !== "undefined" && TEN && TEN.src) ? TEN : (typeof D !== "undefined" ? D : null);
     const filled = !!(t0 && (typeof has === "function" ? has(t0[k]) : t0[k]));
     const table = !!V202_TABLE[k];
-    return Object.assign({ id: (filled ? "f_" : "m_") + k, label: label || (nx.n + " を登録する"), auto: 1, ok: filled, pre: "" }, filled && table ? { go: "item", goNm: "商品情報で確認" } : { go: "fill", fk: k, goNm: filled ? "AI商社マンと確認" : "AI商社マンと登録" });
+    return Object.assign({ id: (filled ? "f_" : "m_") + k, label: label || (nx.n + " を登録する"), auto: 1, ok: filled, pre: "" }, filled && table ? { go: "item", goNm: "商品情報で確認" } : (k === "targets" && !filled && (typeof v536CtyOn !== "function" || v536CtyOn())) ? { go: "cty", goNm: "販売先国の選定", v536: 1 } : { go: "fill", fk: k, goNm: filled ? "AI商社マンと確認" : "AI商社マンと登録" });
 }
 if (typeof todayStepsOf === "function") {
     const __ts202 = todayStepsOf;
@@ -65602,8 +65675,8 @@ function v33CkQuote() {
     const F = [], add = (lv, t, how, go) => F.push({ lv, t, how, go });
     const S = (typeof D !== "undefined" && D && D.ship) || null;
     if (!S) {
-        add("red", "見積書のもとになる案件がありません", "商品情報（価格表・寸法・進出希望国）を登録してください", () => { try {
-            go("up");
+        add("red", "見積書のもとになる案件がありません", "価格表・寸法は「商品情報を登録」で、進出希望国は「販売先国の選定」で国を確定して入れてください", () => { try {
+            go((typeof v536NeedGo === "function") ? v536NeedGo() : "up");
         }
         catch (e) { } });
         return F;
@@ -65759,6 +65832,35 @@ if (typeof deckBind === "function") {
         console.warn("v33 deck ck", e);
     } return r; };
 }
+(function () {
+    try {
+        if (typeof v30I18n === "function")
+            v30I18n([
+                ["販売先国の選定を開く", "Open target market selection", "打开销售目标国选定", "Abrir la selección de países objetivo"],
+                ["価格表・寸法は「商品情報を登録」で、進出希望国は「販売先国の選定」で国を確定して入れてください", "Enter the price list and dimensions in “Register product”, and set the target countries by confirming countries in “Target market selection”", "价格表和尺寸请在“登记商品信息”中填写，目标国家请在“销售目标国选定”中确定国家", "Introduzca la lista de precios y las medidas en «Registrar producto», y fije los países objetivo confirmando países en «Selección de países objetivo»"],
+                ["先に価格表・寸法（「商品情報を登録」）と進出希望国（「販売先国の選定」で確定）を登録してください", "First register the price list and dimensions (in “Register product”) and the target countries (confirm them in “Target market selection”)", "请先登记价格表・尺寸（在“登记商品信息”中）和目标国家（在“销售目标国选定”中确定）", "Primero registre la lista de precios y las medidas (en «Registrar producto») y los países objetivo (confírmelos en «Selección de países objetivo»)"],
+                ["「販売先国の選定」で進出希望国を確定すると、国別の「関税込み概算単価」がここに並び、統計の実勢単価と比べられます。", "When you confirm target countries in “Target market selection”, the estimated unit price including duty for each country appears here, so you can compare it with the actual unit prices in the statistics.", "在“销售目标国选定”中确定目标国家后，各国的“含关税估算单价”会显示在这里，可与统计中的实际单价进行比较。", "Al confirmar los países objetivo en «Selección de países objetivo», aquí aparecerá el precio unitario estimado con aranceles de cada país, para compararlo con los precios unitarios reales de las estadísticas."],
+                ["価格表・寸法は「商品情報を登録」から、進出希望国は「販売先国の選定」で国を確定すると入り、ここで見積書・請求書・梱包明細が作れるようになります。", "Enter the price list and dimensions in “Register product”; the target countries are set when you confirm countries in “Target market selection”. You can then create quotations, invoices and packing lists here.", "价格表和尺寸请在“登记商品信息”中填写；目标国家在“销售目标国选定”中确定国家后即会填入，之后即可在此制作报价单・发票・装箱单。", "La lista de precios y las medidas se introducen en «Registrar producto»; los países objetivo se fijan al confirmar países en «Selección de países objetivo». Después podrá crear aquí cotizaciones, facturas y listas de empaque."],
+                ["価格表・寸法／重量は「商品情報を登録」から、進出希望国は「販売先国の選定」で国を確定すると入ります。", "Enter the price list and dimensions/weight in “Register product”; the target countries are set when you confirm countries in “Target market selection”.", "价格表和尺寸／重量请在“登记商品信息”中填写；目标国家在“销售目标国选定”中确定国家后即会填入。", "La lista de precios y las medidas/peso se introducen en «Registrar producto»; los países objetivo se fijan al confirmar países en «Selección de países objetivo»."]
+            ]);
+        if (typeof v30I18nEl === "function")
+            v30I18nEl([
+                ["まだ<b>進出希望国が決まっていません</b>。<br>「販売先国の選定」で候補の国を分析し、「✅ この3か国で確定」を押すと、確定した国をここで選べるようになり、関税率・必要書類・通関にかかる日数が出ます。",
+                    "<b>No target countries have been decided</b> yet.<br>In “Target market selection”, analyse the candidate countries and press “✅ Confirm these 3 countries”. You can then choose the confirmed countries here and see their duty rates, required documents and customs clearance time.",
+                    "尚未<b>确定目标国家</b>。<br>请在“销售目标国选定”中分析候选国家，然后点击“✅ 确定这3个国家”。之后即可在此选择已确定的国家，并查看关税税率、所需文件和通关所需天数。",
+                    "Aún <b>no se han decidido los países objetivo</b>.<br>En «Selección de países objetivo», analice los países candidatos y pulse «✅ Confirmar estos 3 países». Después podrá elegir aquí los países confirmados y ver su arancel, los documentos necesarios y el plazo de despacho aduanero."],
+                ["書類の自動作成には <b>価格表・寸法・進出希望国</b> が必要です。",
+                    "Automatic document creation needs a <b>price list, dimensions and target countries</b>.",
+                    "自动制作单证需要<b>价格表・尺寸・目标国家</b>。",
+                    "Para crear documentos automáticamente se necesitan <b>la lista de precios, las medidas y los países objetivo</b>."],
+                ["物流会社へのAI見積と船積書類の作成には、少なくとも<b>価格表・寸法／重量・進出希望国</b>の3つが必要です。",
+                    "AI quotes from logistics companies and shipping documents need at least three things: <b>a price list, dimensions/weight and target countries</b>.",
+                    "向物流公司申请AI报价和制作装运单证，至少需要<b>价格表・尺寸／重量・目标国家</b>这3项。",
+                    "Para pedir cotizaciones con IA a las empresas de logística y crear los documentos de embarque se necesitan al menos tres datos: <b>la lista de precios, las medidas/peso y los países objetivo</b>."]
+            ]);
+    }
+    catch (e) { }
+})();
 var V33ANS = { chat: 0, map: [], q: "", kb: null };
 const V33ANS_KEY = "bc20_stdkb";
 function v33KbGet() { if (V33ANS.kb)
@@ -79657,6 +79759,640 @@ if (typeof v53Act === "function") {
     }
     catch (e) { }
 })();
+const V534 = { fail: {}, skip: new Set(), re: null, needs0: null,
+    hint: " Placeholders such as ⟦1⟧ stand for company names: copy every placeholder exactly as it is (do not translate, remove or renumber them)." };
+const V534_Q = /株式会社|有限会社|合同会社|合資会社|合名会社|法人|（株）|\(株\)|㈱|（有）|\(有\)|㈲/;
+(function () {
+    const F = "株式会社|有限会社|合同会社|合資会社|合名会社|一般社団法人|一般財団法人|公益社団法人|公益財団法人|特定非営利活動法人|NPO法人|医療法人社団|医療法人財団|医療法人|社会福祉法人|学校法人|宗教法人|独立行政法人|国立研究開発法人|国立大学法人|税理士法人|弁護士法人|監査法人|司法書士法人|行政書士法人|社会保険労務士法人|特許業務法人|農事組合法人|（株）|\\(株\\)|㈱|（有）|\\(有\\)|㈲";
+    const NH = "[\\p{Script=Han}\\p{Script=Katakana}ー・･々〆ヶA-Za-z0-9Ａ-Ｚａ-ｚ０-９&＆.．'’\\-－]", HI = "[ぁ-ゖ]";
+    const PRE = "(?:" + F + ")[ 　]?(?:" + HI + "{2,}" + NH + "*|" + NH + "+)";
+    try {
+        V534.re = new RegExp(PRE + "|(?:(?<![\\p{L}\\p{N}ー々])" + HI + "{2,})?(?<![\\p{Script=Han}\\p{Script=Katakana}A-Za-z0-9Ａ-Ｚａ-ｚ０-９ー・･々])" + NH + "+?(?:" + F + ")", "gu");
+    }
+    catch (e) {
+        try {
+            V534.re = new RegExp(PRE + "|" + NH + "+?(?:" + F + ")", "gu");
+        }
+        catch (e2) {
+            V534.re = null;
+        }
+    }
+})();
+function v534Mask(s) {
+    s = String(s == null ? "" : s);
+    const ch = [];
+    if (!V534.re || !V534_Q.test(s))
+        return { m: s, ch };
+    const m = s.replace(V534.re, x => { const y = x.replace(/[ 　]+$/, ""); let i = ch.indexOf(y); if (i < 0) {
+        ch.push(y);
+        i = ch.length - 1;
+    } return "⟦" + (i + 1) + "⟧" + x.slice(y.length); });
+    return { m, ch };
+}
+function v534Unmask(t, ch) {
+    const seen = new Set();
+    const r = String(t).replace(/⟦\s*(\d+)\s*⟧/g, (x, n) => { const v = ch[+n - 1]; if (v == null)
+        return x; seen.add(+n); return v; });
+    return (seen.size === ch.length && !/⟦\s*\d+\s*⟧/.test(r)) ? r : null;
+}
+function v534Key(s) { return String(s == null ? "" : s).replace(/\s+/g, " ").trim(); }
+function v534Fail(s) { const k = v534Key(s); V534.fail[k] = (V534.fail[k] || 0) + 1; if (V534.fail[k] >= 2)
+    V534.skip.add(k); }
+function v534Scrub(c) {
+    let n = 0;
+    if (!c || typeof c !== "object")
+        return 0;
+    const need = V534.needs0 || (s => /[぀-ヿ一-鿿]/.test(s));
+    Object.keys(c).forEach(k => {
+        if (!V534_Q.test(k))
+            return;
+        const x = v534Mask(k);
+        if (!x.ch.length)
+            return;
+        const v = String(c[k] == null ? "" : c[k]);
+        if (!need(x.m) || x.ch.some(y => !v.includes(y))) {
+            delete c[k];
+            n++;
+        }
+    });
+    return n;
+}
+if (typeof ai18nNeeds === "function") {
+    const __n534 = ai18nNeeds;
+    V534.needs0 = function (s) { return __n534.call(this, s); };
+    ai18nNeeds = function (s) { try {
+        const k = String(s == null ? "" : s);
+        if (V534.skip.size && V534.skip.has(v534Key(k)))
+            return false;
+        if (V534_Q.test(k))
+            return __n534.call(this, v534Mask(k).m);
+    }
+    catch (e) { } return __n534.apply(this, arguments); };
+}
+if (typeof ai18nTranslateBatch === "function") {
+    const __tb534 = ai18nTranslateBatch;
+    ai18nTranslateBatch = async function (list, lang) {
+        const M = (Array.isArray(list) ? list : []).map(s => v534Mask(s));
+        if (!M.some(x => x.ch.length))
+            return __tb534.apply(this, arguments);
+        let pr;
+        const L0 = (typeof llmAsk === "function") ? llmAsk : null;
+        if (L0)
+            llmAsk = function (q, max, opt) { try {
+                if (opt && opt.task === "translate" && typeof opt.sys === "string")
+                    opt = Object.assign({}, opt, { sys: opt.sys + V534.hint });
+            }
+            catch (e) { } return L0.call(this, q, max, opt); };
+        try {
+            pr = __tb534.call(this, M.map(x => x.m), lang);
+        }
+        finally {
+            if (L0)
+                llmAsk = L0;
+        }
+        const arr = await pr;
+        return (Array.isArray(arr) ? arr : []).map((t, j) => { const x = M[j]; if (!x || !x.ch.length || typeof t !== "string")
+            return t; const u = v534Unmask(t, x.ch); if (u == null) {
+            v534Fail(list[j]);
+            return null;
+        } return u; });
+    };
+}
+if (typeof ai18nLoad === "function") {
+    const __ld534 = ai18nLoad;
+    ai18nLoad = function () {
+        let first = false;
+        try {
+            first = (typeof AI18N !== "undefined" && AI18N.lang !== ai18nLang());
+        }
+        catch (e) { }
+        const c = __ld534.apply(this, arguments);
+        if (first) {
+            try {
+                if (v534Scrub(c) && typeof ai18nSave === "function")
+                    ai18nSave();
+            }
+            catch (e) { }
+        }
+        return c;
+    };
+}
+const V534_MW = { stopAct: ["Suspend", "停用", "Suspender"], stopped: ["Suspended", "已停用", "Suspendido"], asg: ["Assign", "负责", "Asignar"],
+    act: ["Active", "已加入", "Activos"], inv: ["Invited", "邀请中", "Invitados"], stop: ["Suspended", "已停用", "Suspendidos"], del: ["Deleted", "已删除", "Eliminados"] };
+const V534_CTXQ = /^(?:停止|停止中|担当|(?:参加中|招待中|停止中|削除済み) [\d,]+|[\d,]+名)$/;
+function v534Li() { const l = (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja"; return l === "en" ? 0 : l === "zh" ? 1 : l === "es" ? 2 : -1; }
+function v534Mem(p) { return !!(p && p.closest && p.closest(".tm-card,.tm-cnt,.tm-list,.tm-form,#admmem")); }
+function v534People(n, i) { return i === 1 ? n + "名" : i === 0 ? n + (n === "1" ? " member" : " members") : n + (n === "1" ? " miembro" : " miembros"); }
+function v534CtxT(p, k) {
+    const i = v534Li();
+    if (i < 0 || !p || !p.closest)
+        return null;
+    if (k === "停止" && p.closest("[data-tmstop],[data-tmastop],[data-mtgl]"))
+        return V534_MW.stopAct[i];
+    if (k === "担当")
+        return p.closest("[data-tmasg],[data-tmaasg]") ? V534_MW.asg[i] : null;
+    if ((k === "停止" || k === "停止中") && (v534Mem(p) || (p.matches && p.matches("span.p") && p.parentElement && p.parentElement.querySelector("[data-mtgl]"))))
+        return V534_MW.stopped[i];
+    let m = k.match(/^(参加中|招待中|停止中|削除済み) ([\d,]+)$/);
+    if (m && v534Mem(p))
+        return V534_MW[{ 参加中: "act", 招待中: "inv", 停止中: "stop", 削除済み: "del" }[m[1]]][i] + " " + m[2];
+    m = k.match(/^([\d,]+)名$/);
+    if (m && p.closest("#admmem h3,.tm-cnt"))
+        return v534People(m[1], i);
+    return null;
+}
+if (typeof i18nText === "function") {
+    const __it534 = i18nText;
+    i18nText = function (n, d) {
+        try {
+            if (typeof I18N !== "undefined" && I18N.lang !== "ja" && n && !(I18N.elNodes && I18N.elNodes.has(n))) {
+                const src = I18N.orig.has(n) ? I18N.orig.get(n) : n.nodeValue;
+                const k = String(src == null ? "" : src).trim();
+                if (k && V534_CTXQ.test(k)) {
+                    const t = v534CtxT(n.parentElement, k);
+                    if (t != null) {
+                        if (!I18N.orig.has(n))
+                            I18N.orig.set(n, n.nodeValue);
+                        const nv = String(src).replace(k, t);
+                        if (n.nodeValue !== nv)
+                            n.nodeValue = nv;
+                        return;
+                    }
+                }
+            }
+        }
+        catch (e) { }
+        return __it534.apply(this, arguments);
+    };
+}
+if (typeof v33AdmSee === "function" && typeof v33T === "function") {
+    const __see534 = v33AdmSee;
+    v33AdmSee = function () {
+        const T0 = v33T;
+        v33T = function (s) { if (s === "停止") {
+            const i = v534Li();
+            return i < 0 ? s : V534_MW.stopped[i];
+        } return T0.apply(this, arguments); };
+        try {
+            return __see534.apply(this, arguments);
+        }
+        finally {
+            v33T = T0;
+        }
+    };
+}
+if (typeof s30ExpHtml === "function") {
+    const __s30534 = s30ExpHtml;
+    s30ExpHtml = function () { const h = __s30534.apply(this, arguments); try {
+        return String(h).replace(/<span class="p lo">disabled<\/span>/g, '<span class="p no">無効</span>');
+    }
+    catch (e) {
+        return h;
+    } };
+}
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N.dict)
+            return;
+        [["🔒 STANDAGE管理者のみ", "🔒 STANDAGE admins only", "🔒 仅限 STANDAGE 管理员", "🔒 Solo administradores de STANDAGE"],
+            ["STANDAGE管理者のみ", "STANDAGE admins only", "仅限 STANDAGE 管理员", "Solo administradores de STANDAGE"],
+            ["Web検索を停止", "Turn off web search", "停用网络搜索", "Desactivar la búsqueda web"],
+            ["Web検索を許可しました", "Web search allowed", "已允许网络搜索", "Búsqueda web permitida"],
+            ["Web検索を停止しました", "Web search turned off", "已停用网络搜索", "Búsqueda web desactivada"],
+            ["管理者がWeb検索を停止しています", "The administrator has turned off web search", "管理员已停用网络搜索", "El administrador ha desactivado la búsqueda web"]
+        ].forEach(r => ["en", "zh", "es"].forEach((l, i) => { const d = I18N.dict[l]; if (d && r[i + 1] && d[r[0]] == null)
+            d[r[0]] = r[i + 1]; }));
+        if (Array.isArray(I18N.pat))
+            I18N.pat.unshift({ re: /^👥 ([\d,]+)名$/, en: m => "👥 " + v534People(m[1], 0), zh: m => "👥 " + v534People(m[1], 1), es: m => "👥 " + v534People(m[1], 2) });
+    }
+    catch (e) { }
+})();
+const V539 = { prod: true, first: new Map(), sig: "", n: 0, at: 0, lang: "", busy: false, memo: new Map(), rej: 0, cleanT: 0,
+    hint: " Placeholders such as ⟦1⟧ stand for company names, people's names, product names or other registered data (e-mail addresses, phone numbers, addresses, file names): copy every placeholder exactly as it is (do not translate, remove or renumber them)." };
+const V539_KP = /^(?:who|by|_by|_cby|ceo|rep|person|contact|pic|staff|approver|author|sender|uname|member|readBy|mention|mentions|participants|attendees|manager|tanto)$/;
+const V539_KO = /^(?:co|coEn|company|coName|buyer|b|personCo|shipper|consignee|maker|supplier)$/;
+const V539_KG = /^(?:item|itemEn|product|productName|itemName|prodName|brand)$/;
+const V539_KC = /^(?:mail|email|tel|phone|fax|mobile|addr|address|addrEn|zip|cbank|crecv|cregno)$/;
+const V539_KM = /^(?:to|cc|bcc|from|replyTo|dmFrom)$/;
+const V539_KF = /^(?:file|fname|fileName|filename)$/;
+const V539_CTX = { members: "P", users: "P", people: "P", staff: "P", contacts: "P", attendees: "P", participants: "P", buyers: "O", myBuyers: "O", accounts: "O", lineup: "G", products: "G", docs: "F", xdocs: "F", files: "F", file: "F", sources: "F", att: "F", attachments: "F" };
+const V539_CORP = /^(?:株式会社|有限会社|合同会社|合資会社|合名会社|（株）|\(株\)|㈱|（有）|\(有\)|㈲)\s*|\s*(?:株式会社|有限会社|合同会社|合資会社|合名会社|（株）|\(株\)|㈱|（有）|\(有\)|㈲|Co\.,? ?Ltd\.?|Inc\.?|LLC|Ltd\.?|Corp\.?|Corporation)$/gi;
+const V539_SKIP = /^(?:sheets|priceRows|dimRows|compRows|priceCols|dimCols|compCols|regKB|regsAI|deck3|aiMem|aiNotes|extraQA|strengths|hsGuess|_hsNote|todaySteps|netConnects|assets|blob|html|img|imgs|logo|ph|rows|cols|tr|cache|usage|events|plans|slides|deckGen|corpus|kb|log|logs)$/;
+const V539_STOP = /^(?:[—\-ー‐–・\s?？]*|なし|無し|不明|未設定|未登録|未入力|（未入力）|（名前なし）|（会社名 未登録）|貴社|当社|弊社|自社|御社|貴社担当|担当|担当者|代表|あなた|自分|私|管理者|メンバー|全員|本人|STANDAGE|LINE|WhatsApp|Web|メール|me|you|probe|test|テスト|サンプル|デモ|AI(?:[（(].*|商社マン.*|物流マン.*|法務.*|エンジン.*|ルール.*)?)$/i;
+const V539_CJK = /[一-鿿㐀-䶿豈-﫿ァ-ヺー々〆ヶ]/;
+const V539_LIM = { P: 60, O: 80, G: 80, C: 120, F: 160 };
+const V539_CUT = [10, 16, 18, 22, 24, 28, 30, 40];
+function v539Put(M, x, k) {
+    x = String(x == null ? "" : x).replace(/\s+/g, " ").trim();
+    if (x.length < 2 || x.length > (V539_LIM[k] || 80) || V539_STOP.test(x))
+        return;
+    if (!/[^\d\s.,:;\/\-–—()（）［］\[\]#＃+＋~〜%％¥$]/.test(x))
+        return;
+    if (!M.has(x))
+        M.set(x, k);
+}
+function v539Add(M, v, k) {
+    v = String(v == null ? "" : v).replace(/\s+/g, " ").trim();
+    if (!v || v.length > 200)
+        return;
+    if (k === "G" && !V539.prod)
+        return;
+    if (k === "O" && /^[（(]/.test(v))
+        return;
+    const parts = [v];
+    if (k !== "G" && k !== "F")
+        v.split(/\s+\/\s+|／|｜|\s\|\s|[、，；;]\s*/).forEach(p => { p = p.trim(); if (p && p !== v)
+            parts.push(p); });
+    parts.forEach(x => {
+        const base = (k === "P" || k === "O") ? x.replace(/\s*[（(][^（）()]*[）)]$/, "") : x;
+        if (base === x || base.length < 2)
+            v539Put(M, x, k);
+        if (k === "P") {
+            let y = base.replace(/^(?:担当(?:者)?|代表(?:者)?|依頼者|営業担当|作成者?|送信者|宛先|承認者|招待者)\s*[：:]\s*/, "").replace(/\s*(?:様|さん|殿|氏|くん|君)$/, "");
+            const z = y.replace(/\s*[（(][^（）()]*[）)]$/, "");
+            [y, z].forEach(w => {
+                v539Put(M, w, k);
+                const t = w.replace(/^(?:代表取締役(?:社長|会長)?|取締役(?:社長)?|代表理事|代表社員|代表|社長|会長|専務|常務|部長|課長|主任|CEO|COO|CTO|President)\s+/i, "");
+                v539Put(M, t, k);
+                const u = t.replace(/^\S*(?:部|課|室|グループ|チーム|本部|支店|営業所)\s+/, "");
+                v539Put(M, u, k);
+                const s = u.match(/^([^\sA-Za-z0-9]{1,6}) ([^\sA-Za-z0-9]{1,8})$/);
+                if (s) {
+                    v539Put(M, s[1] + s[2], k);
+                    v539Put(M, s[1], k);
+                }
+            });
+        }
+        else if (k === "O") {
+            v539Put(M, base, k);
+            const z = base.replace(V539_CORP, "").trim();
+            if (z !== base && z.length >= 2)
+                v539Put(M, z, k);
+        }
+        else if (k === "F") {
+            let i = x.indexOf("_");
+            while (i > 0) {
+                const t = x.slice(i);
+                if (t.length >= 6 && /\.[A-Za-z0-9]{2,5}$/.test(t)) {
+                    v539Put(M, t, k);
+                    v539Put(M, t.slice(1), k);
+                }
+                i = x.indexOf("_", i + 1);
+            }
+        }
+        const w = (k === "O") ? base : x;
+        if ((k === "G" || k === "O" || k === "F") && w.length > V539_CUT[0])
+            V539_CUT.forEach(L => { if (w.length > L) {
+                const p = w.slice(0, L).trim();
+                if (p.length >= 6)
+                    v539Put(M, p, k);
+            } });
+    });
+}
+function v539Pick(M, v, key, ctx) {
+    if (V539_KP.test(key))
+        return v539Add(M, v, "P");
+    if (V539_KO.test(key))
+        return v539Add(M, v, "O");
+    if (V539_KG.test(key))
+        return v539Add(M, v, "G");
+    if (V539_KC.test(key))
+        return v539Add(M, v, "C");
+    if (V539_KF.test(key))
+        return v539Add(M, v, "F");
+    if (V539_KM.test(key)) {
+        if (/@|https?:\/\//.test(v))
+            v539Add(M, v, "C");
+        return;
+    }
+    if (key === "name" || key === "nm" || key === "n") {
+        const c = V539_CTX[ctx];
+        if (c && (key !== "n" || c === "F"))
+            return v539Add(M, v, c);
+        if (/\.[A-Za-z0-9]{2,5}$/.test(v))
+            return v539Add(M, v, "F");
+    }
+}
+function v539Collect() {
+    const M = new Map();
+    let budget = 80000;
+    const walk = (o, key, ctx, d) => {
+        if (--budget < 0 || o == null || d > 9)
+            return;
+        const cx = V539_CTX[key] ? key : ctx;
+        if (Array.isArray(o)) {
+            const rk = key === "members" ? "P" : (key === "xdocs" || key === "docs") ? "F" : "";
+            if (rk && o.length && Array.isArray(o[0])) {
+                o.forEach(r => { if (Array.isArray(r) && typeof r[0] === "string")
+                    v539Add(M, r[0], rk); });
+                return;
+            }
+            for (let i = 0; i < o.length && i < 4000; i++) {
+                const x = o[i];
+                if (typeof x === "string") {
+                    if (V539_KP.test(key) || V539_KO.test(key) || V539_KG.test(key))
+                        v539Pick(M, x, key, cx);
+                }
+                else if (x && typeof x === "object")
+                    walk(x, key, cx, d + 1);
+            }
+            return;
+        }
+        if (typeof o !== "object")
+            return;
+        for (const k in o) {
+            if (!Object.prototype.hasOwnProperty.call(o, k) || V539_SKIP.test(k))
+                continue;
+            const v = o[k];
+            if (typeof v === "string")
+                v539Pick(M, v, k, cx);
+            else if (v && typeof v === "object")
+                walk(v, k, cx, d + 1);
+        }
+    };
+    const G = (f) => { try {
+        return f();
+    }
+    catch (e) {
+        return null;
+    } };
+    const ses = G(() => SES);
+    if (ses && ses.who)
+        v539Add(M, ses.who, "P");
+    const adb = G(() => ADB);
+    if (adb && Array.isArray(adb.accounts))
+        walk(adb.accounts, "accounts", "accounts", 0);
+    const tens = G(() => TENS);
+    if (Array.isArray(tens))
+        walk(tens, "tens", "tens", 0);
+    const ten = G(() => TEN);
+    if (ten && !(Array.isArray(tens) && tens.includes(ten)))
+        walk(ten, "ten", "ten", 0);
+    const dd = G(() => D);
+    if (dd && typeof dd === "object")
+        walk(dd, "d", "d", 0);
+    [G(() => PRODUCTS), G(() => SAMPLES2), G(() => OPSX), G(() => MEMX), G(() => FWDB)].forEach(o => { if (o && typeof o === "object")
+        walk(o, "", "", 0); });
+    const st = G(() => (typeof staffAll === "function" ? staffAll() : null));
+    if (st && typeof st === "object")
+        Object.keys(st).forEach(c => (Array.isArray(st[c]) ? st[c] : []).forEach(x => { if (x && x.n)
+            v539Add(M, x.n, "P"); }));
+    const cp = G(() => (typeof corpProf === "function" ? corpProf() : null));
+    if (cp && typeof cp === "object")
+        walk(cp, "corp", "corp", 0);
+    const v30 = G(() => (typeof v30Get === "function" ? v30Get() : null));
+    if (v30 && typeof v30 === "object")
+        walk(v30, "v30", "", 0);
+    const po = G(() => (typeof poStore === "function" ? poStore() : null));
+    if (Array.isArray(po))
+        walk(po, "po", "", 0);
+    return M;
+}
+function v539Fresh(force) {
+    const now = Date.now(), L = (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+    if (V539.busy || (!force && now - V539.at < 1500 && V539.lang === L))
+        return;
+    V539.busy = true;
+    V539.at = now;
+    V539.lang = L;
+    try {
+        const M = v539Collect();
+        const dd = (L !== "ja" && I18N.dict) ? I18N.dict[L] : null;
+        if (dd)
+            [...M.keys()].forEach(v => { const x = dd[v]; if (typeof x === "string") {
+                const y = x.replace(/\s+/g, " ").trim();
+                if (y.length >= 2 && y !== v && !M.has(y) && !/⟦/.test(y))
+                    M.set(y, "D");
+            } });
+        const list = [...M.keys()].sort((a, b) => b.length - a.length || (a < b ? -1 : a > b ? 1 : 0));
+        const sig = L + "\u0002" + list.join("\u0001");
+        if (sig !== V539.sig) {
+            V539.sig = sig;
+            V539.n = list.length;
+            const F = new Map();
+            list.forEach(v => { const c = v.charCodeAt(0); let a = F.get(c); if (!a) {
+                a = [];
+                F.set(c, a);
+            } a.push(v); });
+            V539.first = F;
+            V539.memo.clear();
+            clearTimeout(V539.cleanT);
+            V539.cleanT = setTimeout(v539Clean, 80);
+        }
+    }
+    catch (e) { }
+    finally {
+        V539.busy = false;
+    }
+}
+function v539Edge(s, i, j, v) {
+    const a = s.charAt(i - 1), b = s.charAt(j);
+    if (/[A-Za-z0-9]/.test(v.charAt(0)) && /[A-Za-z0-9]/.test(a))
+        return false;
+    if (/[A-Za-z0-9]/.test(v.charAt(v.length - 1)) && /[A-Za-z0-9]/.test(b))
+        return false;
+    if (v.length <= 3 && V539_CJK.test(v)) {
+        if (a && V539_CJK.test(a))
+            return false;
+        if (b && V539_CJK.test(b) && !/[様殿氏]/.test(b))
+            return false;
+    }
+    return true;
+}
+const V539_RX = [/[A-Za-z0-9._%+\-]+@[A-Za-z0-9\-]+(?:\.[A-Za-z0-9\-]+)*/g, /(?:https?:\/\/|www\.)[A-Za-z0-9\-._~:\/?#\[\]@!$&'*+,;=%]+/g,
+    /\+\d{1,3}[ \-]?\(?\d{1,4}\)?(?:[ \-]?\d{2,4}){2,3}/g, /0\d{1,4}-\d{1,4}-\d{3,4}/g];
+function v539Tok(s) {
+    s = String(s == null ? "" : s);
+    v539Fresh();
+    const ch = [];
+    const tok = v => { let i = ch.indexOf(v); if (i < 0) {
+        if (ch.length >= 3800)
+            return v;
+        ch.push(v);
+        i = ch.length - 1;
+    } return "\uE000" + String.fromCharCode(0xE100 + i) + "\uE001"; };
+    let m = s;
+    const F = V539.first;
+    if (F.size) {
+        let out = "", i = 0, last = 0;
+        const L = m.length;
+        while (i < L) {
+            const cand = F.get(m.charCodeAt(i));
+            let hit = null;
+            if (cand)
+                for (let j = 0; j < cand.length; j++) {
+                    const v = cand[j];
+                    if (m.startsWith(v, i) && v539Edge(m, i, i + v.length, v)) {
+                        hit = v;
+                        break;
+                    }
+                }
+            if (hit) {
+                out += m.slice(last, i) + tok(hit);
+                i += hit.length;
+                last = i;
+            }
+            else
+                i++;
+        }
+        if (last)
+            m = out + m.slice(last);
+    }
+    if (/[@.\d]/.test(m))
+        V539_RX.forEach(re => {
+            m = m.replace(re, (x, off, str) => {
+                let y = x.replace(/[.,;:!?'\])]+$/, "");
+                if (y.length < 6)
+                    return x;
+                if (/[A-Za-z0-9\-]/.test(str.charAt(off - 1)) && !/^[+]/.test(y))
+                    return x;
+                const nx = str.charAt(off + y.length);
+                if (/[\d]/.test(nx))
+                    return x;
+                return tok(y) + x.slice(y.length);
+            });
+        });
+    return { m, ch };
+}
+function v539Disp(v) {
+    try {
+        const L = (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+        if (L === "ja")
+            return v;
+        const d = I18N.dict && I18N.dict[L];
+        const x = d ? d[v] : null;
+        return (typeof x === "string" && x.trim() && !/⟦/.test(x)) ? x : v;
+    }
+    catch (e) {
+        return v;
+    }
+}
+function v539Kept(t, y) { t = String(t == null ? "" : t); return t.includes(y) || t.includes(v539Disp(y)); }
+if (typeof v534Mask === "function") {
+    const __mk539 = v534Mask;
+    v534Mask = function (s) {
+        const a = v539Tok(s);
+        if (!a.ch.length)
+            return __mk539.apply(this, arguments);
+        const b = __mk539.call(this, a.m) || { m: a.m, ch: [] };
+        const ch = (Array.isArray(b.ch) ? b.ch : []).slice();
+        const ix = a.ch.map(v => { let i = ch.indexOf(v); if (i < 0) {
+            ch.push(v);
+            i = ch.length - 1;
+        } return i + 1; });
+        const m = String(b.m == null ? a.m : b.m).replace(/\uE000([\uE100-\uEFFF])\uE001/g, (x, c) => "⟦" + ix[c.charCodeAt(0) - 0xE100] + "⟧");
+        return { m, ch };
+    };
+}
+if (typeof v534Unmask === "function") {
+    const __um539 = v534Unmask;
+    v534Unmask = function (t, ch) { try {
+        return __um539.call(this, t, (Array.isArray(ch) ? ch : []).map(v539Disp));
+    }
+    catch (e) { } return __um539.apply(this, arguments); };
+}
+if (typeof ai18nNeeds === "function") {
+    const __nd539 = ai18nNeeds;
+    ai18nNeeds = function (s) {
+        try {
+            const k = String(s == null ? "" : s);
+            if (typeof V534 !== "undefined" && V534.skip && V534.skip.size && V534.skip.has(v534Key(k)))
+                return false;
+            const key = (k.length <= 300) ? ai18nLang() + "\u0001" + k : null;
+            v539Fresh();
+            if (key) {
+                const h = V539.memo.get(key);
+                if (h !== undefined)
+                    return h;
+            }
+            const a = v539Tok(k);
+            const r = a.ch.length ? !!__nd539.call(this, a.m.replace(/\uE000[\uE100-\uEFFF]\uE001/g, "⟦0⟧")) : !!__nd539.call(this, k);
+            if (key) {
+                if (V539.memo.size > 8000)
+                    V539.memo.clear();
+                V539.memo.set(key, r);
+            }
+            return r;
+        }
+        catch (e) { }
+        return __nd539.apply(this, arguments);
+    };
+}
+if (typeof v534Scrub === "function") {
+    v534Scrub = function (c) {
+        let n = 0;
+        if (!c || typeof c !== "object")
+            return 0;
+        const need = (typeof V534 !== "undefined" && V534.needs0) || (s => /[぀-ヿ一-鿿]/.test(s));
+        Object.keys(c).forEach(k => { const x = v534Mask(k); if (!x.ch.length)
+            return; const v = String(c[k] == null ? "" : c[k]); if (!need(x.m) || !x.ch.every(y => v539Kept(v, y))) {
+            delete c[k];
+            n++;
+        } });
+        return n;
+    };
+}
+function v539Clean() { try {
+    if (typeof ai18nLang !== "function" || ai18nLang() === "ja" || typeof ai18nLoad !== "function")
+        return;
+    const c = ai18nLoad();
+    if (v534Scrub(c) && typeof ai18nSave === "function")
+        ai18nSave();
+}
+catch (e) { } }
+if (typeof ai18nApplyNode === "function") {
+    const __ap539 = ai18nApplyNode;
+    ai18nApplyNode = function (n, t) {
+        try {
+            const o = n && n.nodeValue;
+            if (o != null && typeof v534Mask === "function") {
+                const k = ai18nKeyOf(o);
+                const x = v534Mask(k);
+                if (x.ch.length && !x.ch.every(y => v539Kept(t, y))) {
+                    try {
+                        if (AI18N.cache[k] === t)
+                            delete AI18N.cache[k];
+                    }
+                    catch (e) { }
+                    V539.rej++;
+                    return;
+                }
+            }
+        }
+        catch (e) { }
+        return __ap539.apply(this, arguments);
+    };
+}
+if (typeof ai18nApplyCached === "function") {
+    const __ac539 = ai18nApplyCached;
+    ai18nApplyCached = function () { V539.rej = 0; const r = __ac539.apply(this, arguments); const j = V539.rej; V539.rej = 0; if (j) {
+        try {
+            ai18nSave();
+        }
+        catch (e) { }
+        return (r | 0) + j;
+    } return r; };
+}
+if (typeof ai18nDictBB === "function") {
+    const __bb539 = ai18nDictBB;
+    ai18nDictBB = function () {
+        const N = ai18nNeeds, R = (typeof V534 !== "undefined" && V534 && V534.needs0) || null;
+        if (!R)
+            return __bb539.apply(this, arguments);
+        ai18nNeeds = R;
+        try {
+            return __bb539.apply(this, arguments);
+        }
+        finally {
+            ai18nNeeds = N;
+        }
+    };
+}
+try {
+    if (typeof V534 !== "undefined" && V534)
+        V534.hint = V539.hint;
+}
+catch (e) { }
 try {
     if (typeof v35Restore === "function")
         v35Restore();
