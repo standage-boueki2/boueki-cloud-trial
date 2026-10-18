@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="a9ae7354505f";
+const BC20_BUILD="b5175c7c9e7f";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -11599,6 +11599,12 @@ function tierFor(row, cols, qty) {
             hit = t;
     return { v: row[hit.i], label: hit.label };
 }
+function v21537Has(q, s, w) {
+    const k = norm2(w);
+    if (k !== "ddp" && k !== "dap")
+        return s.includes(k);
+    return new RegExp("(?:^|[^a-z])" + k + "(?![a-z])").test(String(q == null ? "" : q).toLowerCase());
+}
 const INTENTS = [
     ["price", ["いくら", "価格", "単価", "値段", "卸", "プライス", "price", "見積", "金額", "costs", "何円", "ドル"]],
     ["market", ["どの国", "どこに", "どこの", "売れ", "市場", "おすすめの国", "有望", "進出", "狙う", "ターゲット"]],
@@ -11643,7 +11649,7 @@ function v21533Ddp(q) {
 }
 function detectIntent(q) {
     const s = norm2(q), sc = {};
-    INTENTS.forEach(([k, ws]) => { sc[k] = ws.reduce((a, w) => a + (s.includes(norm2(w)) ? 1 : 0), 0); });
+    INTENTS.forEach(([k, ws]) => { sc[k] = ws.reduce((a, w) => a + (v21537Has(q, s, w) ? 1 : 0), 0); });
     if (/支払条件|取引条件|賞味期限|消費期限|産地|原産|仕出港|建値|インコタームズ/.test(s))
         sc.terms += 2;
     if (pickBuyer(q))
@@ -77747,7 +77753,7 @@ const V49G = [
         tips: ["写真を会社の書類として保管・共有するだけなら、「ドキュメント」の「アップロード」でも入れられます。"],
         acts: [{ t: "ロゴ・商品写真の欄へ", pg: "deck", f: "h:ロゴ・商品写真" }] },
     { id: "price", g: "商品", nm: "推奨FOB価格・現地販売価格を試算する", pg: "item", ex: "FOB価格を決めるには？",
-        kw: [[/FOB|DDP|DAP|現地販売価格|現地価格|着地価格|販売価格|価格設定|値付け|値決め|卸価格|売値|輸出価格/i, 3], [/価格|値段/, 1]], need: /決め|試算|計算|出す|出し|設定|算出|見積も|つけ|付け|求め/,
+        kw: [[/FOB|(?:^|[^A-Za-z])(?:DDP|DAP)(?![A-Za-z])|現地販売価格|現地価格|着地価格|販売価格|価格設定|値付け|値決め|卸価格|売値|輸出価格/i, 3], [/価格|値段/, 1]], need: /決め|試算|計算|出す|出し|設定|算出|見積も|つけ|付け|求め/,
         steps: ["「商品情報」の「② 価格表・寸法」の上にある「推奨FOB価格をAI商社マンと試算」を押し、「推奨FOBを出す」で、相場と強みから守り・標準・プレミアムの3段階と理由が出ます。決めた価格は「この価格を価格表へ」。",
             "隣の「現地販売価格をAI商社マンと試算」で、国・数量・利益率を入れると、運賃・関税・税・利益の内訳つきで相手の国での価格が出ます（航空と船便を比べられます）。",
             "「確定価格にする」で国ごとに保存され、営業資料と書類（PI・CI）に反映されます。"],
@@ -77957,7 +77963,7 @@ function v49Avail(t) {
         return true;
     }
 }
-const V49_SUBJ = { photo: /写真|画像|ロゴ|イメージ|フォト|photo|picture|logo/i, price: /FOB|DDP|DAP|価格|値段|値付け|値決め|売値/i,
+const V49_SUBJ = { photo: /写真|画像|ロゴ|イメージ|フォト|photo|picture|logo/i, price: /FOB|(?:^|[^A-Za-z])(?:DDP|DAP)(?![A-Za-z])|価格|値段|値付け|値決め|売値/i,
     edit: /価格表|寸法|重量|成分|原材料|強み|HSコード|HS ?code|英文名|英語名|品番|MOQ|最小ロット|リードタイム|取引条件|支払条件|賞味期限|消費期限|認証|産地|原産地|カートン|入数|仕出港|商品|製品|項目/i,
     item: /商品|製品|品目|アイテム|商材|SKU/i, upload: /資料|ファイル|書類|PDF|エクセル|Excel|カタログ|パンフ|データ|証明書|添付|アップロード/i, switch: /商品|製品|会社|商材/, cty: /国/,
     network: /バイヤー|取引先|顧客|輸入者|輸入業者|買い手|販路|ディストリビューター|代理店|卸先|相手/, buyer: /バイヤー|取引先|顧客|輸入者|輸入業者|買い手|相手先|ディストリビューター|代理店|卸先|得意先|名刺/,
