@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="f27927eee0d4";
+const BC20_BUILD="fe52efdaea80";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -80913,6 +80913,339 @@ try {
         ]);
 }
 catch (e) { }
+const V53EN = { ver: "21.53.14", mode: { en: "all", es: "all", zh: "kana" }, ai: true, raw: "", sig: "", at: 0, n: 0, keep: 0, swap: 0, err: "",
+    full: { en: new Map(), zh: new Map(), es: new Map() }, cut: { en: new Map(), zh: new Map(), es: new Map() }, rows: { en: new Map(), zh: new Map(), es: new Map() }, re: { en: null, zh: null, es: null }, lab: new WeakMap() };
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N || !I18N.dict || !Array.isArray(I18N.pat))
+            return;
+        const L3 = ["en", "zh", "es"];
+        const JP = /[぀-ヿ一-鿿㐀-䶿豈-﫿ｦ-ﾟ々〆ヶ]/, KANA = /[぀-ゟ゠-ヿｦ-ﾟ]/;
+        const N = s => String(s == null ? "" : s).replace(/\s+/g, " ").trim();
+        const CJ = /^(?:株式会社|有限会社|合同会社|合資会社|合名会社|（株）|\(株\)|㈱|（有）|\(有\)|㈲)[ 　]*|[ 　]*(?:株式会社|有限会社|合同会社|合資会社|合名会社|（株）|\(株\)|㈱|（有）|\(有\)|㈲)$/g;
+        const CE = /[\s,]*(?:Co\.?,?\s*Ltd\.?|Co\.?\s+Limited|Company\s+Limited|Limited|Ltd\.?|Inc\.?|Incorporated|Corp\.?|Corporation|L\.?L\.?C\.?|K\.\s?K\.|G\.\s?K\.|Y\.\s?K\.)$/i;
+        const CUT = [10, 14, 16, 18, 20, 22, 24, 28, 30, 40];
+        const okJ = s => s.length >= 2 && s.length <= 120 && JP.test(s) && !/^[（(].*[）)]$/.test(s) && !(typeof V539_STOP !== "undefined" && V539_STOP.test(s));
+        const okE = (e, j) => e.length >= 2 && e.length <= 120 && /[A-Za-z]/.test(e) && !JP.test(e) && e !== j && !/^(?:n\/?a|none|tbd|tbc|unknown|[-—–.]+)$/i.test(e);
+        const pairs = () => {
+            const P = [];
+            const seen = new Set();
+            const L = [];
+            try {
+                if (typeof TENS !== "undefined" && Array.isArray(TENS))
+                    TENS.forEach(t => L.push(t));
+            }
+            catch (e) { }
+            try {
+                if (typeof TEN !== "undefined" && TEN && !L.includes(TEN))
+                    L.push(TEN);
+            }
+            catch (e) { }
+            L.forEach(t => {
+                if (!t || typeof t !== "object")
+                    return;
+                [["G", t.item, t.itemEn], ["O", t.co, t.coEn]].forEach(([k, j, e]) => {
+                    j = N(j);
+                    e = N(e);
+                    try {
+                        if (typeof dk3S === "function")
+                            e = N(dk3S(e));
+                    }
+                    catch (x) { }
+                    if (!okJ(j) || !okE(e, j))
+                        return;
+                    if (k === "G") {
+                        try {
+                            if (typeof dk3GenericName === "function" && dk3GenericName(e, t))
+                                return;
+                        }
+                        catch (x) { }
+                    }
+                    const id = k + "\u0001" + j + "\u0001" + e;
+                    if (seen.has(id))
+                        return;
+                    seen.add(id);
+                    P.push({ k, j, e });
+                    if (k === "O") {
+                        const j2 = j.replace(CJ, "").trim(), e2 = e.replace(CE, "").trim();
+                        if (j2 !== j && okJ(j2) && okE(e2 || e, j2))
+                            P.push({ k: "O2", j: j2, e: e2 || e, of: j });
+                    }
+                });
+            });
+            return P;
+        };
+        const clean = P => {
+            const byJ = new Map(), byE = new Map();
+            P.forEach(p => { const a = byJ.get(p.j) || new Set(); a.add(p.e); byJ.set(p.j, a); const ke = p.k.charAt(0) + "\u0001" + p.e.toLowerCase(); const b = byE.get(ke) || new Set(); b.add(p.of || p.j); byE.set(ke, b); });
+            return P.filter(p => byJ.get(p.j).size === 1 && byE.get(p.k.charAt(0) + "\u0001" + p.e.toLowerCase()).size === 1);
+        };
+        const want = (L, p) => { const m = V53EN.mode[L]; return m === "all" || (m === "kana" && KANA.test(p.of || p.j)); };
+        const setRows = (L, NEW) => {
+            const d = I18N.dict[L], R = V53EN.rows[L];
+            if (!d)
+                return 0;
+            let n = 0;
+            R.forEach((e, j) => { if (NEW.get(j) !== e) {
+                if (d[j] === e) {
+                    delete d[j];
+                    n++;
+                }
+                R.delete(j);
+            } });
+            NEW.forEach((e, j) => { if (R.get(j) === e)
+                return; if (Object.prototype.hasOwnProperty.call(d, j))
+                return; d[j] = e; R.set(j, e); n++; });
+            return n;
+        };
+        const raw = () => {
+            const a = [JSON.stringify(V53EN.mode)];
+            try {
+                if (typeof TENS !== "undefined" && Array.isArray(TENS))
+                    TENS.forEach(t => { if (t)
+                        a.push(t.item + "\u0001" + t.itemEn + "\u0001" + t.co + "\u0001" + t.coEn); });
+            }
+            catch (e) { }
+            try {
+                if (typeof TEN !== "undefined" && TEN)
+                    a.push("T\u0001" + TEN.item + "\u0001" + TEN.itemEn + "\u0001" + TEN.co + "\u0001" + TEN.coEn);
+            }
+            catch (e) { }
+            return a.join("\u0002");
+        };
+        const fresh = (force) => {
+            const r0 = raw();
+            if (!force && r0 === V53EN.raw)
+                return false;
+            V53EN.raw = r0;
+            V53EN.at = Date.now();
+            const P = clean(pairs());
+            const sig = JSON.stringify([V53EN.mode, P.map(p => p.k + p.j + "\u0001" + p.e)]);
+            if (!force && sig === V53EN.sig)
+                return false;
+            V53EN.sig = sig;
+            V53EN.n = P.length;
+            let ch = 0;
+            L3.forEach(L => {
+                const d = I18N.dict[L] || {}, R = V53EN.rows[L], NEW = new Map();
+                const own = (j, e) => R.get(j) === e || !Object.prototype.hasOwnProperty.call(d, j) || (R.has(j) && d[j] === R.get(j));
+                P.forEach(p => { if (p.k !== "O2" && want(L, p) && own(p.j, p.e))
+                    NEW.set(p.j, p.e); });
+                P.forEach(p => { if (p.k === "O2" && want(L, p) && NEW.has(p.of) && own(p.j, p.e))
+                    NEW.set(p.j, p.e); });
+                ch += setRows(L, NEW);
+                const F = new Map(), C = new Map(), C2 = new Map();
+                V53EN.rows[L].forEach((e, j) => F.set(j, e));
+                F.forEach((e, j) => { if (j.length > CUT[0])
+                    CUT.forEach(n => { if (j.length > n) {
+                        const c = j.slice(0, n).trim();
+                        if (c.length >= 6 && !F.has(c)) {
+                            const a = C2.get(c) || new Set();
+                            a.add(e);
+                            C2.set(c, a);
+                        }
+                    } }); });
+                C2.forEach((a, c) => { if (a.size === 1)
+                    C.set(c, [...a][0]); });
+                V53EN.full[L] = F;
+                V53EN.cut[L] = C;
+                const ks = [...F.keys(), ...C.keys()].sort((a, b) => b.length - a.length).map(x => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+                V53EN.re[L] = ks.length ? new RegExp(ks.join("|")) : null;
+            });
+            if (ch && I18N.lang !== "ja") {
+                try {
+                    i18nApply(document.body);
+                }
+                catch (e) { }
+                try {
+                    labels();
+                }
+                catch (e) { }
+            }
+            return !!ch;
+        };
+        V53EN.fresh = fresh;
+        const enOf = (L, v) => { const F = V53EN.full[L], C = V53EN.cut[L]; return (F && F.get(v)) || (C && C.get(v)) || null; };
+        V53EN.enOf = enOf;
+        const swap = (s, L) => {
+            s = String(s);
+            const re = V53EN.re[L];
+            if (!re || !re.test(s))
+                return s;
+            if (typeof v539Tok === "function") {
+                const a = v539Tok(s);
+                if (!a.ch.length)
+                    return s;
+                let hit = 0;
+                const r = a.m.replace(/\uE000([\uE100-\uEFFF])\uE001/g, (x, c) => { const v = a.ch[c.charCodeAt(0) - 0xE100]; const e = v == null ? null : enOf(L, v); if (e) {
+                    hit++;
+                    return e;
+                } return v == null ? x : v; });
+                if (hit)
+                    V53EN.swap++;
+                return hit ? r : s;
+            }
+            return s;
+        };
+        V53EN.swapText = swap;
+        const srcOf = m => { try {
+            if (I18N.orig && I18N.orig.has(m))
+                return I18N.orig.get(m);
+            if (typeof AI18N !== "undefined" && AI18N.map && AI18N.map.has(m))
+                return AI18N.map.get(m).o;
+        }
+        catch (e) { } return m.nodeValue; };
+        const paired = (n, e) => {
+            let c = n.parentElement;
+            const el = e.toLowerCase();
+            for (let up = 0; up < 2 && c; up++, c = c.parentElement) {
+                if (c === document.body || /^(?:well|pn|nav|psw)$/.test(c.id || "") || /^(?:OPTION|OPTGROUP|SELECT)$/.test(c.nodeName))
+                    return false;
+                const tc = c.textContent || "";
+                if (tc.length > 400)
+                    return false;
+                const w = document.createTreeWalker(c, NodeFilter.SHOW_TEXT);
+                while (w.nextNode()) {
+                    const m = w.currentNode;
+                    if (m === n)
+                        continue;
+                    if (N(srcOf(m)).toLowerCase().includes(el))
+                        return true;
+                }
+            }
+            return false;
+        };
+        if (typeof i18nText === "function") {
+            const __it5314 = i18nText;
+            i18nText = function (n, d) {
+                try {
+                    const L = I18N.lang;
+                    if (L !== "ja" && n && n.nodeType === 3 && V53EN.full[L] && V53EN.full[L].size && !(I18N.elNodes && I18N.elNodes.has(n))) {
+                        const src = I18N.orig.has(n) ? I18N.orig.get(n) : n.nodeValue;
+                        const k = String(src == null ? "" : src).trim();
+                        const e = V53EN.full[L].get(k);
+                        if (e && paired(n, e)) {
+                            if (I18N.orig.has(n)) {
+                                if (n.nodeValue !== src)
+                                    n.nodeValue = src;
+                                I18N.orig.delete(n);
+                            }
+                            V53EN.keep++;
+                            return;
+                        }
+                    }
+                }
+                catch (e) { }
+                return __it5314.apply(this, arguments);
+            };
+        }
+        if (typeof i18nStr === "function") {
+            const __st5314 = i18nStr;
+            i18nStr = function (s, d) { const r = __st5314.apply(this, arguments); try {
+                const L = I18N.lang;
+                if (r != null && L !== "ja" && V53EN.full[L] && V53EN.full[L].size)
+                    return swap(r, L);
+            }
+            catch (e) { } return r; };
+        }
+        if (typeof v539Disp === "function") {
+            const __dp5314 = v539Disp;
+            v539Disp = function (v) { try {
+                const L = I18N.lang;
+                if (L !== "ja") {
+                    const e = enOf(L, v);
+                    if (e)
+                        return e;
+                }
+            }
+            catch (e) { } return __dp5314.apply(this, arguments); };
+        }
+        if (typeof ai18nApplyNode === "function") {
+            const __ap5314 = ai18nApplyNode;
+            ai18nApplyNode = function (n, t) { try {
+                const L = I18N.lang;
+                if (L !== "ja" && typeof t === "string")
+                    t = swap(t, L);
+            }
+            catch (e) { } return __ap5314.call(this, n, t); };
+        }
+        const nm = (s, d, L) => { const k = N(s); return enOf(L, k) || d[k] || k; };
+        const opt = (m, d, L) => { const e = enOf(L, N(m[1])); const c = d[m[2]]; if (!e || typeof c !== "string")
+            return null; return L === "zh" ? e + "（" + c + "）" : e + " (" + c + ")"; };
+        I18N.pat.unshift({ re: /^対象の商品：(.+)（上の切替メニューで変えられます）$/, en: (m, d) => "Product: " + nm(m[1], d, "en") + " (you can change it with the switch menu above)", zh: (m, d) => "对象商品：" + nm(m[1], d, "zh") + "（可用上方的切换菜单更改）", es: (m, d) => "Producto: " + nm(m[1], d, "es") + " (puede cambiarlo con el menú de arriba)" }, { re: /^(.+)（([^（）]{1,20})）$/, en: (m, d) => opt(m, d, "en"), zh: (m, d) => opt(m, d, "zh"), es: (m, d) => opt(m, d, "es") });
+        const labels = () => {
+            const L = I18N.lang;
+            document.querySelectorAll("#psw optgroup").forEach(g => {
+                let o = V53EN.lab.get(g);
+                if (o == null) {
+                    o = g.getAttribute("label") || "";
+                    V53EN.lab.set(g, o);
+                }
+                const m = o.match(/^(🏢 )(.+)$/);
+                const e = (L !== "ja" && m) ? enOf(L, N(m[2])) : null;
+                const v = e ? m[1] + e : o;
+                if (g.getAttribute("label") !== v)
+                    g.setAttribute("label", v);
+            });
+            const av = document.querySelector("#tenant .av");
+            if (av && typeof PID !== "undefined" && PID && typeof D !== "undefined" && D && D.co) {
+                if (av.dataset.v53o == null)
+                    av.dataset.v53o = av.textContent;
+                const e = L !== "ja" ? enOf(L, N(D.co)) : null;
+                const c = (String(e || "").match(/[A-Za-z0-9]/) || [""])[0].toUpperCase();
+                const v = c || av.dataset.v53o;
+                if (av.textContent !== v)
+                    av.textContent = v;
+            }
+        };
+        V53EN.labels = labels;
+        if (typeof buildNav === "function") {
+            const __bn5314 = buildNav;
+            buildNav = function () { try {
+                fresh();
+            }
+            catch (e) { } const r = __bn5314.apply(this, arguments); try {
+                labels();
+            }
+            catch (e) { } return r; };
+        }
+        if (typeof render === "function") {
+            const __rd5314 = render;
+            render = function () { try {
+                fresh();
+            }
+            catch (e) { } return __rd5314.apply(this, arguments); };
+        }
+        if (typeof i18nSet === "function") {
+            const __is5314 = i18nSet;
+            i18nSet = function () { try {
+                fresh(true);
+            }
+            catch (e) { } const r = __is5314.apply(this, arguments); try {
+                labels();
+            }
+            catch (e) { } return r; };
+        }
+        if (typeof saveTen === "function") {
+            const __sv5314 = saveTen;
+            saveTen = function () { const r = __sv5314.apply(this, arguments); try {
+                fresh();
+            }
+            catch (e) { } return r; };
+        }
+        if (V53EN.ai && typeof I18N_INSTR !== "undefined" && I18N_INSTR) {
+            const T = { en: "Answer in English (for products and companies, use the registered English names given in parentheses when available; keep codes as they are).",
+                es: "Responde en español (para productos y empresas, usa los nombres en inglés registrados que aparecen entre paréntesis cuando existan; mantén los códigos tal como están).",
+                zh: { all: "请用简体中文回答（商品名・公司名请使用括号中登记的英文名（如有）；代码保持原样）。", kana: "请用简体中文回答（含日文假名的商品名・公司名请使用括号中登记的英文名（如有）；其他名称和代码保持原样）。" } };
+            L3.forEach(L => { const m = V53EN.mode[L]; if (m === "off")
+                return; const x = L === "zh" ? T.zh[m] : T[L]; if (x)
+                I18N_INSTR[L] = x; });
+        }
+    }
+    catch (e) {
+        V53EN.err = String(e && e.message || e);
+    }
+})();
 try {
     if (typeof v35Restore === "function")
         v35Restore();
