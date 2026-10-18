@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="9525c7d0d202";
+const BC20_BUILD="5b566632e5cb";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -14804,6 +14804,134 @@ catch (e) {
     return 7;
 } }
 function shipShort(b) { return String(b || "").replace(/ (Ltd|Co|Inc|Pte|LLC|GmbH|JSC|SARL|DMCC|Sdn)\.?.*/, "").slice(0, 14); }
+const V5317_PICK = "（物流会社へ共有後に決定）";
+const V5317_NOQ = "見積はまだありません（見本の案件の見積は写していません）。";
+const V5317_NOREG = "この国は規制DB（進出希望国の決まりごと）に入っていないため、必要な証明書・登録・表示などは、この案件の書類に入っていません。手配の前に確かめてください。";
+function v5317Key(k) {
+    const s = String(k || "").trim();
+    if (/^PI$|見積送り状|proforma/i.test(s))
+        return "PI";
+    if (/^CI$|インボイス|invoice/i.test(s))
+        return "CI";
+    if (/^PL$|パッキング|packing|梱包明細/i.test(s))
+        return "PL";
+    if (/^S\/I$|船積指示|shipping\s*instruction/i.test(s))
+        return "S/I";
+    return "";
+}
+function v5317Docs(prev, cty) {
+    const r = (typeof D !== "undefined" && D && D.regs && cty) ? D.regs[cty] : null;
+    const reg = (r && Array.isArray(r.docs)) ? r.docs.map(x => {
+        let row = [x, "", (typeof GL !== "undefined" && GL[x]) || "この国の通関で求められる書類です"];
+        try {
+            if (typeof v54rDocRow === "function")
+                row = v54rDocRow(row[0], row[1], row[2], cty);
+        }
+        catch (e) { }
+        return row;
+    }) : [];
+    const pick = k => reg.find(x => v5317Key(x && x[0]) === k) || (prev || []).find(x => x && v5317Key(x[0]) === k) || null;
+    const base = ["PI", "CI", "PL", "S/I"].map(pick).filter(Boolean).map(x => x.slice());
+    return { docs: base.concat(reg.filter(x => !v5317Key(x && x[0]))), reg: !!r };
+}
+function v5317Sched() {
+    const a = n => addDays(TODAYS, n).slice(5);
+    return [[a(18), "書類の準備", ""], [a(19), "通関", ""], [a(20), "出港（ETD）", "o"], [a(27), "到着（ETA）", ""], [a(30), "荷渡し", ""], [a(50), "入金期日", "g"]];
+}
+function v5317Reason() {
+    return (typeof fwdRequest === "function")
+        ? "この案件の見積は、まだありません。<br>2段目の「AI見積を依頼」で、貿易クラウド内の物流会社（AI物流マン）に見積を頼むと、届いた相見積をここで比べられます。"
+        : "この案件の見積は、まだありません。<br>デモ版では物流会社に見積を頼めないため、見積の比べ方は見本の案件でご覧ください。";
+}
+function v5317Fresh(S) {
+    if (!S)
+        return S;
+    const d = v5317Docs(S.docs, S.country);
+    S.docs = d.docs;
+    S.v5317reg = d.reg ? 1 : 0;
+    S.pod = S.country;
+    S.sched = v5317Sched();
+    S.want = addDays(TODAYS, 30);
+    S.quotes = [];
+    S.pick = V5317_PICK;
+    S.reason = v5317Reason();
+    S.vessel = "（未定）";
+    S.bl = "（未発行）";
+    S.coNo = "（未申請）";
+    S.min = "—";
+    S.link = [["物流会社へ S/I・貨物情報を渡す", "見積・ブッキングの条件を確かめる"], ["通関業者へ CI・PL を渡す", `${tm("HSコード")} ${esc((typeof D !== "undefined" && D && D.hs) || "未登録")} で申告予定`],
+        ["商工会議所へ原産地証明書を申請", "必要な場合のみ（送り先の規制による）"], ["会計システムへ売上を計上", "入金期日の管理"]];
+    ["poNo", "date", "orderDate", "buyerAddr", "buyerContact", "consignee", "notify", "marks", "remarks"].forEach(k => { delete S[k]; });
+    if (S.docRows) {
+        if (Array.isArray(S.docRows.plEx))
+            S.docRows.plEx = S.docRows.plEx.filter(x => !(x && /^Marks$/i.test(String(x[0]))));
+        if (Array.isArray(S.docRows.ex))
+            S.docRows.ex = S.docRows.ex.filter(x => !(x && /^P\/O No\.$/i.test(String(x[0]))));
+    }
+    S.v5317 = 1;
+    return S;
+}
+function v5317Saved(S, src) {
+    try {
+        if (!S || S.v5317 || S.poNo || src === "po")
+            return S;
+        const d = v5317Docs(S.docs, S.country);
+        S.docs = d.docs;
+        S.v5317reg = d.reg ? 1 : 0;
+        if (S.country && S.pod !== S.country)
+            S.pod = S.country;
+        const Q = S.quotes || [];
+        if (Q.length && Q.every(q => String((q && q[4]) || "") === "（想定）")) {
+            S.quotes = [];
+            S.pick = V5317_PICK;
+            S.reason = v5317Reason();
+        }
+        S.v5317 = 1;
+        S.v5317old = 1;
+    }
+    catch (e) { }
+    return S;
+}
+function v5317Sync(S) { try {
+    if (S && S.v5317 && !S.v5317reg && !S.poNo && typeof D !== "undefined" && D && D.regs && D.regs[S.country]) {
+        const d = v5317Docs(S.docs, S.country);
+        S.docs = d.docs;
+        S.v5317reg = 1;
+    }
+}
+catch (e) { } }
+function v5317NoRegHtml(S) { return (S && S.v5317 && !S.v5317reg) ? `<p class="nn v5317noreg" style="margin-top:8px;padding:7px 9px;border:1px dashed var(--line);border-radius:var(--r2)">${V5317_NOREG}</p>` : ""; }
+if (typeof shipSteps === "function") {
+    const __ss5317 = shipSteps;
+    shipSteps = function () {
+        const ST = __ss5317.apply(this, arguments);
+        try {
+            const S = (typeof D !== "undefined" && D) ? D.ship : null;
+            if (!S || !S.v5317 || !ST)
+                return ST;
+            if (ST[2] && !(S.quotes || []).length)
+                ST[2].art = { h: "見積の比較", b: `<p class="nn v5317noq">${V5317_NOQ}</p>` };
+            if (ST[3] && /^（/.test(String(S.pick || "")))
+                ST[3].ai = String(ST[3].ai || "").replace(/^\s*（[^）]*）で進めます。\s*/, "");
+            if (ST[3] && !S.v5317reg) {
+                ST[3].ai = String(ST[3].ai || "") + `<br>${esc(S.country)}は規制DB（進出希望国の決まりごと）に入っていないため、${esc(S.country)}向けに必要な証明書・登録・表示などは、この案件の書類に入っていません。手配の前に確かめてください。`;
+                if (ST[3].art)
+                    ST[3].art.b = String(ST[3].art.b || "") + v5317NoRegHtml(S);
+            }
+        }
+        catch (e) { }
+        return ST;
+    };
+}
+if (typeof shipEnsure === "function") {
+    const __se5317 = shipEnsure;
+    shipEnsure = function () { const r = __se5317.apply(this, arguments); try {
+        const c = SHIPS && SHIPS[SHIPA];
+        if (c && c.custom)
+            v5317Sync(c.ship);
+    }
+    catch (e) { } return r; };
+}
 function shipCaseNew(o) {
     o = o || {};
     const cty = (typeof cnorm === "function" ? cnorm(o.cty || "") : (o.cty || "")) || "香港";
@@ -14814,6 +14942,7 @@ function shipCaseNew(o) {
     ship.country = cty;
     ship.buyer = o.buyer || ("（想定）" + cty + "の輸入商社");
     ship.want = addDays(TODAYS, 14 + ((SHIPS ? SHIPS.length : 1) * 2));
+    v5317Fresh(ship);
     return { ship, step: 0, qa: [], custom: 1, src: o.src || "", mods: {}, open: 1, at: (SHIPS ? (SHIPS._seq = (SHIPS._seq || 1) + 1) : 1) };
 }
 function shipSlot(keep) {
@@ -15816,7 +15945,7 @@ function vOpsDoc() {
       <div class="rw" style="margin-top:10px"><button class="btn" onclick="toast('PDFを書き出しました')">PDFで書き出す</button>
         <button class="btn g" onclick="toast('相手に送信しました')">相手に送る</button></div></div>
     <div class="c"><h3>この案件で使う書類 ${S.docs.length}点</h3>
-      <p class="nn">送り先の規制調査から、必要な書類が自動で決まります。</p>
+      <p class="nn">送り先の規制調査から、必要な書類が自動で決まります。</p>${v5317NoRegHtml(S)}
       <div style="margin-top:10px;display:flex;flex-direction:column;gap:0">
         ${S.docs.map(([k, e, d]) => `<div style="display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line-2)">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--good)" stroke-width="2.4" style="margin-top:4px;flex:none"><path d="m20 6-11 11-5-5"/></svg>
@@ -43040,7 +43169,7 @@ function shp211Rehydrate() {
     (Array.isArray(TEN.shipCases) ? TEN.shipCases : []).forEach(r => {
         if (!r || !r.ship || SHIPS.some(c => c && c.ship && c.ship.no === r.ship.no))
             return;
-        SHIPS.push({ ship: JSON.parse(JSON.stringify(r.ship)), step: r.step || 0, qa: (r.qa || []).slice(), custom: 1, src: r.src || "", mods: r.mods || {}, open: r.open === false ? false : 1, at: (SHIPS._seq = (SHIPS._seq || 1) + 1) });
+        SHIPS.push({ ship: (typeof v5317Saved === "function" ? v5317Saved(JSON.parse(JSON.stringify(r.ship)), r.src) : JSON.parse(JSON.stringify(r.ship))), step: r.step || 0, qa: (r.qa || []).slice(), custom: 1, src: r.src || "", mods: r.mods || {}, open: r.open === false ? false : 1, at: (SHIPS._seq = (SHIPS._seq || 1) + 1) });
     });
     const sd = TEN.shipSeed;
     if (sd && !SHIPS.__seed211 && SHIPS[0] && SHIPS[0].seed && (!sd.no || !SHIPS[0].ship || SHIPS[0].ship.no === sd.no)) {
@@ -65977,6 +66106,20 @@ if (typeof deckBind === "function") {
                 ["「見積を比べる」に並ぶ3社は見本（想定の見積）です。", "The 3 companies listed in “Compare quotes” are samples (assumed quotes).", "“比较报价”中列出的3家公司是样本（假设的报价）。", "Las 3 empresas de «Comparar cotizaciones» son de muestra (cotizaciones supuestas)."],
                 ["物流会社へ S/I・貨物情報を共有", "Share the S/I and cargo details with forwarders", "向物流公司共享S/I和货物信息", "Compartir la S/I y los datos de la carga con los transitarios"],
                 ["AI物流マンが見積・ブッキング条件を回答", "AI Logistics replies with quotes and booking terms", "AI物流专员回复报价和订舱条件", "La IA logística responde con cotizaciones y condiciones de reserva"]
+            ]);
+    }
+    catch (e) { }
+})();
+(function () {
+    try {
+        if (typeof v30I18n === "function")
+            v30I18n([
+                ["見積の比較", "Quote comparison", "报价比较", "Comparación de cotizaciones"],
+                ["見積はまだありません（見本の案件の見積は写していません）。", "No quotes yet (the sample case’s quotes were not copied).", "还没有报价（未复制示例案件的报价）。", "Aún no hay cotizaciones (no se copiaron las del caso de ejemplo)."],
+                ["この国は規制DB（進出希望国の決まりごと）に入っていないため、必要な証明書・登録・表示などは、この案件の書類に入っていません。手配の前に確かめてください。",
+                    "This country is not in the regulation database (the rules for your target countries), so the certificates, registrations and labelling it requires are not in this case’s documents. Check them before you arrange anything.",
+                    "该国不在法规数据库（目标国家的规定）中，因此所需的证明、注册、标签等不在本案件的单证中。请在安排前确认。",
+                    "Este país no está en la base de normativa (las reglas de sus países objetivo), así que los certificados, registros y etiquetado que exige no están en los documentos de este caso. Compruébelos antes de organizar nada."]
             ]);
     }
     catch (e) { }
