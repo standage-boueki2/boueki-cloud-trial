@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="e5330d03d593";
+const BC20_BUILD="b985cbacc40c";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -6722,7 +6722,7 @@ const NEED = [
     { k: "lead", n: "リードタイム", w: 4, use: "納期回答・出荷計画",
         q: "受注から出荷までの日数を教えてください。", ex: "例：受注後 21日" },
     { k: "dimRows", n: "寸法・重量", w: 5, use: "運賃見積・梱包明細・コンテナ計算",
-        q: "単品と外装カートンの<b>サイズと重量</b>を教えてください。これがないと運送会社に見積を頼めません。",
+        q: "単品と外装カートンの<b>サイズと重量</b>を教えてください。これがないと物流会社にAI見積を頼めません。",
         ex: "例：単品 110×45×175mm・128g／外装 400×300×250mm・3.05kg・20入" },
     { k: "ctn", n: "パレット・コンテナ入数", w: 3, use: "FCL/LCLの判断・輸送費の試算",
         q: "1パレットに外装が何ケース載りますか？コンテナ入数が分かればそれも。", ex: "例：外装40ケース／パレット、20ftで18パレット" },
@@ -6871,6 +6871,14 @@ function fillNext() {
     <div class="ci">これは <b>${nx.use}</b> に使われます。` + `</div>`, { ask: nx });
     render();
 }
+function v5313DimNote() {
+    const t = (typeof TEN !== "undefined" && TEN) || {}, ok = v => Array.isArray(v) ? v.length > 0 : !!(v && String(v).trim());
+    const miss = [ok(t.priceRows) ? "" : "価格表", ok(t.targets) ? "" : "進出希望国（「販売先国の選定」で確定）"].filter(Boolean);
+    if (typeof fwdRequest !== "function")
+        return "<br>これで<b>運賃の見積・梱包明細</b>に使えるようになりました。";
+    return miss.length ? `<br>あと${miss.join("と")}がそろうと、「貿易実務・書類・出荷」の「3 出荷を進める」から<b>物流会社へAI見積</b>を依頼できます。`
+        : "<br>これで、「貿易実務・書類・出荷」の「3 出荷を進める」から<b>物流会社へAI見積</b>を依頼できるようになりました。";
+}
 function fillAnswer(v) {
     if (!FILL.cur)
         return;
@@ -6889,7 +6897,7 @@ function fillAnswer(v) {
     if (k === "targets" && TEN.targets.length)
         note = `<br><b>${TEN.targets.length}か国</b>の規制調査を開始しました。関税率と必要書類は「貿易実務・書類・出荷」で確認できます。`;
     if (k === "dimRows")
-        note = "<br>これで<b>運送会社への見積依頼</b>ができるようになりました。";
+        note = v5313DimNote();
     if (k === "priceRows")
         note = "<br>これで<b>見積書・請求書の自動作成</b>ができるようになりました。";
     if (k === "strengths")
@@ -7335,7 +7343,7 @@ function buildShip(d, t) {
       ${esc(t.moq || "最小ロット")}を前提に、${c}向けの標準的な条件で試算しました。`,
         docs: (r.docs || []).map(x => [x, "", GL[x] || "この国の通関で求められる書類です"]).slice(0, 7),
         vessel: "（未定）", bl: "（未発行）", coNo: "（未申請）",
-        link: [["運送会社へ見積を依頼", "寸法・重量・希望ETDを自動で整形して送信します"],
+        link: [["物流会社へ S/I・貨物情報を共有", "AI物流マンが見積・ブッキング条件を回答"],
             ["通関業者へ申告情報を連携", `${tm("HSコード")} ${t.hs || "未登録"} で申告予定`],
             ["商工会議所へ原産地証明書を電子申請", "日本製であることの証明"],
             ["会計システムへ売上計上データを連携", "入金期日の管理まで自動で"]],
@@ -9134,7 +9142,7 @@ function fillCommit(v) {
     if (k === "targets" && TEN.targets.length)
         note = `<br><b>${TEN.targets.length}か国</b>の規制調査を開始しました。関税率と必要書類は「貿易実務・書類・出荷」で確認できます。`;
     if (k === "dimRows")
-        note = "<br>これで<b>運送会社への見積依頼</b>ができるようになりました。";
+        note = v5313DimNote();
     if (k === "priceRows")
         note = "<br>これで<b>見積書・請求書の自動作成</b>ができるようになりました。";
     if (k === "strengths")
@@ -14616,6 +14624,20 @@ function vDash(p) {
       </div></div>
   </div>`;
 }
+const V5313_TAGS = "line";
+function v5313Smp(S) { return /^（想定）/.test(String((S && S.buyer) || "")) || ((S && S.quotes) || []).some(q => String((q && q[4]) || "") === "（想定）"); }
+function v5313Ai2(S) { return `貨物の大きさと行き先が決まっているので、<b>貿易クラウド内の物流会社にAI見積を依頼</b>します。<br>物流会社が登録したレートから、AI物流マンが見積（金額・所要日数）を返します。メールを書く必要はありません。`; }
+function v5313Tags(S) {
+    const L = ((S && S.quotes) || []).filter(q => q && q[0]);
+    if (!L.length)
+        return "";
+    const nm = q => esc(String(q[0]).replace(/（.*/, ""));
+    if (v5313Smp(S) && V5313_TAGS === "line")
+        return `<p style="font-size:10.5px;color:var(--ink-3);margin-top:8px;line-height:1.7">「見積を比べる」に並ぶ${L.length}社は見本（想定の見積）です。</p>`;
+    if (v5313Smp(S) && V5313_TAGS === "tags")
+        return `<div class="rw" style="margin-top:9px">${L.map(q => `<span class="p">見本：${nm(q)}</span>`).join("")}</div>`;
+    return `<div class="rw" style="margin-top:9px">${L.map(q => `<span class="p on">${nm(q)} ${v5313Smp(S) && V5313_TAGS === "keep" ? "へ送信済" : "へ依頼済"}</span>`).join("")}</div>`;
+}
 function shipSteps() {
     const S = D.ship, air = /航空/.test(S.pick);
     return [
@@ -14632,14 +14654,12 @@ function shipSteps() {
    <span>取引条件</span><span>${T("{" + S.term.split(" ")[0] + "} " + S.term.split(" ").slice(1).join(" "))}</span>
    <span>支払</span><span>${S.pay ? esc(S.pay) : tm("T/T") + " 30日"}</span>
    <span>希望着荷</span><span>${S.want}</span>${(S.extra || []).map(e => `<span>${esc(e[0])}</span><span>${esc(e[1])}</span>`).join("")}</div></div>` } },
-        { t: "運送会社に見積を頼む", ai: `貨物の大きさと行き先が決まっているので、<b>${tm("フォワーダー")}3社へ同時に見積を依頼</b>します。
-   メールを書く必要はありません。書式はこちらで整えて送ります。`,
-            art: { h: "送信した依頼内容", b: `<div style="font-size:11.5px;line-height:1.8">
+        { t: "物流会社にAI見積を頼む", ai: v5313Ai2(S),
+            art: { h: "依頼内容", b: `<div style="font-size:11.5px;line-height:1.8">
    <b>${S.pol} → ${S.pod}</b>／${tm(S.term.split(" ")[0])}／${esc(S.cargo)}<br>
    希望 ${tm("ETD")}：${S.sched[2][0]}前後　　希望 ${tm("ETA")}：${S.want}まで<br>
    <span style="color:var(--ink-3)">輸送形態：${esc(S.mode)}</span></div>
-   <div class="rw" style="margin-top:9px">
-   ${S.quotes.map(q => `<span class="p on">${esc(q[0].replace(/（.*/, ""))} へ送信済</span>`).join("")}</div>` } },
+   ${v5313Tags(S)}` } },
         { t: "見積を比べる", ai: S.reason,
             art: { h: "見積の比較（自動取得）", b: `<div class="tw" style="max-height:none;border:0"><table><thead><tr>
    <th>運送会社</th><th class="num">運賃</th><th class="num">諸掛</th><th class="num">合計</th>
@@ -14888,7 +14908,7 @@ function shipStepDigest(i, S) {
     const ex = (S.extra || []).map(e => e[0] + "：" + e[1]).join("／");
     return [
         `${esc(shipShort(S.buyer))}（${esc(S.country)}）／${esc(S.qty)}／単価 ${esc(S.unitPrice)}・合計 ${esc(S.total)}／${esc(S.term)}／${esc(S.pay || "T/T 30日")}／着荷 ${esc(S.want)}${ex ? "／" + esc(ex) : ""}`,
-        `${esc(S.pol || "神戸港")} → ${esc(S.pod || S.country)}／フォワーダー3社＋<b>貿易クラウド内の物流会社にAI見積</b>（下の依頼内容ブロックから）`,
+        `${esc(S.pol || "神戸港")} → ${esc(S.pod || S.country)}／<b>貿易クラウド内の物流会社にAI見積</b>${typeof fwdInlineHtml === "function" ? "（下の「AI見積を依頼」から）" : ""}`,
         `届いた見積を金額・日数・実績で比較して1社を選定`,
         `PI・CI・PLを自動作成（「貿易実務・書類・出荷」で確認できます）`,
         `通関業者・銀行・保険会社へデータを連携`,
@@ -15004,7 +15024,7 @@ function openStepEdit(i) {
         dwChrome();
 }
 function vShip(p) {
-    return ph(p, "<b>この画面でできること：</b>受注が決まったあとの手続きを、AIと会話するだけで最後まで終わらせます。運送会社への見積依頼、書類づくり、関係先へのデータ送信まで全部です。") + vShipBody();
+    return ph(p, "<b>この画面でできること：</b>受注が決まったあとの手続きを、AIと会話するだけで最後まで終わらせます。物流会社へのAI見積、書類づくり、関係先へのデータ送信まで全部です。") + vShipBody();
 }
 function v536Ok(v) { return Array.isArray(v) ? v.length > 0 : !!(v && String(v).trim()); }
 function v536Need() {
@@ -22555,11 +22575,17 @@ render = function () {
     if ((cur === "ship" || cur === "ops") && D && D.ship)
         fwdShipBind();
 };
+function v5313AiTrial(S) {
+    const n = (typeof fwdCos === "function") ? fwdCos().length : 1;
+    return `貨物の大きさと行き先が決まったので、<b>貿易クラウド内の物流会社にAI見積を依頼</b>できます。<br>` +
+        `「AI見積を依頼」（または「＋ 新しくAI見積を依頼」）を押すと、物流会社（参加 ${n}社）が登録したレートから、AI物流マンが見積（物流会社・金額・所要日数）を返します。` +
+        `複数社の回答がある国は、<b>推奨つきの相見積</b>で届きます。メールを書く必要はありません。`;
+}
 const __shipStepsFwd = shipSteps;
 shipSteps = function () {
     const ST = __shipStepsFwd();
     if (ST && ST[1] && !FWDON) {
-        ST[1].ai += `<br><br>さらにこの版では、<b>貿易クラウドに参加している物流会社（参加 ${typeof fwdCos === "function" ? fwdCos().length : 1}社）のAI物流マンへ、その場でAI見積</b>を出せます。複数社の回答は<b>AI物流マンの推奨つきの相見積</b>で届きます。`;
+        ST[1].ai = v5313AiTrial(D.ship);
         if (ST[1].art)
             ST[1].art.b += fwdInlineHtml();
     }
@@ -65857,6 +65883,22 @@ if (typeof deckBind === "function") {
                     "AI quotes from logistics companies and shipping documents need at least three things: <b>a price list, dimensions/weight and target countries</b>.",
                     "向物流公司申请AI报价和制作装运单证，至少需要<b>价格表・尺寸／重量・目标国家</b>这3项。",
                     "Para pedir cotizaciones con IA a las empresas de logística y crear los documentos de embarque se necesitan al menos tres datos: <b>la lista de precios, las medidas/peso y los países objetivo</b>."]
+            ]);
+    }
+    catch (e) { }
+})();
+(function () {
+    try {
+        if (typeof v30I18n === "function")
+            v30I18n([
+                ["物流会社にAI見積を頼む", "Request AI quotes from forwarders", "向物流公司申请AI报价", "Pedir cotizaciones IA a los transitarios"],
+                ["依頼内容", "Request details", "询价内容", "Detalles de la solicitud"],
+                ["貿易クラウド内の物流会社にAI見積", "AI quotes from forwarders inside Trade Cloud", "向贸易云内的物流公司申请AI报价", "Cotizaciones IA de los transitarios de Trade Cloud"],
+                ["（下の「AI見積を依頼」から）", " (use “Request AI quote” below)", "（通过下方的“申请AI报价”）", " (con «Pedir cotización IA», abajo)"],
+                ["AI見積を依頼", "Request AI quote", "申请AI报价", "Pedir cotización IA"],
+                ["「見積を比べる」に並ぶ3社は見本（想定の見積）です。", "The 3 companies listed in “Compare quotes” are samples (assumed quotes).", "“比较报价”中列出的3家公司是样本（假设的报价）。", "Las 3 empresas de «Comparar cotizaciones» son de muestra (cotizaciones supuestas)."],
+                ["物流会社へ S/I・貨物情報を共有", "Share the S/I and cargo details with forwarders", "向物流公司共享S/I和货物信息", "Compartir la S/I y los datos de la carga con los transitarios"],
+                ["AI物流マンが見積・ブッキング条件を回答", "AI Logistics replies with quotes and booking terms", "AI物流专员回复报价和订舱条件", "La IA logística responde con cotizaciones y condiciones de reserva"]
             ]);
     }
     catch (e) { }
