@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="b5175c7c9e7f";
+const BC20_BUILD="9525c7d0d202";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -11740,15 +11740,87 @@ function ansReg(q) {
             `<br><br><span style="color:var(--good)"><b>いまの仕様のまま輸出できます。</b></span>`}`,
         c: `根拠：規制調査（${c}）／${D.compTitle || "成分・材質表"} ${(D.compRows || []).length}項目` };
 }
+const V5318_DOC = { PI: ["見積書（PI）", "Proforma Invoice", "注文内容の確認に使う見積書"], CI: ["請求書（CI）", "Commercial Invoice", "通関で使う正式な請求書"],
+    PL: ["梱包明細（PL）", "Packing List", "何をどの箱に・何kgで詰めたかの明細"], "S/I": ["船積指示書（S/I）", "Shipping Instruction", "物流会社へ渡す船積指示書"] };
+function v5318Cs() { try {
+    return (typeof SHIPS !== "undefined" && SHIPS && SHIPS[SHIPA]) || null;
+}
+catch (e) {
+    return null;
+} }
+function v5318Po(S) { const c = v5318Cs(); return !!((S && S.poNo) || (c && c.po && c.ship === S)); }
+function v5318Key(k) {
+    const s = String(k || "").trim();
+    if (/^PI$|見積送り状|proforma/i.test(s))
+        return "PI";
+    if (/^CI$|インボイス|invoice/i.test(s))
+        return "CI";
+    if (/^PL$|パッキング|packing|梱包明細/i.test(s))
+        return "PL";
+    if (/^S\/I$|船積指示|shipping\s*instruction/i.test(s))
+        return "S/I";
+    return "";
+}
+function v5318Nm(k) { try {
+    return (typeof GL !== "undefined" && GL[k] && typeof tm === "function") ? tm(k) : esc(k);
+}
+catch (e) {
+    return esc(k);
+} }
+function v5318Co(S) {
+    try {
+        const c = v5318Cs();
+        if (!(c && c.po))
+            return false;
+        return (S.docs || []).some(d => /原産地/.test(String((d && d[0]) || ""))) || !!(c.po.research && /原産地証明.{0,12}(必要|要)/.test(String(c.po.research.txt || "")));
+    }
+    catch (e) {
+        return false;
+    }
+}
+function v5318Docs(S) {
+    const po = v5318Po(S);
+    const made = ["PI", "CI", "PL"].concat(po ? ["S/I"] : []).map(k => { const d = (S.docs || []).find(x => x && v5318Key(x[0]) === k), b = V5318_DOC[k]; return [b[0], (d && d[1]) || b[1], (d && d[2]) || b[2]]; });
+    const need = [], proc = [], si = [];
+    (S.docs || []).forEach(x => {
+        if (!x || !x[0])
+            return;
+        const k = v5318Key(x[0]);
+        if (k) {
+            if (k === "S/I" && !po)
+                si.push(x);
+            return;
+        }
+        let kd = "doc";
+        try {
+            if (typeof v54rKind === "function")
+                kd = v54rKind(x[0]);
+        }
+        catch (e) { }
+        (kd === "doc" ? need : proc).push(x);
+    });
+    return { made, need, proc, si, co: v5318Co(S) };
+}
 function ansDocs(q) {
     const S = D.ship;
     if (!S || !S.docs)
         return { a: `受注が確定すると、必要な書類がここに並びます。`, c: "根拠：受注 0件" };
-    return { a: `${S.country}向けの出荷では<b>${S.docs.length}点</b>の書類が必要です。<br><br>` +
-            S.docs.map(([k, e, d]) => `<b>${GL[k] ? tm(k) : esc(k)}</b>（${esc(e)}）<br>
-      <span style="color:var(--ink-2)">${esc(d)}</span>`).join("<br><br>") +
-            `<br><br>これらは<b>すべて自動で作成できます</b>。「出荷を進める」からどうぞ。`,
-        c: `根拠：規制調査（${S.country}）／受注 ${S.no}／商品マスタ` };
+    const d = v5318Docs(S);
+    const row = (nm, e, ds, mk) => `${mk || "・"}<b>${nm}</b>${e ? `（${esc(e)}）` : ""}${ds ? `<br><span style="color:var(--ink-2)">${esc(ds)}</span>` : ""}`;
+    let a = `${esc(S.country)}向けの出荷で使う書類です。<br><br>` +
+        `<b>受注データから下書きをつくれる書類（${d.made.length}点）</b><br>` + d.made.map(([nm, e, ds]) => row(esc(nm), e, ds)).join("<br>") +
+        (d.si.length ? `<br>船積指示書（S/I）は、物流会社の書式で用意してください。` : "") +
+        (d.need.length ? `<br><br><b>発行元への申請・取得が必要な書類（${d.need.length}点）</b>（自動ではつくりません）<br>` +
+            d.need.map(([k, e, ds]) => row(v5318Nm(k), e, ds) + (d.co && /原産地/.test(String(k)) ? `<br><span style="color:var(--ink-3)">申請用の下書きは「書類をつくる」にあります。</span>` : "")).join("<br>") : "") +
+        `<br><br>下書きは「書類をつくる」で中身を確かめ、直してから使ってください。`;
+    if (d.proc.length)
+        a += `<br><br><b>販売・出荷の前に必要な手続き（${d.proc.length}件）</b>（書類として自動でつくるものではありません。別に進めます）<br>` +
+            d.proc.map(([k, e, ds]) => { let done = false; try {
+                done = typeof v54rDone === "function" && v54rDone(S.country, k);
+            }
+            catch (err) { } return row(v5318Nm(k), e, ds, done ? "✅ " : "□ "); }).join("<br>") +
+            `<br><br>対応の状況は「貿易実務 → 規制を調べる」で記録できます。`;
+    return { a, c: `根拠：規制調査（${S.country}）／受注 ${S.no}／商品マスタ` };
 }
 function v536Smp(S) { return /^（想定）/.test(String((S && S.buyer) || "")) || ((S && S.quotes) || []).some(q => String((q && q[4]) || "") === "（想定）"); }
 function v536QuoteSrc(S) {
@@ -86333,28 +86405,6 @@ if (typeof shipSteps === "function") {
         }
         catch (e) { }
         return ST;
-    };
-}
-if (typeof ansDocs === "function") {
-    const __ad54 = ansDocs;
-    ansDocs = function (q) {
-        const res = __ad54.apply(this, arguments);
-        try {
-            const S = (typeof D !== "undefined" && D) ? D.ship : null;
-            if (!S || !Array.isArray(S.docs) || !res || typeof res.a !== "string")
-                return res;
-            const sp = v54rSplitDocs(S.docs);
-            if (!sp.other.length)
-                return res;
-            const row = ([k, e, d]) => `<b>${v54rDocNm(k)}</b>${e ? `（${v54rEsc(e)}）` : ""}<br><span style="color:var(--ink-2)">${v54rEsc(d)}</span>`;
-            res.a = `${v54rEsc(S.country)}向けの出荷で使う<b>書類は${sp.made.length}点</b>です。<br><br>` + sp.made.map(row).join("<br><br>") +
-                `<br><br>これらの書類は<b>受注データから自動で作成できます</b>。「出荷を進める」からどうぞ。` +
-                `<br><br><b>このほかに、販売・出荷の前に必要な手続きが${sp.other.length}件あります</b>（書類として自動でつくるものではありません）。<br><br>` +
-                sp.other.map(x => { const done = v54rDone(S.country, x[0]); return (done ? "✅ " : "□ ") + row(x); }).join("<br><br>") +
-                `<br><br>対応の状況は「貿易実務 → 規制を調べる」で記録できます。`;
-        }
-        catch (e) { }
-        return res;
     };
 }
 const V54R_CTY_P = "「進出希望国」は、商品の登録で選んだ「出したい国の候補」です。「販売先国（確定）」は、その中から実際に営業・出荷を進める国（3か国まで）です。確定すると、規制・価格・物流・出荷・バイヤー提案がその国を前提に動き、商品の登録の進出希望国も、確定した国だけになります。";
