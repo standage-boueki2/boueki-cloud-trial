@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="b985cbacc40c";
+const BC20_BUILD="a9ae7354505f";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -30354,7 +30354,7 @@ function lwReply(mi) {
             const r = await syncCall("lw_send", { kid: SYNC.kid, src: m.lw.src, to: m.lw.uid, text });
             if (!r.ok) {
                 toast("送れませんでした：" + (r.msg || ""));
-                $("#lwRepGo").disabled = false;
+                ($("#lwRepGo") || {}).disabled = false;
                 return;
             }
             lwStoreT().push({ who: v16Who(), org: (typeof D !== "undefined" && D && D.co) || "", t: lwTime(), scope: "共有", read: 1, body: esc(text).replace(/\n/g, "<br>"), mention: [], quote: null, file: null, src: (m.lw.src || "LINE") + "送信", lw: { uid: m.lw.uid, src: m.lw.src, out: 1 } });
@@ -30369,7 +30369,7 @@ function lwReply(mi) {
         }
         catch (e) {
             toast("送れませんでした：" + String(e.message || e).slice(0, 40));
-            $("#lwRepGo").disabled = false;
+            ($("#lwRepGo") || {}).disabled = false;
         }
     };
 }
@@ -59089,6 +59089,7 @@ function b30Open(key, tab) {
                     toast("内容を入力するか、ファイルを添付してください");
                     return;
                 }
+                const dv = document.getElementById("b30ld").value, lt = document.getElementById("b30lt").value;
                 go2.disabled = true;
                 let doc = "";
                 try {
@@ -59100,9 +59101,8 @@ function b30Open(key, tab) {
                 catch (e) {
                     toast("ファイルを保存できませんでした：" + String(e.message || e).slice(0, 60));
                 }
-                const dv = document.getElementById("b30ld").value;
                 const at = b30Date(dv) ? b30Date(dv) + ((new Date()).getHours() * 3600 + (new Date()).getMinutes() * 60) * 1000 : Date.now();
-                v30Put("bl", v30Id("l"), { bk: key, type: file && !body2 ? "file" : document.getElementById("b30lt").value, body: body2 || (file ? file.name : ""), at, doc });
+                v30Put("bl", v30Id("l"), { bk: key, type: file && !body2 ? "file" : lt, body: body2 || (file ? file.name : ""), at, doc });
                 try {
                     if (typeof logU === "function")
                         logU("fill", "バイヤーのアクティビティログ:" + r.name);
@@ -68981,7 +68981,9 @@ async function v33AdmKb() {
         box.innerHTML = `<p class="v33note">${E(T("同期サーバーを v2.13 に更新すると、ここで登録できます（全アカウントに配られます）。"))}</p>`;
         return;
     }
-    const L = V33ADM.kb || await v33AdmKbLoad() || [];
+    const L = V33ADM.kb || await v33AdmKbLoad() || V33ADM.kb || [];
+    if (!box.isConnected)
+        return;
     box.innerHTML = `<form id="v33kbf" class="v33f v33g2" autocomplete="off"><label class="w2">${E(T("問い（任意）"))}<input class="v33in" name="q" maxlength="300" placeholder="${E(T("例：米国に食品を輸出するとき FDA の施設登録は要りますか"))}"></label>
       <label class="w2">${E(T("答え（確かめた内容）"))}<textarea class="v33in" name="a" rows="3" maxlength="2000" required></textarea></label>
       <label>${E(T("出典（URL・資料名）"))}<input class="v33in" name="src" maxlength="500"></label><label>${E(T("確認した日"))}<input class="v33in" type="date" name="at" value="${E(v33Ymd(Date.now()))}"></label>
@@ -68994,7 +68996,9 @@ async function v33AdmKb() {
     }
     else
         v33Toast((r && r.msg) || "保存できませんでした"); };
-    const f = document.getElementById("v33kbf");
+    const f = box.querySelector("#v33kbf");
+    if (!f)
+        return;
     f.onsubmit = e => {
         e.preventDefault();
         const d = Object.fromEntries(new FormData(f).entries());
@@ -74894,10 +74898,11 @@ if (typeof v33AdmKb === "function") {
             finally {
                 V422.kbBusy = 0;
             }
-            if (!document.getElementById("v33kbbox"))
+            const box2 = document.getElementById("v33kbbox");
+            if (!box2)
                 return;
             if (!ok) {
-                box.innerHTML = `<p class="v33note">${v33Esc(v33T("同期サーバーに接続できませんでした。通信状況を確認して、画面を再読み込みしてください。"))}</p>`;
+                box2.innerHTML = `<p class="v33note">${v33Esc(v33T("同期サーバーに接続できませんでした。通信状況を確認して、画面を再読み込みしてください。"))}</p>`;
                 return;
             }
         }
