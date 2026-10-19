@@ -5042,8 +5042,30 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="e301aa3f19a7";
+const BC20_BUILD="819a007b0679";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
+(function () {
+    try {
+        var s = JSON.parse(sessionStorage.getItem("bc20_ses_v1") || "null");
+        if (!(s && s.t === "admin" && s.v57 && s.v57.role === "co" && s.v57.id))
+            return;
+        var K = { "bc20_trial_v1": 1, "bc20_llm_v1": 1, "bc20_pplx_v1": 1, "bc20_llm_shared": 1, "bc20_llm_backup": 1, "bc20_plan_v1": 1, "bc20_fwdplan_v1": 1 };
+        var sfx = "__v57co_" + String(s.v57.id).replace(/[^0-9A-Za-z]/g, "").slice(0, 24), ls = window.localStorage, P = Storage.prototype, g = P.getItem, st = P.setItem, rm = P.removeItem;
+        var m = function (o, k) { return (o === ls && Object.prototype.hasOwnProperty.call(K, String(k))) ? String(k) + sfx : k; };
+        P.getItem = function (k) { return g.call(this, m(this, k)); };
+        P.setItem = function (k, v) { return st.call(this, m(this, k), v); };
+        P.removeItem = function (k) { return rm.call(this, m(this, k)); };
+        var F = window.fetch, MO = /^\{"op":"(pool_status|pool_run|pool_setup|pool_v1_set|pool_v1_key_set|pool_clear|purge_scan|purge_log|acct_purge|stdkb_set|stdkb_get|digest_run|digest_setup|adm_list|adm_put|adm_del)"/;
+        if (F)
+            window.fetch = function (u, o) { try {
+                if (o && typeof o.body === "string" && MO.test(o.body) && o.body.indexOf('"pw":"tk:') > 0)
+                    return Promise.resolve(new Response(JSON.stringify({ ok: false, reason: "master", msg: "この操作は STANDAGE のマスター管理者だけができます", local: 1 }), { status: 200, headers: { "Content-Type": "application/json" } }));
+            }
+            catch (e) { } return F.apply(this, arguments); };
+        window.__v57co = { sfx: sfx };
+    }
+    catch (e) { }
+})();
 const PRODUCTS = {
     food: {
         key: "food", cat: "食品", av: "緑", co: "株式会社みどり製茶", coEn: "MIDORI SEICHA Co., Ltd.",
@@ -21501,7 +21523,7 @@ function showLogin() {
        物流会社への見積依頼は、依頼先の物流会社と共有されます。AIに質問すると、回答に必要な範囲だけを接続中のAIに送ります。</p>
      <div class="lgtabs">
        <button class="btn ${tab === "trial" ? "" : "g"}" data-t="trial" style="flex:1">お客様ログイン</button>
-       <button class="btn ${tab === "admin" ? "" : "g"}" data-t="admin" style="flex:1">STANDAGE管理者</button></div>
+       <button class="btn ${tab === "admin" ? "" : "g"}" data-t="admin" style="flex:1">管理者</button></div>
      ${tab === "trial"
             ? `<input class="lgin" id="lg-code" autocapitalize="characters" autocorrect="off" spellcheck="false" enterkeyhint="go" placeholder="アクセスコード（例：BC-XXXX-XXXX）" autocomplete="off">
         <input class="lgin" id="lg-name" autocorrect="off" enterkeyhint="go" placeholder="ご担当者名（任意）" autocomplete="off">
@@ -21707,7 +21729,7 @@ function renderAdmin() {
         return false;
     } })();
     well.innerHTML = `
-  <div class="ph"><div><div class="rw" style="margin-bottom:3px"><span class="lt">🔒 STANDAGE管理者のみ</span></div>
+  <div class="ph"><div><div class="rw" style="margin-bottom:3px"><span class="lt">🔒 STANDAGE マスターのみ</span></div>
     <h1>トライアル管理</h1>
     <p class="cando"><b>この画面でできること：</b>トライアルアカウントの発行・無効化と、お客様の利用状況の確認。お客様の画面には表示されません。</p></div>
     <div class="rw"><button class="btn g" id="adm-demo">デモ画面を開く</button></div></div>
@@ -23170,7 +23192,7 @@ async function fwdRateFile(f) {
         }
         if (/^(pdf|png|jpg|jpeg)$/.test(ext)) {
             if (!fwdConnected()) {
-                return fail(`PDF・画像の読み取りには<b>AIエンジンの接続</b>が必要です。APIキーは<b>STANDAGE管理者が管理コンソールで接続</b>します（お客様の端末にキーは渡りません）。このデモでは、ログイン画面の「STANDAGE管理者」→「AIエンジン設定」から接続できます。<br>💡 接続前でも <b>Excel（.xlsx）・CSV</b> ならこのまま取り込めます。`);
+                return fail(`PDF・画像の読み取りには<b>AIエンジンの接続</b>が必要です。APIキーは<b>STANDAGE管理者が管理コンソールで接続</b>します（お客様の端末にキーは渡りません）。このデモでは、ログイン画面の「管理者」（STANDAGE マスター）→「AIエンジン設定」から接続できます。<br>💡 接続前でも <b>Excel（.xlsx）・CSV</b> ならこのまま取り込めます。`);
             }
             if (FWDPLAN === "lite") {
                 return fail(`現在<b>ライトプラン（内蔵エンジン）</b>のため、PDF・画像のAI読み取りは停止中です。下の<b>「🤖 AI物流マンの稼働設定」でスタンダード（＋3万円/月）以上</b>に変更してください。トライアル中は無料で切り替えられます。<br>💡 Excel（.xlsx）・CSVはライトのままでも取り込めます。`);
@@ -111786,6 +111808,1778 @@ if (typeof v49Answer === "function") {
             ]);
     }
     catch (e) { }
+})();
+const V57 = { busy: 0, codeFor: "", list: null, listAt: 0, listErr: "", listBusy: 0, t0: Date.now(), obs: null, dwObs: null, stripT: 0, sec: null };
+const V57_SEC_NM = { "adm.code_sent": "会社の管理者：確認コードを送った", "adm.code_unknown": "登録の無いメールアドレスで確認コードの依頼", "adm.code_fail": "会社の管理者：確認コードの誤り",
+    "adm.code_locked": "会社の管理者：確認コードを無効化（誤りが続いた）", "adm.login": "会社の管理者のログイン", "adm.put": "会社の管理者の登録・変更", "adm.del": "会社の管理者の削除",
+    "adm.rate": "回数の上限（会社の管理者の確認コード）", "adm.deny": "会社の管理者の範囲の外の操作を断った", "adm.mail_fail": "会社の管理者：確認コードのメールを送れなかった" };
+function v57Ses() { try {
+    return (typeof SES !== "undefined" && SES && SES.t === "admin") ? SES : null;
+}
+catch (e) {
+    return null;
+} }
+function v57Co() { const s = v57Ses(); return !!(s && s.v57 && s.v57.role === "co"); }
+function v57Master() { return !!v57Ses() && !v57Co(); }
+function v57E(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v57T(s) { try {
+    if (typeof I18N !== "undefined" && I18N.lang && I18N.lang !== "ja") {
+        const d = I18N.dict[I18N.lang];
+        if (d && d[s])
+            return d[s];
+    }
+}
+catch (e) { } return s; }
+function v57Sfx(id) { return "__v57co_" + String(id || "").replace(/[^0-9A-Za-z]/g, "").slice(0, 24); }
+function v57Me() { const s = v57Ses(); return (s && s.v57) || {}; }
+function v57CoLabel() {
+    let L = [];
+    try {
+        L = ((typeof ADB !== "undefined" && ADB && ADB.accounts) || []).map(a => a && a.co).filter(Boolean);
+    }
+    catch (e) { }
+    if (!L.length)
+        L = (v57Me().acc || []).map(a => a && a.co).filter(Boolean);
+    const u = [...new Set(L.map(x => String(x).trim()))];
+    if (!u.length)
+        return "貴社";
+    return u.length === 1 ? u[0] : u[0] + " ほか" + (u.length - 1) + "社";
+}
+function v57Err(m) { try {
+    if (typeof v42Err === "function")
+        return v42Err(m);
+}
+catch (e) { } const e = document.getElementById("lg-err"); if (e) {
+    e.hidden = false;
+    e.textContent = m;
+} }
+function v57Info(m) { v57Err(m); try {
+    const e = document.getElementById("lg-err");
+    if (e)
+        e.classList.add("lgwait");
+}
+catch (e) { } }
+function v57IsMail() { const i = document.getElementById("ad-id"); return !!i && /@/.test(String(i.value || "")); }
+function v57LoginMode() {
+    const id = document.getElementById("ad-id"), pw = document.getElementById("ad-pw"), go = document.getElementById("ad-go");
+    if (!id || !go)
+        return;
+    const mail = v57IsMail();
+    if (pw)
+        pw.style.display = mail ? "none" : "";
+    let h = document.getElementById("v57hint");
+    if (mail) {
+        if (!h) {
+            h = document.createElement("p");
+            h.id = "v57hint";
+            h.className = "nn";
+            h.style.cssText = "font-size:11px;margin:7px 0 0;color:var(--ink-3);line-height:1.65";
+            (document.getElementById("v57otp") || id).insertAdjacentElement("afterend", h);
+        }
+        h.textContent = v57T("会社の管理者は、登録されたメールアドレスに届く確認コード（6桁）でログインします（パスワードは使いません）。");
+        const otp = document.getElementById("v57otp");
+        if (otp && V57.codeFor && String(id.value || "").trim().toLowerCase() !== V57.codeFor) {
+            otp.remove();
+            const rs = document.getElementById("v57resend");
+            if (rs)
+                rs.remove();
+            V57.codeFor = "";
+        }
+        go.textContent = v57T(document.getElementById("v57otp") ? "確認して管理コンソールへ" : "確認コードを送る");
+    }
+    else {
+        if (h)
+            h.remove();
+        const o = document.getElementById("v57otp");
+        if (o)
+            o.remove();
+        const rs = document.getElementById("v57resend");
+        if (rs)
+            rs.remove();
+        V57.codeFor = "";
+        if (!document.getElementById("ad-otp"))
+            go.textContent = v57T("管理コンソールへ");
+    }
+}
+function v57ShowOtp() {
+    const id = document.getElementById("ad-id");
+    if (!id)
+        return;
+    let o = document.getElementById("v57otp");
+    if (!o) {
+        o = document.createElement("input");
+        o.className = "lgin";
+        o.id = "v57otp";
+        o.setAttribute("inputmode", "numeric");
+        o.setAttribute("autocomplete", "one-time-code");
+        o.setAttribute("maxlength", "6");
+        o.setAttribute("enterkeyhint", "go");
+        o.placeholder = v57T("確認コード（メールで届いた6桁）");
+        o.onkeydown = e => { if (e.key === "Enter" && !e.isComposing) {
+            e.preventDefault();
+            v57CoGo();
+        } };
+        id.insertAdjacentElement("afterend", o);
+        const rs = document.createElement("button");
+        rs.type = "button";
+        rs.id = "v57resend";
+        rs.className = "btn g";
+        rs.style.cssText = "margin-top:7px;font-size:11px;padding:3px 10px";
+        rs.textContent = v57T("確認コードを送り直す");
+        rs.onclick = () => { V57.codeFor = ""; const x = document.getElementById("v57otp"); if (x)
+            x.remove(); rs.remove(); v57CoGo(); };
+        o.insertAdjacentElement("afterend", rs);
+    }
+    o.value = "";
+    v57LoginMode();
+    o.focus();
+}
+async function v57CoGo() {
+    if (V57.busy)
+        return;
+    V57.busy = 1;
+    try {
+        const em = String((document.getElementById("ad-id") || {}).value || "").trim().toLowerCase();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em))
+            return v57Err(v57T("メールアドレスの形が正しくありません。"));
+        if (!(typeof syncOn === "function" && syncOn()))
+            return v57Err(v57T("管理コンソールは、同期サーバーに接続しているときだけ使えます。"));
+        const oe = document.getElementById("v57otp");
+        if (!oe || V57.codeFor !== em) {
+            v57Err("☁ " + v57T("確認コードを送っています…"));
+            let r = null;
+            try {
+                r = await syncCall("adm_code", { email: em }, { timeout: 30000 });
+            }
+            catch (e) {
+                return v57Err(/unknown op/i.test(String(e && e.message || e)) ? v57T("同期サーバーが、会社の管理者のログインにまだ対応していません（同期サーバー v2.20 の反映が必要です）。") : v57T("サーバーに接続できませんでした。通信状況を確認して、もう一度お試しください。"));
+            }
+            if (!r || !r.ok)
+                return v57Err((r && r.msg) || v57T("確認コードを送れませんでした。"));
+            V57.codeFor = em;
+            v57ShowOtp();
+            return v57Info(r.msg || v57T("確認コードを送りました。"));
+        }
+        const otp = String(oe.value || "").replace(/[^0-9]/g, "");
+        if (otp.length !== 6)
+            return v57Err(v57T("メールで届いた確認コード（6桁）を入力してください。"));
+        v57Err("☁ " + v57T("確認コードを確かめています…"));
+        let r = null;
+        try {
+            r = await syncCall("adm_verify", { email: em, otp }, { timeout: 30000 });
+        }
+        catch (e) {
+            return v57Err(v57T("サーバーに接続できませんでした。通信状況を確認して、もう一度お試しください。"));
+        }
+        if (r && r.ok && /^tk:/.test(String(r.tok || "")))
+            return v57CoEnter(r);
+        if (r && r.expired) {
+            const x = document.getElementById("v57otp");
+            if (x)
+                x.remove();
+            const rs = document.getElementById("v57resend");
+            if (rs)
+                rs.remove();
+            V57.codeFor = "";
+            v57LoginMode();
+        }
+        return v57Err((r && r.msg) || v57T("確認コードが違います。"));
+    }
+    finally {
+        V57.busy = 0;
+    }
+}
+function v57CoEnter(r) {
+    const me = r.me || {}, id = String(me.id || "");
+    const v57 = { role: "co", id, email: me.email || "", name: me.name || "", kids: me.kids || [], acc: (me.accounts || []).filter(a => a && !a.missing).map(a => ({ code: a.code || "", co: a.co || "", role: a.role || "" })) };
+    try {
+        const k = "bc20_trial_v1" + v57Sfx(id);
+        if (!localStorage.getItem(k))
+            localStorage.setItem(k, JSON.stringify({ v: 1, admin: { id: "standage", pw: "" }, accounts: [], v57codes: [] }));
+    }
+    catch (e) { }
+    try {
+        SES = { t: "admin", apw: r.tok, at: Date.now(), v57 };
+        sessionStorage.setItem(SKEY, JSON.stringify(SES));
+        sessionStorage.setItem("v57_hello", "1");
+    }
+    catch (e) { }
+    v57Info("✓ " + v57T("確認できました。管理コンソールを開いています…"));
+    setTimeout(() => { try {
+        location.reload();
+    }
+    catch (e) { } }, 150);
+}
+if (typeof v42AdminGo === "function") {
+    const __go57 = v42AdminGo;
+    v42AdminGo = async function () { if (v57IsMail())
+        return v57CoGo(); return __go57.apply(this, arguments); };
+}
+function v57BindLogin() {
+    try {
+        const id = document.getElementById("ad-id");
+        if (!id || id.dataset.v57)
+            return;
+        id.dataset.v57 = "1";
+        id.placeholder = v57T("管理者ID または メールアドレス");
+        id.addEventListener("input", v57LoginMode);
+        id.onkeydown = e => { if (e.key !== "Enter" || e.isComposing)
+            return; e.preventDefault(); if (v57IsMail()) {
+            const o = document.getElementById("v57otp");
+            if (o)
+                o.focus();
+            else
+                v57CoGo();
+        }
+        else {
+            const p = document.getElementById("ad-pw");
+            if (p)
+                p.focus();
+        } };
+        const go = document.getElementById("ad-go");
+        if (go) {
+            go.onclick = () => v42AdminGo();
+        }
+        v57LoginMode();
+    }
+    catch (e) { }
+}
+function v57WatchLogin() { try {
+    const v = document.getElementById("lgv");
+    if (v && !v.__v57) {
+        v.__v57 = 1;
+        new MutationObserver(() => { v57BindLogin(); }).observe(v, { childList: true, subtree: true });
+    }
+    v57BindLogin();
+}
+catch (e) { } }
+if (typeof showLogin === "function") {
+    const __sl57 = showLogin;
+    showLogin = function () { const r = __sl57.apply(this, arguments); v57WatchLogin(); return r; };
+}
+v57WatchLogin();
+function v57Prune(codes) {
+    try {
+        if (!v57Co() || typeof ADB === "undefined" || !ADB)
+            return false;
+        const keep = new Set(codes || ADB.v57codes || []);
+        const n0 = (ADB.accounts || []).length;
+        ADB.accounts = (ADB.accounts || []).filter(a => a && keep.has(a.code));
+        if (codes)
+            ADB.v57codes = [...keep];
+        ADB.del = [];
+        if (typeof v213SaveADB === "function")
+            v213SaveADB();
+        if (typeof v213AdmBaseline === "function")
+            v213AdmBaseline();
+        return ADB.accounts.length !== n0;
+    }
+    catch (e) {
+        return false;
+    }
+}
+if (typeof v213AdmPull === "function") {
+    const __pull57 = v213AdmPull;
+    v213AdmPull = async function () {
+        const x = await __pull57.apply(this, arguments);
+        try {
+            if (v57Co() && x && x.r && x.r.ok) {
+                if (v57Prune((x.r.accounts || []).map(a => a && a.code).filter(Boolean)))
+                    x.ch = true;
+                if (x.r.me && SES && SES.v57) {
+                    SES.v57.name = x.r.me.name || SES.v57.name;
+                    SES.v57.kids = x.r.me.kids || SES.v57.kids;
+                    SES.v57.acc = (x.r.me.accounts || []).filter(a => a && !a.missing).map(a => ({ code: a.code || "", co: a.co || "", role: a.role || "" }));
+                    try {
+                        sessionStorage.setItem(SKEY, JSON.stringify(SES));
+                    }
+                    catch (e) { }
+                }
+            }
+        }
+        catch (e) { }
+        return x;
+    };
+}
+if (typeof v213AdmStamp === "function") {
+    const __st57 = v213AdmStamp;
+    v213AdmStamp = function () { const r = __st57.apply(this, arguments); try {
+        if (v57Co() && ADB)
+            ADB.del = [];
+    }
+    catch (e) { } return r; };
+}
+if (typeof tmAdmSave === "function") {
+    const __tms57 = tmAdmSave;
+    tmAdmSave = function () {
+        try {
+            if (v57Co()) {
+                const me = v57Me(), by = (me.name || me.email || "") + "（" + v57CoLabel() + "の管理者）";
+                (ADB.accounts || []).forEach(a => (a.members || []).forEach(m => { if (m && m.by === "STANDAGE（管理者）" && (+m.added || 0) >= V57.t0)
+                    m.by = by; }));
+            }
+        }
+        catch (e) { }
+        return __tms57.apply(this, arguments);
+    };
+}
+const V57_MASTER_OPS = /^(pool_status|pool_run|pool_setup|pool_v1_set|pool_v1_key_set|pool_clear|purge_scan|purge_log|acct_purge|stdkb_set|stdkb_get|digest_run|digest_setup|adm_list|adm_put|adm_del)$/;
+if (typeof syncCall === "function") {
+    const __sc57 = syncCall;
+    syncCall = async function (op, body) { try {
+        if (v57Co() && V57_MASTER_OPS.test(String(op || "")) && body && body.pw)
+            return { ok: false, reason: "master", msg: "この操作は STANDAGE のマスター管理者だけができます", local: 1 };
+    }
+    catch (e) { } return __sc57.apply(this, arguments); };
+}
+if (typeof toast === "function") {
+    const __t57 = toast;
+    toast = function (m) { try {
+        if (v57Co() && typeof m === "string")
+            m = m.replace(/STANDAGEのAI接続/g, "この管理コンソールのAI接続");
+    }
+    catch (e) { } return __t57.call(this, m); };
+}
+const V57_STRIP_ID = ["issue", "admaislot", "admai", "bmAdm", "costcard", "s30exp", "adminbox", "admdig", "admpool", "v33admkb", "admpoolv1", "v33admexp", "v33admdel", "v52purge", "syncslot", "synccard", "v214adm", "v39srv"];
+const V57_STRIP_H = [/新しいトライアルアカウント/, /管理者AIアシスタント/, /メールの中継/, /APIコスト/, /契約満了/, /受信箱/, /メール通知/, /AI商社マンのモード/, /確認済みの知識/, /Ver1\.0/, /期限切れ・削除/, /クラウド同期/, /データの削除|消せるアカウント/, /トライアル環境のしくみ/];
+const V57_STRIP_CTL = '[data-tgl],[data-fx17b],[data-v52t],[data-jump="syncslot"],#dw-tgl,#dw-ext,#dw-del,#adm-demo,[data-v52pg],[data-v33undo]';
+function v57Card(el) { if (!el)
+    return null; const c = el.closest(".c"); return (c && c.id !== "well" && c !== document.getElementById("well")) ? c : el; }
+function v57Strip() {
+    if (!v57Co())
+        return 0;
+    const w = document.getElementById("well");
+    if (!w || !(typeof cur !== "undefined" && cur === "adm"))
+        return 0;
+    let n = 0;
+    try {
+        document.body.classList.add("v57co");
+    }
+    catch (e) { }
+    try {
+        V57_STRIP_ID.forEach(id => { const el = document.getElementById(id); if (!el)
+            return; const c = (id === "admaislot" || id === "syncslot") ? el : v57Card(el); if (c && c !== w) {
+            c.remove();
+            n++;
+        } });
+    }
+    catch (e) { }
+    try {
+        w.querySelectorAll("h3").forEach(h => { if (V57_STRIP_H.some(re => re.test(h.textContent || ""))) {
+            const c = v57Card(h);
+            if (c && c !== w && c.id !== "v57me") {
+                c.remove();
+                n++;
+            }
+        } });
+    }
+    catch (e) { }
+    try {
+        w.querySelectorAll(V57_STRIP_CTL).forEach(b => { b.remove(); n++; });
+    }
+    catch (e) { }
+    try {
+        w.querySelectorAll("[data-poolsel]").forEach(x => { if (!x.disabled) {
+            x.disabled = true;
+            x.title = v57T("AI商社マンのモード（個社版／全社版）は、STANDAGE マスターが変えます");
+        } });
+    }
+    catch (e) { }
+    try {
+        const sec = document.getElementById("uxsec");
+        if (sec)
+            sec.querySelectorAll("[data-sec]").forEach(b => { if (!document.getElementById(b.dataset.sec)) {
+                b.remove();
+                n++;
+            } });
+    }
+    catch (e) { }
+    return n;
+}
+function v57StripSoon() { clearTimeout(V57.stripT); V57.stripT = setTimeout(() => { v57Strip(); v57Nav(); }, 0); }
+function v57WatchWell() {
+    if (!v57Co())
+        return;
+    const w = document.getElementById("well");
+    if (!w || w.__v57)
+        return;
+    w.__v57 = 1;
+    V57.obs = new MutationObserver(() => { if (v57Co() && typeof cur !== "undefined" && cur === "adm") {
+        v57Strip();
+    } });
+    V57.obs.observe(w, { childList: true, subtree: true });
+    const pn = document.getElementById("pn");
+    if (pn && !pn.__v57) {
+        pn.__v57 = 1;
+        V57.dwObs = new MutationObserver(() => { try {
+            if (v57Co())
+                pn.querySelectorAll('#dw-tgl,#dw-ext,#dw-del,[data-v52t],[data-v52pg],[data-fx17b]').forEach(b => b.remove());
+        }
+        catch (e) { } });
+        V57.dwObs.observe(pn, { childList: true, subtree: true });
+    }
+}
+function v57Head() {
+    const w = document.getElementById("well");
+    if (!w)
+        return;
+    const lt = w.querySelector(".ph .lt");
+    const h1 = w.querySelector(".ph h1"), cd = w.querySelector(".ph .cando");
+    if (v57Co()) {
+        const lb = v57CoLabel();
+        if (lt)
+            lt.textContent = "🔒 " + lb + " " + v57T("の管理者");
+        if (h1)
+            h1.textContent = v57T("管理コンソール") + "（" + lb + "）";
+        if (cd)
+            cd.innerHTML = `<b>${v57E(v57T("この画面でできること："))}</b>${v57E(v57T("貴社のアカウントのメンバーの招待・停止・名前の変更、利用状況・操作の記録の確認、AIエンジンの設定と共有、データの書き出し（搬出のトークン）。契約・期限・アカウントの停止とデータの削除は、STANDAGE が行います。"))}`;
+    }
+    else if (lt && /STANDAGE管理者のみ|STANDAGE admins only/.test(lt.textContent || ""))
+        lt.textContent = v57T("🔒 STANDAGE マスターのみ");
+    const mm = w.querySelector("#admmem h3");
+    if (mm && v57Co()) {
+        const tn = [...mm.childNodes].find(n => n.nodeType === 3 && /メンバー管理|Member management|成员管理|Gestión de miembros/.test(n.nodeValue));
+        if (tn)
+            tn.nodeValue = v57T("👥 メンバー管理（貴社のアカウント）") + " ";
+    }
+}
+function v57MeHtml() {
+    const me = v57Me(), A = ((typeof ADB !== "undefined" && ADB && ADB.accounts) || []);
+    return `<div class="c" id="v57me" style="margin-bottom:11px;border-color:var(--or)">
+    <h3>🔑 ${v57E(v57T("会社の管理者としてログイン中"))}</h3>
+    <p class="nn" style="margin-top:4px">${v57E(v57T("あなた："))}<b>${v57E(me.name || "")}</b>（${v57E(me.email || "")}）・${v57E(v57CoLabel())} ${v57E(v57T("の管理者"))}</p>
+    <p class="nn">${v57E(v57T("管理するアカウント："))}${A.length ? A.map(a => `<span class="acode">${v57E(a.code)}</span>｜${v57E(a.co || "")}${a.role === "fwd" ? " 🚚" : ""}`).join("　") : v57E(v57T("読み込み中…"))}</p>
+    <p class="nn">${v57E(v57T("契約・期限・アカウントの停止とデータの削除・管理者の登録は、STANDAGE マスターが行います（ご依頼は STANDAGE の担当まで）。アカウントの中のメンバーの役割「管理者」とは別の、管理コンソールの管理者です。"))}</p>
+    <div class="rw" style="gap:6px;margin-top:8px"><button class="btn g" type="button" id="v57secGo" style="font-size:12px;padding:3px 10px">🛡 ${v57E(v57T("管理の記録を見る"))}</button></div><div id="v57secOut"></div></div>`;
+}
+async function v57SecShow() {
+    const out = document.getElementById("v57secOut");
+    if (!out)
+        return;
+    out.innerHTML = `<p class="nn">${v57E(v57T("読み込み中…"))}</p>`;
+    try {
+        const r = await syncCall("admin_seclog", { pw: (SES && SES.apw) || "" }, { timeout: 30000 });
+        if (!r || !r.ok) {
+            out.innerHTML = `<p class="nn" style="color:var(--crit)">${v57E((r && r.msg) || v57T("読めませんでした"))}</p>`;
+            return;
+        }
+        const L = (r.list || []).slice(0, 100);
+        V57.sec = L;
+        const NM = Object.assign({}, (typeof V42_SEC_NM !== "undefined" && V42_SEC_NM) || {}, V57_SEC_NM);
+        out.innerHTML = L.length ? `<div class="tw" style="max-height:320px;margin-top:6px"><table><thead><tr><th>${v57E(v57T("日時"))}</th><th>${v57E(v57T("できごと"))}</th><th>${v57E(v57T("内容"))}</th></tr></thead><tbody>${L.map(x => `<tr><td style="white-space:nowrap">${v57E(new Date(x.t || 0).toLocaleString())}</td><td>${v57E(v57T(NM[x.type] || x.type || ""))}</td><td style="font-size:11px">${v57E(Object.entries(x.info || {}).map(([k, v]) => k + "=" + v).join("・"))}</td></tr>`).join("")}</tbody></table></div><p class="nn" style="margin-top:4px">${v57E(v57T("貴社のアカウントを管理する管理者の、ログイン・確認コード・管理の操作の記録（最新の100件）。確認コード・鍵そのものは記録しません。"))}</p>`
+            : `<p class="nn">${v57E(v57T("記録はまだありません。"))}</p>`;
+    }
+    catch (e) {
+        out.innerHTML = `<p class="nn" style="color:var(--crit)">${v57E(String(e && e.message || e).slice(0, 100))}</p>`;
+    }
+}
+function v57AccLabel(kid, acc) { if (acc && acc.missing)
+    return `<span class="p lo">${v57E(v57T("台帳に無いアカウント"))}</span>`; return `<span class="acode">${v57E(acc.code || "")}</span>｜${v57E(String(acc.co || "").slice(0, 24))}${acc.role === "fwd" ? " 🚚" : ""}${acc.live ? "" : ` <span class="p lo">${v57E(v57T("停止中"))}</span>`}`; }
+function v57AdmCardHtml() {
+    const L = V57.list || [], d = t => t ? (typeof fdate2 === "function" ? fdate2(t) : new Date(t).toLocaleString()) : "—";
+    const body = V57.listErr ? `<p class="nn" style="color:var(--crit);margin-top:8px">${v57E(V57.listErr)}</p>`
+        : !V57.list ? `<p class="nn" style="margin-top:8px">${v57E(v57T("読み込み中…"))}</p>`
+            : `<div class="tw" style="margin-top:10px;max-height:none"><table><thead><tr><th>${v57E(v57T("氏名・メール"))}</th><th>${v57E(v57T("管理するアカウント"))}</th><th>${v57E(v57T("状態"))}</th><th>${v57E(v57T("最終ログイン"))}</th><th>${v57E(v57T("登録"))}</th><th></th></tr></thead><tbody>
+      ${L.length ? L.map(a => `<tr><td><b>${v57E(a.name || "—")}</b><br><span style="font-size:10.5px;color:var(--ink-3)">${v57E(a.email)}</span></td>
+        <td style="font-size:11px">${(a.accounts || []).map(x => v57AccLabel(x.kid, x)).join("<br>")}</td>
+        <td>${a.active ? `<span class="p hi">${v57E(v57T("有効"))}</span>` : `<span class="p no">${v57E(v57T("停止"))}</span>`}</td>
+        <td class="n" style="font-size:10.5px;color:var(--ink-3)">${v57E(d(a.last))}</td><td class="n" style="font-size:10.5px;color:var(--ink-3)">${v57E(d(a.created))}</td>
+        <td><div class="rw" style="gap:4px;flex-wrap:wrap"><button class="btn g" type="button" data-v57ed="${v57E(a.id)}">${v57E(v57T("範囲・氏名を変える"))}</button><button class="btn g" type="button" data-v57st="${v57E(a.id)}">${v57E(v57T(a.active ? "停止" : "再開"))}</button><button class="btn g" type="button" data-v57del="${v57E(a.id)}" style="color:var(--crit);border-color:var(--crit)">${v57E(v57T("削除"))}</button></div></td></tr>`).join("")
+                : `<tr><td colspan="6" style="text-align:center;color:var(--ink-3);padding:14px">${v57E(v57T("まだ会社の管理者はいません（右上の「＋ 管理者を登録」から）"))}</td></tr>`}</tbody></table></div>`;
+    return `<div class="c" id="v57adm" style="margin-bottom:11px">
+    <div class="rw" style="justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:flex-start">
+      <div><h3>🔑 ${v57E(v57T("管理者アカウント（会社ごとの管理者）"))} <span class="n" style="color:var(--ink-3);font-weight:400">${V57.list ? L.length + v57E(v57T("名")) : ""}</span></h3>
+        <p class="nn">${v57E(v57T("お客様の会社・物流会社ごとに、管理コンソールに入れる人を登録します。会社の管理者は、登録したメールアドレスに届く確認コード（6桁）でログインし、自分の会社のアカウントだけを扱えます（メンバーの招待・停止・名前の変更、利用状況と操作の記録、AI 接続の共有、搬出のトークン）。契約・期限・停止・データの削除・台帳・管理者の登録は STANDAGE マスターだけです。アカウントの中のメンバーの役割「管理者」とは別のものです。"))}</p></div>
+      <div class="rw" style="gap:6px"><button class="btn g" type="button" id="v57reload">↻</button><button class="btn" type="button" id="v57add">${v57E(v57T("＋ 管理者を登録"))}</button></div></div>
+    ${body}</div>`;
+}
+function v57AdmMsg(r) {
+    if (!r)
+        return v57T("サーバーに接続できませんでした。");
+    if (r.reason === "mfa")
+        return r.msg || v57T("会社の管理者の登録・変更には、2段階でログインしたマスターの鍵が要ります。");
+    return r.msg || v57T("できませんでした。");
+}
+async function v57AdmLoad(force) {
+    if (!v57Master() || V57.listBusy)
+        return;
+    if (!force && V57.list && Date.now() - V57.listAt < 60000)
+        return;
+    V57.listBusy = 1;
+    try {
+        const r = await syncCall("adm_list", { pw: (SES && SES.apw) || "" }, { timeout: 30000 });
+        if (r && r.ok) {
+            V57.list = r.list || [];
+            V57.listErr = "";
+        }
+        else {
+            V57.listErr = v57AdmMsg(r);
+        }
+    }
+    catch (e) {
+        V57.listErr = /unknown op/i.test(String(e && e.message || e)) ? v57T("同期サーバーが v2.20 になると使えます（会社ごとの管理者は、同期サーバーの反映の後に登録できます）。") : String(e && e.message || e).slice(0, 100);
+    }
+    finally {
+        V57.listBusy = 0;
+        V57.listAt = Date.now();
+    }
+    v57AdmRepaint();
+}
+function v57AdmRepaint() { const el = document.getElementById("v57adm"); if (!el)
+    return; el.outerHTML = v57AdmCardHtml(); v57AdmBind(); try {
+    if (typeof i18nApply === "function" && typeof I18N !== "undefined" && I18N.lang !== "ja")
+        i18nApply(document.getElementById("v57adm"));
+}
+catch (e) { } }
+async function v57AdmPut(admin) { let r = null; try {
+    r = await syncCall("adm_put", { pw: (SES && SES.apw) || "", admin }, { timeout: 30000 });
+}
+catch (e) {
+    r = { ok: false, msg: String(e && e.message || e).slice(0, 100) };
+} return r; }
+function v57AdmForm(a) {
+    const A = ((typeof ADB !== "undefined" && ADB && ADB.accounts) || []).filter(x => x && x.code), sel = new Set(((a && a.accounts) || []).map(x => x.code));
+    openDW(`<div class="tm-form" id="v57form"><h3>🔑 ${v57E(v57T(a ? "管理者の範囲・氏名を変える" : "会社の管理者を登録"))}</h3>
+    <p class="nn" style="margin-top:6px">${v57E(v57T("登録したメールアドレスに、ログインのたびに確認コード（6桁）が届きます。パスワードはありません。"))}</p>
+    <p class="lbl" style="margin-top:10px">${v57E(v57T("メールアドレス（必須）"))}</p><input class="sel" id="v57em" type="email" autocomplete="off" style="width:100%;box-sizing:border-box" value="${v57E((a && a.email) || "")}" placeholder="name@example.co.jp">
+    <p class="lbl" style="margin-top:9px">${v57E(v57T("氏名"))}</p><input class="sel" id="v57nm" autocomplete="off" style="width:100%;box-sizing:border-box" value="${v57E((a && a.name) || "")}" placeholder="${v57E(v57T("例：山田 花子"))}">
+    <p class="lbl" style="margin-top:9px">${v57E(v57T("管理するアカウント（1つ以上・物流会社も選べます）"))}</p>
+    <input class="sel" id="v57q" placeholder="${v57E(v57T("🔍 コード・会社名で絞り込み"))}" style="width:100%;box-sizing:border-box;margin-top:4px">
+    <div id="v57acc" style="max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:var(--r);padding:6px 8px;margin-top:6px">
+      ${A.map(x => `<label style="display:flex;gap:7px;align-items:center;font-size:12px;padding:3px 0" data-v57q="${v57E((x.code + " " + (x.co || "")).toLowerCase())}"><input type="checkbox" value="${v57E(x.code)}" ${sel.has(x.code) ? "checked" : ""}><span class="acode">${v57E(x.code)}</span>｜${v57E(String(x.co || "").slice(0, 30))}${x.role === "fwd" ? " 🚚 " + v57E(v57T("物流会社")) : ""}${x.st !== "active" ? ` <span class="p lo">${v57E(v57T("停止"))}</span>` : ""}</label>`).join("") || `<p class="nn">${v57E(v57T("アカウントがありません"))}</p>`}</div>
+    <div class="rw" style="margin-top:12px"><button class="btn" type="button" id="v57save">${v57E(v57T(a ? "保存" : "登録する"))}</button><button class="btn g" type="button" onclick="closeDW()">${v57E(v57T("やめる"))}</button></div>
+    <p class="nn" id="v57ferr" style="color:var(--crit);margin-top:8px" hidden></p></div>`);
+    if (typeof dwChrome === "function")
+        dwChrome();
+    const q = document.getElementById("v57q");
+    if (q)
+        q.oninput = () => { const s = q.value.trim().toLowerCase(); document.querySelectorAll("#v57acc [data-v57q]").forEach(l => { l.style.display = !s || l.dataset.v57q.includes(s) ? "" : "none"; }); };
+    document.getElementById("v57save").onclick = async () => {
+        const err = t => { const e = document.getElementById("v57ferr"); e.hidden = false; e.textContent = t; };
+        const email = String(document.getElementById("v57em").value || "").trim(), name = String(document.getElementById("v57nm").value || "").trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+            return err(v57T("メールアドレスの形が正しくありません。"));
+        const codes = [...document.querySelectorAll("#v57acc input[type=checkbox]:checked")].map(c => c.value);
+        if (!codes.length)
+            return err(v57T("管理するアカウントを1つ以上選んでください。"));
+        const b = document.getElementById("v57save");
+        b.disabled = true;
+        let kids = [];
+        try {
+            for (const c of codes)
+                kids.push(await v213Kid(c));
+        }
+        catch (e) {
+            b.disabled = false;
+            return err(v57T("アカウントの鍵を計算できませんでした。"));
+        }
+        const r = await v57AdmPut(Object.assign({ email, name, kids }, a ? { id: a.id } : {}));
+        b.disabled = false;
+        if (!r || !r.ok)
+            return err(v57AdmMsg(r) + ((r && r.bad && r.bad.length) ? "（" + r.bad.join("、") + "）" : ""));
+        closeDW();
+        toast(v57T(a ? "管理者の範囲・氏名を保存しました" : "会社の管理者を登録しました") + "（" + email + "）");
+        v57AdmLoad(true);
+    };
+}
+function v57AdmBind() {
+    const g = id => document.getElementById(id);
+    if (g("v57add"))
+        g("v57add").onclick = () => v57AdmForm(null);
+    if (g("v57reload"))
+        g("v57reload").onclick = () => v57AdmLoad(true);
+    const find = id => (V57.list || []).find(x => x.id === id);
+    document.querySelectorAll("[data-v57ed]").forEach(b => b.onclick = () => { const a = find(b.dataset.v57ed); if (a)
+        v57AdmForm(a); });
+    document.querySelectorAll("[data-v57st]").forEach(b => b.onclick = async () => {
+        const a = find(b.dataset.v57st);
+        if (!a)
+            return;
+        if (a.active && !confirm(v57T("この管理者を停止します。停止すると、ログイン中の画面もすぐに使えなくなります。") + "\n" + a.email))
+            return;
+        b.disabled = true;
+        const r = await v57AdmPut({ id: a.id, active: a.active ? 0 : 1 });
+        b.disabled = false;
+        if (!r || !r.ok)
+            return toast(v57AdmMsg(r));
+        toast((a.active ? v57T("停止しました") : v57T("再開しました")) + "（" + a.email + "）");
+        v57AdmLoad(true);
+    });
+    document.querySelectorAll("[data-v57del]").forEach(b => b.onclick = async () => {
+        const a = find(b.dataset.v57del);
+        if (!a)
+            return;
+        if (!confirm(v57T("この管理者の登録を削除します（メールアドレスも消えます）。") + "\n" + a.email))
+            return;
+        let r = null;
+        try {
+            r = await syncCall("adm_del", { pw: (SES && SES.apw) || "", id: a.id }, { timeout: 30000 });
+        }
+        catch (e) {
+            r = { ok: false, msg: String(e && e.message || e) };
+        }
+        if (!r || !r.ok)
+            return toast(v57AdmMsg(r));
+        toast(v57T("削除しました") + "（" + a.email + "）");
+        v57AdmLoad(true);
+    });
+}
+function v57Rename(key) {
+    if (typeof tmAdmGet !== "function")
+        return;
+    const { a, m, name, code } = tmAdmGet(key);
+    if (!a || !m)
+        return;
+    openDW(`<div class="tm-form"><h3>✏ ${v57E(v57T("メンバーの名前を変える"))}：${v57E(name)}（${v57E(code)}）</h3>
+    <p class="nn" style="margin-top:6px">${v57E(v57T("新しい名前でログインしてもらいます（アクセスコードは同じ）。前の名前ではログインできなくなります。役割・担当・状態はそのまま引き継ぎます。"))}</p>
+    <p class="lbl" style="margin-top:10px">${v57E(v57T("新しい氏名"))}</p><input class="sel" id="v57rn" autocomplete="off" style="width:100%;box-sizing:border-box" value="${v57E(name)}">
+    <div class="rw" style="margin-top:12px"><button class="btn" type="button" id="v57rnGo">${v57E(v57T("保存"))}</button><button class="btn g" type="button" onclick="closeDW()">${v57E(v57T("やめる"))}</button></div>
+    <p class="nn" id="v57rnErr" style="color:var(--crit);margin-top:8px" hidden></p></div>`);
+    if (typeof dwChrome === "function")
+        dwChrome();
+    document.getElementById("v57rnGo").onclick = () => {
+        const err = t => { const e = document.getElementById("v57rnErr"); e.hidden = false; e.textContent = t; };
+        const nn = String(document.getElementById("v57rn").value || "").trim().slice(0, 60);
+        if (!nn)
+            return err(v57T("氏名を入力してください。"));
+        if (nn === name)
+            return err(v57T("前と同じ名前です。"));
+        const ex = (a.members || []).find(x => x && x.name === nn);
+        if (ex && !(ex.del === 1 || ex.del === true))
+            return err(v57T("その名前のメンバーは、すでにいます。"));
+        const now = Date.now(), st = (m.st === "disabled" || m.st === "active" || m.st === "invited") ? m.st : "invited";
+        const n2 = Object.assign({}, m, { name: nn, st, del: 0, _m: now });
+        m.del = 1;
+        m.st = "disabled";
+        m._m = now;
+        if (ex)
+            Object.assign(ex, n2);
+        else
+            a.members = (a.members || []).concat([n2]);
+        closeDW();
+        if (typeof tmAdmSave === "function")
+            tmAdmSave(`${name} → ${nn}：${v57T("名前を変えました")}`);
+    };
+}
+function v57RenameBtns() {
+    try {
+        document.querySelectorAll("#admmem [data-tmastop]").forEach(b => {
+            const key = b.dataset.tmastop;
+            const box = b.parentElement;
+            if (!box || box.querySelector("[data-v57rn]"))
+                return;
+            const x = document.createElement("button");
+            x.className = "btn g";
+            x.type = "button";
+            x.dataset.v57rn = key;
+            x.textContent = v57T("名前を変える");
+            x.onclick = () => v57Rename(key);
+            b.insertAdjacentElement("beforebegin", x);
+        });
+    }
+    catch (e) { }
+}
+if (typeof tmAdmBind === "function") {
+    const __tmb57 = tmAdmBind;
+    tmAdmBind = function () { const r = __tmb57.apply(this, arguments); v57RenameBtns(); return r; };
+}
+function v57Nav() {
+    try {
+        const nav = document.getElementById("nav");
+        if (!nav || !v57Ses())
+            return;
+        const g = nav.querySelector(".ngrp");
+        if (g && v57Co())
+            g.textContent = v57CoLabel() + " " + v57T("の管理");
+        nav.querySelectorAll("[data-ux32adm]").forEach(b => { const id = b.dataset.ux32adm; if (id !== "top" && !document.getElementById(id))
+            b.remove(); });
+        nav.querySelectorAll(".ngrp").forEach(h => { let n = h.nextElementSibling; if (h === g)
+            return; if (!n || n.classList.contains("ngrp"))
+            h.remove(); });
+        const sft = document.getElementById("sft");
+        if (sft && /STANDAGE 管理者/.test(sft.innerHTML))
+            sft.innerHTML = sft.innerHTML.replace("STANDAGE 管理者", v57Co() ? v57E(v57CoLabel()) + " " + v57E(v57T("の管理者")) : "STANDAGE " + v57E(v57T("マスター")));
+    }
+    catch (e) { }
+}
+function v57AfterRender() {
+    if (!v57Ses() || !(typeof cur !== "undefined" && cur === "adm"))
+        return;
+    const w = document.getElementById("well");
+    if (!w)
+        return;
+    if (v57Co()) {
+        v57WatchWell();
+        v57Strip();
+        if (!document.getElementById("v57me")) {
+            const ph = w.querySelector(".ph");
+            (ph || w.firstElementChild).insertAdjacentHTML(ph ? "afterend" : "beforebegin", v57MeHtml());
+        }
+        const sb = document.getElementById("v57secGo");
+        if (sb)
+            sb.onclick = v57SecShow;
+    }
+    else if (!document.getElementById("v57adm")) {
+        const anchor = document.getElementById("admmem") || document.getElementById("accounts");
+        if (anchor) {
+            anchor.insertAdjacentHTML("afterend", v57AdmCardHtml());
+            v57AdmBind();
+            v57AdmLoad(false);
+        }
+    }
+    v57Head();
+    v57RenameBtns();
+    try {
+        if (typeof ux32AdmNav === "function")
+            ux32AdmNav();
+    }
+    catch (e) { }
+    v57Nav();
+    try {
+        if (typeof i18nApply === "function" && typeof I18N !== "undefined" && I18N.lang !== "ja")
+            i18nApply(w);
+    }
+    catch (e) { }
+}
+if (typeof v2110UsrText === "function") {
+    const __ut57 = v2110UsrText;
+    v2110UsrText = function () { try {
+        if (v57Co()) {
+            const me = v57Me();
+            return [me.name || me.email || v57T("管理者"), v57CoLabel()];
+        }
+        if (v57Master())
+            return ["STANDAGE " + v57T("マスター"), "STANDAGE Inc."];
+    }
+    catch (e) { } return __ut57.apply(this, arguments); };
+}
+(function () { try {
+    if (document.getElementById("v57css"))
+        return;
+    const st = document.createElement("style");
+    st.id = "v57css";
+    st.textContent = "body.v57co #askfab{display:none!important}";
+    document.head.appendChild(st);
+}
+catch (e) { } })();
+if (typeof renderAdmin === "function") {
+    const __ra57 = renderAdmin;
+    renderAdmin = function () { const r = __ra57.apply(this, arguments); try {
+        v57AfterRender();
+    }
+    catch (e) { } return r; };
+}
+if (typeof ux32AdmNav === "function") {
+    const __nav57 = ux32AdmNav;
+    ux32AdmNav = function () { const r = __nav57.apply(this, arguments); try {
+        v57Nav();
+    }
+    catch (e) { } return r; };
+}
+if (typeof buildNav === "function") {
+    const __bn57 = buildNav;
+    buildNav = function () { const r = __bn57.apply(this, arguments); try {
+        v57Nav();
+    }
+    catch (e) { } return r; };
+}
+try {
+    if (typeof UX32_ADM !== "undefined" && Array.isArray(UX32_ADM) && UX32_ADM[0] && Array.isArray(UX32_ADM[0][1]) && !UX32_ADM[0][1].some(x => x[0] === "管理者アカウント"))
+        UX32_ADM[0][1].splice(5, 0, ["管理者アカウント", /管理者アカウント/], ["会社の管理者", /会社の管理者として/]);
+}
+catch (e) { }
+try {
+    if (typeof V42_SEC_NM !== "undefined")
+        Object.assign(V42_SEC_NM, V57_SEC_NM);
+}
+catch (e) { }
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N.dict)
+            return;
+        [["管理者", "Admin", "管理员", "Administrador"],
+            ["管理者ID または メールアドレス", "Admin ID or email address", "管理员ID 或 电子邮箱", "ID de administrador o correo electrónico"],
+            ["🔒 STANDAGE マスターのみ", "🔒 STANDAGE master only", "🔒 仅限 STANDAGE 主管理员", "🔒 Solo el administrador maestro de STANDAGE"],
+            ["確認コードを送る", "Send confirmation code", "发送验证码", "Enviar código de confirmación"],
+            ["確認コードを送り直す", "Send the code again", "重新发送验证码", "Reenviar el código"],
+            ["確認して管理コンソールへ", "Verify and open the console", "验证并进入管理控制台", "Verificar y abrir la consola"],
+            ["確認コード（メールで届いた6桁）", "Confirmation code (6 digits from the email)", "验证码（邮件中的6位数字）", "Código de confirmación (6 dígitos del correo)"],
+            ["会社の管理者は、登録されたメールアドレスに届く確認コード（6桁）でログインします（パスワードは使いません）。", "Company admins sign in with a 6-digit code sent to their registered email address (no password).", "企业管理员使用发送到登记邮箱的6位验证码登录（不使用密码）。", "Los administradores de empresa inician sesión con un código de 6 dígitos enviado a su correo registrado (sin contraseña)."],
+            ["メールアドレスの形が正しくありません。", "The email address is not valid.", "电子邮箱格式不正确。", "La dirección de correo no es válida."],
+            ["メールで届いた確認コード（6桁）を入力してください。", "Enter the 6-digit code from the email.", "请输入邮件中的6位验证码。", "Introduzca el código de 6 dígitos del correo."],
+            ["確認コードを送っています…", "Sending the code…", "正在发送验证码…", "Enviando el código…"], ["確認コードを確かめています…", "Checking the code…", "正在验证…", "Verificando el código…"],
+            ["確認できました。管理コンソールを開いています…", "Verified. Opening the console…", "验证成功，正在打开管理控制台…", "Verificado. Abriendo la consola…"],
+            ["の管理者", "admin", "管理员", "administrador"], ["の管理", "administration", "管理", "administración"], ["マスター", "master", "主管理员", "maestro"],
+            ["管理コンソール", "Admin console", "管理控制台", "Consola de administración"], ["会社の管理者としてログイン中", "Signed in as a company admin", "以企业管理员身份登录", "Sesión iniciada como administrador de empresa"],
+            ["あなた：", "You: ", "您：", "Usted: "], ["管理するアカウント：", "Managed accounts: ", "管理的账户：", "Cuentas gestionadas: "], ["管理の記録を見る", "View admin log", "查看管理记录", "Ver el registro de administración"],
+            ["👥 メンバー管理（貴社のアカウント）", "👥 Member management (your accounts)", "👥 成员管理（贵公司的账户）", "👥 Gestión de miembros (sus cuentas)"],
+            ["この画面でできること：", "What you can do here: ", "此页面可以：", "Qué puede hacer aquí: "],
+            ["貴社のアカウントのメンバーの招待・停止・名前の変更、利用状況・操作の記録の確認、AIエンジンの設定と共有、データの書き出し（搬出のトークン）。契約・期限・アカウントの停止とデータの削除は、STANDAGE が行います。", "Invite, suspend and rename members of your accounts, check usage and activity logs, set up and share the AI engine, and export data (export tokens). Contracts, expiry dates, stopping accounts and deleting data are handled by STANDAGE.", "邀请、停用、更名贵公司账户的成员，查看使用情况和操作记录，设置并共享AI引擎，导出数据（导出令牌）。合同、期限、账户停用和数据删除由 STANDAGE 处理。", "Invitar, suspender y renombrar miembros de sus cuentas, ver el uso y los registros, configurar y compartir el motor de IA y exportar datos (tokens de exportación). Los contratos, vencimientos, la suspensión de cuentas y el borrado de datos los gestiona STANDAGE."],
+            ["契約・期限・アカウントの停止とデータの削除・管理者の登録は、STANDAGE マスターが行います（ご依頼は STANDAGE の担当まで）。アカウントの中のメンバーの役割「管理者」とは別の、管理コンソールの管理者です。", "Contracts, expiry dates, stopping accounts, deleting data and registering admins are done by the STANDAGE master (please ask your STANDAGE contact). This is a console admin, separate from the member role “Admin” inside an account.", "合同、期限、账户停用、数据删除及管理员登记由 STANDAGE 主管理员处理（请联系 STANDAGE 负责人）。这是管理控制台的管理员，与账户内成员角色“管理员”不同。", "Los contratos, vencimientos, la suspensión de cuentas, el borrado de datos y el registro de administradores los realiza el administrador maestro de STANDAGE (consulte a su contacto). Es un administrador de la consola, distinto del rol de miembro «Administrador» dentro de una cuenta."],
+            ["管理者アカウント（会社ごとの管理者）", "Admin accounts (per-company admins)", "管理员账户（各公司的管理员）", "Cuentas de administrador (por empresa)"], ["管理者アカウント", "Admin accounts", "管理员账户", "Cuentas de administrador"], ["会社の管理者", "Company admins", "企业管理员", "Administradores de empresa"],
+            ["＋ 管理者を登録", "+ Register an admin", "＋ 登记管理员", "+ Registrar administrador"], ["範囲・氏名を変える", "Edit scope / name", "修改范围/姓名", "Editar alcance / nombre"],
+            ["氏名・メール", "Name / email", "姓名/邮箱", "Nombre / correo"], ["管理するアカウント", "Managed accounts", "管理的账户", "Cuentas gestionadas"], ["最終ログイン", "Last sign-in", "最后登录", "Último acceso"], ["登録", "Registered", "登记", "Registrado"],
+            ["会社の管理者を登録", "Register a company admin", "登记企业管理员", "Registrar un administrador de empresa"], ["管理者の範囲・氏名を変える", "Edit the admin's scope / name", "修改管理员的范围/姓名", "Editar el alcance / nombre del administrador"],
+            ["メールアドレス（必須）", "Email address (required)", "电子邮箱（必填）", "Correo electrónico (obligatorio)"], ["管理するアカウント（1つ以上・物流会社も選べます）", "Accounts to manage (one or more; logistics companies too)", "管理的账户（至少1个，也可选择物流公司）", "Cuentas a gestionar (una o más; también empresas logísticas)"],
+            ["登録したメールアドレスに、ログインのたびに確認コード（6桁）が届きます。パスワードはありません。", "A 6-digit code is sent to this email address at every sign-in. There is no password.", "每次登录时，验证码（6位）会发送到登记的邮箱。没有密码。", "En cada inicio de sesión se envía un código de 6 dígitos a este correo. No hay contraseña."],
+            ["お客様の会社・物流会社ごとに、管理コンソールに入れる人を登録します。会社の管理者は、登録したメールアドレスに届く確認コード（6桁）でログインし、自分の会社のアカウントだけを扱えます（メンバーの招待・停止・名前の変更、利用状況と操作の記録、AI 接続の共有、搬出のトークン）。契約・期限・停止・データの削除・台帳・管理者の登録は STANDAGE マスターだけです。アカウントの中のメンバーの役割「管理者」とは別のものです。", "Register who can open the admin console for each customer or logistics company. A company admin signs in with a 6-digit code sent to the registered email and can handle only their own company's accounts (inviting, suspending and renaming members, usage and activity logs, AI connection sharing, export tokens). Contracts, expiry dates, stopping, data deletion, the ledger and admin registration are for the STANDAGE master only. This is separate from the member role “Admin” inside an account.", "为每个客户公司或物流公司登记可以进入管理控制台的人。企业管理员使用发送到登记邮箱的6位验证码登录，只能处理自己公司的账户（邀请、停用、更名成员，使用情况与操作记录，AI连接共享，导出令牌）。合同、期限、停用、数据删除、台账及管理员登记仅限 STANDAGE 主管理员。与账户内成员角色“管理员”不同。", "Registre quién puede abrir la consola para cada empresa cliente o logística. El administrador de empresa inicia sesión con un código de 6 dígitos enviado al correo registrado y solo gestiona las cuentas de su empresa (invitar, suspender y renombrar miembros, uso y registros, compartir la conexión de IA, tokens de exportación). Contratos, vencimientos, suspensión, borrado de datos, el registro y el alta de administradores son solo para el maestro de STANDAGE. Es distinto del rol de miembro «Administrador» dentro de una cuenta."],
+            ["まだ会社の管理者はいません（右上の「＋ 管理者を登録」から）", "No company admins yet (use “+ Register an admin”)", "尚无企业管理员（请点击右上角“＋ 登记管理员”）", "Aún no hay administradores de empresa (use «+ Registrar administrador»)"],
+            ["名前を変える", "Rename", "更名", "Renombrar"], ["メンバーの名前を変える", "Rename a member", "更改成员姓名", "Renombrar a un miembro"], ["新しい氏名", "New name", "新姓名", "Nuevo nombre"], ["名前を変えました", "renamed", "已更名", "renombrado"],
+            ["新しい名前でログインしてもらいます（アクセスコードは同じ）。前の名前ではログインできなくなります。役割・担当・状態はそのまま引き継ぎます。", "The member signs in with the new name (same access code). The old name can no longer sign in. Role, assignments and status are kept.", "成员将使用新姓名登录（访问码不变）。旧姓名将无法登录。角色、负责范围和状态保持不变。", "El miembro iniciará sesión con el nuevo nombre (mismo código). El nombre anterior ya no podrá iniciar sesión. Se conservan el rol, las asignaciones y el estado."],
+            ["台帳に無いアカウント", "Not in the ledger", "台账中不存在的账户", "No está en el registro"], ["読み込み中…", "Loading…", "加载中…", "Cargando…"], ["記録はまだありません。", "No records yet.", "尚无记录。", "Aún no hay registros."], ["日時", "Date", "日期时间", "Fecha"], ["できごと", "Event", "事件", "Evento"], ["内容", "Details", "内容", "Detalles"]
+        ].forEach(r => ["en", "zh", "es"].forEach((l, i) => { const d = I18N.dict[l]; if (d && r[i + 1] && d[r[0]] == null)
+            d[r[0]] = r[i + 1]; }));
+    }
+    catch (e) { }
+})();
+function v57CoBoot() {
+    if (!v57Co())
+        return;
+    if (!window.__v57co) {
+        try {
+            ADB = { v: 1, admin: { id: "standage", pw: "" }, accounts: [], v57codes: [] };
+        }
+        catch (e) { }
+    }
+    v57Prune(null);
+    try {
+        if (typeof cur !== "undefined" && cur === "adm" && typeof renderAdmin === "function") {
+            buildNav();
+            renderAdmin();
+        }
+    }
+    catch (e) { }
+    try {
+        if (typeof v213AdmPull === "function")
+            v213AdmPull().then(x => { if (x && typeof cur !== "undefined" && cur === "adm")
+                renderAdmin(); }).catch(() => { });
+    }
+    catch (e) { }
+    try {
+        if (sessionStorage.getItem("v57_hello")) {
+            sessionStorage.removeItem("v57_hello");
+            setTimeout(() => { try {
+                toast(v57T("管理コンソールにログインしました") + "（" + v57CoLabel() + " " + v57T("の管理者") + "）");
+            }
+            catch (e) { } }, 400);
+        }
+    }
+    catch (e) { }
+}
+v57CoBoot();
+try {
+    if (v57Master() && typeof cur !== "undefined" && cur === "adm" && document.getElementById("well"))
+        v57AfterRender();
+}
+catch (e) { }
+var V57DEMO = { on: 0, kid: "", adm: "", noCloud: 0, pend: {}, lo: 0, kids: {}, busy: 0 };
+(function () {
+    if (typeof SYNC === "undefined" || typeof syncCall !== "function")
+        return;
+    const SK = "bc20_v57demo", SK_ADM = "bc20_v57demo_adm", SK_FRESH = "bc20_v57demo_fresh";
+    const W = /^(push|members_put|deck_put|deck_del|file_put|file_del|digest_set|digest_test|export_set|pool_put|mail_send|lw_send|req_put|req_close|req_del|req_rem)$/;
+    const MSG = {
+        bar: "デモ用アカウント：この PC での変更は保存されず、ほかの人の画面にも反映されません",
+        sub: "ログアウトすると、この PC での変更は消えます。次のログインは、いつも同じ初期状態から始まります。",
+        mbtn: "初期状態の更新（STANDAGE 用）",
+        ebar: "デモの初期状態を編集しています（STANDAGE）",
+        esub: "この PC の変更はサーバーに保存され、次にログインするすべての人の初期状態になります。",
+        eend: "編集を終える",
+        veil: "この PC での変更を消して、ログイン画面に戻ります。",
+        lotoast: "デモ用アカウント：この PC での変更を消してログアウトします…",
+        notSaved: "デモ用アカウントのため、サーバーには保存しません（この PC の中だけで使えます）",
+        pubMail: "このアカウントでは、メール通知は使えません。お客様ごとのアクセスコード（BC-…）でログインすると設定できます",
+        pubMail2: "このアカウントでは、メール通知は使えません。お客様ごとのアクセスコード（BC-…）でログインすると設定できます",
+        pubSend: "このアカウントからは、メールを送れない設定です（記録のみ）",
+        pubLw: "このアカウントからは送信できません",
+        pubReq: "このアカウントでは、相手に送る依頼ページは作れません（この端末の中の「相手の画面を試す」をお使いください）",
+        docs: "デモ用アカウントのため、アップロードしたファイルはこの PC の中だけで使えます（サーバーには預けません。ログアウトする・このタブを閉じると消えます）。1件 20MB まで。",
+        deck: "デモ用アカウントのため、作った資料はこの PC にだけ保存されます（言語ごとに最新10件。ログアウトすると消えます）。「開く」で、いつでも見本の確認・PowerPoint・PDF の保存ができます。",
+        dTitle: "デモの初期状態を更新する（STANDAGE の管理者）",
+        dBody: "この PC の今の内容（ログインしてから変えたところも含む）が、このデモ用アカウントの初期状態としてサーバーに保存されます。次にログインするすべての人が、この内容から始まります（いまデモをしている人の画面は変わりません）。",
+        dPw: "管理者パスワード", dSend: "確認コードを送る", dOtp: "メールの確認コード（6桁）", dGo: "編集を始める", dCancel: "やめる",
+        dNeedPw: "管理者パスワードを入力してください", dNeedOtp: "メールの確認コード（6桁）を入力してください",
+        started: "デモの初期状態の編集を始めました（この PC の今の内容を保存しています…）",
+        saved: "デモの初期状態を保存しました。次にログインする人から、この内容で始まります",
+        saveNg: "初期状態を保存できませんでした。通信を確かめて、もう一度「編集を終える」を押してください",
+        lost: "管理者の鍵の有効期限が切れたため、初期状態の編集を終えました（直前の変更は保存されていません）",
+        meSub: "メンバーの招待・登録はできません。そのほかの操作はすべてできます（変更はこの PC の中だけです）。",
+        meTag: "（デモ用アカウント）", noName: "お名前なし",
+        noInvite: "デモ用アカウントでは、メンバーの招待・登録はできません"
+    };
+    const ss = (k, v) => { try {
+        if (v == null)
+            sessionStorage.removeItem(k);
+        else
+            sessionStorage.setItem(k, v);
+    }
+    catch (e) { } };
+    const sg = (k) => { try {
+        return sessionStorage.getItem(k) || "";
+    }
+    catch (e) {
+        return "";
+    } };
+    const E = (s) => { s = String(s == null ? "" : s); try {
+        if (typeof esc === "function")
+            return esc(s);
+    }
+    catch (e) { } return s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); };
+    const trial = () => { try {
+        return typeof SES !== "undefined" && !!SES && SES.t === "trial" && !!SES.code;
+    }
+    catch (e) {
+        return false;
+    } };
+    const on = () => !!V57DEMO.on && trial();
+    const local = () => on() && !V57DEMO.adm;
+    const say = (m) => { try {
+        if (typeof toast === "function")
+            toast(m);
+    }
+    catch (e) { } };
+    const pubOk = () => typeof V5326PUB === "undefined";
+    window.v57demoOn = on;
+    window.v57demoLocal = local;
+    try {
+        if (trial()) {
+            const k = sg(SK);
+            if (k) {
+                V57DEMO.on = 1;
+                V57DEMO.kid = k;
+                V57DEMO.adm = sg(SK_ADM);
+            }
+        }
+        else {
+            ss(SK, null);
+            ss(SK_ADM, null);
+        }
+    }
+    catch (e) { }
+    async function deckWipe(code, kid) {
+        let n = 0;
+        try {
+            if (typeof dk14LocalAll !== "function" || typeof dk14LocalDel !== "function")
+                return 0;
+            for (const x of (await dk14LocalAll()) || []) {
+                if (x && (x.acct === kid || x.acct === "c:" + code)) {
+                    await dk14LocalDel(x.id);
+                    n++;
+                }
+            }
+            try {
+                if (typeof DK14 !== "undefined" && DK14) {
+                    DK14.items = null;
+                    DK14.open = "";
+                }
+            }
+            catch (e) { }
+        }
+        catch (e) { }
+        return n;
+    }
+    function memWipe() { try {
+        if (typeof D30 !== "undefined" && D30 && D30.cache && D30.cache.clear)
+            D30.cache.clear();
+    }
+    catch (e) { } }
+    async function wipeLogin(code, kid) {
+        const LS = localStorage, enc = encodeURIComponent(code), out = { keys: 0 };
+        let adm = false;
+        try {
+            adm = typeof v54sAdmDev === "function" && !!v54sAdmDev();
+        }
+        catch (e) { }
+        const del = new Set();
+        try {
+            for (let i = 0; i < LS.length; i++) {
+                const k = LS.key(i);
+                if (k && /^bc20_/.test(k) && (k.indexOf(code) >= 0 || k.indexOf(enc) >= 0) && !/^bc20_(wel|navl)_/.test(k))
+                    del.add(k);
+            }
+        }
+        catch (e) { }
+        try {
+            (Array.isArray(SYNC_KEYS) ? SYNC_KEYS : []).forEach(k => { if (adm && (k === "bc20_plan_v1" || k === "bc20_fwdplan_v1"))
+                return; del.add(k); });
+        }
+        catch (e) { }
+        del.add("bc20_fwd_v1");
+        del.forEach(k => { try {
+            if (LS.getItem(k) != null) {
+                LS.removeItem(k);
+                out.keys++;
+            }
+        }
+        catch (e) { } });
+        try {
+            const m = JSON.parse(LS.getItem("bc20_sync_meta") || "{}") || {};
+            if (m[kid]) {
+                delete m[kid];
+                LS.setItem("bc20_sync_meta", JSON.stringify(m));
+            }
+        }
+        catch (e) { }
+        if (!adm) {
+            try {
+                const c = JSON.parse(LS.getItem("bc20_cost_v1") || "null");
+                if (c && Array.isArray(c.ev)) {
+                    const n0 = c.ev.length;
+                    c.ev = c.ev.filter(x => !(Array.isArray(x) && x[1] === code));
+                    if (c.ev.length !== n0)
+                        LS.setItem("bc20_cost_v1", JSON.stringify(c));
+                }
+            }
+            catch (e) { }
+        }
+        try {
+            const a = (typeof findAcct === "function") ? findAcct(code) : null;
+            if (a) {
+                a.usage = (typeof emptyU === "function") ? emptyU() : { logins: 0, uploads: 0, aiQ: 0, webQ: 0, fills: 0, screens: {}, lastActive: 0, first: 0, events: [] };
+                if (typeof v213SaveADB === "function")
+                    v213SaveADB();
+                else if (typeof AKEY !== "undefined")
+                    LS.setItem(AKEY, JSON.stringify(ADB));
+            }
+        }
+        catch (e) { }
+        try {
+            if (typeof FWDB !== "undefined" && FWDB && typeof fwdLoad === "function")
+                fwdLoad();
+        }
+        catch (e) { }
+        memWipe();
+        out.decks = await deckWipe(code, kid);
+        V57DEMO.lastWipe = out;
+        return out;
+    }
+    function members() { try {
+        const a = (typeof findAcct === "function") ? findAcct(SES.code) : null;
+        return ((a && a.members) || []).slice();
+    }
+    catch (e) {
+        return [];
+    } }
+    function fake(op, b) {
+        const R = o => Object.assign(o, { demo: 1, v57demo: 1 });
+        if (op === "push")
+            return R({ ok: true, ver: (b.ns === "fwd" ? (SYNC.ver && SYNC.ver.fwd) : (SYNC.ver && SYNC.ver.acct)) || 0 });
+        if (op === "members_put")
+            return R({ ok: true, members: members() });
+        if (op === "deck_del" || op === "file_del")
+            return R({ ok: true, id: String(b.id || "") });
+        if (op === "export_set" || op === "pool_put")
+            return R({ ok: true });
+        if (op === "digest_set")
+            return /@/.test(String(b.to || "")) ? R({ ok: false, reason: "public", msg: MSG.pubMail }) : R({ ok: true });
+        if (op === "digest_test")
+            return R({ ok: false, reason: "public", msg: MSG.pubMail2 });
+        if (op === "mail_send")
+            return R({ ok: false, reason: "public", msg: MSG.pubSend });
+        if (op === "lw_send")
+            return R({ ok: false, reason: "public", msg: MSG.pubLw });
+        if (op === "req_put")
+            return R({ ok: false, reason: "public", msg: MSG.pubReq });
+        return R({ ok: false, reason: "demo", msg: MSG.notSaved });
+    }
+    function liveMems(L) { return (Array.isArray(L) ? L : []).filter(m => m && m.name && !(m.del === 1 || m.del === true) && m.st !== "disabled"); }
+    function sanitize(code) {
+        try {
+            const a = (typeof findAcct === "function") ? findAcct(code) : null;
+            if (!a || !Array.isArray(a.members))
+                return;
+            const L = liveMems(a.members);
+            if (L.length !== a.members.length) {
+                a.members = L;
+                if (typeof v213SaveADB === "function")
+                    v213SaveADB();
+            }
+        }
+        catch (e) { }
+    }
+    async function start(kid) {
+        const fresh = !!sg(SK_FRESH);
+        V57DEMO.on = 1;
+        V57DEMO.kid = kid;
+        ss(SK, kid);
+        try {
+            clearTimeout(SYNC.timer);
+            clearTimeout(SYNC.fwdTimer);
+            SYNC.dirty = 0;
+            SYNC.fwdDirty = 0;
+        }
+        catch (e) { }
+        if (fresh) {
+            try {
+                await wipeLogin(SES.code, kid);
+            }
+            catch (e) { }
+            ss(SK_FRESH, null);
+        }
+        sanitize(SES.code);
+        setTimeout(bar, 0);
+    }
+    async function afterAcct(op, body, r) {
+        try {
+            const kid = body && body.kid;
+            if (r && r.acct && kid)
+                V57DEMO.kids[kid] = (+r.acct.demo === 1) ? 1 : 0;
+            if (op === "login" && r && r.ok && trial() && kid && kid === SYNC.kid) {
+                if (r.acct && +r.acct.demo === 1)
+                    await start(kid);
+                else if (V57DEMO.on && V57DEMO.kid && V57DEMO.kid !== kid) {
+                    V57DEMO.on = 0;
+                    V57DEMO.kid = "";
+                    V57DEMO.adm = "";
+                    ss(SK, null);
+                    ss(SK_ADM, null);
+                    ss(SK_FRESH, null);
+                }
+                else if (!V57DEMO.on)
+                    ss(SK_FRESH, null);
+            }
+        }
+        catch (e) { }
+        return r;
+    }
+    {
+        const __sc = syncCall;
+        syncCall = function (op, body, opt) {
+            try {
+                if (V57DEMO.on && trial() && W.test(String(op || ""))) {
+                    if (V57DEMO.adm) {
+                        const b2 = Object.assign({}, body || {}, { adm: V57DEMO.adm });
+                        return Promise.resolve(__sc.call(this, op, b2, opt)).then(r => { if (r && r.reason === "demo_adm")
+                            masterLost(); return r; });
+                    }
+                    return Promise.resolve(fake(String(op), body || {}));
+                }
+            }
+            catch (e) { }
+            const p = __sc.apply(this, arguments);
+            if ((op === "lookup" || op === "login") && p && typeof p.then === "function")
+                return p.then(r => afterAcct(op, body, r));
+            return p;
+        };
+    }
+    if (typeof syncSchedule === "function") {
+        const __ss = syncSchedule;
+        syncSchedule = function (ns) { if (local()) {
+            V57DEMO.pend[ns === "fwd" ? "fwd" : "acct"] = 1;
+            return;
+        } return __ss.apply(this, arguments); };
+    }
+    if (typeof syncPushAcct === "function") {
+        const __pa = syncPushAcct;
+        syncPushAcct = async function () { if (local()) {
+            try {
+                clearTimeout(SYNC.timer);
+                SYNC.dirty = 0;
+                SYNC.last.push = Date.now();
+            }
+            catch (e) { }
+            return;
+        } return __pa.apply(this, arguments); };
+    }
+    if (typeof syncPushFwd === "function") {
+        const __pf = syncPushFwd;
+        syncPushFwd = async function () { if (local()) {
+            try {
+                clearTimeout(SYNC.fwdTimer);
+                SYNC.fwdDirty = 0;
+            }
+            catch (e) { }
+            return;
+        } return __pf.apply(this, arguments); };
+    }
+    if (typeof syncPullAcct === "function") {
+        const __pl = syncPullAcct;
+        syncPullAcct = function (initial) { if (local() && SYNC.started && initial !== true)
+            return Promise.resolve(); return __pl.apply(this, arguments); };
+    }
+    if (typeof syncPullFwd === "function") {
+        const __plf = syncPullFwd;
+        syncPullFwd = function (initial) { if (local() && SYNC.started && initial !== true)
+            return Promise.resolve(); return __plf.apply(this, arguments); };
+    }
+    if (typeof syncKicked === "function") {
+        const __sk = syncKicked;
+        syncKicked = function (by, reason) { if (on() && (reason === undefined || reason === null || reason === "member")) {
+            V57DEMO.kickIgnored = (V57DEMO.kickIgnored || 0) + 1;
+            return;
+        } return __sk.apply(this, arguments); };
+    }
+    if (typeof syncRefreshAcct === "function") {
+        const __sra = syncRefreshAcct;
+        syncRefreshAcct = function (code) {
+            return Promise.resolve(__sra.apply(this, arguments)).then(a => {
+                try {
+                    if (a && !a.unknown && a.code) {
+                        const kid = (typeof V213 !== "undefined" && V213 && V213.kid) ? V213.kid[a.code] : "";
+                        if ((kid && V57DEMO.kids[kid] === 1) || (on() && a.code === SES.code))
+                            sanitize(a.code);
+                    }
+                }
+                catch (e) { }
+                return a;
+            });
+        };
+    }
+    if (typeof enterApp === "function") {
+        const __ea = enterApp;
+        enterApp = function () {
+            try {
+                if (trial() && document.getElementById("lgv")) {
+                    ss(SK_FRESH, "1");
+                    V57DEMO.on = 0;
+                    V57DEMO.kid = "";
+                    V57DEMO.adm = "";
+                    V57DEMO.pend = {};
+                    ss(SK, null);
+                    ss(SK_ADM, null);
+                }
+            }
+            catch (e) { }
+            return __ea.apply(this, arguments);
+        };
+    }
+    if (typeof v54sSend === "function") {
+        const __s54 = v54sSend;
+        v54sSend = function () { if (on())
+            return Promise.resolve({ ok: true }); return __s54.apply(this, arguments); };
+    }
+    if (typeof v54sDeckLocalOnly === "function") {
+        const __dl54 = v54sDeckLocalOnly;
+        v54sDeckLocalOnly = function () { if (on())
+            return Promise.resolve(false); return __dl54.apply(this, arguments); };
+    }
+    if (typeof v54sDeckDel === "function") {
+        const __dd54 = v54sDeckDel;
+        v54sDeckDel = function (code, kid) { if (on())
+            return deckWipe(code, kid); return __dd54.apply(this, arguments); };
+    }
+    async function logout() {
+        if (V57DEMO.lo)
+            return;
+        V57DEMO.lo = 1;
+        let code = "", kid = "", who = "";
+        try {
+            code = SES.code;
+            kid = SYNC.kid || V57DEMO.kid;
+            who = SES.who || "";
+        }
+        catch (e) { }
+        if (!window.__v2129out)
+            say(MSG.lotoast);
+        try {
+            if (V57DEMO.adm)
+                await masterEnd(true);
+        }
+        catch (e) { }
+        try {
+            if (kid)
+                syncCall("logout", { kid, dev: syncDev() }, { keepalive: 1, timeout: 5000 }).catch(() => { });
+        }
+        catch (e) { }
+        try {
+            if (code && kid && typeof v54sClear === "function") {
+                V57DEMO.cleared = await v54sClear(code, kid, who);
+                if (typeof v54sGuard === "function")
+                    v54sGuard(code, kid, who);
+            }
+            else if (code && kid) {
+                await wipeLogin(code, kid);
+            }
+        }
+        catch (e) { }
+        try {
+            await deckWipe(code, kid);
+            memWipe();
+        }
+        catch (e) { }
+        ss("bc20_ses_v1", null);
+        ss(SK, null);
+        ss(SK_ADM, null);
+        ss(SK_FRESH, null);
+        try {
+            clearInterval(SYNC.beatT);
+            SYNC.kicked = 1;
+            SES = null;
+        }
+        catch (e) { }
+        setTimeout(() => { try {
+            location.reload();
+        }
+        catch (e) { } }, 250);
+    }
+    window.v57demoLogout = logout;
+    document.addEventListener("click", e => { try {
+        const b = e.target && e.target.closest && e.target.closest("#lgout");
+        if (!b || !on())
+            return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        logout();
+    }
+    catch (x) { } }, true);
+    if (typeof v56authVeil === "function") {
+        const __vl = v56authVeil;
+        v56authVeil = function (x) {
+            const r = __vl.apply(this, arguments);
+            try {
+                if (x && on()) {
+                    const sp = document.querySelector("#v56authlo .v56authlo-c span:last-child");
+                    if (sp && sp.textContent !== MSG.veil)
+                        sp.textContent = MSG.veil;
+                }
+            }
+            catch (e) { }
+            return r;
+        };
+    }
+    function admDev() { try {
+        if (localStorage.getItem("bc20_v57demo_master") === "1")
+            return true;
+        return typeof v54sAdmDev === "function" && !!v54sAdmDev();
+    }
+    catch (e) {
+        return false;
+    } }
+    function bar() {
+        try {
+            let b = document.getElementById("v57demobar");
+            if (!on() || document.body.classList.contains("locked")) {
+                if (b)
+                    b.remove();
+                return;
+            }
+            const main = document.querySelector(".main") || document.body;
+            if (!b) {
+                b = document.createElement("div");
+                b.id = "v57demobar";
+                b.setAttribute("role", "status");
+            }
+            if (b.parentNode !== main || main.firstElementChild !== b)
+                main.insertAdjacentElement("afterbegin", b);
+            const edit = !!V57DEMO.adm, sig = edit ? "e" : "d" + (admDev() ? "m" : "");
+            if (b.dataset.sig === sig)
+                return;
+            b.dataset.sig = sig;
+            b.className = "v57demobar" + (edit ? " edit" : "");
+            b.innerHTML = edit ? `<b>${E(MSG.ebar)}</b><span class="v57demo-sub">${E(MSG.esub)}</span><button class="btn" type="button" id="v57demoEnd">${E(MSG.eend)}</button>`
+                : `<b>${E(MSG.bar)}</b><span class="v57demo-sub">${E(MSG.sub)}</span>${admDev() ? `<button class="btn g" type="button" id="v57demoM">${E(MSG.mbtn)}</button>` : ""}`;
+            const m = document.getElementById("v57demoM");
+            if (m)
+                m.onclick = () => dlg();
+            const en = document.getElementById("v57demoEnd");
+            if (en)
+                en.onclick = async () => { en.disabled = true; try {
+                    await masterEnd(false);
+                }
+                finally {
+                    try {
+                        en.disabled = false;
+                    }
+                    catch (e) { }
+                } };
+            try {
+                if (typeof i18nApply === "function" && typeof I18N !== "undefined" && I18N.lang && I18N.lang !== "ja")
+                    i18nApply(b);
+            }
+            catch (e) { }
+        }
+        catch (e) { }
+    }
+    window.v57demoBar = bar;
+    if (typeof render === "function") {
+        const __r = render;
+        render = function () { const r = __r.apply(this, arguments); try {
+            bar();
+        }
+        catch (e) { } return r; };
+    }
+    if (typeof i18nSet === "function") {
+        const __is = i18nSet;
+        i18nSet = function () { try {
+            const b = document.getElementById("v57demobar");
+            if (b)
+                b.dataset.sig = "";
+        }
+        catch (e) { } const r = __is.apply(this, arguments); try {
+            bar();
+        }
+        catch (e) { } return r; };
+    }
+    if (typeof d30CloudOn === "function") {
+        const __co = d30CloudOn;
+        d30CloudOn = function () { if (V57DEMO.noCloud > 0)
+            return false; return __co.apply(this, arguments); };
+    }
+    if (typeof d30AddFile === "function") {
+        const __af = d30AddFile;
+        d30AddFile = async function () {
+            if (!local())
+                return __af.apply(this, arguments);
+            V57DEMO.noCloud++;
+            let d;
+            try {
+                d = await __af.apply(this, arguments);
+            }
+            finally {
+                V57DEMO.noCloud = Math.max(0, V57DEMO.noCloud - 1);
+            }
+            try {
+                if (d && d.id && typeof v30One === "function") {
+                    const x = v30One("docs", d.id);
+                    if (x && x.state === "local") {
+                        v30Put("docs", d.id, { state: "demo" });
+                        d.state = "demo";
+                        if (typeof d30Rerender === "function")
+                            d30Rerender();
+                    }
+                }
+            }
+            catch (e) { }
+            return d;
+        };
+    }
+    if (typeof vDocs30 === "function") {
+        const __vd = vDocs30;
+        vDocs30 = function () {
+            let h = __vd.apply(this, arguments);
+            try {
+                if (local() && typeof h === "string")
+                    h = h.replace(/ファイルの本体は<b>端末で暗号化してからクラウドに預けます<\/b>（[^）]*）。1件 20MB まで。/, () => E(MSG.docs));
+            }
+            catch (e) { }
+            return h;
+        };
+    }
+    if (typeof dk14Cloud === "function") {
+        const __dc = dk14Cloud;
+        dk14Cloud = function () { if (V57DEMO.noCloud > 0)
+            return false; return __dc.apply(this, arguments); };
+    }
+    if (typeof dk14Save === "function") {
+        const __dsv = dk14Save;
+        dk14Save = async function () {
+            if (!local())
+                return __dsv.apply(this, arguments);
+            V57DEMO.noCloud++;
+            let r;
+            try {
+                r = await __dsv.apply(this, arguments);
+            }
+            finally {
+                V57DEMO.noCloud = Math.max(0, V57DEMO.noCloud - 1);
+            }
+            try {
+                if (typeof dk14Load === "function") {
+                    DK14.items = null;
+                    await dk14Load(true);
+                }
+            }
+            catch (e) { }
+            return r;
+        };
+    }
+    if (typeof dk14Load === "function") {
+        const __dld = dk14Load;
+        dk14Load = async function () {
+            const r = await __dld.apply(this, arguments);
+            try {
+                if (local() && V57DEMO.noCloud === 0 && typeof TEN !== "undefined" && TEN && typeof dk3PKey === "function" && Array.isArray(DK14.items)) {
+                    const uid = dk3PKey(TEN), acct = dk14Acct();
+                    if (DK14.uid === uid) {
+                        const have = new Set(DK14.items.map(x => x.id));
+                        let add = 0;
+                        ((await dk14LocalAll()) || []).filter(x => x && x.acct === acct && x.uid === uid && x.local && !have.has(x.id)).forEach(x => { DK14.items.push({ id: x.id, uid: x.uid, lang: x.lang, at: x.at, m: x.m, local: 1 }); add++; });
+                        if (add) {
+                            DK14.items.sort((a, b) => a.at < b.at ? 1 : a.at > b.at ? -1 : 0);
+                            if (typeof dk14Paint === "function")
+                                dk14Paint();
+                        }
+                    }
+                }
+            }
+            catch (e) { }
+            return r;
+        };
+    }
+    if (typeof dk14CardHtml === "function") {
+        const __dch = dk14CardHtml;
+        dk14CardHtml = function () {
+            let h = __dch.apply(this, arguments);
+            try {
+                if (local() && typeof h === "string")
+                    h = h.replace(/(<h3>🗂 保存した営業資料<\/h3><p class="nn" style="margin-top:4px">)[\s\S]*?(<\/p>)/, (a, p1, p2) => p1 + E(MSG.deck) + p2);
+            }
+            catch (e) { }
+            return h;
+        };
+    }
+    function demoAcct() { return on(); }
+    if (typeof v56authLoginWho === "function") {
+        const __lw = v56authLoginWho;
+        v56authLoginWho = function (a, raw) {
+            try {
+                if (pubOk() && a && a.code) {
+                    const kid = (typeof v56authKidOf === "function") ? v56authKidOf(a.code) : "";
+                    if (kid && V57DEMO.kids[kid] === 1) {
+                        const w = String(raw == null ? "" : raw).replace(/[​-‍﻿]/g, "").trim().slice(0, 60);
+                        const f = (w && typeof v56authFind === "function") ? v56authFind(a, w) : null;
+                        return { who: (f && f.m && !(f.m.del === 1 || f.m.del === true) && f.m.st !== "disabled") || (f && f.kind === "rep") ? f.name : w };
+                    }
+                }
+            }
+            catch (e) { }
+            return __lw.apply(this, arguments);
+        };
+    }
+    if (typeof tmMe === "function") {
+        const __me = tmMe;
+        tmMe = function () { try {
+            if (pubOk() && demoAcct()) {
+                const who = String((SES && SES.who) || "").trim();
+                return { name: who, role: "member", m: null, rep: false, v57demo: 1 };
+            }
+        }
+        catch (e) { } return __me.apply(this, arguments); };
+    }
+    if (typeof teamPageHtml === "function") {
+        const __tp = teamPageHtml;
+        teamPageHtml = function () {
+            let h = __tp.apply(this, arguments);
+            try {
+                if (pubOk() && demoAcct() && typeof h === "string") {
+                    const nm = String((SES && SES.who) || "").trim();
+                    const me = `<div class="tm-me">あなた：<b>${E(nm || MSG.noName)}</b>${E(MSG.meTag)}<span class="v56auth-sub">${E(MSG.meSub)}</span></div>`;
+                    h = h.replace(/<div class="tm-me">[\s\S]*?<\/div>(\s*<div class="tm-cnt">)/, (all, g1) => me + g1);
+                }
+            }
+            catch (e) { }
+            return h;
+        };
+    }
+    ["tmInviteOpen", "tmSelfAdd", "tmBulkOpen"].forEach(n => { try {
+        const f = window[n];
+        if (typeof f !== "function")
+            return;
+        window[n] = function () { if (pubOk() && demoAcct()) {
+            say(MSG.noInvite);
+            return;
+        } return f.apply(this, arguments); };
+    }
+    catch (e) { } });
+    async function masterLogin(pw, otp) {
+        const b = { pw: String(pw || "") };
+        if (otp)
+            b.otp = String(otp).replace(/[^0-9]/g, "");
+        const r = await syncCall("admin_login", b, { timeout: 30000 });
+        if (r && r.ok && r.tok)
+            masterStart(r.tok);
+        return r;
+    }
+    function masterStart(tok) {
+        if (!on() || !/^tk:/.test(String(tok || "")))
+            return false;
+        V57DEMO.adm = String(tok);
+        ss(SK_ADM, V57DEMO.adm);
+        bar();
+        say(MSG.started);
+        const pend = V57DEMO.pend;
+        V57DEMO.pend = {};
+        try {
+            SYNC.dirty = 1;
+            syncSchedule("acct");
+            if (pend.fwd)
+                syncSchedule("fwd");
+        }
+        catch (e) { }
+        return true;
+    }
+    async function masterSave() {
+        if (!V57DEMO.adm)
+            return false;
+        const t0 = Date.now();
+        try {
+            clearTimeout(SYNC.timer);
+            clearTimeout(SYNC.fwdTimer);
+            SYNC.dirty = 1;
+            await syncFlush();
+        }
+        catch (e) { }
+        if (!(V57DEMO.adm && (+SYNC.last.push || 0) >= t0 && !SYNC.dirty)) {
+            try {
+                if (V57DEMO.adm) {
+                    SYNC.dirty = 1;
+                    await syncFlush();
+                }
+            }
+            catch (e) { }
+        }
+        return !!V57DEMO.adm && (+SYNC.last.push || 0) >= t0 && !SYNC.dirty && !SYNC.fwdDirty;
+    }
+    async function masterEnd(quiet) {
+        if (!V57DEMO.adm)
+            return true;
+        const ok = await masterSave();
+        if (!ok && !quiet) {
+            say(MSG.saveNg);
+            return false;
+        }
+        const tok = V57DEMO.adm;
+        V57DEMO.adm = "";
+        ss(SK_ADM, null);
+        try {
+            syncCall("admin_logout", { pw: tok }, { timeout: 10000 }).catch(() => { });
+        }
+        catch (e) { }
+        bar();
+        if (ok)
+            say(MSG.saved);
+        return ok;
+    }
+    function masterLost() { if (!V57DEMO.adm)
+        return; V57DEMO.adm = ""; ss(SK_ADM, null); bar(); say(MSG.lost); }
+    window.v57demoMaster = { login: masterLogin, start: masterStart, save: masterSave, end: masterEnd, state: () => ({ on: on(), edit: !!V57DEMO.adm, kid: V57DEMO.kid }) };
+    function dlg() {
+        try {
+            const old = document.getElementById("v57demodlg");
+            if (old)
+                old.remove();
+            const v = document.createElement("div");
+            v.id = "v57demodlg";
+            v.setAttribute("role", "dialog");
+            v.setAttribute("aria-modal", "true");
+            v.setAttribute("aria-labelledby", "v57demott");
+            v.innerHTML = `<div class="v57demo-dc"><b id="v57demott" style="font-size:15px">${E(MSG.dTitle)}</b><p class="nn" style="margin-top:8px;line-height:1.75">${E(MSG.dBody)}</p>
+      <input class="sel" id="v57demoPw" type="password" autocomplete="off" placeholder="${E(MSG.dPw)}" aria-label="${E(MSG.dPw)}">
+      <input class="sel" id="v57demoOtp" inputmode="numeric" autocomplete="one-time-code" placeholder="${E(MSG.dOtp)}" aria-label="${E(MSG.dOtp)}" hidden>
+      <p class="nn" id="v57demoMsg" role="status" style="margin-top:6px"></p>
+      <div class="rw" style="gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:flex-end"><button class="btn g" type="button" id="v57demoNo">${E(MSG.dCancel)}</button><button class="btn" type="button" id="v57demoGo">${E(MSG.dSend)}</button></div></div>`;
+            document.body.appendChild(v);
+            try {
+                if (typeof i18nApply === "function" && typeof I18N !== "undefined" && I18N.lang && I18N.lang !== "ja")
+                    i18nApply(v);
+            }
+            catch (e) { }
+            const q = id => document.getElementById(id), msg = m => { const e = q("v57demoMsg"); if (e)
+                e.textContent = m || ""; };
+            let step = 1;
+            const close = () => { try {
+                v.remove();
+            }
+            catch (e) { } };
+            q("v57demoNo").onclick = close;
+            v.addEventListener("keydown", e => { if (e.key === "Escape")
+                close(); });
+            q("v57demoGo").onclick = async () => {
+                const g = q("v57demoGo"), pw = q("v57demoPw").value, otp = q("v57demoOtp").value;
+                if (!pw) {
+                    msg(MSG.dNeedPw);
+                    return;
+                }
+                if (step === 2 && !/\d{6}/.test(String(otp).replace(/\s/g, ""))) {
+                    msg(MSG.dNeedOtp);
+                    return;
+                }
+                g.disabled = true;
+                let r = null;
+                try {
+                    r = await masterLogin(pw, step === 2 ? otp : "");
+                }
+                catch (e) {
+                    r = { ok: false, msg: String(e && e.message || e) };
+                }
+                g.disabled = false;
+                if (r && r.ok && r.tok) {
+                    close();
+                    return;
+                }
+                if (r && r.mfa && !r.expired && step === 1) {
+                    step = 2;
+                    q("v57demoOtp").hidden = false;
+                    g.textContent = MSG.dGo;
+                    try {
+                        if (typeof i18nApply === "function" && I18N.lang !== "ja")
+                            i18nApply(g);
+                    }
+                    catch (e) { }
+                    try {
+                        q("v57demoOtp").focus();
+                    }
+                    catch (e) { }
+                }
+                else if (r && r.expired) {
+                    step = 1;
+                    q("v57demoOtp").hidden = true;
+                    q("v57demoOtp").value = "";
+                    g.textContent = MSG.dSend;
+                }
+                msg((r && r.msg) || "");
+            };
+            setTimeout(() => { try {
+                q("v57demoPw").focus();
+            }
+            catch (e) { } }, 30);
+        }
+        catch (e) { }
+    }
+    window.v57demoDlg = dlg;
+    try {
+        if (!document.getElementById("v57democss")) {
+            const st = document.createElement("style");
+            st.id = "v57democss";
+            st.textContent = `
+.v57demobar{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;padding:9px 14px;background:var(--bl-soft);color:var(--ink);border-bottom:1px solid var(--line);font-size:14px;line-height:1.6;position:sticky;top:0;z-index:40;box-sizing:border-box;max-width:100%}
+.v57demobar b{color:var(--v33-bl-t,var(--bl-deep))} .v57demobar .v57demo-sub{flex:1 1 300px;font-size:13px;color:var(--ink-2)} .v57demobar .btn{font-size:12px;padding:4px 10px}
+.v57demobar.edit{background:var(--warn-soft)} .v57demobar.edit b{color:var(--v33-warn-t,var(--warn))}
+#v57demodlg{position:fixed;inset:0;z-index:212;background:rgba(20,26,34,.55);display:grid;place-items:center;padding:16px}
+#v57demodlg .v57demo-dc{width:min(480px,calc(100vw - 32px));box-sizing:border-box;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:var(--pop);padding:20px 22px;display:flex;flex-direction:column}
+#v57demodlg input{margin-top:8px;width:100%;box-sizing:border-box}
+@media (max-width:560px){.v57demobar{position:relative;padding:7px 12px;font-size:12.5px;gap:4px 8px}.v57demobar .v57demo-sub{display:none}.v57demobar .btn{font-size:11.5px;padding:3px 8px}}`;
+            document.head.appendChild(st);
+        }
+    }
+    catch (e) { }
+    try {
+        if (typeof I18N !== "undefined" && I18N && I18N.dict) {
+            const rows = [
+                [MSG.bar, "Demo account: changes on this PC are not saved and do not appear on anyone else's screen", "演示账户：在本电脑上的更改不会保存，也不会显示在其他人的画面上", "Cuenta de demostración: los cambios en este PC no se guardan ni aparecen en la pantalla de otras personas"],
+                [MSG.sub, "When you log out, the changes on this PC are deleted. Every login starts from the same initial state.", "退出登录后，本电脑上的更改会被删除。每次登录都从相同的初始状态开始。", "Al cerrar sesión, los cambios en este PC se eliminan. Cada inicio de sesión empieza desde el mismo estado inicial."],
+                [MSG.mbtn, "Update the initial state (for STANDAGE)", "更新初始状态（STANDAGE 专用）", "Actualizar el estado inicial (para STANDAGE)"],
+                [MSG.ebar, "Editing the demo's initial state (STANDAGE)", "正在编辑演示的初始状态（STANDAGE）", "Editando el estado inicial de la demostración (STANDAGE)"],
+                [MSG.esub, "Changes on this PC are saved to the server and become the initial state for everyone who logs in next.", "本电脑上的更改会保存到服务器，并成为之后所有登录者的初始状态。", "Los cambios en este PC se guardan en el servidor y serán el estado inicial para todos los que inicien sesión después."],
+                [MSG.eend, "Finish editing", "结束编辑", "Terminar la edición"],
+                [MSG.veil, "Deleting the changes on this PC and returning to the login screen.", "正在删除本电脑上的更改，并返回登录画面。", "Eliminando los cambios en este PC y volviendo a la pantalla de inicio de sesión."],
+                [MSG.lotoast, "Demo account: deleting the changes on this PC and logging out…", "演示账户：正在删除本电脑上的更改并退出登录…", "Cuenta de demostración: eliminando los cambios en este PC y cerrando sesión…"],
+                [MSG.notSaved, "This is a demo account, so nothing is saved on the server (it can be used only on this PC)", "这是演示账户，不会保存到服务器（仅可在本电脑上使用）", "Es una cuenta de demostración: no se guarda nada en el servidor (solo se puede usar en este PC)"],
+                [MSG.docs, "This is a demo account, so uploaded files can be used only on this PC (they are not stored on the server and are deleted when you log out or close this tab). Up to 20 MB per file.", "这是演示账户，上传的文件只能在本电脑上使用（不会存放到服务器；退出登录或关闭此标签页后会被删除）。每个文件最大 20MB。", "Es una cuenta de demostración: los archivos subidos solo se pueden usar en este PC (no se guardan en el servidor y se eliminan al cerrar sesión o esta pestaña). Hasta 20 MB por archivo."],
+                [MSG.deck, "This is a demo account, so the decks you create are saved only on this PC (latest 10 per language; deleted when you log out). Use “Open” to preview or save them as PowerPoint/PDF at any time.", "这是演示账户，生成的资料只保存在本电脑上（每种语言最新10份；退出登录后删除）。点击“打开”可随时预览或保存为 PowerPoint／PDF。", "Es una cuenta de demostración: las presentaciones que cree se guardan solo en este PC (las 10 más recientes por idioma; se eliminan al cerrar sesión). Con «Abrir» puede verlas o guardarlas como PowerPoint/PDF en cualquier momento."],
+                [MSG.dTitle, "Update the demo's initial state (STANDAGE administrator)", "更新演示的初始状态（STANDAGE 管理员）", "Actualizar el estado inicial de la demostración (administrador de STANDAGE)"],
+                [MSG.dBody, "The current content of this PC (including what you changed since logging in) is saved on the server as this demo account's initial state. Everyone who logs in next starts from it (screens of people who are demoing now do not change).", "本电脑当前的内容（包括登录后修改的部分）将作为此演示账户的初始状态保存到服务器。之后登录的所有人都会从这个内容开始（正在演示的人的画面不会改变）。", "El contenido actual de este PC (incluido lo que cambió desde que inició sesión) se guarda en el servidor como estado inicial de esta cuenta de demostración. Todos los que inicien sesión después empezarán desde ahí (las pantallas de quienes están haciendo una demostración ahora no cambian)."],
+                [MSG.dPw, "Administrator password", "管理员密码", "Contraseña de administrador"], [MSG.dSend, "Send the confirmation code", "发送确认码", "Enviar el código de confirmación"],
+                [MSG.dOtp, "Confirmation code from the email (6 digits)", "邮件中的确认码（6位）", "Código de confirmación del correo (6 dígitos)"], [MSG.dGo, "Start editing", "开始编辑", "Empezar a editar"], [MSG.dCancel, "Cancel", "取消", "Cancelar"],
+                [MSG.dNeedPw, "Please enter the administrator password", "请输入管理员密码", "Ingrese la contraseña de administrador"], [MSG.dNeedOtp, "Please enter the 6-digit confirmation code from the email", "请输入邮件中的6位确认码", "Ingrese el código de confirmación de 6 dígitos del correo"],
+                [MSG.started, "Started editing the demo's initial state (saving the current content of this PC…)", "已开始编辑演示的初始状态（正在保存本电脑当前的内容…）", "Se empezó a editar el estado inicial de la demostración (guardando el contenido actual de este PC…)"],
+                [MSG.saved, "The demo's initial state has been saved. People who log in from now on start from this content", "演示的初始状态已保存。之后登录的人会从这个内容开始", "Se guardó el estado inicial de la demostración. Quienes inicien sesión a partir de ahora empezarán desde este contenido"],
+                [MSG.saveNg, "Could not save the initial state. Check the connection and press “Finish editing” again", "无法保存初始状态。请检查网络后再次点击“结束编辑”", "No se pudo guardar el estado inicial. Compruebe la conexión y pulse «Terminar la edición» de nuevo"],
+                [MSG.lost, "The administrator key expired, so editing of the initial state has ended (the last changes were not saved)", "管理员密钥已过期，初始状态的编辑已结束（最近的更改未保存）", "La clave de administrador caducó, así que terminó la edición del estado inicial (los últimos cambios no se guardaron)"],
+                [MSG.meSub, "Members cannot be invited or registered. Everything else can be used (changes stay on this PC).", "不能邀请或登记成员。其他操作都可以使用（更改只保留在本电脑上）。", "No se pueden invitar ni registrar miembros. Todo lo demás se puede usar (los cambios quedan solo en este PC)."],
+                [MSG.meTag, "(demo account)", "（演示账户）", "(cuenta de demostración)"], [MSG.noName, "No name", "无姓名", "Sin nombre"],
+                [MSG.noInvite, "Members cannot be invited or registered in the demo account", "演示账户不能邀请或登记成员", "En la cuenta de demostración no se pueden invitar ni registrar miembros"]
+            ];
+            rows.forEach(r => { ["en", "zh", "es"].forEach((l, i) => { if (!I18N.dict[l])
+                I18N.dict[l] = {}; if (r[i + 1] && !I18N.dict[l][r[0]])
+                I18N.dict[l][r[0]] = r[i + 1]; }); });
+        }
+    }
+    catch (e) { }
+    setTimeout(() => { try {
+        bar();
+    }
+    catch (e) { } }, 0);
 })();
 try {
     if (typeof v35Restore === "function")
