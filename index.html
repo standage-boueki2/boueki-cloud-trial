@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="5b566632e5cb";
+const BC20_BUILD="38ede7d1d129";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -11599,11 +11599,17 @@ function tierFor(row, cols, qty) {
             hit = t;
     return { v: row[hit.i], label: hit.label };
 }
+const V215319_TAIL = { ddp: "", dap: "", doc: "(?:s|uments?|umentation)?", ec: "(?:s|ommerce)?" };
+function v215319Word(q, w) {
+    const k = String(w == null ? "" : w).toLowerCase().replace(/[\s　]/g, "");
+    if (!/[a-z]/.test(k))
+        return null;
+    const t = Object.prototype.hasOwnProperty.call(V215319_TAIL, k) ? V215319_TAIL[k] : "s?";
+    return new RegExp("(?:^|[^a-z])" + k.replace(/[.*+?^${}()|[\]\\\/]/g, "\\$&") + t + "(?![a-z])").test(String(q == null ? "" : q).toLowerCase());
+}
+function v215319Has(q, s, w) { const r = v215319Word(q, w); return r === null ? String(s == null ? "" : s).includes(norm2(w)) : r; }
 function v21537Has(q, s, w) {
-    const k = norm2(w);
-    if (k !== "ddp" && k !== "dap")
-        return s.includes(k);
-    return new RegExp("(?:^|[^a-z])" + k + "(?![a-z])").test(String(q == null ? "" : q).toLowerCase());
+    return v215319Has(q, s, w);
 }
 const INTENTS = [
     ["price", ["いくら", "価格", "単価", "値段", "卸", "プライス", "price", "見積", "金額", "costs", "何円", "ドル"]],
@@ -19372,7 +19378,7 @@ async function fxJob() {
 }
 async function liveSearch(q) {
     const s = norm2(q), jobs = [];
-    if (/(為替|かわせ|レート|ドル円|円相場|円安|円高|usd|jpy)/.test(s))
+    if (/(為替|かわせ|レート|ドル円|円相場|円安|円高)/.test(s) || (typeof v215319Word === "function" ? (v215319Word(q, "usd") || v215319Word(q, "jpy")) : /usd|jpy/.test(s)))
         jobs.push(fxJob());
     if (!jobs.length)
         return { hits: [], blocked: false };
@@ -19450,7 +19456,7 @@ const WEBDB = [
 function searchWeb(q) {
     const s = norm2(q);
     const scored = WEBDB.map(e => {
-        let sc = e.k.reduce((a, w) => a + (s.includes(norm2(w)) ? 1 : 0), 0);
+        let sc = e.k.reduce((a, w) => a + ((typeof v215319Has === "function" ? v215319Has(q, s, w) : s.includes(norm2(w))) ? 1 : 0), 0);
         if (sc && e.cat && typeof D !== "undefined" && D) {
             if (e.cat === D.key || e.cat === (D.catKey || ""))
                 sc += 1;
@@ -26982,15 +26988,15 @@ function poAdviseLocal(q, c) {
     const co = (S.docs || []).some(d => /原産地/.test(d[0]));
     if (/足りな|不足|何が必要|埋め/.test(q))
         return { a: miss.length ? `いま足りないのは <b>${miss.length}件</b> です。<br>${miss.map(x => `・<b>${esc(x.label)}</b>：${esc(x.why)}。→ ${esc(x.how)}`).join("<br>")}<br><br>左の「足りない情報」欄に入力すると、書類に即時反映されます。` : "必要な情報はそろっています。書類を確認して「🚚 物流会社へ共有して相談」へ進めます。", c: "根拠：発注書の読み取り結果＋登録データ＋帳票の会社設定" };
-    if (/原産地|C\/?O\b|certificate of origin/i.test(q))
+    if (/原産地|certificate of origin|(?<![A-Za-z])c\/o(?![A-Za-z])/i.test(q) || /(?<![A-Za-z])CO(?![A-Za-z\d])/.test(q))
         return { a: `${esc(S.country)}向けの内蔵規制DBでは、原産地証明書は<b>${co ? "必要書類に含まれています" : "必須書類には含まれていません"}</b>。<br>・関税の優遇（EPA／FTA）を受けるには<b>協定ごとの特定原産地証明</b>が必要で、商工会議所または経済産業省の手続きになります。<br>・優遇を使わない場合でも、バイヤー側の輸入通関やL/Cの条件で求められることがあるため、<b>発注書・L/Cの書類条件を確認</b>してください。<br><br>${(typeof ppReady === "function" && ppReady()) ? "「🌐 AI商社マンにWebで調べさせる」で最新の要否を確認できます。" : "AIエンジンを接続すると、Web検索で最新の要否（協定・税率）を確認できます。"}`, c: `根拠：規制DB（${esc(S.country)}：${(r.docs || []).join("、") || "—"}）` };
     if (/必要書類|書類は|何の書類|どの書類/.test(q))
         return { a: `${esc(S.country)}向けのこの案件で使う書類は <b>${(S.docs || []).length}点</b>です。<br>${(S.docs || []).map(d => `・<b>${esc(d[0])}</b>${d[1] ? "（" + esc(d[1]) + "）" : ""}：${esc(d[2])}`).join("<br>")}<br><br>PI／CI／PL／S/I はこの画面で作成済み（編集可）。その他の証明書は発給機関への申請が必要です。`, c: `根拠：規制DB（${esc(S.country)}）＋案件の必要書類` };
-    if (/梱包|packing|PL|明細/i.test(q))
+    if (/梱包|packing|明細|(?<![A-Za-z])PL(?![A-Za-z])/i.test(q))
         return { a: `梱包明細（Packing List）は<b>発注書には無い情報</b>なので、商品マスタの②寸法・重量表から作っています。<br>・1カートンの入数 → カートン数（数量÷入数を切り上げ）<br>・カートン寸法 → 容積（m³）＝運賃の基準<br>・カートン重量 → 総重量（G.W.）、単品正味重量 → 正味重量（N.W.）<br>・荷印（Marks）＝カートン外装の表示<br><br>いまの計算：${esc(S.cargo)}${(c.po.pack && c.po.pack.miss && c.po.pack.miss.length) ? `<br><span style="color:var(--crit)">不足：${esc(c.po.pack.miss.join("・"))}</span> → 「商品情報 › ②寸法・重量 › ✎編集」で登録すると再計算されます。` : ""}`, c: "根拠：商品マスタ（寸法・重量表・入数）" };
-    if (/荷印|marks|マーク/i.test(q))
+    if (/荷印|(?<![A-Za-z])marks(?![A-Za-z])|マーク/i.test(q))
         return { a: `荷印（Shipping Marks）は、カートンの外側に印字してバイヤーが荷受け時に照合する表示です。バイヤー指定が無ければ、<b>社名略称／仕向地／カートン番号</b>の3行が一般的です。<br>例：<b>${esc((dd.coEn || dd.co || "SHIPPER").split(" ")[0].toUpperCase())} / ${esc(S.pod || S.country)} / C/No. 1-${(c.po.pack && c.po.pack.cartons) || "N"}</b><br>左の「荷印」欄に入力すると PL・S/I に反映されます。`, c: "根拠：貿易実務の一般的な慣行" };
-    if (/インコタームズ|FOB|CIF|DDP|DAP|条件/i.test(q))
+    if (/インコタームズ|条件|(?<![A-Za-z])(?:FOB|CIF|DDP|DAP)(?![A-Za-z])/i.test(q))
         return { a: `この案件の条件は <b>${esc(S.term)}</b>、支払は <b>${esc(S.pay)}</b> です。<br>${(typeof GL !== "undefined" && GL[(S.term || "").split(" ")[0]]) ? esc(GL[(S.term || "").split(" ")[0]]) : "インコタームズは費用とリスクの分岐点を決める国際ルールです。"}<br>FOB／FCA／EXW は運賃着払い（Freight Collect）、CFR／CIF／DAP／DDP は運賃前払い（Prepaid）として S/I に記載します。`, c: "根拠：発注書の条件＋用語集" };
     return { a: `この案件（${esc(S.no)}・${esc(S.country)}・${esc(S.buyer)}）について、発注書と登録データを見ています。<br>聞けること：「何が足りない？」「原産地証明は必要？」「この国の必要書類は？」「梱包明細の書き方は？」「荷印はどう決める？」。${(typeof ppReady === "function" && ppReady()) ? "" : "<br><span style=\"color:var(--ink-3)\">AIエンジンを接続すると、自由な質問とWeb検索による最新規制の確認ができます。</span>"}`, c: "内蔵エンジン" };
 }
@@ -36376,9 +36382,9 @@ function bmNoteHtml(th, to, st) {
 function bmDetectQ(body) {
     const s = String(body || "");
     const hasQ = /\?|？|could you|can you|would you|please (advise|share|send|confirm|let)|kindly|教えて|请|¿|quisiera|podría/i.test(s);
-    const Q = [[/price|pricing|quot|cost|fob|cif|単価|価格|見積|价格|报价|precio/i, "💰 価格"], [/moq|minimum|min\.? order|最小|ロット|最低订|pedido mínimo/i, "📦 MOQ"],
-        [/spec|specification|dimension|size|weight|material|ingredient|仕様|寸法|規格|成分|规格|尺寸|especific/i, "📐 仕様・寸法"], [/lead ?time|delivery|shipment|when can|納期|リードタイム|交期|plazo/i, "🚢 納期"],
-        [/certif|halal|fda|\bce\b|iso|haccp|organic|認証|証明|认证|certificad/i, "📜 認証"], [/sample|サンプル|样品|muestra/i, "🧪 サンプル"], [/payment|terms|t\/t|l\/c|支払|付款|pago/i, "💳 支払条件"], [/label|packag|carton|pallet|ラベル|梱包|包装|etiqueta/i, "🏷 ラベル・梱包"]];
+    const Q = [[/(?<![a-z])(?:prices?|pricing|quot(?:e|es|ed|ing|ation|ations)?|costs?|fob|cif)(?![a-z])|単価|価格|見積|价格|报价|precio/i, "💰 価格"], [/moq|minimum|min\.? order|最小|ロット|最低订|pedido mínimo/i, "📦 MOQ"],
+        [/(?<![a-z])(?:specs?|specifications?|dimensions?|sizes?|sizing|weights?|materials?|ingredients?)(?![a-z])|仕様|寸法|規格|成分|规格|尺寸|especific/i, "📐 仕様・寸法"], [/lead ?time|delivery|shipment|when can|納期|リードタイム|交期|plazo/i, "🚢 納期"],
+        [/certif|halal|fda|\bce\b|(?<![a-z])iso(?![a-z])|haccp|organic|認証|証明|认证|certificad/i, "📜 認証"], [/sample|サンプル|样品|muestra/i, "🧪 サンプル"], [/payment|terms|t\/t|l\/c|支払|付款|pago/i, "💳 支払条件"], [/label|packag|carton|pallet|ラベル|梱包|包装|etiqueta/i, "🏷 ラベル・梱包"]];
     return Q.filter(([re]) => re.test(s) && hasQ).map(x => x[1]);
 }
 function bmThreadAugment(id) {
@@ -42523,7 +42529,7 @@ if (typeof llmSysPrompt === "function") {
     }
     catch (e) { } return s; };
 }
-const V1_ASK_RE = /(Ver ?1|本番|過去の案件|実績|バイヤー台帳|商談記録|議事録|話題|タスク|進捗|スケジュール|会議メモ|案件数|全社|他社|業界|傾向|相場|平均)/i;
+const V1_ASK_RE = /((?<![A-Za-z])Ver ?1|本番|過去の案件|実績|バイヤー台帳|商談記録|議事録|話題|タスク|進捗|スケジュール|会議メモ|案件数|全社|他社|業界|傾向|相場|平均)/i;
 function v1Ask(q) {
     const s = String(q || "");
     if (!V1_ASK_RE.test(s))
@@ -42551,7 +42557,7 @@ if (typeof brain === "function") {
     const __brain210 = brain;
     brain = function (q, opts) { try {
         const q0 = (opts && opts.raw) || q;
-        if (/Ver ?1|本番|実績|議事録|商談記録|話題|タスク|進捗|会議メモ/i.test(String(q0 || ""))) {
+        if (/(?<![A-Za-z])Ver ?1|本番|実績|議事録|商談記録|話題|タスク|進捗|会議メモ/i.test(String(q0 || ""))) {
             const r = v1Ask(q0);
             if (r) {
                 try {
@@ -77976,7 +77982,7 @@ const V49G = [
         acts: [{ t: "推奨FOB価格を試算する", pg: "item", f: "text:推奨FOB価格をAI商社マンと試算" }, { t: "現地販売価格を試算する", pg: "item", f: "text:現地販売価格をAI商社マンと試算" }] },
     { id: "edit", g: "商品", nm: "商品情報を直す・足りない項目を埋める", pg: "item", ex: "商品情報を直すには？",
         kw: [[/価格表|寸法|重量|成分|原材料|強み|HSコード|HS ?code|英文名|英語名|品番|MOQ|最小ロット|リードタイム|取引条件|支払条件|賞味期限|消費期限|認証|産地|原産地|カートン|入数|仕出港/i, 3], [/直|編集|修正|変更|書き換|訂正|埋め|足りない|追記|更新/, 2], [/商品情報|商品の情報|商品データ|商品カルテ/, 1]],
-        need: /直|編集|修正|変更|書き換|訂正|埋め|足りない|追記|更新|登録|入れ|入力|追加|足す|足し/,
+        need: /直|編集|修正|変更|書き換|訂正|埋め|足りない|追記|更新|登録|入れ|入力|追加|足す|足し|設定/,
         steps: ["「商品情報」で、「① 商品情報・強み」「② 価格表・寸法」「③ 全成分表（INCI）」を確かめます。",
             "各カードの ✎ で直し、🗑 で消せます。価格表は「価格表を編集」、寸法は「寸法を編集」、成分表は「表を編集」。強みは「＋ 強みを追加」か「🤖 AIで強みを充実」。",
             "資料を足すときは「別の資料を読み込む」（「商品情報を登録」に移ります）。足りない項目は、「商品情報を登録」の「登録メニュー」→「✎ 既存の商品を編集する」から、AI商社マンの質問に答えて埋められます。"],
