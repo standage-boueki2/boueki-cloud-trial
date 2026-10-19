@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="52d9c81736db";
+const BC20_BUILD="94c99739310a";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -11574,10 +11574,23 @@ const CTRY = ["香港", "台湾", "シンガポール", "アメリカ", "米国"
     "フィリピン", "ブラジル", "サウジ", "EU", "欧州"];
 const ALIAS = { "米国": "アメリカ", "英国": "イギリス", "豪州": "オーストラリア", "ドバイ": "UAE", "欧州": "フランス", "EU": "フランス" };
 const norm2 = s => String(s || "").toLowerCase().replace(/[\s　]/g, "");
+const V215325_CTRY_EN = [[/(?<![a-z])hong ?kong(?![a-z])/i, "香港"], [/(?<![a-z])taiwan(?![a-z])/i, "台湾"], [/(?<![a-z])singapore(?![a-z])/i, "シンガポール"],
+    [/(?<![a-z])(?:usa|united states|america)(?![a-z])/i, "アメリカ"], [/(?<![A-Za-z])U\.?S\.?(?:A\.?)?(?![A-Za-z$])/, "アメリカ"], [/(?<![a-z])thailand(?![a-z])/i, "タイ"], [/(?<![a-z])viet ?nam(?![a-z])/i, "ベトナム"],
+    [/(?<![a-z])malaysia(?![a-z])/i, "マレーシア"], [/(?<![a-z])(?:south )?korea(?![a-z])/i, "韓国"], [/(?<![a-z])(?:uae|united arab emirates|dubai)(?![a-z])/i, "UAE"],
+    [/(?<![a-z])france(?![a-z])/i, "フランス"], [/(?<![a-z])germany(?![a-z])/i, "ドイツ"], [/(?<![A-Za-z])UK(?![A-Za-z])|(?<![a-z])(?:united kingdom|britain|england)(?![a-z])/i, "イギリス"],
+    [/(?<![a-z])australia(?![a-z])/i, "オーストラリア"], [/(?<![a-z])china(?![a-z])/i, "中国"], [/(?<![a-z])indonesia(?![a-z])/i, "インドネシア"], [/(?<![a-z])india(?![a-z])/i, "インド"],
+    [/(?<![a-z])canada(?![a-z])/i, "カナダ"], [/(?<![a-z])mexico(?![a-z])/i, "メキシコ"], [/(?<![a-z])philippines(?![a-z])/i, "フィリピン"], [/(?<![a-z])brazil(?![a-z])/i, "ブラジル"],
+    [/(?<![a-z])saudi(?![a-z])/i, "サウジ"], [/(?<![A-Za-z])EU(?![A-Za-z])|(?<![a-z])europe(?![a-z])/i, "欧州"]];
+let V215325_EN = 0;
+function v215325CtryEn(q) { const t = String(q == null ? "" : q); for (const [re, c] of V215325_CTRY_EN)
+    if (re.test(t))
+        return ALIAS[c] || c; return null; }
 function pickCountry(q) {
     for (const c of CTRY)
         if (q.includes(c))
             return ALIAS[c] || c;
+    if (V215325_EN > 0)
+        return v215325CtryEn(q);
     return null;
 }
 function pickQty(q) {
@@ -11598,11 +11611,21 @@ function pickSku(q) {
     return null;
 }
 const V215323_PLACE = new Set("japan japanese nippon tokyo osaka kyoto china chinese hong kong macau macao kowloon shanghai beijing shenzhen guangzhou taiwan taipei korea korean seoul busan singapore malaysia kuala lumpur thailand thai bangkok vietnam viet hanoi saigon philippines manila indonesia jakarta bali india delhi mumbai dubai abu dhabi emirates arab saudi arabia qatar doha kuwait oman bahrain turkey istanbul israel egypt africa nigeria kenya europe european euro france paris germany berlin munich italy milan rome spain madrid barcelona portugal lisbon netherlands holland amsterdam belgium brussels swiss switzerland austria vienna poland sweden norway denmark finland nordic scandinavia britain british england london scotland ireland america american usa united states kingdom canada toronto vancouver mexico brazil chile peru argentina australia sydney melbourne brisbane perth zealand auckland california hawaii seattle chicago texas houston miami boston york angeles francisco asia asian pacific atlantic oriental golden global international world the sake matcha sakura fuji".split(" "));
+function v215325Len(x) { return String(x == null ? "" : x).replace(/[^0-9A-Za-z\u00C0-\u024F\u3040-\u30FF\u3400-\u9FFF]/g, "").length; }
 function v215323Head(b) {
     const w = String(b == null ? "" : b).split(/[ ,]+/).filter(Boolean);
-    if (!w.length || w[0].length <= 3)
+    if (!w.length)
         return null;
     let n = 1;
+    if (w[0].length <= 3) {
+        let k = v215325Len(w[0]);
+        while (n < w.length && k < 4) {
+            k += v215325Len(w[n]);
+            n++;
+        }
+        if (n < 2 || k < 4)
+            return null;
+    }
     while (n < w.length && V215323_PLACE.has(w[n - 1].toLowerCase()))
         n++;
     return w.slice(0, n);
@@ -11663,7 +11686,7 @@ function v21537Has(q, s, w) {
 const INTENTS = [
     ["price", ["いくら", "価格", "単価", "値段", "卸", "プライス", "price", "見積", "金額", "costs", "何円", "ドル"]],
     ["market", ["どの国", "どこに", "どこの", "売れ", "市場", "おすすめの国", "有望", "進出", "狙う", "ターゲット"]],
-    ["reg", ["規制", "認証", "届出", "登録", "許可", "通関", "関税", "税率", "輸出できる", "輸入できる", "法規", "ラベル"]],
+    ["reg", ["規制", "認証", "届出", "登録", "許可", "通関", "関税", "税率", "輸出できる", "輸入できる", "法規", "ラベル", "duties", "tariff", "customs", "regulation", "regulatory", "certification", "license", "licence", "permit", "registration", "labeling", "labelling", "restriction"]],
     ["docs", ["書類", "インボイス", "パッキング", "原産地", "証明", "必要な紙", "doc", "b/l", "s/i"]],
     ["lost", ["なぜ", "理由", "止まっ", "断られ", "失注", "負け", "うまくいかな", "課題", "ボトルネック"]],
     ["prep", ["商談", "聞かれ", "準備", "質問され", "想定問答", "打ち合わせ", "面談", "何を話"]],
@@ -11718,6 +11741,8 @@ function detectIntent(q) {
     INTENTS.forEach(([k, ws]) => { sc[k] = ws.reduce((a, w) => a + (v21537Has(q, s, w) ? 1 : 0), 0); });
     if (/支払条件|取引条件|賞味期限|消費期限|産地|原産|仕出港|建値|インコタームズ/.test(s))
         sc.terms += 2;
+    if (v215325Duty(q))
+        sc.reg = (sc.reg || 0) + 1;
     if (pickBuyer(q))
         sc.buyer = (sc.buyer || 0) + 2;
     if (v215323Fr(s, q))
@@ -12039,6 +12064,13 @@ function ansHelp() {
             `<br><br>答えには<b>必ず「何を根拠にしたか」</b>を付けます。新人の方でも確認しながら使えます。`,
         c: `根拠：商品マスタ／規制調査 ${Object.keys(D.regs || {}).length}か国／商談記録 ${(D.fb || []).length}件` };
 }
+function v215325Ex(b) { try {
+    const h = v215323Head(b);
+    return h ? h.join(" ") : String(b == null ? "" : b);
+}
+catch (e) {
+    return String(b == null ? "" : b).split(" ")[0];
+} }
 function ansFallback(q) {
     const s = scoreOf2();
     return { a: `すみません、その質問には答えられませんでした。<br><br>
@@ -12046,13 +12078,20 @@ function ansFallback(q) {
     次のような聞き方だと答えられます。<br>
     ・「<b>香港</b>の関税は？」（国名を入れる）<br>
     ・「<b>500袋</b>だといくら？」（数量を入れる）<br>
-    ・「<b>${(D.fb && D.fb[0] ? D.fb[0].b.split(" ")[0] : "取引先名")}</b> との経緯は？」（相手の名前を入れる）<br>
+    ・「<b>${(D.fb && D.fb[0] ? v215325Ex(D.fb[0].b) : "取引先名")}</b> との経緯は？」（相手の名前を入れる）<br>
     ・「寸法は？」「成分は？」「強みは？」「タスクの進捗は？」`,
         c: "該当する情報が見つかりませんでした" };
 }
 const scoreOf2 = () => [`商品マスタ（価格 ${(D.priceRows || []).length}行・寸法 ${(D.dimRows || []).length}行）`,
     `${D.compTitle || "成分表"} ${(D.compRows || []).length}項目`, `規制調査 ${Object.keys(D.regs || {}).length}か国`,
     `商談記録 ${(D.fb || []).length}件`, `タスク ${(D.tasks || []).length}件`].join("・");
+function v215325Duty(q) { const t = String(q == null ? "" : q); return /(?<![a-z])duty(?![a-z])/i.test(t) && !/heavy[\s-]*duty/i.test(t); }
+function v215325Reg(q) { V215325_EN++; try {
+    return ansReg(q);
+}
+finally {
+    V215325_EN--;
+} }
 function brain(q) {
     const canned = (D.aiq || []).find(x => x.q === q);
     if (canned)
@@ -12060,7 +12099,7 @@ function brain(q) {
     const it = detectIntent(q);
     switch (it) {
         case "price": return ansPrice(q);
-        case "reg": return ansReg(q);
+        case "reg": return v215325Reg(q);
         case "docs": return ansDocs(q);
         case "logi": return ansLogi(q);
         case "spec": return ansSpec();
@@ -31595,6 +31634,12 @@ function v16CasesAnswer(cty) {
         L.push(`<b>資料（${C.srcs.length + C.xdocs.length}件）</b><br>` + C.srcs.concat(C.xdocs).slice(0, 3).map(x => `・${esc(x.name || "")}`).join("<br>"));
     return { a: `<b>${esc(cty)}向けの記録</b>：${esc(cnt)}<br><br>` + L.join("<br><br>"), c: `根拠：蓄積データを「${cty}」で横断検索（${C.total}件）` + v16WebNote() };
 }
+function v215325Buyer(s) { try {
+    return typeof ansBuyer === "function" && typeof pickBuyer === "function" && !!pickBuyer(String(s == null ? "" : s));
+}
+catch (e) {
+    return false;
+} }
 if (typeof kbAsk === "function") {
     const __kbAsk16 = kbAsk;
     kbAsk = function (q) {
@@ -31619,6 +31664,8 @@ if (typeof kbAsk === "function") {
         catch (e) { }
         try {
             if (v16Offline() && /商談(の)?(状況|進捗|記録|結果|履歴|一覧)|商談は|バイヤーの反応|反応は|失注/.test(s) && !/価格|単価|いくら/.test(s) && typeof D !== "undefined" && D) {
+                if (v215325Buyer(s))
+                    return ansBuyer(s);
                 const FB = (D.fb || []).slice();
                 if (!FB.length)
                     return { a: "商談記録はまだありません。「商談・バイヤー」に記録すると、相手ごとの反応・確度・断られた理由から次の一手を提案できます。", c: "根拠：商談記録 0件" };
@@ -78710,8 +78757,8 @@ const V49G = [
         tips: ["外国語の営業資料の言語は、「外国語 営業資料」で別に選びます。"],
         acts: [{ t: "言語の切り替えを示す", pg: "", f: "#lang" }] },
     { id: "ai", g: "チーム・記録・設定", nm: "AI商社マンの使い方（会話・履歴・直す・AIの接続）", pg: "ai", ex: "AI商社マンの履歴を見るには？",
-        kw: [[/AI商社マン|AIに質問|AIの(答え|回答)|AIとの(会話|相談)|会話の履歴|相談の履歴|記憶/, 3], [/実AI|AIエンジン|未接続|APIキー|利用プラン|プラン|スタンダード|プレミアム|ライト|履歴|新しい会話/i, 2]],
-        need: /使|聞|質問|始め|新しい|戻|直|教え|覚え|接続|つな|変え|切り?替|消|見|開/,
+        kw: [[/AI商社マン|AIに質問|AIの(答え|回答)|AIとの(会話|相談)|会話の履歴|相談の履歴|記憶/, 3], [/実AI|AIエンジン|未接続|APIキー|利用プラン|プラン|スタンダード|プレミアム|ライト|履歴|新しい会話/i, 2], [/(?:AI|ＡＩ|Claude|ChatGPT|GPT|Gemini|OpenAI|Anthropic)(?:の|を|に|と|へ)?(?:接続|設定|連携|つな|モデル|エンジン)|API ?キー|API ?key/i, 2]],
+        need: /使|聞|質問|始め|新しい|戻|直|教え|覚え|接続|つな|変え|切り?替|消|見|開|(?:AI|ＡＩ|Claude|ChatGPT|GPT|Gemini|OpenAI|Anthropic)(?:の|を|に|と|へ)?(?:接続|設定|連携|つな|モデル|エンジン)|API ?キー|API ?key/i,
         steps: ["どの画面でも、右下の「AIに質問」か各画面の「🤖 AIに質問」で、画面はそのままで右側で聞けます。じっくり使うときは「AI商社マン」の画面で。",
             "「香港に500袋送るといくら？」のように、相手・国・数量を入れて聞くのがコツです。答えには根拠が付き、根拠が無いことは「判断できません」と答えます。",
             "違っていたら「👎 ちがう・直したい」で正しい内容を教えると、次から優先して使います。話題を分けるときは「＋ 新しい会話」、前の会話は「履歴」から開けます。"],
@@ -78751,7 +78798,7 @@ const V49_SUBJ = { photo: /写真|画像|ロゴ|イメージ|フォト|photo|pic
     legal: /契約|NDA|覚書|条項|ひな型|雛形/, docs: /ドキュメント|提出|保管|書類|ファイル/, task: /タスク|ToDo|TODO|やること|ガント/i, memo: /会議|議事|メモ|文字起こし|定例/,
     chat: /STANDAGE|担当者|社内|チーム|メンバーに|海外拠点|やりとり|やり取り|チャット|投稿|スレッド/i, team: /メンバー|招待|社員|スタッフ|同僚|ユーザー|担当者|部下|権限|管理者/,
     inbox: /受信箱|承認|確認待ち|返信待ち|通知|ベル|🔔/, gloss: /用語集|訳/, trash: /ゴミ箱|元に戻|復元|取り消|削除|消/, export: /Excel|エクセル|CSV|JSON|書き出|エクスポート|持ち出|バックアップ|ダウンロード/i,
-    lang: /言語|英語|中国語|スペイン語|日本語|English|中文|Español/i, ai: /AI|履歴|会話|記憶|プラン|接続/i };
+    lang: /言語|英語|中国語|スペイン語|日本語|English|中文|Español/i, ai: /AI|履歴|会話|記憶|プラン|接続|Claude|ChatGPT|GPT|Gemini|OpenAI|Anthropic|API ?キー|API ?key/i };
 function v49Topic(q) {
     let best = null, bs = 0;
     V49G.forEach(t => { const sj = V49_SUBJ[t.id]; if (sj && !sj.test(q))
