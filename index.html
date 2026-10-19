@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="50eb80f91ff5";
+const BC20_BUILD="10a83d196fa4";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -11858,7 +11858,7 @@ function ansDocs(q) {
             }
             catch (err) { } return row(v5318Nm(k), e, ds, done ? "✅ " : "□ "); }).join("<br>") +
             `<br><br>対応の状況は「貿易実務 → 規制を調べる」で記録できます。`;
-    return { a, c: `根拠：規制調査（${S.country}）／受注 ${S.no}／商品マスタ` };
+    return v5322AnsDocs({ a, c: `根拠：規制調査（${S.country}）／受注 ${S.no}／商品マスタ` }, S);
 }
 function v536Smp(S) { return /^（想定）/.test(String((S && S.buyer) || "")) || ((S && S.quotes) || []).some(q => String((q && q[4]) || "") === "（想定）"); }
 function v536QuoteSrc(S) {
@@ -14970,6 +14970,278 @@ if (typeof shipEnsure === "function") {
     }
     catch (e) { } return r; };
 }
+const V5322_TPLN = "この国は規制DB（進出希望国の決まりごと）に入っていないため、証明書・登録・表示などは、アプリの規制のひな形（概算）から入れました。手配の前に確かめてください。";
+const V5322_GO = "この国の決まりを調べる";
+const V5322_ADD = "＋ 進出希望国に足す";
+function v5322T(s) { try {
+    return (typeof v30T === "function") ? v30T(s) : s;
+}
+catch (e) {
+    return s;
+} }
+function v5322Cat() {
+    try {
+        if (typeof v54rCatOf === "function")
+            return v54rCatOf(D) || "";
+    }
+    catch (e) { }
+    try {
+        return (D && (D.catKey || (D.key && /^(food|cosme|parts)$/.test(D.key) ? D.key : "") || (typeof catKeyOf === "function" ? catKeyOf(D.cat) : ""))) || "";
+    }
+    catch (e) {
+        return "";
+    }
+}
+function v5322TplList(cat) {
+    try {
+        if (CIDX[cat] !== undefined)
+            return Object.keys(RD);
+        const R = RD2[cat];
+        if (!R)
+            return [];
+        return [...new Set(Object.keys(R.d || {}).concat(Object.keys(R.x || {})))];
+    }
+    catch (e) {
+        return [];
+    }
+}
+function v5322Has(c, cat) { return !!c && v5322TplList(cat == null ? v5322Cat() : cat).includes(c); }
+function v5322Tpl(c) { if (!c)
+    return null; try {
+    const r = regsFor(v5322Cat(), [c]);
+    return (r && r[c]) || null;
+}
+catch (e) {
+    return null;
+} }
+function v5322RegOf(c) { if (!c || typeof D === "undefined" || !D || !D.regs)
+    return null; return D.regs[c] || v5322Tpl(c); }
+function v5322ShipCtys() {
+    const out = [];
+    try {
+        if (typeof SHIPS !== "undefined" && SHIPS && SHIPS._pid === PID)
+            SHIPS.forEach(x => { const c = x && x.ship && x.ship.country; if (c && !out.includes(c))
+                out.push(c); });
+    }
+    catch (e) { }
+    try {
+        const c = D && D.ship && D.ship.country;
+        if (c && !out.includes(c))
+            out.push(c);
+    }
+    catch (e) { }
+    return out;
+}
+function v5322Opts() {
+    const L = Object.keys(D.regs || {}), sel = opsRegC;
+    const sh = v5322ShipCtys().filter(c => !L.includes(c)), tp = v5322TplList(v5322Cat()).filter(c => !L.includes(c) && !sh.includes(c));
+    const o = c => `<option value="${esc(c)}" ${c === sel ? "selected" : ""}>${esc(c)}</option>`;
+    if (!sh.length && !tp.length)
+        return L.map(o).join("");
+    const g = (lb, a) => a.length ? `<optgroup label="${esc(v5322T(lb))}">${a.map(o).join("")}</optgroup>` : "";
+    const none = (!L.length && !(sel && (sh.includes(sel) || tp.includes(sel)))) ? `<option value="" selected>${esc(v5322T("（国を選ぶ）"))}</option>` : "";
+    return none + g("進出希望国", L) + g("出荷の案件の国", sh) + g("ほかの国（アプリの規制のひな形）", tp);
+}
+function v5322CanAdd() { try {
+    return typeof PID !== "undefined" && PID === "custom" && typeof TEN !== "undefined" && !!TEN && (TEN.src === "upload" || TEN.src === "sample2");
+}
+catch (e) {
+    return false;
+} }
+function v5322RegNote(c) {
+    if (!c || typeof D === "undefined" || !D || !D.regs || D.regs[c])
+        return "";
+    const has = v5322Has(c), add = v5322CanAdd();
+    return `<div class="v5322x" style="margin-bottom:10px;padding:10px 12px;border:1.5px dashed var(--or);border-radius:var(--r2);background:var(--or-soft);font-size:12px;line-height:1.75">
+    <b>この国は進出希望国に入っていません。</b><br><span>下の表は、アプリに入っている規制のひな形（概算）です。</span>${has ? "" : `<br><span class="v5322none">この国のひな形はまだありません。表は、この商材の基本の書類だけです。AI詳細調査で確かめてください。</span>`}
+    ${add ? `<div class="rw" style="margin-top:8px;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" style="flex:none" data-v5322add="${esc(c)}">${V5322_ADD}</button><span class="nn">足すと規制DBに入り、この国の出荷の案件の書類とAI商社マンの答えにも使われます（販売先国の確定は変わりません）。</span></div>` : ""}</div>`;
+}
+function v5322AddTarget(c) {
+    c = String(c || "").trim();
+    if (!c || !v5322CanAdd())
+        return;
+    try {
+        const L = Array.isArray(TEN.targets) ? TEN.targets.slice() : [];
+        if (!L.includes(c))
+            L.push(c);
+        TEN.targets = L;
+        try {
+            if (typeof syncTenant === "function")
+                syncTenant();
+        }
+        catch (e) { }
+        try {
+            if (typeof saveTen === "function")
+                saveTen();
+        }
+        catch (e) { }
+        try {
+            if (typeof logU === "function")
+                logU("fill", "進出希望国に追加（規制を調べる）:" + c);
+        }
+        catch (e) { }
+        opsRegC = c;
+        try {
+            if (typeof SHIPS !== "undefined" && SHIPS && SHIPS._pid === PID)
+                shipEnsure();
+        }
+        catch (e) { }
+        try {
+            if (typeof toast === "function")
+                toast(c + "を進出希望国に足しました（規制DB・出荷の案件の書類・AI商社マンの答えに使われます）");
+        }
+        catch (e) { }
+        if (typeof render === "function")
+            render();
+    }
+    catch (e) { }
+}
+function v5322GoReg(c) { try {
+    opsRegC = String(c || "");
+    opsTab = "reg";
+    go("ops");
+}
+catch (e) { } }
+document.addEventListener("click", e => {
+    try {
+        const t = e.target;
+        if (!t || !t.closest)
+            return;
+        const g = t.closest("[data-v5322go]");
+        if (g) {
+            e.preventDefault();
+            v5322GoReg(g.dataset.v5322go);
+            return;
+        }
+        const a = t.closest("[data-v5322add]");
+        if (a) {
+            e.preventDefault();
+            v5322AddTarget(a.dataset.v5322add);
+        }
+    }
+    catch (err) { }
+});
+function v5322Docs(prev, cty, r) {
+    const reg = (r && Array.isArray(r.docs)) ? r.docs.map(x => {
+        let row = [x, "", (typeof GL !== "undefined" && GL[x]) || "この国の通関で求められる書類です"];
+        try {
+            if (typeof v54rDocRow === "function")
+                row = v54rDocRow(row[0], row[1], row[2], cty);
+        }
+        catch (e) { }
+        return row;
+    }) : [];
+    const pick = k => (prev || []).find(x => x && v5317Key(x[0]) === k) || reg.find(x => v5317Key(x && x[0]) === k) || null;
+    const base = ["PI", "CI", "PL", "S/I"].map(pick).filter(Boolean).map(x => x.slice());
+    return base.concat(reg.filter(x => !v5317Key(x && x[0])));
+}
+function v5322Apply(S) {
+    try {
+        if (!S || !S.v5317 || S.poNo || S.v5317reg || typeof D === "undefined" || !D)
+            return S;
+        if (D.regs && D.regs[S.country])
+            return S;
+        const cat = v5322Cat();
+        if (v5322Has(S.country, cat)) {
+            if (S.v5322tpl && S.v5322cat === cat)
+                return S;
+            const r = v5322Tpl(S.country);
+            if (r && Array.isArray(r.docs)) {
+                S.docs = v5322Docs(S.docs, S.country, r);
+                S.v5322tpl = 1;
+                S.v5322cat = cat;
+            }
+        }
+        else if (S.v5322tpl) {
+            S.docs = v5322Docs(S.docs, S.country, null);
+            S.v5322tpl = 0;
+            delete S.v5322cat;
+        }
+    }
+    catch (e) { }
+    return S;
+}
+if (typeof v5317Fresh === "function") {
+    const __fr5322 = v5317Fresh;
+    v5317Fresh = function (S) { const r = __fr5322.apply(this, arguments); v5322Apply(S); return r; };
+}
+if (typeof v5317Saved === "function") {
+    const __sv5322 = v5317Saved;
+    v5317Saved = function (S) { const r = __sv5322.apply(this, arguments); v5322Apply(r || S); return r; };
+}
+if (typeof v5317Sync === "function") {
+    const __sy5322 = v5317Sync;
+    v5317Sync = function (S) { const r = __sy5322.apply(this, arguments); try {
+        if (S && S.v5317reg) {
+            delete S.v5322tpl;
+            delete S.v5322cat;
+        }
+        else
+            v5322Apply(S);
+    }
+    catch (e) { } return r; };
+}
+if (typeof shipEnsure === "function") {
+    const __se5322 = shipEnsure;
+    shipEnsure = function () {
+        const r = __se5322.apply(this, arguments);
+        try {
+            if (SHIPS && SHIPS._pid === PID)
+                SHIPS.forEach(x => { if (x && x.custom && x.ship)
+                    v5317Sync(x.ship); });
+        }
+        catch (e) { }
+        return r;
+    };
+}
+function v5322GoBtn(c) { return `<div class="rw" style="margin-top:6px"><button class="btn g v5322go" style="flex:none" data-v5322go="${esc(c)}">${V5322_GO}</button></div>`; }
+if (typeof v5317NoRegHtml === "function") {
+    const __nr5322 = v5317NoRegHtml;
+    v5317NoRegHtml = function (S) {
+        const h = __nr5322.apply(this, arguments);
+        try {
+            if (!h || !S)
+                return h;
+            if (S.v5322tpl)
+                return `<p class="nn v5322tpl" style="margin-top:8px;padding:7px 9px;border:1px dashed var(--line);border-radius:var(--r2)">${V5322_TPLN}</p>` + v5322GoBtn(S.country);
+            return h + v5322GoBtn(S.country);
+        }
+        catch (e) {
+            return h;
+        }
+    };
+}
+if (typeof shipSteps === "function") {
+    const __ss5322 = shipSteps;
+    shipSteps = function () {
+        const ST = __ss5322.apply(this, arguments);
+        try {
+            const S = (typeof D !== "undefined" && D) ? D.ship : null;
+            if (!S || !S.v5317 || S.v5317reg || !ST || !ST[3])
+                return ST;
+            const c = esc(S.country), old = `${c}向けに必要な証明書・登録・表示などは、この案件の書類に入っていません。手配の前に確かめてください。`, nw = `${c}向けの証明書・登録・表示などは、アプリの規制のひな形（概算）から入れました。手配の前に確かめてください。`;
+            let a = String(ST[3].ai || "");
+            if (S.v5322tpl)
+                a = a.indexOf(old) >= 0 ? a.replace(old, nw) : a + `<br>${c}は規制DB（進出希望国の決まりごと）に入っていないため、${nw}`;
+            ST[3].ai = a + `<br>${c}の決まり（ひな形・AI詳細調査）は、「規制を調べる」で見られます（下の「${V5322_GO}」）。`;
+        }
+        catch (e) { }
+        return ST;
+    };
+}
+function v5322AnsDocs(res, S) {
+    try {
+        if (res && typeof res.a === "string" && S && S.v5317 && !S.v5317reg && !S.poNo && !(D.regs && D.regs[S.country])) {
+            const c = esc(S.country), head = `${c}向けの出荷で使う書類です。`;
+            const note = S.v5322tpl ? `（${c}は規制DB（進出希望国の決まりごと）に入っていないため、証明書・登録・表示などは、アプリの規制のひな形（概算）から入れています。手配の前に「規制を調べる」で確かめてください）`
+                : `（${c}は規制DB（進出希望国の決まりごと）に入っていないため、${c}向けに必要な証明書・登録・表示などは、ここに入っていません。手配の前に「規制を調べる」で確かめてください）`;
+            res.a = res.a.indexOf(head) === 0 ? head + note + res.a.slice(head.length) : note + "<br>" + res.a;
+            res.c = S.v5322tpl ? `根拠：アプリの規制のひな形（${S.country}・概算）／受注 ${S.no}／商品マスタ` : `根拠：基本の書類だけ（${S.country}は規制DBに無い）／受注 ${S.no}／商品マスタ`;
+        }
+    }
+    catch (e) { }
+    return res;
+}
 function shipCaseNew(o) {
     o = o || {};
     const cty = (typeof cnorm === "function" ? cnorm(o.cty || "") : (o.cty || "")) || "香港";
@@ -15953,7 +16225,7 @@ function vOpsReg() {
         const t = String(r[0]) + (add ? "（" + sub + "）" : "");
         return `<option value="${esc(t)}" ${t === opsRegI ? "selected" : ""}>${esc(t)}</option>`;
     }).join("")}</select>
-        <select class="sel" id="rC">${Object.keys(D.regs).map(c => `<option value="${esc(c)}" ${c === opsRegC ? "selected" : ""}>${esc(c)}</option>`).join("")}</select></div>
+        <select class="sel" id="rC">${v5322Opts()}</select></div>
       <div id="rO" style="margin-top:11px"></div></div>
   <div class="c"><h3>出荷の進み具合</h3>
     <p class="nn">見積から入金まで、1本の流れとして追えます。</p>
@@ -15998,7 +16270,7 @@ function vOpsDoc() {
   </div>`;
 }
 function rReg() {
-    const c = $("#rC").value, r = D.regs[c];
+    const c = $("#rC").value, r = v5322RegOf(c);
     opsRegC = c;
     opsRegI = $("#rI") ? $("#rI").value : "";
     if (!r) {
@@ -16007,7 +16279,7 @@ function rReg() {
     <div class="rw" style="justify-content:center;margin-top:10px">${v536CtyOn() ? `<button class="btn" onclick="go('cty')">販売先国の選定を開く</button>` : `<button class="btn" onclick="go('up')">足りない情報を埋める</button>`}</div></div>`;
         return;
     }
-    $("#rO").innerHTML = `<div class="g3" style="gap:8px">
+    $("#rO").innerHTML = `${v5322RegNote(c)}<div class="g3" style="gap:8px">
     ${[[tm("HSコード"), D.hs, "var(--ink)"], ["関税率", r.duty, r.duty === "0%" ? "var(--good)" : "var(--warn)"],
         ["通関にかかる日数", v54ctyLead(r.lead), "var(--ink)"]]
         .map(([k, v, col], i) => `<div style="padding:9px 10px;border-radius:var(--r2);background:var(--surface-2);border:1px solid var(--line)">
@@ -66168,6 +66440,33 @@ if (typeof deckBind === "function") {
     }
     catch (e) { }
 })();
+(function () {
+    try {
+        if (typeof v30I18n === "function")
+            v30I18n([
+                ["出荷の案件の国", "Countries of your shipping cases", "出货案件的国家", "Países de sus envíos"],
+                ["ほかの国（アプリの規制のひな形）", "Other countries (the app’s regulation templates)", "其他国家（应用内的法规模板）", "Otros países (plantillas de normativa de la app)"],
+                ["（国を選ぶ）", "(Choose a country)", "（选择国家）", "(Elija un país)"],
+                ["この国は進出希望国に入っていません。", "This country is not one of your target countries.", "该国不在您的目标国家中。", "Este país no está entre sus países objetivo."],
+                ["下の表は、アプリに入っている規制のひな形（概算）です。", "The table below is the app’s built-in regulation template (approximate).", "下表是应用内置的法规模板（概算）。", "La tabla de abajo es la plantilla de normativa de la app (aproximada)."],
+                ["この国のひな形はまだありません。表は、この商材の基本の書類だけです。AI詳細調査で確かめてください。",
+                    "There is no template for this country yet. The table shows only the basic documents for this product category. Check with the AI detailed research.",
+                    "该国尚无模板。表中只有该品类的基本单证。请用AI详细调查确认。",
+                    "Aún no hay plantilla para este país. La tabla muestra solo los documentos básicos de esta categoría. Compruébelo con la investigación detallada de IA."],
+                ["＋ 進出希望国に足す", "+ Add to target countries", "＋ 添加到目标国家", "+ Añadir a países objetivo"],
+                ["足すと規制DBに入り、この国の出荷の案件の書類とAI商社マンの答えにも使われます（販売先国の確定は変わりません）。",
+                    "Once added, it goes into the regulation database and is used for this country’s shipping case documents and the AI Trade Agent’s answers (your confirmed sales countries do not change).",
+                    "添加后会进入法规数据库，并用于该国出货案件的单证和AI商社专员的回答（已确定的销售国不变）。",
+                    "Al añadirlo, entra en la base de normativa y se usa en los documentos de los envíos a este país y en las respuestas del Agente comercial IA (los países de venta confirmados no cambian)."],
+                ["この国の決まりを調べる", "Look up this country’s rules", "查询该国的规定", "Consultar las normas de este país"],
+                ["この国は規制DB（進出希望国の決まりごと）に入っていないため、証明書・登録・表示などは、アプリの規制のひな形（概算）から入れました。手配の前に確かめてください。",
+                    "This country is not in the regulation database (the rules for your target countries), so its certificates, registrations and labelling were taken from the app’s regulation template (approximate). Check them before you arrange anything.",
+                    "该国不在法规数据库（目标国家的规定）中，因此证明、注册、标签等是根据应用的法规模板（概算）填入的。请在安排前确认。",
+                    "Este país no está en la base de normativa (las reglas de sus países objetivo), así que los certificados, registros y etiquetado se tomaron de la plantilla de normativa de la app (aproximada). Compruébelos antes de organizar nada."]
+            ]);
+    }
+    catch (e) { }
+})();
 var V33ANS = { chat: 0, map: [], q: "", kb: null };
 const V33ANS_KEY = "bc20_stdkb";
 function v33KbGet() { if (V33ANS.kb)
@@ -86360,10 +86659,10 @@ function v54rDecorate() {
     const box = document.getElementById("rO"), sel = document.getElementById("rC");
     if (!box || !sel || typeof D === "undefined" || !D || !D.regs)
         return;
-    const c = sel.value, r = D.regs[c];
+    const c = sel.value, r = (typeof v5322RegOf === "function") ? v5322RegOf(c) : D.regs[c];
     if (!r)
         return;
-    const st = v54rStatus(c);
+    const st = D.regs[c] ? v54rStatus(c) : v54rStatusFor(c, r, v54rCatOf(D), D.compRows || []);
     if (!st)
         return;
     const grid = box.querySelector(".g3");
