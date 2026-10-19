@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="78b5b4619c68";
+const BC20_BUILD="f5520271d92a";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -109661,6 +109661,2084 @@ body.ux211u .nt.v56uiDev{display:none!important}
 #v56uiChip .btn{padding:4px 11px;font-size:12.5px;min-height:32px}
 @media (max-width:820px){#v56uiChip{bottom:calc(var(--tabbar-h,58px) + 14px)}}`;
         document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+const V5326P140 = { refused: null, busy: 0, note: null };
+const V5326P140_UNREG = "（会社名 未登録）";
+function v5326p140L() { try {
+    return (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v5326p140M(ja, en, zh, es) { const l = v5326p140L(); return l === "en" ? en : l === "zh" ? zh : l === "es" ? es : ja; }
+function v5326p140E(s) { try {
+    return esc(s);
+}
+catch (e) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+} }
+function v5326p140Co(t) { try {
+    if (typeof tenCoOf === "function")
+        return tenCoOf(t);
+}
+catch (e) { } return (String(t && t.co || "").trim()) || V5326P140_UNREG; }
+function v5326p140Max() { return { p: (typeof PROD_PER_CO !== "undefined") ? PROD_PER_CO : 10, c: (typeof CO_MAX !== "undefined") ? CO_MAX : 10 }; }
+function v5326p140CoKey(s) {
+    let x = String(s || "");
+    try {
+        x = x.normalize("NFKC");
+    }
+    catch (e) { }
+    return x.replace(/株式会社|有限会社|合同会社|合資会社|合名会社|\(株\)|\(有\)|\(同\)/g, "").replace(/\b(co\.?\s*,?\s*ltd\.?|inc\.?|corp\.?|corporation|ltd\.?|llc)\b/gi, "").replace(/[\s・,，.．、]/g, "").toLowerCase();
+}
+function v5326p140RoomCo(co) {
+    co = (String(co || "").trim()) || V5326P140_UNREG;
+    const M = v5326p140Max();
+    const cos = (typeof tenCos === "function") ? tenCos() : [];
+    const e = cos.find(x => x.co === co);
+    if (e)
+        return e.idxs.length < M.p ? { ok: true, co } : { ok: false, kind: "prod", co, max: M.p };
+    return cos.length < M.c ? { ok: true, co, newCo: true } : { ok: false, kind: "co", co, max: M.c };
+}
+function v5326p140Room(t) { return v5326p140RoomCo(v5326p140Co(t)); }
+function v5326p140Work(x) {
+    if (!x)
+        return false;
+    const a = v => Array.isArray(v) && v.length > 0, o = v => !!(v && typeof v === "object" && Object.keys(v).length);
+    return a(x.fbx) || a(x.legal && x.legal.docs) || a(x.legal && x.legal.chat) || a(x.memos) || a(x.myBuyers) || a(x.presets) || a(x.xtasks) || a(x.xdocs) || a(x.poCases) || a(x.outreach) || a(x.msgs) || a(x.dmThreads) || a(x.extraQA) || a(x.assets) || o(x.deckMeta) || o(x.deckRich);
+}
+function v5326p140WillMerge(t) {
+    try {
+        if (!t || String(t.item || "").trim())
+            return false;
+        const P = t._pend;
+        if (!P || !P.prods || !P.prods.length)
+            return false;
+        const co = String(t.co || "").trim();
+        if (!co)
+            return false;
+        const key = (typeof v1810Key === "function") ? v1810Key : (s => String(s || "").replace(/\s+/g, "").toLowerCase());
+        const ex = new Set(TENS.filter(x => x && x !== t && x.src === "upload" && String(x.co || "").trim() === co && String(x.item || "").trim()).map(x => key(x.item)));
+        return P.prods.some(p => { const nm = key((p.x && p.x.item) || p.name); return nm && ex.has(nm); });
+    }
+    catch (e) {
+        return false;
+    }
+}
+function v5326p140WillFree(t, room) {
+    try {
+        const has = v => Array.isArray(v) ? v.length > 0 : !!(v && String(v).trim());
+        const cos = (typeof tenCos === "function") ? tenCos() : [];
+        return TENS.some(x => {
+            if (!x || x === t || x.src !== "upload" || x.file !== t.file || has(x.item) || has(x.itemEn) || has(x.sku) || v5326p140Work(x))
+                return false;
+            const c = v5326p140Co(x);
+            if (room.kind === "prod")
+                return c === room.co;
+            const e = cos.find(y => y.co === c);
+            return !!(e && e.idxs.length === 1);
+        });
+    }
+    catch (e) {
+        return false;
+    }
+}
+function v5326p140Toast(m) {
+    try {
+        toast(m);
+    }
+    catch (e) {
+        return;
+    }
+    try {
+        const e = document.getElementById("tst");
+        if (!e || e.classList.contains("v37err"))
+            return;
+        try {
+            clearTimeout(tT);
+        }
+        catch (x) { }
+        e.classList.add("v37err");
+        e.setAttribute("role", "alert");
+        const x = document.createElement("button");
+        x.type = "button";
+        x.className = "v37x";
+        x.setAttribute("aria-label", v5326p140M("閉じる", "Close", "关闭", "Cerrar"));
+        x.textContent = "×";
+        x.onclick = () => { e.style.opacity = "0"; e.classList.remove("v37err"); e.removeAttribute("role"); };
+        e.appendChild(x);
+    }
+    catch (e) { }
+}
+function v5326p140Why(room, what) {
+    const co = room.co, max = room.max, nm = what ? String(what).slice(0, 40) : "";
+    const keep = v5326p140M("今の商品はそのままです（置き換えていません）。", " Your current products were not changed (nothing was replaced).", "现有商品保持不变（没有被替换）。", " Sus productos actuales no se modificaron (no se reemplazó nada).");
+    if (room.kind === "prod")
+        return v5326p140M(`「${co}」の商品は上限（1社${max}件）のため、${nm ? `「${nm}」を` : ""}登録できませんでした。${keep}不要な商品を削除してから、もう一度お試しください。`, `Could not register${nm ? ` “${nm}”` : " the product"}: “${co}” already has the maximum of ${max} products.${keep} Delete a product you no longer need, then try again.`, `无法登记${nm ? `“${nm}”` : "该商品"}：“${co}”的商品已达上限（每家公司${max}件）。${keep}请删除不需要的商品后再试。`, `No se pudo registrar${nm ? ` «${nm}»` : " el producto"}: «${co}» ya tiene el máximo de ${max} productos.${keep} Elimine un producto que ya no necesite e inténtelo de nuevo.`);
+    if (co === V5326P140_UNREG)
+        return v5326p140M(`資料に会社名が無いため新しい会社として登録しようとしましたが、登録できる会社が上限（${max}社）のため、${nm ? `「${nm}」を` : ""}登録できませんでした。${keep}登録済みの会社の商品なら、「🧭 登録メニュー」→「既存の会社に新しい商品を登録」で会社を選んでからアップロードしてください。`, `Could not register${nm ? ` “${nm}”` : " the product"}: the file has no company name, so it would be a new company, and you already have the maximum of ${max} companies.${keep} If it belongs to a registered company, choose “🧭 Registration menu” → “Add a new product to an existing company”, pick the company, then upload.`, `无法登记${nm ? `“${nm}”` : "该商品"}：资料中没有公司名称，将作为新公司登记，但可登记的公司已达上限（${max}家）。${keep}如果是已登记公司的商品，请在“🧭 登记菜单”→“为已有公司登记新商品”中选择公司后再上传。`, `No se pudo registrar${nm ? ` «${nm}»` : " el producto"}: el archivo no tiene nombre de empresa, por lo que sería una empresa nueva, y ya tiene el máximo de ${max} empresas.${keep} Si pertenece a una empresa registrada, elija «🧭 Menú de registro» → «Añadir un producto nuevo a una empresa existente», seleccione la empresa y vuelva a subirlo.`);
+    return v5326p140M(`「${co}」は新しい会社ですが、登録できる会社が上限（${max}社）のため、${nm ? `「${nm}」を` : ""}登録できませんでした。${keep}不要な会社の商品を削除するか、登録済みの会社の商品なら「既存の会社に新しい商品を登録」で会社を選んでください。`, `Could not register${nm ? ` “${nm}”` : " the product"}: “${co}” would be a new company, and you already have the maximum of ${max} companies.${keep} Delete the products of a company you no longer need, or, if it belongs to a registered company, use “Add a new product to an existing company”.`, `无法登记${nm ? `“${nm}”` : "该商品"}：“${co}”是新公司，但可登记的公司已达上限（${max}家）。${keep}请删除不需要的公司的商品；如果是已登记公司的商品，请使用“为已有公司登记新商品”。`, `No se pudo registrar${nm ? ` «${nm}»` : " el producto"}: «${co}» sería una empresa nueva y ya tiene el máximo de ${max} empresas.${keep} Elimine los productos de una empresa que ya no necesite o, si pertenece a una empresa registrada, use «Añadir un producto nuevo a una empresa existente».`);
+}
+function v5326p140Refused(t, info, room, after) {
+    const nm = (t && (t.item || t.file)) || (info && info.name) || "";
+    const msg = v5326p140Why(room, nm);
+    try {
+        if (typeof upFile !== "undefined")
+            upFile = null;
+    }
+    catch (e) { }
+    try {
+        if (after)
+            FILL = { on: false, log: [], cur: null, sel: [] };
+        else if (typeof FILL !== "undefined" && FILL) {
+            FILL.on = false;
+            FILL.cur = null;
+        }
+    }
+    catch (e) { }
+    try {
+        cur = "up";
+        if (typeof buildNav === "function")
+            buildNav();
+        render();
+    }
+    catch (e) { }
+    try {
+        const e = document.getElementById("prg");
+        if (e) {
+            e.hidden = false;
+            e.innerHTML = `<div class="c" id="v5326p140msg" role="alert" style="box-shadow:none;border:1.5px solid var(--crit);background:var(--crit-soft);color:var(--ink);font-size:12px;line-height:1.75">⚠ ${v5326p140E(msg)}</div>`;
+        }
+        const pk = document.getElementById("pick");
+        if (pk)
+            pk.hidden = false;
+    }
+    catch (e) { }
+    v5326p140Toast(msg);
+    try {
+        if (typeof logU === "function")
+            logU("upload", "上限のため登録せず:" + String(nm).slice(0, 30) + "（" + room.co + "）");
+    }
+    catch (e) { }
+    try {
+        console.warn("[v21.53.26] 上限のため登録しませんでした（今の商品は置き換えていません）", room);
+    }
+    catch (e) { }
+}
+function v5326p140AddtoCo(t) {
+    const m = (typeof V1811 !== "undefined" && V1811) ? V1811.mode : null;
+    if (!t || !m || m.k !== "addto" || !m.co)
+        return;
+    const fc = String(t.co || "").trim();
+    if (!fc) {
+        t.co = m.co;
+        return;
+    }
+    if (fc === m.co)
+        return;
+    const k = v5326p140CoKey(fc);
+    if (k && k === v5326p140CoKey(m.co)) {
+        t.co = m.co;
+        V5326P140.note = { k: "same", fc, co: m.co, t };
+        return;
+    }
+    const r = v5326p140RoomCo(fc);
+    if (!r.ok && r.kind === "co" && v5326p140RoomCo(m.co).ok) {
+        t.co = m.co;
+        V5326P140.note = { k: "full", fc, co: m.co, t };
+    }
+}
+function v5326p140Note(n) {
+    if (!n)
+        return;
+    const msg = n.k === "same"
+        ? v5326p140M(`資料の会社名「${n.fc}」は書き方の違いだけのため、選んだ会社「${n.co}」の商品として登録しました`, `The company name in the file (“${n.fc}”) differs only in spelling, so the product was registered under the company you chose (“${n.co}”)`, `资料中的公司名称“${n.fc}”只是写法不同，已作为所选公司“${n.co}”的商品登记`, `El nombre de empresa del archivo («${n.fc}») solo cambia en la escritura, así que el producto se registró en la empresa elegida («${n.co}»)`)
+        : v5326p140M(`資料の会社名「${n.fc}」は登録済みの会社にありません。登録できる会社が上限のため、選んだ会社「${n.co}」の商品として登録しました（今の商品はそのままです）`, `The company in the file (“${n.fc}”) is not registered, and you have the maximum number of companies, so the product was registered under the company you chose (“${n.co}”). Your other products were not changed`, `资料中的公司“${n.fc}”尚未登记，且公司数量已达上限，因此已作为所选公司“${n.co}”的商品登记（现有商品保持不变）`, `La empresa del archivo («${n.fc}») no está registrada y ya tiene el máximo de empresas, así que el producto se registró en la empresa elegida («${n.co}»). Sus demás productos no cambiaron`);
+    setTimeout(() => { try {
+        toast(msg);
+    }
+    catch (e) { } }, 700);
+}
+function v5326p140Keep(before, t) {
+    const L = (typeof TENS !== "undefined" && Array.isArray(TENS)) ? TENS : null;
+    if (!L)
+        return 0;
+    const gone = before.filter(x => x && x !== t && !L.includes(x) && !(x.uid && L.some(y => y && y.uid === x.uid)) && v5326p140Work(x));
+    gone.forEach(x => { x.at = Date.now() + 5; L.push(x); });
+    if (gone.length) {
+        try {
+            if (typeof TEN !== "undefined" && TEN && L.includes(TEN))
+                TIDX = L.indexOf(TEN);
+        }
+        catch (e) { }
+        try {
+            if (typeof saveTen === "function")
+                saveTen();
+        }
+        catch (e) { }
+        try {
+            if (typeof buildNav === "function")
+                buildNav();
+        }
+        catch (e) { }
+        try {
+            console.warn("[v21.53.26] 取り込みの間に消えた商品を戻しました", gone.map(x => (x.co || "") + "|" + (x.item || x.file || "")));
+        }
+        catch (e) { }
+    }
+    return gone.length;
+}
+if (typeof adoptReal === "function") {
+    const __ar140 = adoptReal;
+    adoptReal = function (t, info) {
+        V5326P140.note = null;
+        try {
+            v5326p140AddtoCo(t);
+        }
+        catch (e) { }
+        let room = null;
+        try {
+            room = v5326p140Room(t);
+        }
+        catch (e) { }
+        if (room && !room.ok && !(typeof TENS !== "undefined" && TENS.includes(t)) && !v5326p140WillMerge(t) && !v5326p140WillFree(t, room)) {
+            v5326p140Refused(t, info, room);
+            return;
+        }
+        const before = (typeof TENS !== "undefined" && Array.isArray(TENS)) ? TENS.slice() : [];
+        V5326P140.refused = null;
+        let r;
+        V5326P140.busy++;
+        try {
+            r = __ar140.apply(this, arguments);
+        }
+        finally {
+            V5326P140.busy--;
+        }
+        try {
+            v5326p140Keep(before, t);
+        }
+        catch (e) { }
+        try {
+            const rf = V5326P140.refused;
+            if (rf && rf.t === t) {
+                V5326P140.refused = null;
+                v5326p140Refused(t, info, rf.room, true);
+                return r;
+            }
+        }
+        catch (e) { }
+        try {
+            const n = V5326P140.note;
+            V5326P140.note = null;
+            if (n && n.t === t && typeof TENS !== "undefined" && TENS.includes(t))
+                v5326p140Note(n);
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof pushTen === "function") {
+    const __pt140 = pushTen;
+    pushTen = function (t) {
+        try {
+            if (t && !(typeof TENS !== "undefined" && TENS.includes(t))) {
+                const r = v5326p140Room(t);
+                if (!r.ok) {
+                    V5326P140.refused = { t, room: r, at: Date.now() };
+                    if (!V5326P140.busy)
+                        v5326p140Toast(v5326p140Why(r, t.item || t.file || ""));
+                    try {
+                        console.warn("[v21.53.26] 上限のため pushTen で登録しませんでした（今の商品は置き換えていません）", r);
+                    }
+                    catch (e) { }
+                    return false;
+                }
+            }
+        }
+        catch (e) { }
+        return __pt140.apply(this, arguments);
+    };
+}
+function v5326p140SaveGuard() {
+    if (typeof TEN === "undefined" || !TEN || !(TEN.src === "upload" || TEN.src === "sample2") || typeof TENS === "undefined" || !Array.isArray(TENS))
+        return;
+    if (TENS[TIDX] === TEN || TENS.includes(TEN))
+        return;
+    const at = TENS[TIDX];
+    if (!at)
+        return;
+    if (TEN.uid && at.uid === TEN.uid)
+        return;
+    const i = TEN.uid ? TENS.findIndex(x => x && x.uid === TEN.uid) : -1;
+    if (i >= 0) {
+        TIDX = i;
+        return;
+    }
+    if (!TEN.uid) {
+        try {
+            TEN.uid = (typeof v185Uid === "function") ? v185Uid() : Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+        }
+        catch (e) { }
+    }
+    TENS.push(TEN);
+    TIDX = TENS.length - 1;
+    try {
+        console.warn("[v21.53.26] 一覧に無い商品を表示していたため、別の商品に上書きせず新しい商品として保存しました", (TEN.co || "") + "|" + (TEN.item || TEN.file || ""));
+    }
+    catch (e) { }
+}
+if (typeof saveTen === "function") {
+    const __sv140 = saveTen;
+    saveTen = function () { try {
+        v5326p140SaveGuard();
+    }
+    catch (e) { } return __sv140.apply(this, arguments); };
+}
+if (typeof v33TrashRestore === "function") {
+    const __tr140 = v33TrashRestore;
+    v33TrashRestore = function (id) {
+        try {
+            const e = (typeof v33One === "function") ? v33One("tr", id) : null;
+            if (e && e.kind === "ten" && e.data && typeof TENS !== "undefined") {
+                const t = e.data;
+                const sig = x => String(x && x.co || "") + "|" + String(x && x.item || "");
+                const there = TENS.some(x => x && ((t.uid && x.uid === t.uid) || sig(x) === sig(t)));
+                if (!there) {
+                    const r = v5326p140Room(t);
+                    if (!r.ok) {
+                        v5326p140Toast(v5326p140Why(r, t.item || t.file || ""));
+                        return false;
+                    }
+                }
+            }
+        }
+        catch (x) { }
+        return __tr140.apply(this, arguments);
+    };
+}
+if (typeof adoptSample2 === "function") {
+    const __as140 = adoptSample2;
+    adoptSample2 = function (k) {
+        try {
+            const x = (typeof SAMPLES2 !== "undefined") ? SAMPLES2[k] : null;
+            if (x && typeof TENS !== "undefined" && !TENS.some(t => t && t.src === "sample2" && t.co === x.co && t.item === x.item)) {
+                const r = v5326p140RoomCo(x.co);
+                if (!r.ok) {
+                    v5326p140Toast(v5326p140Why(r, x.item || ""));
+                    return;
+                }
+            }
+        }
+        catch (e) { }
+        return __as140.apply(this, arguments);
+    };
+}
+if (typeof v1811Manual === "function") {
+    const __vm140 = v1811Manual;
+    v1811Manual = function (co, item) {
+        try {
+            const r = v5326p140RoomCo(co);
+            if (!r.ok && r.kind === "co") {
+                v5326p140Toast(v5326p140Why(r, item || ""));
+                return;
+            }
+        }
+        catch (e) { }
+        return __vm140.apply(this, arguments);
+    };
+}
+if (typeof v1811Open === "function") {
+    const __vo140 = v1811Open;
+    v1811Open = function (step) {
+        const r = __vo140.apply(this, arguments);
+        try {
+            if (step === "newco") {
+                const M = v5326p140Max();
+                const n = (typeof tenCos === "function") ? tenCos().length : 0;
+                if (n >= M.c) {
+                    const c = document.querySelector("#v1811ov .v1811c .v1811two");
+                    if (c && !document.getElementById("v5326p140full"))
+                        c.insertAdjacentHTML("beforebegin", `<p class="nn" id="v5326p140full" role="note" style="margin-top:10px;padding:8px 11px;border-radius:9px;border:1px solid var(--crit);background:var(--crit-soft);color:var(--ink)">⚠ ${v5326p140E(v5326p140M(`登録できる会社は上限（${M.c}社）です。新しい会社の商品は登録できません（今の商品はそのままです）。不要な会社の商品を削除するか、登録済みの会社の商品なら「既存の会社に新しい商品を登録」からどうぞ。`, `You have the maximum of ${M.c} companies, so a new company's product cannot be registered (your current products stay as they are). Delete the products of a company you no longer need, or use “Add a new product to an existing company”.`, `可登记的公司已达上限（${M.c}家），无法登记新公司的商品（现有商品保持不变）。请删除不需要的公司的商品，或使用“为已有公司登记新商品”。`, `Ya tiene el máximo de ${M.c} empresas, así que no se puede registrar el producto de una empresa nueva (sus productos actuales no cambian). Elimine los productos de una empresa que no necesite o use «Añadir un producto nuevo a una empresa existente».`))}</p>`);
+                }
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof v1812Focus === "function") {
+    const __vf140 = v1812Focus;
+    v1812Focus = function () {
+        try {
+            const f = (typeof V1811 !== "undefined" && V1811) ? V1811.focus : null;
+            if (f && f.ten && typeof TEN !== "undefined" && TEN && TEN !== f.ten && f.ten.uid && TEN.uid === f.ten.uid)
+                f.ten = TEN;
+        }
+        catch (e) { }
+        return __vf140.apply(this, arguments);
+    };
+}
+const V5326D19 = { ver: "21.53.26", used: 0, other: 0, tr: 0, follow: 0, lastOpen: undefined, scopeOpen: undefined };
+function v5326d19OpenKey() {
+    try {
+        if (typeof PID !== "undefined" && PID && PID !== "custom")
+            return "k:" + PID;
+        if (typeof TEN !== "undefined" && TEN)
+            return "t:" + String(TEN.uid || "") + "|" + String(TEN.co || "") + "|" + String(TEN.item || TEN.file || "");
+        return "";
+    }
+    catch (e) {
+        return "";
+    }
+}
+function v5326d19UserScope() {
+    try {
+        if (typeof DASH === "undefined" || !DASH)
+            return false;
+        if (!(DASH.grp || DASH.co || DASH.cat || DASH.pr))
+            return false;
+        const auto = (typeof V54D !== "undefined") && !!V54D && !!V54D.selfScoped && DASH.co === V54D.selfScoped && !DASH.grp && !DASH.cat && !DASH.pr;
+        if (auto)
+            return false;
+        if (V5326D19.scopeOpen !== undefined && V5326D19.scopeOpen !== v5326d19OpenKey())
+            return false;
+        return true;
+    }
+    catch (e) {
+        return true;
+    }
+}
+if (typeof dashSet === "function") {
+    const __ds5326d19 = dashSet;
+    dashSet = function (k, v) {
+        try {
+            if (/^(grp|co|cat|pr)$/.test(String(k))) {
+                V5326D19.scopeOpen = v5326d19OpenKey();
+                V5326D19.lastOpen = V5326D19.scopeOpen;
+            }
+        }
+        catch (e) { }
+        return __ds5326d19.apply(this, arguments);
+    };
+}
+function v5326d19Follow() {
+    try {
+        if (typeof DASH === "undefined" || !DASH)
+            return;
+        const k = v5326d19OpenKey();
+        const prev = V5326D19.lastOpen;
+        V5326D19.lastOpen = k;
+        if (prev === undefined || prev === k || !DASH.pr)
+            return;
+        const all = (typeof dashUnits === "function") ? (dashUnits() || []) : [];
+        const pu = all.find(u => u && u.ref === DASH.pr) || null;
+        if (pu && pu.act)
+            return;
+        const o = all.find(u => u && u.act) || null;
+        let ok = !!o;
+        if (o && DASH.grp) {
+            const g = (typeof dashDepts === "function" ? dashDepts() : []).find(x => String(x.id) === String(DASH.grp));
+            if (g && Array.isArray(g.cos) && !g.cos.includes(o.co))
+                ok = false;
+        }
+        if (o && DASH.co && o.co !== DASH.co)
+            ok = false;
+        if (o && DASH.cat && o.cat !== DASH.cat)
+            ok = false;
+        DASH.pr = ok ? o.ref : "";
+        V5326D19.follow++;
+    }
+    catch (e) { }
+}
+if (typeof vDash === "function") {
+    const __vd5326d19 = vDash;
+    vDash = function () { v5326d19Follow(); return __vd5326d19.apply(this, arguments); };
+}
+function v5326d19Open() {
+    try {
+        if (typeof D === "undefined" || !D)
+            return null;
+        let all = [];
+        try {
+            all = (typeof dashUnits === "function") ? (dashUnits() || []) : [];
+        }
+        catch (e) { }
+        const a = all.find(u => u && u.act && u.D === D) || all.find(u => u && u.act);
+        if (a)
+            return a;
+        const item = String(D.item || ((typeof TEN !== "undefined" && TEN) ? (TEN.item || TEN.file || "") : ""));
+        return { ref: "open", i: (typeof TIDX !== "undefined" ? TIDX : -1), co: String(D.co || ""), cat: String(D.cat || ""), item, D, act: true, kind: "open" };
+    }
+    catch (e) {
+        return null;
+    }
+}
+function v5326d19Pick(L, single) {
+    const act = L.find(x => x && x.act) || null;
+    return single || act || L.find(x => x && !v54dashMihon(x) && x.D && x.D.dashNote) || L.find(x => x && x.D && x.D.dashNote) || null;
+}
+function v5326d19TenOf(u) {
+    try {
+        const r = String(u && u.ref || "");
+        if (/^t:\d+$/.test(r) && typeof TENS !== "undefined" && Array.isArray(TENS) && TENS[u.i])
+            return TENS[u.i];
+        if (/^k:/.test(r) && typeof tenantFromSample === "function" && u.D)
+            return tenantFromSample(u.D);
+        if (/^s2:/.test(r) && typeof tenantFromSample2 === "function" && typeof SAMPLES2 !== "undefined" && SAMPLES2[r.slice(3)])
+            return tenantFromSample2(SAMPLES2[r.slice(3)]);
+    }
+    catch (e) { }
+    return null;
+}
+function v5326d19SetupOf(u) {
+    if (typeof ux32Setup !== "function" || typeof TEN === "undefined" || typeof D === "undefined")
+        return null;
+    const t = v5326d19TenOf(u);
+    if (!t)
+        return null;
+    const T0 = TEN, D0 = D;
+    let S = null;
+    try {
+        TEN = t;
+        D = (u && u.D) || D0;
+        S = ux32Setup();
+    }
+    catch (e) {
+        S = null;
+    }
+    finally {
+        TEN = T0;
+        D = D0;
+    }
+    if (!Array.isArray(S) || !S.length)
+        return null;
+    const done = S.filter(s => s && s[4]).length;
+    return { done, n: S.length, next: S.find(s => s && !s[4]) || null };
+}
+if (typeof v54dashNote === "function") {
+    const __n5326d19 = v54dashNote;
+    v54dashNote = function (us, single) {
+        try {
+            const L = Array.isArray(us) ? us : [];
+            let u = null;
+            if (L.some(x => x && x.act) || v5326d19UserScope())
+                u = v5326d19Pick(L, single);
+            else {
+                const o = v5326d19Open();
+                if (o) {
+                    if (!o.D || !o.D.dashNote)
+                        return "";
+                    V5326D19.used++;
+                    u = o;
+                }
+                else
+                    u = v5326d19Pick(L, single);
+            }
+            if (!u || !u.D || !u.D.dashNote)
+                return "";
+            if (u.act)
+                return __n5326d19.call(this, [u], u);
+            const note = String(u.D.dashNote);
+            if (/必要な情報はすべて揃っています/.test(note)) {
+                const X = v5326d19SetupOf(u);
+                if (X && X.next && X.done < X.n) {
+                    V5326D19.other++;
+                    const body = `商品の情報はそろいました（はじめの設定 ${X.done}/${X.n}）。次は「${v54dashE(X.next[1])}」に進みましょう。はじめの設定が全部終わると、AI商社マンが貴社の商品で答えられるようになります。`;
+                    return ((v54dashTrial() && u.item) ? `<span class="v54for">「${v54dashE(u.item)}」について：</span>` : "") + body;
+                }
+            }
+            return __n5326d19.call(this, [u], u);
+        }
+        catch (e) {
+            return __n5326d19.apply(this, arguments);
+        }
+    };
+}
+const V5326D19_HEAD = /^(AIからのひとこと|A word from the AI|AI的一句话|Nota de la IA)$/;
+const V5326D19_TR = {
+    "必要な情報はすべて揃っています。ここからは": { en: "All required information is in place. From here it is the ", zh: "所需信息已全部齐备。接下来是", es: "Toda la información necesaria está lista. Ahora toca " },
+    "商談の記録を貯める段階": { en: "stage of accumulating meeting records", zh: "积累商谈记录的阶段", es: "acumular registros de reuniones" },
+    "です。42件ほど貯まると、国別・価格帯別の分析ができます。": { en: ". Once about 42 are collected, you can analyze by country and price range.", zh: "。积累到约42件后，就能按国家和价格带进行分析。", es: ". Con unos 42 podrá analizar por país y rango de precios." },
+    "商談記録が": { en: "You now have ", zh: "已积累", es: "Ya tiene " },
+    "たまりました。反応の高い相手から優先的にフォローしましょう。": { en: ". Follow up first with the contacts who responded best.", zh: "。请优先跟进反应好的对象。", es: ". Dé prioridad al seguimiento de los contactos con mejor reacción." },
+    "断られた5件のうち": { en: "Of the 5 declined deals, ", zh: "在被拒的5件中，", es: "De los 5 rechazos, " },
+    "2件が": { en: "2 were due to ", zh: "有2件是因为", es: "2 se debieron a " },
+    "ハラル認証": { es: "la certificación halal" },
+    "。UAE・マレーシア向けの見込み客はいま7社あるので、認証を取れば": { en: ". There are now 7 prospects for the UAE and Malaysia, so getting certified would start ", zh: "。目前面向阿联酋和马来西亚的潜在客户有7家，取得认证后，", es: ". Ahora hay 7 posibles clientes para EAU y Malasia, así que con la certificación se pondrían en marcha " },
+    "推定¥9.2M": { en: "an estimated ¥9.2M", zh: "预计 ¥9.2M", es: "unos ¥9.2M estimados" },
+    "の商談が動き出します。": { en: " in deals.", zh: "的商谈将启动。", es: " en negociaciones." },
+    "断られた4件は": { en: "The 4 declined deals were ", zh: "被拒的4件", es: "Los 4 rechazos fueron " },
+    "すべて「各国の届出が未対応」": { en: "all due to “notifications not yet filed in each country”", zh: "全部是因为“尚未完成各国的备案”", es: "todos por «notificaciones pendientes en cada país»" },
+    "で、商品への評価は高いままでした。中でも": { en: ", while the product itself stayed highly rated. Among them, ", zh: "，对商品的评价依然很高。其中", es: ", y la valoración del producto siguió siendo alta. Entre ellos, " },
+    "は1〜2ヶ月・20万円": { en: " takes 1–2 months and ¥200,000", zh: "需要1〜2个月、20万日元", es: " lleva 1–2 meses y ¥200.000" },
+    "と最も軽く、対応すれば失注1件＋見込み3社が動きます。": { en: ", the lightest; handling it would move 1 lost deal plus 3 prospects.", zh: "，负担最轻，完成后可推动1件流失案件＋3家潜在客户。", es: ", la más ligera; resolverla movería 1 rechazo y 3 posibles clientes." },
+    "断られた3件は理由がそれぞれ違います。中でもアメリカは": { en: "The 3 declined deals each had a different reason. In the US, ", zh: "被拒的3件原因各不相同。其中美国是", es: "Los 3 rechazos tuvieron motivos distintos. En EE. UU., " },
+    "品質は高評価なのに関税9%で負けた": { en: "we lost on the 9% tariff even though the quality was rated highly", zh: "品质获得高评价，却因9%关税而落败", es: "perdimos por el arancel del 9% aunque la calidad se valoró mucho" },
+    "案件でした。": { en: ".", zh: "的案件。", es: "." },
+    "が使えるベトナム・タイと違い、米国には軽減措置がありません。一方、韓国の": { en: " can be used for Vietnam and Thailand, but the US has no reduction. On the other hand, Korea’s ", zh: "可用于越南和泰国，但美国没有减免措施。另一方面，韩国的", es: " se puede usar para Vietnam y Tailandia, pero EE. UU. no tiene reducción. Por otro lado, en Corea, el plazo de " },
+    "特注品45日": { en: "45 days for custom orders", zh: "定制品45天", es: "45 días para pedidos especiales" },
+    "は社内の改善だけで解決できます。ここが最も早く効く打ち手です。": { en: " can be solved by internal improvements alone. This is the quickest win.", zh: "只需公司内部改善即可解决。这是见效最快的对策。", es: " se puede resolver solo con mejoras internas. Es la medida más rápida." }
+};
+const V5326D19_RE = [
+    { re: /^たまりました。断られた理由は「(.+)」が最多です。ここを解消する打ち手をAIに相談できます。$/,
+        en: (m, d) => ". The most common reason for being declined is “" + ((d && d[m[1]]) || m[1]) + "”. You can ask the AI for ways to resolve it.",
+        zh: (m, d) => "。被拒原因中最多的是“" + ((d && d[m[1]]) || m[1]) + "”。可以向AI咨询解决它的对策。",
+        es: (m, d) => ". El motivo de rechazo más frecuente es «" + ((d && d[m[1]]) || m[1]) + "». Puede consultar a la IA cómo resolverlo." }
+];
+function v5326d19InNote(n) {
+    try {
+        const p = n.parentElement;
+        const box = p && p.closest ? p.closest("div") : null;
+        if (!box)
+            return false;
+        const h = box.firstElementChild;
+        if (!h || h.tagName !== "B" || h === p)
+            return false;
+        return V5326D19_HEAD.test(String(h.textContent || "").trim());
+    }
+    catch (e) {
+        return false;
+    }
+}
+function v5326d19Src(n) { try {
+    return (typeof I18N !== "undefined" && I18N.orig && I18N.orig.has(n)) ? I18N.orig.get(n) : n.nodeValue;
+}
+catch (e) {
+    return n && n.nodeValue;
+} }
+function v5326d19Tr(n, k, d) {
+    const L = I18N.lang, key = String(k).replace(/\s+/g, "");
+    const e = V5326D19_TR[key];
+    if (e && e[L] != null)
+        return e[L];
+    for (const p of V5326D19_RE) {
+        const m = key.match(p.re);
+        if (m && typeof p[L] === "function")
+            return p[L](m, d);
+    }
+    const mm = key.match(/^(\d+)件$/);
+    if (mm) {
+        const b = n.parentElement;
+        if (b && b.tagName === "B") {
+            const pv = b.previousSibling;
+            const src = (pv && pv.nodeType === 3) ? v5326d19Src(pv) : "";
+            if (String(src || "").replace(/\s+/g, "") === "商談記録が") {
+                const x = +mm[1];
+                return L === "en" ? x + (x === 1 ? " meeting record" : " meeting records") : L === "zh" ? x + " 条商谈记录" : L === "es" ? x + (x === 1 ? " registro de reunión" : " registros de reuniones") : null;
+            }
+        }
+    }
+    return null;
+}
+if (typeof i18nText === "function") {
+    const __it5326d19 = i18nText;
+    i18nText = function (n, d) {
+        try {
+            if (typeof I18N !== "undefined" && I18N && I18N.lang !== "ja" && n && n.nodeType === 3 && !(I18N.elNodes && I18N.elNodes.has(n)) && v5326d19InNote(n)) {
+                const src = v5326d19Src(n);
+                const k = String(src == null ? "" : src).trim();
+                if (k) {
+                    const t = v5326d19Tr(n, k, d);
+                    if (t != null) {
+                        if (!I18N.orig.has(n))
+                            I18N.orig.set(n, n.nodeValue);
+                        const nv = String(src).replace(k, () => t);
+                        if (n.nodeValue !== nv)
+                            n.nodeValue = nv;
+                        V5326D19.tr++;
+                        return;
+                    }
+                }
+            }
+        }
+        catch (e) { }
+        return __it5326d19.apply(this, arguments);
+    };
+}
+var V5326T49 = { flip: 0, seq: 0, shown: 0, dl: 0, lastCur: undefined, lastFwd: undefined, ai: { tok: 0, at: 0, dl: 0 }, undo: { tok: 0, dl: 0 }, GUARD: 1200 };
+function v5326t49Later(fn, at) {
+    const run = () => { try {
+        setTimeout(fn, Math.max(0, at - Date.now()));
+    }
+    catch (e) { } };
+    try {
+        const ch = new MessageChannel();
+        ch.port1.onmessage = () => { try {
+            ch.port1.close();
+        }
+        catch (e) { } run(); };
+        ch.port2.postMessage(0);
+        return;
+    }
+    catch (e) { }
+    run();
+}
+(function () {
+    try {
+        if (document.getElementById("v5326t49css"))
+            return;
+        const st = document.createElement("style");
+        st.id = "v5326t49css";
+        st.textContent = "@keyframes v5326t49OutA{to{opacity:0}}@keyframes v5326t49OutB{to{opacity:0}}@keyframes v5326t49AiA{to{opacity:0;visibility:hidden}}@keyframes v5326t49AiB{to{opacity:0;visibility:hidden}}";
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+function v5326t49Anim(el, base, at, dur) {
+    try {
+        if (!el)
+            return;
+        if (!at) {
+            el.style.animation = "";
+            return;
+        }
+        V5326T49.flip ^= 1;
+        el.style.animation = base + (V5326T49.flip ? "A" : "B") + " " + dur + "s linear " + Math.max(0, at - Date.now()) + "ms forwards";
+    }
+    catch (e) { }
+}
+function v5326t49Tst() { try {
+    return document.getElementById("tst");
+}
+catch (e) {
+    return null;
+} }
+function v5326t49Err(e) { return !!(e && e.classList && e.classList.contains("v37err")); }
+function v5326t49Hide() {
+    const S = V5326T49;
+    S.dl = 0;
+    try {
+        const e = v5326t49Tst();
+        if (e && !v5326t49Err(e) && e.style.opacity !== "0")
+            e.style.opacity = "0";
+    }
+    catch (x) { }
+}
+function v5326t49AiHide() {
+    const A = V5326T49.ai;
+    A.dl = 0;
+    try {
+        if (typeof AIT === "undefined" || !AIT || (AIT.items && AIT.items.length))
+            return;
+        const d = AIT.el;
+        if (d && (d.classList.contains("on") || d.classList.contains("done")))
+            d.classList.remove("on", "done");
+        if (d)
+            v5326t49Anim(d, "", 0);
+        AIT.hidden = 0;
+        try {
+            clearTimeout(AIT.hideT);
+        }
+        catch (x) { }
+    }
+    catch (x) { }
+}
+function v5326t49UndoHide() {
+    const U = V5326T49.undo;
+    U.dl = 0;
+    try {
+        const b = document.getElementById("undobar");
+        if (b && !b.hidden)
+            b.hidden = true;
+    }
+    catch (x) { }
+}
+function v5326t49Sweep() {
+    const S = V5326T49, now = Date.now();
+    try {
+        if (S.dl && now >= S.dl)
+            v5326t49Hide();
+        else if (!S.dl) {
+            const e = v5326t49Tst();
+            if (e && e.style.opacity === "1" && !v5326t49Err(e)) {
+                S.shown = S.shown || now;
+                S.dl = now + 3500;
+                v5326t49Anim(e, "v5326t49Out", S.dl, 0.15);
+                v5326t49Later(v5326t49Sweep, S.dl);
+            }
+        }
+        if (S.ai.dl && now >= S.ai.dl)
+            v5326t49AiHide();
+        if (S.undo.dl && now >= S.undo.dl)
+            v5326t49UndoHide();
+    }
+    catch (e) { }
+}
+function v5326t49Nav() {
+    const S = V5326T49, now = Date.now();
+    try {
+        if (S.dl && now - S.shown >= S.GUARD)
+            v5326t49Hide();
+        if (S.ai.dl && now - S.ai.at >= S.GUARD)
+            v5326t49AiHide();
+    }
+    catch (e) { }
+    v5326t49Sweep();
+}
+if (typeof toast === "function") {
+    const __to5326t49 = toast;
+    toast = function (m) {
+        let e0 = null, n0 = null;
+        try {
+            e0 = v5326t49Tst();
+            n0 = e0 ? e0.firstChild : null;
+        }
+        catch (x) { }
+        const r = __to5326t49.apply(this, arguments);
+        try {
+            const e = v5326t49Tst(), S = V5326T49;
+            if (e && (e !== e0 || e.firstChild !== n0) && e.style.opacity === "1") {
+                const k = ++S.seq;
+                S.shown = Date.now();
+                if (v5326t49Err(e)) {
+                    S.dl = 0;
+                    v5326t49Anim(e, "", 0);
+                }
+                else {
+                    const n = String(e.textContent || "").length;
+                    S.dl = S.shown + Math.min(6000, Math.max(3500, 1500 + n * 60));
+                    v5326t49Anim(e, "v5326t49Out", S.dl, 0.15);
+                    v5326t49Later(() => { if (S.seq === k && S.dl && Date.now() >= S.dl - 50)
+                        v5326t49Hide(); }, S.dl);
+                }
+            }
+        }
+        catch (x) { }
+        return r;
+    };
+}
+if (typeof aiThinkStart === "function") {
+    const __ats5326t49 = aiThinkStart;
+    aiThinkStart = function () { try {
+        V5326T49.ai.tok++;
+        V5326T49.ai.dl = 0;
+        if (typeof AIT !== "undefined" && AIT && AIT.el)
+            v5326t49Anim(AIT.el, "", 0);
+    }
+    catch (e) { } return __ats5326t49.apply(this, arguments); };
+}
+if (typeof aiThinkEnd === "function") {
+    const __ate5326t49 = aiThinkEnd;
+    aiThinkEnd = function (id, ok) {
+        const r = __ate5326t49.apply(this, arguments);
+        try {
+            if (typeof AIT !== "undefined" && AIT && !(AIT.items && AIT.items.length)) {
+                const A = V5326T49.ai, k = ++A.tok;
+                A.at = Date.now();
+                A.dl = A.at + (ok ? 1200 : 2600);
+                if (AIT.el && AIT.el.classList.contains("on"))
+                    v5326t49Anim(AIT.el, "v5326t49Ai", A.dl, 0.18);
+                v5326t49Later(() => { if (A.tok === k && A.dl)
+                    v5326t49AiHide(); }, A.dl);
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+try {
+    if (typeof ux17Undo === "function") {
+        const __u17 = ux17Undo;
+        ux17Undo = function () { const r = __u17.apply(this, arguments); try {
+            const b = document.getElementById("undobar");
+            if (b && !b.hidden) {
+                const U = V5326T49.undo, k = ++U.tok;
+                U.dl = Date.now() + 7000;
+                v5326t49Later(() => { if (U.tok === k && U.dl)
+                    v5326t49UndoHide(); }, U.dl);
+            }
+        }
+        catch (e) { } return r; };
+    }
+}
+catch (e) { }
+try {
+    if (typeof v38UndoBar === "function") {
+        const __u38 = v38UndoBar;
+        v38UndoBar = function (msg, acts, ms) { const r = __u38.apply(this, arguments); try {
+            const b = document.getElementById("undobar");
+            if (b && !b.hidden) {
+                const U = V5326T49.undo, k = ++U.tok;
+                U.dl = Date.now() + (ms || 10000);
+                v5326t49Later(() => { if (U.tok === k && U.dl)
+                    v5326t49UndoHide(); }, U.dl);
+            }
+        }
+        catch (e) { } return r; };
+    }
+}
+catch (e) { }
+try {
+    if (typeof v44Bar === "function") {
+        const __u44 = v44Bar;
+        v44Bar = function (msg, label, fn, ms) { const r = __u44.apply(this, arguments); try {
+            const b = document.getElementById("undobar");
+            if (b && !b.hidden) {
+                const U = V5326T49.undo, k = ++U.tok;
+                U.dl = Date.now() + (ms || 12000);
+                v5326t49Later(() => { if (U.tok === k && U.dl)
+                    v5326t49UndoHide(); }, U.dl);
+            }
+        }
+        catch (e) { } return r; };
+    }
+}
+catch (e) { }
+if (typeof render === "function") {
+    const __re5326t49 = render;
+    render = function () {
+        const r = __re5326t49.apply(this, arguments);
+        try {
+            const S = V5326T49, c = typeof cur !== "undefined" ? cur : null;
+            if (S.lastCur !== undefined && c !== S.lastCur)
+                v5326t49Nav();
+            else
+                v5326t49Sweep();
+            S.lastCur = c;
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof fwdRender === "function") {
+    const __fr5326t49 = fwdRender;
+    fwdRender = function () {
+        const r = __fr5326t49.apply(this, arguments);
+        try {
+            const S = V5326T49, c = typeof fwdCur !== "undefined" ? fwdCur : null;
+            if (S.lastFwd !== undefined && c !== S.lastFwd)
+                v5326t49Nav();
+            else
+                v5326t49Sweep();
+            S.lastFwd = c;
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof v33Sheet === "function") {
+    const __sh5326t49 = v33Sheet;
+    v33Sheet = function () { const r = __sh5326t49.apply(this, arguments); try {
+        v5326t49Nav();
+    }
+    catch (e) { } return r; };
+}
+if (typeof openDW === "function") {
+    const __dw5326t49 = openDW;
+    openDW = function () { const r = __dw5326t49.apply(this, arguments); try {
+        v5326t49Nav();
+    }
+    catch (e) { } return r; };
+}
+try {
+    document.addEventListener("click", e => { try {
+        const t = e.target && e.target.closest && e.target.closest("#tabbar [data-tb],.side .nb");
+        if (t)
+            v5326t49Nav();
+        else
+            v5326t49Sweep();
+    }
+    catch (x) { } }, true);
+    ["pointerdown", "mousedown", "touchstart", "keydown", "wheel", "focusin", "input"].forEach(ev => document.addEventListener(ev, v5326t49Sweep, { capture: true, passive: true }));
+    ["scroll", "resize", "focus", "pageshow"].forEach(ev => window.addEventListener(ev, v5326t49Sweep, { capture: true, passive: true }));
+    document.addEventListener("visibilitychange", v5326t49Sweep);
+    window.addEventListener("popstate", () => { try {
+        v5326t49Nav();
+    }
+    catch (e) { } });
+    window.addEventListener("hashchange", () => { try {
+        v5326t49Nav();
+    }
+    catch (e) { } });
+}
+catch (e) { }
+const V5326K = { ver: "21.53.26", cur: null, last: null, seq: 0, trDepth: 0, trLang: "", trT: null, LIM: 3200, retryMs: 90000,
+    NM: { cover: ["表紙", "Cover", "封面", "Portada"], about: ["会社概要", "Company profile", "公司简介", "Perfil de la empresa"], history: ["沿革", "History", "沿革", "Historia"], mission: ["理念", "Mission", "理念", "Misión"],
+        stats: ["実績", "Track record", "业绩", "Trayectoria"], problem: ["市場の背景", "Market background", "市场背景", "Contexto del mercado"], spotlight: ["注目の実績", "Spotlight", "亮点", "Destacado"], tech: ["技術・工程", "Technology", "技术・工艺", "Tecnología"],
+        moment: ["情景", "Scene", "场景", "Escena"], product: ["商品", "Product", "商品", "Producto"], lineup: ["ラインアップ", "Lineup", "产品阵容", "Gama"], ingr: ["成分", "Ingredients", "成分", "Ingredientes"], specs: ["仕様", "Specifications", "规格", "Especificaciones"],
+        usage: ["使い方", "How to use", "使用方法", "Modo de uso"], quality: ["品質", "Quality", "品质", "Calidad"], endorse: ["推薦", "Endorsement", "推荐", "Recomendación"], diff: ["差別化", "Differentiation", "差异化", "Diferenciación"],
+        targets: ["顧客像", "Target customers", "目标客户", "Clientes objetivo"], markets: ["市場別の輸入要件", "Import requirements", "各市场进口要求", "Requisitos de importación"], pricing: ["価格・MOQ", "Pricing & MOQ", "价格・MOQ", "Precios y MOQ"],
+        pack: ["梱包・物流", "Packaging & logistics", "包装・物流", "Embalaje y logística"], flow: ["取引の流れ", "Business flow", "交易流程", "Flujo comercial"], contact: ["連絡先", "Contact", "联系方式", "Contacto"] } };
+const V5326K_WHY = {
+    OFF: "AIエンジンにつながっていないため、文章と登録データを訳せませんでした。",
+    LITE: "ライトプラン（内蔵エンジン）では外部のAIを使わないため、文章と登録データを訳せませんでした。",
+    OFF_D: "AIエンジンにつながっていないため、価格表・仕様・会社情報などの登録データを訳せませんでした。",
+    LITE_D: "ライトプラン（内蔵エンジン）では外部のAIを使わないため、価格表・仕様・会社情報などの登録データを訳せませんでした。",
+    TRFAIL: "価格表・仕様・会社情報などの訳で、AIの応答がありませんでした（くり返し試しました）。",
+    TRFIX: "訳を確かめて、数字・意味が合わなかった値を原文（日本語）のまま載せました。",
+    PLAN: "AIが書いた文章の一部が日本語のままで、訳し直しもできませんでした。",
+    REG: "登録データの一部（名前・表の値など）が日本語のままです。",
+    DEMO: "デモ版（AIエンジンなし）では外国語の文章を作れないため、本文は日本語のままです。"
+};
+const V5326K_FIX = {
+    OFF: "管理画面でAIを接続してから、「↻ もう一度作る」を押してください。",
+    LITE: "外部のAIを使うプラン（スタンダード・プレミアム）にしてから、「↻ もう一度作る」を押してください。",
+    RETRY: "少し時間をおいて「↻ もう一度作る」を押してください。",
+    TRFIX: "該当の値（登録データ）を確かめて、「↻ もう一度作る」を押してください。",
+    REG: "商品情報・会社情報で英文の名前・値を登録してから、「↻ もう一度作る」を押してください。",
+    DEMO: "外国語の資料は、AIを接続したトライアル版・本番の版で作れます。"
+};
+function v5326kE(s) { try {
+    return esc(s);
+}
+catch (e) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+} }
+function v5326kCopy(o) { return o == null ? o : JSON.parse(JSON.stringify(o)); }
+function v5326kJP(lang, s) { try {
+    return typeof dk3JPfor === "function" ? dk3JPfor(lang, s) : /[ぁ-ゖァ-ヺ一-龯]/.test(String(s || ""));
+}
+catch (e) {
+    return false;
+} }
+function v5326kOn() { try {
+    return typeof ppReady === "function" && !!ppReady();
+}
+catch (e) {
+    return false;
+} }
+function v5326kLite() { try {
+    return typeof USERPLAN !== "undefined" && USERPLAN === "lite" && typeof llmActive === "function" && llmActive().length > 0;
+}
+catch (e) {
+    return false;
+} }
+function v5326kLN(lang) { try {
+    return (DECK_L[lang] || {}).name || lang;
+}
+catch (e) {
+    return lang;
+} }
+function v5326kLName(lang) { try {
+    return (typeof DK3_LNAME !== "undefined" && DK3_LNAME[lang]) || "English";
+}
+catch (e) {
+    return "English";
+} }
+function v5326kUi() { try {
+    const l = (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+    return l === "en" ? 1 : l === "zh" ? 2 : l === "es" ? 3 : 0;
+}
+catch (e) {
+    return 0;
+} }
+function v5326kParse(t) { if (typeof xParseJson === "function")
+    return xParseJson(t); return JSON.parse(String(t).replace(/```json|```/g, "").match(/\{[\s\S]*\}/)[0]); }
+function v5326kTen() { try {
+    return (typeof DK3G !== "undefined" && DK3G.run && DK3G.ten) || (typeof TEN !== "undefined" ? TEN : null);
+}
+catch (e) {
+    return null;
+} }
+const V5326K_SKIPK = new Set(["ic", "src", "ref", "kind", "hi", "row", "rows", "__comp", "y"]);
+function v5326kLeaves(p, lang) {
+    const out = [];
+    const walk = (o, seg) => {
+        if (o == null)
+            return;
+        if (typeof o === "string") {
+            if (o.trim() && v5326kJP(lang, o))
+                out.push({ seg, txt: o });
+            return;
+        }
+        if (Array.isArray(o)) {
+            o.forEach((x, i) => walk(x, seg.concat(i)));
+            return;
+        }
+        if (typeof o === "object")
+            Object.keys(o).forEach(k => { if (!V5326K_SKIPK.has(k))
+                walk(o[k], seg.concat(k)); });
+    };
+    walk(p, []);
+    return out;
+}
+function v5326kCount(p) { let n = 0; const walk = o => { if (o == null)
+    return; if (typeof o === "string") {
+    if (o.trim())
+        n++;
+    return;
+} if (Array.isArray(o))
+    o.forEach(walk);
+else if (typeof o === "object")
+    Object.keys(o).forEach(k => { if (!V5326K_SKIPK.has(k))
+        walk(o[k]); }); }; walk(p); return n; }
+function v5326kSet(o, seg, v) { for (let i = 0; i < seg.length - 1; i++) {
+    if (o == null)
+        return false;
+    o = o[seg[i]];
+} if (o == null || typeof o !== "object")
+    return false; o[seg[seg.length - 1]] = v; return true; }
+function v5326kPlanKey(T, lang, C) { return djb2(C.key + "|" + lang + "|" + dk3Prods(T).length + "|" + DK3_PIPE); }
+function v5326kSaved(lang, T, C) {
+    try {
+        T = T || v5326kTen();
+        const E = T && T.deck3 && T.deck3.plans && T.deck3.plans[lang];
+        if (!E || !E.verified || !E.p || lang === "ja")
+            return null;
+        C = C || dk3Corpus(T);
+        if (E.key !== v5326kPlanKey(T, lang, C))
+            return null;
+        const p = v5326kCopy(E.p);
+        delete p.__comp;
+        const all = v5326kCount(p);
+        if (!all || v5326kLeaves(p, lang).length * 2 > all)
+            return null;
+        return { p, C, E };
+    }
+    catch (e) {
+        return null;
+    }
+}
+function v5326kSavedLangs(T) { const out = []; try {
+    if (!T || !T.deck3 || !T.deck3.plans)
+        return out;
+    const C = dk3Corpus(T);
+    Object.keys(DECK_L).forEach(l => { if (v5326kSaved(l, T, C))
+        out.push(l); });
+}
+catch (e) { } return out; }
+function v5326kNames(T) {
+    try {
+        const FX = dk3Fixed(T);
+        const L = [];
+        if (FX.nameEn && FX.coJa)
+            L.push("社名「" + FX.coJa + "」は「" + FX.nameEn + "」");
+        (FX.prods || []).forEach(x => { if (x.en && x.ja)
+            L.push("商品名「" + x.ja + "」は「" + x.en + "」"); });
+        return L.length ? L.slice(0, 8).join("、") + "と書く（登録の英文名）。" : "";
+    }
+    catch (e) {
+        return "";
+    }
+}
+async function v5326kTrMap(list, lang, T, kind) {
+    const out = new Array(list.length).fill(null);
+    if (!list.length)
+        return out;
+    const LN = v5326kLName(lang), names = v5326kNames(T);
+    const B = [];
+    let b = [], len = 0;
+    list.forEach((s, i) => { const l = String(s).length + 12; if (b.length && (b.length >= 40 || len + l > V5326K.LIM)) {
+        B.push(b);
+        b = [];
+        len = 0;
+    } b.push(i); len += l; });
+    if (b.length)
+        B.push(b);
+    for (const g of B) {
+        const obj = {};
+        g.forEach((i, k) => { obj[String(k + 1)] = String(list[i]); });
+        const q = `営業資料の訳の補い：次のJSONの値（海外バイヤー向け営業資料の${kind === "plan" ? "文章" : "表・条件・会社情報の値"}）を ${LN} に訳し、同じキーのJSONだけを返してください。
+ルール：数字・単位・記号・通貨・年・品番・型番・英字の固有名詞は一字も変えない（全角数字は半角に）。意味を足さない・削らない（要約しない）。税抜/税込・常温/冷蔵/冷凍・以上/未満/以下・上代（小売）/卸（下代）の区別を必ず訳に残す。${names}日本語を残さない。他の指示で回答言語が指定されていても、値は必ず ${LN} で書く。
+${JSON.stringify(obj)}`;
+        let j = null;
+        for (let t = 0; t < 2 && !j; t++) {
+            try {
+                const r = await llmAsk(q, Math.min(9000, 800 + JSON.stringify(obj).length * 3), { noWeb: 1, timeout: 150000, task: "heavy", bg: 1, sys: `You are a professional B2B export translator. Return JSON only. Translate every value into ${LN} regardless of any other language instruction. Keep numbers, units and proper nouns exactly.` });
+                j = v5326kParse(r && r.txt);
+                if (!j || typeof j !== "object" || Array.isArray(j))
+                    j = null;
+            }
+            catch (e) {
+                j = null;
+            }
+        }
+        if (j)
+            g.forEach((i, k) => { const v = j[String(k + 1)]; if (typeof v === "string" && v.trim())
+                out[i] = v.trim(); });
+    }
+    return out;
+}
+function v5326kTrGood(a, t, lang) { if (typeof t !== "string" || !t.trim() || v5326kJP(lang, t))
+    return false; try {
+    return typeof dk3TrOk === "function" ? !dk3TrOk(a, t, lang) : true;
+}
+catch (e) {
+    return false;
+} }
+function v5326kSplit(src) {
+    const out = [], lim = V5326K.LIM;
+    const go = (v, path) => {
+        if (v == null || typeof v !== "object" || JSON.stringify(v).length <= lim) {
+            out.push({ path, val: v });
+            return;
+        }
+        if (Array.isArray(v)) {
+            v.forEach((x, i) => go(x, path.concat(i)));
+            return;
+        }
+        let grp = {}, gl = 2;
+        const flush = () => { if (Object.keys(grp).length) {
+            out.push({ path, val: grp, grp: 1 });
+            grp = {};
+            gl = 2;
+        } };
+        Object.keys(v).forEach(k => { const ks = JSON.stringify(v[k]).length + k.length + 4; if (ks > lim) {
+            flush();
+            go(v[k], path.concat(k));
+        }
+        else {
+            if (gl + ks > lim)
+                flush();
+            grp[k] = v[k];
+            gl += ks;
+        } });
+        flush();
+    };
+    go(src, []);
+    return out;
+}
+function v5326kWrap(path, val) { let o = val; for (let i = path.length - 1; i >= 0; i--) {
+    o = typeof path[i] === "number" ? [o] : { [path[i]]: o };
+} return o; }
+function v5326kUnwrap(j, path) { let o = j; for (const s of path) {
+    if (o == null)
+        return undefined;
+    o = typeof s === "number" ? (Array.isArray(o) ? o[0] : undefined) : o[s];
+} return o; }
+function v5326kPut(out, path, src, v) { let o = out, s = src; for (let i = 0; i < path.length - 1; i++) {
+    const k = path[i];
+    s = s == null ? null : s[k];
+    if (o[k] == null)
+        o[k] = Array.isArray(s) ? [] : {};
+    o = o[k];
+} if (path.length)
+    o[path[path.length - 1]] = v; }
+function v5326kGet(o, path) { for (const k of path) {
+    if (o == null)
+        return undefined;
+    o = o[k];
+} return o; }
+async function v5326kTrAsk(base, self, q, maxTok, opts) {
+    const i = String(q).lastIndexOf("\n{");
+    let src = null;
+    if (i > 0) {
+        try {
+            src = JSON.parse(q.slice(i + 1));
+        }
+        catch (e) {
+            src = null;
+        }
+    }
+    if (!src || typeof src !== "object" || Array.isArray(src))
+        return base.call(self, q, maxTok, opts);
+    const head = q.slice(0, i + 1), lang = V5326K.trLang || "en", cur = V5326K.cur, T = V5326K.trT || v5326kTen();
+    const ask = async (obj) => { const r = await base.call(self, head + JSON.stringify(obj), maxTok, opts); const j = v5326kParse(r && r.txt); if (!j || typeof j !== "object" || Array.isArray(j))
+        throw new Error("訳の返事の形が不正"); return { r, j }; };
+    const tries = async (obj, n) => { let last = null; for (let k = 0; k < n; k++) {
+        try {
+            return await ask(obj);
+        }
+        catch (e) {
+            last = e;
+            if (cur)
+                cur.trRetry = (cur.trRetry || 0) + 1;
+        }
+    } throw last || new Error("訳の返事がありません"); };
+    let out = null, first = null, err = null;
+    const whole = JSON.stringify(src).length <= V5326K.LIM;
+    if (whole) {
+        try {
+            const x = await tries(src, 2);
+            out = x.j;
+            first = x.r;
+        }
+        catch (e) {
+            err = e;
+        }
+    }
+    if (!out) {
+        const parts = v5326kSplit(src);
+        if (parts.length > 1 || !whole) {
+            let okN = 0;
+            const acc = {};
+            if (cur)
+                cur.trBatches = parts.length;
+            for (let k = 0; k < parts.length; k += 3) {
+                await Promise.all(parts.slice(k, k + 3).map(async (c) => {
+                    try {
+                        const x = await tries(v5326kWrap(c.path, c.val), 2);
+                        const v = v5326kUnwrap(x.j, c.path);
+                        if (v === undefined)
+                            return;
+                        if (c.grp && v && typeof v === "object") {
+                            Object.keys(c.val).forEach(key => { if (v[key] !== undefined)
+                                v5326kPut(acc, c.path.concat(key), src, v[key]); });
+                        }
+                        else
+                            v5326kPut(acc, c.path, src, v);
+                        okN++;
+                        if (!first)
+                            first = x.r;
+                    }
+                    catch (e) {
+                        err = e;
+                    }
+                }));
+            }
+            if (okN)
+                out = acc;
+        }
+    }
+    if (!out)
+        throw err || new Error("訳の返事がありません");
+    try {
+        const miss = [];
+        const walk = (a, path) => {
+            if (typeof a === "string") {
+                if (/[ぁ-ゖァ-ヺ一-龯]/.test(a)) {
+                    const b = v5326kGet(out, path);
+                    if (typeof b !== "string" || !b.trim() || v5326kJP(lang, b))
+                        miss.push({ path, a });
+                }
+                return;
+            }
+            if (Array.isArray(a))
+                a.forEach((x, k) => walk(x, path.concat(k)));
+            else if (a && typeof a === "object")
+                Object.keys(a).forEach(k => walk(a[k], path.concat(k)));
+        };
+        walk(src, []);
+        if (miss.length && miss.length <= 200) {
+            if (cur)
+                cur.trMiss = (cur.trMiss || 0) + miss.length;
+            const got = await v5326kTrMap(miss.map(m => m.a), lang, T, "data");
+            let n = 0;
+            miss.forEach((m, k) => { if (v5326kTrGood(m.a, got[k], lang)) {
+                v5326kPut(out, m.path, src, got[k]);
+                n++;
+            } });
+            if (cur)
+                cur.trMissFixed = (cur.trMissFixed || 0) + n;
+        }
+    }
+    catch (e) {
+        console.warn("v5326k tr miss", e);
+    }
+    return Object.assign({}, first || {}, { txt: JSON.stringify(out) });
+}
+if (typeof llmAsk === "function") {
+    const __la5326k = llmAsk;
+    llmAsk = function (q, maxTok, opts) {
+        try {
+            if (V5326K.trDepth > 0 && typeof q === "string" && /^次のJSONの値のうち日本語の部分だけを/.test(q))
+                return v5326kTrAsk(__la5326k, this, q, maxTok, opts);
+        }
+        catch (e) { }
+        return __la5326k.apply(this, arguments);
+    };
+}
+if (typeof dk3DataTr === "function") {
+    const __dt5326k = dk3DataTr;
+    dk3DataTr = async function (lang, say, force, T) {
+        const cur = V5326K.cur;
+        const a = [].slice.call(arguments);
+        if (!v5326kOn() && a[2])
+            a[2] = false;
+        V5326K.trDepth++;
+        V5326K.trLang = lang;
+        V5326K.trT = T || v5326kTen();
+        let r;
+        try {
+            r = await __dt5326k.apply(this, a);
+        }
+        finally {
+            V5326K.trDepth = Math.max(0, V5326K.trDepth - 1);
+        }
+        try {
+            const TT = V5326K.trT;
+            if (r && r.src && TT && typeof djb2 === "function" && typeof DK3_PIPE !== "undefined") {
+                const key = djb2(JSON.stringify(r.src) + "|" + lang + "|" + DK3_PIPE);
+                TT.deck3 = TT.deck3 || {};
+                if (!r.offline && !r.failed && !r.cached && r.d && v5326kOn() && ((r.fixed || []).length || /[ぁ-ゖァ-ヺ]/.test(JSON.stringify(r.d)))) {
+                    const F = TT.deck3.v5326kTr = TT.deck3.v5326kTr || {};
+                    F[lang] = { key, d: v5326kCopy(r.d), fixed: (r.fixed || []).map(f => ({ path: f.path, why: f.why })), at: new Date().toISOString() };
+                    if (typeof saveTen === "function")
+                        saveTen();
+                }
+                else if (r.offline) {
+                    const F = TT.deck3.v5326kTr && TT.deck3.v5326kTr[lang];
+                    if (F && F.key === key && F.d) {
+                        r = Object.assign({}, r, { d: v5326kCopy(F.d), offline: false, cached: 1, fixed: (F.fixed || []).slice() });
+                        if (cur) {
+                            cur.trSaved = String(F.at || "").slice(0, 10);
+                            cur.trSavedN = (F.fixed || []).length;
+                        }
+                    }
+                }
+            }
+        }
+        catch (e) {
+            console.warn("v5326k tr keep", e);
+        }
+        try {
+            if (cur && r) {
+                let left = 0;
+                const walk = o => { if (typeof o === "string") {
+                    if (v5326kJP(lang, o))
+                        left++;
+                    return;
+                } if (Array.isArray(o))
+                    o.forEach(walk);
+                else if (o && typeof o === "object")
+                    Object.values(o).forEach(walk); };
+                walk(r.d);
+                cur.tr = { failed: !!r.failed, offline: !!r.offline, cached: !!r.cached, fixed: (r.fixed || []).length, left };
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+async function v5326kPlanFix(r, lang, T, say, cur) {
+    const L = v5326kLeaves(r.plan, lang);
+    if (cur)
+        cur.planJa = L.length;
+    if (!L.length)
+        return;
+    try {
+        say && say("確かめる", "AIが日本語で返した文（" + L.length + "か所）を " + v5326kLName(lang) + " に訳し直しています…");
+    }
+    catch (e) { }
+    const got = await v5326kTrMap(L.map(x => x.txt), lang, T, "plan");
+    let n = 0;
+    L.forEach((x, i) => { if (v5326kTrGood(x.txt, got[i], lang) && v5326kSet(r.plan, x.seg, got[i]))
+        n++; });
+    if (n) {
+        try {
+            const dr = dk3Ground(r.plan, r.C || dk3Corpus(T), lang, T) || [];
+            if (dr.length)
+                r.dropped = (r.dropped || []).concat(dr);
+        }
+        catch (e) {
+            console.warn("v5326k ground", e);
+        }
+    }
+    const left = v5326kLeaves(r.plan, lang).length;
+    if (cur) {
+        cur.planFixed = n;
+        cur.planLeft = left;
+    }
+    if (n && !left && r.verified !== false) {
+        try {
+            const E = T.deck3 && T.deck3.plans && T.deck3.plans[lang];
+            if (E && E.verified && E.key === v5326kPlanKey(T, lang, r.C || dk3Corpus(T))) {
+                const p = v5326kCopy(r.plan);
+                delete p.__comp;
+                E.p = p;
+                E.v5326k = new Date().toISOString();
+                if (typeof saveTen === "function")
+                    saveTen();
+            }
+        }
+        catch (e) { }
+    }
+}
+if (typeof dk3Plan === "function") {
+    const __pl5326k = dk3Plan;
+    dk3Plan = async function (lang, say, force, T) {
+        const cur = V5326K.cur;
+        const TT = T || (typeof TEN !== "undefined" ? TEN : null);
+        const t0 = Date.now();
+        let r;
+        try {
+            r = await __pl5326k.apply(this, arguments);
+        }
+        catch (e) {
+            const m = String(e && e.message || e);
+            if (/切り替わ|中止しました/.test(m) || Date.now() - t0 > V5326K.retryMs)
+                throw e;
+            if (cur)
+                cur.planRetry = (cur.planRetry || 0) + 1;
+            try {
+                say && say("読む", "AIの応答がありませんでした。もう一度試しています…");
+            }
+            catch (x) { }
+            try {
+                r = await __pl5326k.apply(this, arguments);
+            }
+            catch (e2) {
+                const m2 = String(e2 && e2.message || e2);
+                if (/切り替わ|中止しました/.test(m2))
+                    throw e2;
+                throw new Error("AIエンジンから文章を受け取れませんでした（2回試しました：" + m2.slice(0, 60) + "）。少し時間をおいて、もう一度作ってください");
+            }
+        }
+        try {
+            if (r && r.plan && TT)
+                await v5326kPlanFix(r, lang, TT, say, cur);
+        }
+        catch (e) {
+            console.warn("v5326k plan fix", e);
+        }
+        return r;
+    };
+}
+if (typeof dk3PlanLocal === "function") {
+    const __lo5326k = dk3PlanLocal;
+    dk3PlanLocal = function (lang) {
+        const cur = V5326K.cur;
+        try {
+            const T = v5326kTen();
+            const s = v5326kSaved(lang, T);
+            if (s) {
+                let dr = [];
+                try {
+                    dr = dk3Ground(s.p, s.C, lang, T) || [];
+                }
+                catch (e) { }
+                if (cur) {
+                    cur.planSrc = "saved";
+                    cur.savedAt = String(s.E.at || "").slice(0, 10);
+                    cur.newDropped = dr;
+                }
+                return s.p;
+            }
+        }
+        catch (e) {
+            console.warn("v5326k saved", e);
+        }
+        if (cur)
+            cur.planSrc = "local";
+        return __lo5326k.apply(this, arguments);
+    };
+}
+if (typeof dk3Generate === "function") {
+    const __g5326k = dk3Generate;
+    dk3Generate = async function (lang, force) {
+        if (typeof DK3G !== "undefined" && DK3G.run)
+            return __g5326k.apply(this, arguments);
+        const on = v5326kOn();
+        const cur = { id: ++V5326K.seq, lang, on, lite: !on && v5326kLite(), planSrc: on ? "ai" : "", tr: null, planJa: 0, planFixed: 0, planLeft: 0, planRetry: 0, trRetry: 0 };
+        V5326K.cur = cur;
+        try {
+            if (!on && lang && lang !== "ja" && typeof TEN !== "undefined" && TEN && !v5326kSaved(lang, TEN) && typeof toast === "function")
+                toast((cur.lite ? "ライトプラン（内蔵エンジン）では外部のAIを使わないため" : "AIエンジンにつながっていないため") + "「" + v5326kLN(lang) + "」の文章は作れません。本文が日本語のままの下書き（未翻訳）として作ります");
+        }
+        catch (e) { }
+        try {
+            return await __g5326k.apply(this, arguments);
+        }
+        finally {
+            if (V5326K.cur === cur) {
+                V5326K.last = cur;
+                V5326K.cur = null;
+            }
+        }
+    };
+}
+if (typeof dk3SetStep === "function") {
+    const __ss5326k = dk3SetStep;
+    dk3SetStep = function (k, st, d) {
+        const cur = V5326K.cur;
+        try {
+            if (cur && !cur.on && st === "ok" && typeof d === "string") {
+                if (k === "write" && /^AIエンジン未接続のため、登録データの文章をそのまま使います/.test(d)) {
+                    if (cur.planSrc === "saved")
+                        d = "AIエンジンにつながっていないため、前回AIが書いて根拠と照合した文章（" + (cur.savedAt || "—") + "）を使います（登録データに変更なし）";
+                    else {
+                        st = "ng";
+                        d = (cur.lite ? "ライトプラン（内蔵エンジン）では外部のAIを使わないため" : "AIエンジンにつながっていないため") + "、文章を「" + v5326kLN(cur.lang) + "」にできません（登録データの日本語のまま）";
+                    }
+                }
+                else if (k === "check1" && d === "（未接続のため省略）" && cur.planSrc === "saved")
+                    d = "（前回照合済みの文章を使用）";
+                else if (k === "tr" && cur.trSaved)
+                    d = "AIエンジンにつながっていないため、前回の訳（" + cur.trSaved + "）を使います" + (cur.trSavedN ? "（訳を確かめて原文のまま載せた値 " + cur.trSavedN + "件）" : "");
+                else if (k === "tr" && d === "未接続のため原文のまま") {
+                    st = "ng";
+                    d = cur.lite ? "ライトプラン（内蔵エンジン）では外部のAIを使わないため、価格表・仕様・会社情報などは日本語のまま" : "AIエンジンにつながっていないため、価格表・仕様・会社情報などは日本語のまま";
+                }
+            }
+            else if (cur && k === "tr" && st === "ok" && cur.tr && cur.tr.failed) {
+                st = "ng";
+                d = "価格表・仕様・会社情報などを訳せませんでした（AIの応答が無い・形が不正。くり返し試しました）。日本語のまま載せています";
+            }
+        }
+        catch (e) { }
+        return __ss5326k.call(this, k, st, d);
+    };
+}
+function v5326kNm(kind, ui) { const x = V5326K.NM[kind]; return x ? x[ui || 0] : String(kind || ""); }
+function v5326kScan(deck) {
+    const lang = deck.lang;
+    let boxes = 0, jp = 0;
+    const pages = [], kinds = [];
+    (deck.slides || []).forEach((S, i) => {
+        if (!S || S.v54)
+            return;
+        let hit = false;
+        (S.els || []).forEach(e => { if (!e || e.k !== "text" || e.v54 || e.name === "draft" || e.name === "v54draft")
+            return; const t = (e.ps || []).map(p => (p.r || []).map(x => x.t == null ? "" : String(x.t)).join("")).join(" "); if (!t.trim())
+            return; boxes++; if (v5326kJP(lang, t)) {
+            jp++;
+            hit = true;
+        } });
+        if (hit) {
+            pages.push(i + 1);
+            if (kinds.indexOf(S.kind) < 0)
+                kinds.push(S.kind);
+        }
+    });
+    return { boxes, jp, pages, kinds };
+}
+function v5326kCheck(deck, ctx, r, cur) {
+    if (!deck || !deck.lang || deck.lang === "ja" || !r)
+        return;
+    const sc = v5326kScan(deck);
+    const local = !!(ctx.offline && cur && cur.planSrc === "local");
+    const share = sc.boxes ? sc.jp / sc.boxes : 0;
+    if (cur && cur.planSrc === "saved")
+        r.ok.push("文章：前回AIが書いて根拠と照合した文章を使用（" + (cur.savedAt || "—") + "）");
+    if (cur && cur.planFixed)
+        r.ok.push("AIが日本語で返した文 " + cur.planFixed + "か所を「" + v5326kLN(deck.lang) + "」に訳し直しました");
+    if (cur && cur.planSrc === "saved" && (cur.newDropped || []).length)
+        (cur.newDropped || []).forEach(d => { try {
+            r.warn.push({ k: "drop", t: "外した文言：" + String(d.txt || "").slice(0, 60) + "（" + (d.why || "") + "）" });
+        }
+        catch (e) { } });
+    if (!sc.pages.length) {
+        deck.v5326k = { pages: [], kinds: [], share: 0, major: false };
+        return;
+    }
+    const why = [];
+    const add = k => { if (why.indexOf(k) < 0)
+        why.push(k); };
+    const demo = typeof llmAsk === "undefined";
+    if (local)
+        add(demo ? "DEMO" : cur.lite ? "LITE" : "OFF");
+    if (cur && cur.tr) {
+        if (cur.tr.failed)
+            add("TRFAIL");
+        else if (cur.tr.offline && !local)
+            add(cur.lite ? "LITE_D" : "OFF_D");
+        if (cur.tr.fixed && !local)
+            add("TRFIX");
+    }
+    if (cur && cur.planLeft)
+        add("PLAN");
+    if (!why.length)
+        add("REG");
+    const fix = why.indexOf("DEMO") >= 0 ? "DEMO" : why.indexOf("LITE") >= 0 || why.indexOf("LITE_D") >= 0 ? "LITE" : why.indexOf("OFF") >= 0 || why.indexOf("OFF_D") >= 0 ? "OFF" : why.indexOf("TRFAIL") >= 0 || why.indexOf("PLAN") >= 0 ? "RETRY" : why.indexOf("TRFIX") >= 0 ? "TRFIX" : "REG";
+    const major = local || share >= 0.25;
+    const t = "「" + v5326kLN(deck.lang) + "」になっていない文が残っています（" + sc.pages.join("・") + "枚目：" + sc.kinds.map(k => v5326kNm(k, 0)).join("、") + "）。" + why.map(k => V5326K_WHY[k]).join("") + V5326K_FIX[fix];
+    deck.v5326k = { pages: sc.pages, kinds: sc.kinds, share: Math.round(share * 100), major, why, fix, t };
+    const i = r.crit.findIndex(c => c && c.k === "jp");
+    const c = { k: "jp", t, v5326k: 1 };
+    if (i >= 0)
+        r.crit[i] = c;
+    else
+        r.crit.unshift(c);
+    r.pass = false;
+}
+if (typeof dk3Check === "function") {
+    const __ck5326k = dk3Check;
+    dk3Check = function (deck, ctx) {
+        ctx = ctx || {};
+        const cur = V5326K.cur;
+        const r = __ck5326k.call(this, deck, ctx);
+        try {
+            v5326kCheck(deck, ctx, r, cur);
+        }
+        catch (e) {
+            console.warn("v5326k check", e);
+        }
+        return r;
+    };
+}
+if (typeof v33CkDeck === "function") {
+    const __cd5326k = v33CkDeck;
+    v33CkDeck = function (ck) {
+        const F = __cd5326k.apply(this, arguments);
+        try {
+            const mine = new Set(((ck && ck.crit) || []).filter(c => c && c.v5326k).map(c => c.t));
+            if (mine.size && Array.isArray(F))
+                F.forEach(x => { if (x && mine.has(x.t))
+                    x.how = ""; });
+        }
+        catch (e) { }
+        return F;
+    };
+}
+if (typeof dk3Draftify === "function") {
+    const __df5326k = dk3Draftify;
+    dk3Draftify = function (deck) {
+        const d = __df5326k.apply(this, arguments);
+        try {
+            if (deck && deck.v5326k && deck.v5326k.major && d && Array.isArray(d.slides) && typeof dk3T === "function")
+                d.slides = d.slides.map(S => { const e = dk3T(130, 330, 700, 60, [{ t: "NOT TRANSLATED — 未翻訳（本文は日本語のまま）", sz: 26, b: 1, c: "E5484D", al: "ctr" }], { rot: -18, name: "draft" }); e.a = 0.35; return Object.assign({}, S, { els: S.els.concat([e]) }); });
+        }
+        catch (e) {
+            console.warn("v5326k draft", e);
+        }
+        return d;
+    };
+}
+if (typeof dk3FileBase === "function") {
+    const __fb5326k = dk3FileBase;
+    dk3FileBase = function () {
+        const b = __fb5326k.apply(this, arguments);
+        try {
+            const d = typeof DK3G !== "undefined" && DK3G.deck;
+            if (d && d.v5326k && d.v5326k.major && !/_UNTRANSLATED$/.test(String(b)))
+                return String(b) + "_UNTRANSLATED";
+        }
+        catch (e) { }
+        return b;
+    };
+}
+const V5326K_BTN = { saved: ["✓ 前回の文章で作れます", "✓ Saved text available", "✓ 可用上次的文案", "✓ Texto guardado disponible"],
+    off: ["⚠ AI未接続：日本語のまま", "⚠ No AI: stays in Japanese", "⚠ 未连接AI：保持日语", "⚠ Sin IA: queda en japonés"],
+    lite: ["⚠ 外部AIなし：日本語のまま", "⚠ No external AI: stays in Japanese", "⚠ 无外部AI：保持日语", "⚠ Sin IA externa: queda en japonés"] };
+function v5326kPreHtml(sv) {
+    return `<p class="nn v5326k-pre" style="margin-top:4px">${v5326kE(sv.length ? "前回AIが書いて照合した文章がある言語（" + sv.map(v5326kLN).join("・") + "）は、その文章で作れます。ほかの言語は、本文が日本語のままの下書き（未翻訳）になります。" : "いま作ると、本文が日本語のままの下書き（未翻訳）になります。")}</p>`;
+}
+if (typeof vDeck === "function") {
+    const __vd5326k = vDeck;
+    vDeck = function (p) {
+        let h = __vd5326k.apply(this, arguments);
+        try {
+            const T = typeof TEN !== "undefined" ? TEN : null;
+            if (!T)
+                return h;
+            h = String(h);
+            const run = typeof DK3G !== "undefined" && DK3G.run;
+            if (!v5326kOn()) {
+                const lite = v5326kLite();
+                const OLD = "⚠ AIエンジン未接続のため、外国語の文章を作れません（登録データのまま＝最終チェックで止まります）。管理画面でAIを接続してください。";
+                const demo = typeof llmAsk === "undefined";
+                const svL = v5326kSavedLangs(T);
+                h = h.replace(OLD, demo ? "⚠ デモ版（AIエンジンなし）では外国語の文章を作れません。" : lite ? "⚠ ライトプラン（内蔵エンジン）では外部のAIを使わないため、外国語の文章を作れません。外部のAIを使うプラン（スタンダード・プレミアム）にすると作れます。" : "⚠ AIエンジンにつながっていないため、新しく外国語の文章を書けません。管理画面でAIを接続してください。");
+                const j = h.indexOf('<div class="dk3-langs">');
+                if (j >= 0 && h.indexOf("v5326k-pre") < 0)
+                    h = h.slice(0, j) + v5326kPreHtml(svL) + h.slice(j);
+                const sv = new Set(svL);
+                const ui = v5326kUi();
+                h = h.replace(/(<button\b[^>]*\bdata-dk3lang="([A-Za-z]+)"[^>]*>)([\s\S]*?)(<\/button>)/g, (m, a, k, body, z) => {
+                    if (/v5326k-lb/.test(body))
+                        return m;
+                    const ok = sv.has(k);
+                    const t = (ok ? V5326K_BTN.saved : lite ? V5326K_BTN.lite : V5326K_BTN.off)[ui];
+                    return a + body + `<span class="v5326k-lb ${ok ? "ok" : "ng"}">${v5326kE(t)}</span>` + z;
+                });
+            }
+            const d = typeof DK3G !== "undefined" && DK3G.deck;
+            const u = d && d.v5326k;
+            if (d && u && u.pages && u.pages.length && !run) {
+                const nm = v5326kLN(d.lang);
+                const a = h.indexOf('id="dk3res1"');
+                if (a >= 0) {
+                    if (u.major)
+                        h = h.slice(0, a) + h.slice(a).replace(/(<h3 style="margin:0">)[^<]*出来上がった資料（([^<]*)）<\/h3>/, (m, o, x) => o + v5326kE("⚠ 未翻訳の下書き（" + x.replace(/&amp;/g, "&") + "）") + "</h3>");
+                    const b = h.indexOf("</h3>", a), c = b >= 0 ? h.indexOf("</div>", b) : -1;
+                    if (c >= 0 && h.indexOf("v5326k-ban") < 0) {
+                        const ttl = u.major ? "⚠ この資料は「" + nm + "」になっていません（未翻訳の下書き・本文の " + u.share + "% が日本語のまま）" : "⚠ 一部が「" + nm + "」になっていません";
+                        const ban = `<div class="v5326k-ban ${u.major ? "crit" : "warn"}" role="alert"><b>${v5326kE(ttl)}</b><div>${v5326kE(u.t || "")}</div></div>`;
+                        h = h.slice(0, c + 6) + ban + h.slice(c + 6);
+                    }
+                }
+            }
+        }
+        catch (e) {
+            console.warn("v5326k vDeck", e);
+        }
+        return h;
+    };
+}
+(function () {
+    try {
+        if (document.getElementById("v5326kcss"))
+            return;
+        const st = document.createElement("style");
+        st.id = "v5326kcss";
+        st.textContent = `
+.v5326k-ban{margin-top:10px;padding:10px 12px;border-radius:var(--r2);border:1px solid var(--warn);background:var(--warn-soft);font-size:var(--fs-sm,14px);line-height:1.55}
+.v5326k-ban.crit{border-color:var(--crit,#E5484D);background:var(--crit-soft,#fdecec)} .v5326k-ban b{display:block;margin-bottom:4px}
+.v5326k-lb{display:block;margin-top:4px;font-size:var(--fs-xs,12px);font-weight:600} .v5326k-lb.ok{color:var(--good)} .v5326k-lb.ng{color:var(--crit,#c0392b)}
+`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+try {
+    if (typeof I18N !== "undefined" && I18N && I18N.dict) {
+        [
+            [V5326K_WHY.OFF, "The AI engine is not connected, so the text and the registered data could not be translated.", "未连接AI引擎，因此无法翻译文案和登记数据。", "El motor de IA no está conectado, así que no se pudieron traducir el texto ni los datos registrados."],
+            [V5326K_WHY.LITE, "The Lite plan (built-in engine) does not use an external AI, so the text and the registered data could not be translated.", "轻量方案（内置引擎）不使用外部AI，因此无法翻译文案和登记数据。", "El plan Lite (motor integrado) no usa una IA externa, así que no se pudieron traducir el texto ni los datos registrados."],
+            [V5326K_WHY.OFF_D, "The AI engine is not connected, so the registered data (price table, specifications, company information, etc.) could not be translated.", "未连接AI引擎，因此无法翻译价格表・规格・公司信息等登记数据。", "El motor de IA no está conectado, así que no se pudieron traducir los datos registrados (tabla de precios, especificaciones, datos de la empresa, etc.)."],
+            [V5326K_WHY.LITE_D, "The Lite plan (built-in engine) does not use an external AI, so the registered data (price table, specifications, company information, etc.) could not be translated.", "轻量方案（内置引擎）不使用外部AI，因此无法翻译价格表・规格・公司信息等登记数据。", "El plan Lite (motor integrado) no usa una IA externa, así que no se pudieron traducir los datos registrados (tabla de precios, especificaciones, datos de la empresa, etc.)."],
+            [V5326K_WHY.TRFAIL, "The AI did not respond when translating the price table, specifications, company information, etc. (tried several times).", "翻译价格表・规格・公司信息等时AI没有响应（已多次尝试）。", "La IA no respondió al traducir la tabla de precios, las especificaciones, los datos de la empresa, etc. (se intentó varias veces)."],
+            [V5326K_WHY.TRFIX, "Values whose numbers or meaning did not match after translation were kept in the original (Japanese).", "翻译后数字・含义不一致的值保留了原文（日语）。", "Los valores cuyos números o significado no coincidían tras la traducción se dejaron en el original (japonés)."],
+            [V5326K_WHY.PLAN, "Part of the text written by the AI stayed in Japanese and could not be translated again.", "AI撰写的部分文案仍为日语，重新翻译也未成功。", "Parte del texto redactado por la IA quedó en japonés y no se pudo volver a traducir."],
+            [V5326K_WHY.REG, "Some registered data (names, table values, etc.) is still in Japanese.", "部分登记数据（名称・表格的值等）仍为日语。", "Algunos datos registrados (nombres, valores de tablas, etc.) siguen en japonés."],
+            [V5326K_WHY.DEMO, "The demo version (no AI engine) cannot write text in foreign languages, so the body text stays in Japanese.", "演示版（无AI引擎）无法撰写外语文案，因此正文仍为日语。", "La versión de demostración (sin motor de IA) no puede redactar en otros idiomas, así que el texto queda en japonés."],
+            [V5326K_FIX.DEMO, "Foreign-language decks can be made in the trial or full version with an AI connected.", "外语资料可以在连接了AI的试用版・正式版中制作。", "Las presentaciones en otros idiomas se pueden crear en la versión de prueba o completa con una IA conectada."],
+            ["⚠ デモ版（AIエンジンなし）では外国語の文章を作れません。", "⚠ The demo version (no AI engine) cannot write text in foreign languages.", "⚠ 演示版（无AI引擎）无法撰写外语文案。", "⚠ La versión de demostración (sin motor de IA) no puede redactar texto en otros idiomas."],
+            [V5326K_FIX.OFF, "Connect an AI in the admin screen, then press \"↻ Create again\".", "请在管理画面连接AI后，点击“↻ 重新制作”。", "Conecte una IA en la pantalla de administración y pulse «↻ Crear de nuevo»."],
+            [V5326K_FIX.LITE, "Switch to a plan that uses an external AI (Standard or Premium), then press \"↻ Create again\".", "请改为使用外部AI的方案（标准・高级）后，点击“↻ 重新制作”。", "Cambie a un plan que use una IA externa (Estándar o Premium) y pulse «↻ Crear de nuevo»."],
+            [V5326K_FIX.RETRY, "Wait a moment, then press \"↻ Create again\".", "请稍后点击“↻ 重新制作”。", "Espere un momento y pulse «↻ Crear de nuevo»."],
+            [V5326K_FIX.TRFIX, "Check those values (registered data), then press \"↻ Create again\".", "请确认相关的值（登记数据）后，点击“↻ 重新制作”。", "Revise esos valores (datos registrados) y pulse «↻ Crear de nuevo»."],
+            [V5326K_FIX.REG, "Register the English names and values in the product and company information, then press \"↻ Create again\".", "请在商品信息・公司信息中登记英文名称和值后，点击“↻ 重新制作”。", "Registre los nombres y valores en inglés en la información del producto y de la empresa y pulse «↻ Crear de nuevo»."],
+            ["⚠ ライトプラン（内蔵エンジン）では外部のAIを使わないため、外国語の文章を作れません。外部のAIを使うプラン（スタンダード・プレミアム）にすると作れます。", "⚠ The Lite plan (built-in engine) does not use an external AI, so no foreign-language text can be written. A plan that uses an external AI (Standard or Premium) can write it.", "⚠ 轻量方案（内置引擎）不使用外部AI，无法撰写外语文案。改为使用外部AI的方案（标准・高级）即可撰写。", "⚠ El plan Lite (motor integrado) no usa una IA externa, así que no se puede redactar texto en otros idiomas. Con un plan que use una IA externa (Estándar o Premium) sí se puede."],
+            ["⚠ AIエンジンにつながっていないため、新しく外国語の文章を書けません。管理画面でAIを接続してください。", "⚠ The AI engine is not connected, so no new foreign-language text can be written. Connect an AI in the admin screen.", "⚠ 未连接AI引擎，无法撰写新的外语文案。请在管理画面连接AI。", "⚠ El motor de IA no está conectado, así que no se puede redactar texto nuevo en otros idiomas. Conecte una IA en la pantalla de administración."],
+            ["いま作ると、本文が日本語のままの下書き（未翻訳）になります。", "If you create it now, it will be a draft with the body text still in Japanese (not translated).", "现在制作的话，会成为正文仍为日语的草稿（未翻译）。", "Si la crea ahora, será un borrador con el texto aún en japonés (sin traducir)."],
+            ["（前回照合済みの文章を使用）", "(Using the previously checked text)", "（使用上次已核对的文案）", "(Se usa el texto ya verificado la vez anterior)"],
+            ["AIエンジンにつながっていないため、価格表・仕様・会社情報などは日本語のまま", "The AI engine is not connected, so the price table, specifications, company information, etc. stay in Japanese", "未连接AI引擎，因此价格表・规格・公司信息等仍为日语", "El motor de IA no está conectado, así que la tabla de precios, las especificaciones, los datos de la empresa, etc. quedan en japonés"],
+            ["ライトプラン（内蔵エンジン）では外部のAIを使わないため、価格表・仕様・会社情報などは日本語のまま", "The Lite plan (built-in engine) does not use an external AI, so the price table, specifications, company information, etc. stay in Japanese", "轻量方案（内置引擎）不使用外部AI，因此价格表・规格・公司信息等仍为日语", "El plan Lite (motor integrado) no usa una IA externa, así que la tabla de precios, las especificaciones, los datos de la empresa, etc. quedan en japonés"],
+            ["価格表・仕様・会社情報などを訳せませんでした（AIの応答が無い・形が不正。くり返し試しました）。日本語のまま載せています", "The price table, specifications, company information, etc. could not be translated (no or invalid response from the AI; tried several times). They are shown in Japanese", "无法翻译价格表・规格・公司信息等（AI无响应或格式不正确，已多次尝试）。目前以日语显示", "No se pudieron traducir la tabla de precios, las especificaciones, los datos de la empresa, etc. (la IA no respondió o respondió con un formato inválido; se intentó varias veces). Se muestran en japonés"],
+            ["AIの応答がありませんでした。もう一度試しています…", "The AI did not respond. Trying again…", "AI没有响应。正在重试…", "La IA no respondió. Intentándolo de nuevo…"]
+        ].forEach(r => { ["en", "zh", "es"].forEach((l, i) => { if (r[i + 1] && I18N.dict[l] && !I18N.dict[l][r[0]])
+            I18N.dict[l][r[0]] = r[i + 1]; }); });
+    }
+}
+catch (e) {
+    console.warn("v5326k i18n dict", e);
+}
+try {
+    if (typeof I18N !== "undefined" && Array.isArray(I18N.pat)) {
+        const L3 = { en: 1, zh: 2, es: 3 };
+        const sen = (s, l, d) => String(s || "").split(/(?<=。)/).filter(Boolean).map(x => { const t = d && d[x]; return t || x; }).join(l === "zh" ? "" : " ");
+        const nms = (s, l) => String(s || "").split("、").map(x => { const k = Object.keys(V5326K.NM).find(z => V5326K.NM[z][0] === x); return k ? V5326K.NM[k][L3[l]] : x; }).join(l === "zh" ? "、" : ", ");
+        const pg = (s, l) => { try {
+            if (typeof i13Pg === "function")
+                return i13Pg(s, l);
+        }
+        catch (e) { } return String(s).split("・").join(", "); };
+        [
+            { re: /^「(.+?)」になっていない文が残っています（([\d・]+)枚目：([^）]*)）。([\s\S]*)$/,
+                en: (m, d) => "Some text is not in " + m[1] + " yet (" + pg(m[2], "en") + ": " + nms(m[3], "en") + "). " + sen(m[4], "en", d),
+                zh: (m, d) => "仍有内容未译成" + m[1] + "（" + pg(m[2], "zh") + "：" + nms(m[3], "zh") + "）。" + sen(m[4], "zh", d),
+                es: (m, d) => "Hay texto que aún no está en " + m[1] + " (" + pg(m[2], "es") + ": " + nms(m[3], "es") + "). " + sen(m[4], "es", d) },
+            { re: /^⚠ この資料は「(.+?)」になっていません（未翻訳の下書き・本文の (\d+)% が日本語のまま）$/, en: "⚠ This deck is not in $1 (untranslated draft: $2% of the body text is still in Japanese)", zh: "⚠ 此资料尚未译成$1（未翻译的草稿・正文的 $2% 仍为日语）", es: "⚠ Esta presentación no está en $1 (borrador sin traducir: el $2% del texto sigue en japonés)" },
+            { re: /^⚠ 一部が「(.+?)」になっていません$/, en: "⚠ Part of it is not in $1", zh: "⚠ 部分内容尚未译成$1", es: "⚠ Una parte no está en $1" },
+            { re: /^⚠ 未翻訳の下書き（(.+)・(\d+)枚）$/, en: "⚠ Untranslated draft ($1 · $2 slides)", zh: "⚠ 未翻译的草稿（$1・$2 页）", es: "⚠ Borrador sin traducir ($1 · $2 diapositivas)" },
+            { re: /^前回AIが書いて照合した文章がある言語（(.+)）は、その文章で作れます。ほかの言語は、本文が日本語のままの下書き（未翻訳）になります。$/, en: (m) => "Languages with text the AI wrote and checked last time (" + m[1].split("・").join(", ") + ") can be created with that text. Other languages will be drafts with the body text still in Japanese (not translated).", zh: (m) => "上次由AI撰写并核对过文案的语言（" + m[1].split("・").join("、") + "）可以用该文案制作。其他语言会成为正文仍为日语的草稿（未翻译）。", es: (m) => "Los idiomas con un texto que la IA redactó y verificó la vez anterior (" + m[1].split("・").join(", ") + ") se pueden crear con ese texto. Los demás idiomas serán borradores con el texto aún en japonés (sin traducir)." },
+            { re: /^AIエンジンにつながっていないため、前回の訳（(.+?)）を使います(?:（訳を確かめて原文のまま載せた値 (\d+)件）)?$/,
+                en: (m) => "The AI engine is not connected, so the previous translation (" + m[1] + ") is used" + (m[2] ? " (" + m[2] + " values kept in the original after checking)" : ""),
+                zh: (m) => "未连接AI引擎，因此使用上次的译文（" + m[1] + "）" + (m[2] ? "（核对后保留原文的值 " + m[2] + " 个）" : ""),
+                es: (m) => "El motor de IA no está conectado, así que se usa la traducción anterior (" + m[1] + ")" + (m[2] ? " (" + m[2] + " valores se dejaron en el original tras la revisión)" : "") },
+            { re: /^(AIエンジンにつながっていないため|ライトプラン（内蔵エンジン）では外部のAIを使わないため)「(.+?)」の文章は作れません。本文が日本語のままの下書き（未翻訳）として作ります$/,
+                en: (m) => (/ライト/.test(m[1]) ? "The Lite plan (built-in engine) does not use an external AI, so" : "The AI engine is not connected, so") + " no " + m[2] + " text can be written. It will be created as a draft with the body text in Japanese (not translated)",
+                zh: (m) => (/ライト/.test(m[1]) ? "轻量方案（内置引擎）不使用外部AI，因此" : "未连接AI引擎，因此") + "无法撰写" + m[2] + "的文案。将制作为正文仍为日语的草稿（未翻译）",
+                es: (m) => (/ライト/.test(m[1]) ? "El plan Lite (motor integrado) no usa una IA externa, así que" : "El motor de IA no está conectado, así que") + " no se puede redactar el texto en " + m[2] + ". Se creará como borrador con el texto en japonés (sin traducir)" },
+            { re: /^AIエンジンにつながっていないため、前回AIが書いて根拠と照合した文章（(.+)）を使います（登録データに変更なし）$/, en: "The AI engine is not connected, so the text the AI wrote and checked against the evidence last time ($1) is used (no change in the registered data)", zh: "未连接AI引擎，因此使用上次由AI撰写并与依据核对过的文案（$1）（登记数据无变化）", es: "El motor de IA no está conectado, así que se usa el texto que la IA redactó y verificó con las fuentes la vez anterior ($1) (sin cambios en los datos registrados)" },
+            { re: /^(AIエンジンにつながっていないため|ライトプラン（内蔵エンジン）では外部のAIを使わないため)、文章を「(.+?)」にできません（登録データの日本語のまま）$/,
+                en: (m) => (/ライト/.test(m[1]) ? "The Lite plan (built-in engine) does not use an external AI, so" : "The AI engine is not connected, so") + " the text cannot be written in " + m[2] + " (the registered Japanese is kept)",
+                zh: (m) => (/ライト/.test(m[1]) ? "轻量方案（内置引擎）不使用外部AI，因此" : "未连接AI引擎，因此") + "无法将文案译成" + m[2] + "（保持登记的日语）",
+                es: (m) => (/ライト/.test(m[1]) ? "El plan Lite (motor integrado) no usa una IA externa, así que" : "El motor de IA no está conectado, así que") + " el texto no se puede escribir en " + m[2] + " (se mantiene el japonés registrado)" },
+            { re: /^文章：前回AIが書いて根拠と照合した文章を使用（(.+)）$/, en: "Text: the text the AI wrote and checked against the evidence last time ($1)", zh: "文案：使用上次由AI撰写并与依据核对过的文案（$1）", es: "Texto: el que la IA redactó y verificó con las fuentes la vez anterior ($1)" },
+            { re: /^AIが日本語で返した文 (\d+)か所を「(.+?)」に訳し直しました$/, en: "Translated $1 passages the AI returned in Japanese into $2", zh: "已将AI以日语返回的 $1 处文字重新译成$2", es: "Se tradujeron a $2 $1 fragmentos que la IA devolvió en japonés" },
+            { re: /^AIが日本語で返した文（(\d+)か所）を (.+) に訳し直しています…$/, en: "Translating $1 passages the AI returned in Japanese into $2…", zh: "正在将AI以日语返回的文字（$1 处）重新译成 $2…", es: "Traduciendo a $2 $1 fragmentos que la IA devolvió en japonés…" },
+            { re: /^AIエンジンから文章を受け取れませんでした（2回試しました：(.*)）。少し時間をおいて、もう一度作ってください$/, en: "Could not receive the text from the AI engine (tried twice: $1). Wait a moment and create it again", zh: "未能从AI引擎收到文案（已尝试2次：$1）。请稍后重新制作", es: "No se recibió el texto del motor de IA (se intentó dos veces: $1). Espere un momento y vuelva a crearla" }
+        ].reverse().forEach(p => I18N.pat.unshift(p));
+    }
+}
+catch (e) {
+    console.warn("v5326k i18n pat", e);
+}
+var V5326PUB = {
+    msg: "デモ用の共通アカウントです。だれでも操作できます。メンバーの登録・招待はできません。",
+    tag: "（デモ用の共通アカウント）",
+    no: "デモ用の共通アカウントでは、メンバーの登録・招待はできません（だれでも、そのまま操作できます）",
+    set: "お名前を入れました"
+};
+function v5326pubIs(a) {
+    try {
+        if (!a || typeof a !== "object")
+            return false;
+        if ((typeof tmIsFwd === "function") ? tmIsFwd(a) : a.role === "fwd")
+            return false;
+        const rep = (typeof v56authRepName === "function") ? v56authRepName(a) : String(a.who || "").replace(/様$/, "").trim().replace(/^[—\-]$/, "");
+        if (rep)
+            return false;
+        const code = String(a.code || "").trim();
+        if (!code)
+            return false;
+        let kid = (typeof v56authKidOf === "function") ? v56authKidOf(code) : "";
+        try {
+            if (!kid && typeof SES !== "undefined" && SES && SES.code === code && typeof SYNC !== "undefined" && SYNC && SYNC.kid)
+                kid = SYNC.kid;
+        }
+        catch (e) { }
+        const P = (typeof V56AUTH !== "undefined" && V56AUTH && V56AUTH.pubKid) || null;
+        if (kid && P && Object.prototype.hasOwnProperty.call(P, kid))
+            return P[kid] === 1;
+        return !/^BC-/i.test(code);
+    }
+    catch (e) {
+        return false;
+    }
+}
+function v5326pubNow() { try {
+    const a = (typeof tmAcct === "function") ? tmAcct() : null;
+    return !!a && v5326pubIs(a);
+}
+catch (e) {
+    return false;
+} }
+function v5326pubNo() { try {
+    toast(V5326PUB.no);
+}
+catch (e) { } }
+if (typeof tmMe === "function") {
+    const __tmMe5326 = tmMe;
+    tmMe = function () {
+        try {
+            const a = (typeof tmAcct === "function") ? tmAcct() : null;
+            if (a && v5326pubIs(a)) {
+                const who = String((typeof SES !== "undefined" && SES && SES.who) || "").trim();
+                return { name: who, role: "member", m: null, rep: false, demo: true };
+            }
+        }
+        catch (e) { }
+        return __tmMe5326.apply(this, arguments);
+    };
+}
+if (typeof v56authLoginWho === "function") {
+    const __lw5326 = v56authLoginWho;
+    v56authLoginWho = function (a, raw) {
+        try {
+            if (a && v5326pubIs(a))
+                return { who: String(raw == null ? "" : raw).replace(/[​-‍﻿]/g, "").trim().slice(0, 60) };
+        }
+        catch (e) { }
+        return __lw5326.apply(this, arguments);
+    };
+}
+if (typeof tmInviteOpen === "function") {
+    const __tio5326 = tmInviteOpen;
+    tmInviteOpen = function () { if (v5326pubNow()) {
+        v5326pubNo();
+        return;
+    } return __tio5326.apply(this, arguments); };
+}
+if (typeof tmSelfAdd === "function") {
+    const __tsa5326 = tmSelfAdd;
+    tmSelfAdd = function () { if (v5326pubNow()) {
+        v5326pubNo();
+        return;
+    } return __tsa5326.apply(this, arguments); };
+}
+if (typeof v56authSelfReg === "function") {
+    const __sr5326 = v56authSelfReg;
+    v56authSelfReg = function (a) { try {
+        if (v5326pubIs(a)) {
+            v5326pubNo();
+            return;
+        }
+    }
+    catch (e) { } return __sr5326.apply(this, arguments); };
+}
+if (typeof v56authNameGo === "function") {
+    const __ng5326 = v56authNameGo;
+    v56authNameGo = function () { if (v5326pubNow())
+        return v5326pubSetName("v56authNm"); return __ng5326.apply(this, arguments); };
+}
+if (typeof v213MembersPut === "function") {
+    const __mp5326 = v213MembersPut;
+    v213MembersPut = function () { if (v5326pubNow())
+        return Promise.resolve(false); return __mp5326.apply(this, arguments); };
+}
+function v5326pubSetName(id) {
+    const i = document.getElementById(id || "v5326pubNm");
+    const nm = String((i && i.value) || "").replace(/[​-‍﻿]/g, "").trim().slice(0, 40);
+    if (!nm) {
+        try {
+            toast("お名前を入力してください");
+        }
+        catch (e) { }
+        return;
+    }
+    try {
+        if (typeof v56authSetSesWho === "function")
+            v56authSetSesWho(nm);
+        else if (typeof SES !== "undefined" && SES)
+            SES.who = nm;
+    }
+    catch (e) { }
+    try {
+        toast(V5326PUB.set);
+    }
+    catch (e) { }
+    try {
+        if (typeof tmRepaint === "function")
+            tmRepaint();
+    }
+    catch (e) { }
+}
+if (typeof v56authMeHtml === "function") {
+    const __mh5326 = v56authMeHtml;
+    v56authMeHtml = function (me) {
+        try {
+            if (me && me.demo) {
+                const E = (typeof v56authE === "function") ? v56authE : (s => String(s == null ? "" : s));
+                const nm = me.name ? `<b>${E(me.name)}</b>` : `<b>お名前が入っていません</b>`;
+                return `<div class="tm-me v5326pub" id="v5326pubMe">あなた：${nm}${E(V5326PUB.tag)}<span class="v56auth-sub v5326pub-note">${E(V5326PUB.msg)}</span>` +
+                    (me.name ? "" : `<span class="v56auth-nm"><input class="sel" id="v5326pubNm" placeholder="例：山田 花子" autocomplete="off" aria-label="あなたのお名前"><button class="btn g" type="button" id="v5326pubNmGo">名前を入れる</button></span>`) + `</div>`;
+            }
+        }
+        catch (e) { }
+        return __mh5326.apply(this, arguments);
+    };
+}
+if (typeof teamBind === "function") {
+    const __tb5326 = teamBind;
+    teamBind = function () {
+        const r = __tb5326.apply(this, arguments);
+        try {
+            const g = document.getElementById("v5326pubNmGo");
+            if (g)
+                g.onclick = () => v5326pubSetName("v5326pubNm");
+            const i = document.getElementById("v5326pubNm");
+            if (i)
+                i.onkeydown = e => { if (e.key === "Enter" && !e.isComposing && e.keyCode !== 229) {
+                    e.preventDefault();
+                    v5326pubSetName("v5326pubNm");
+                } };
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof ux32Setup === "function") {
+    const __ux5326 = ux32Setup;
+    ux32Setup = function () {
+        const S = __ux5326.apply(this, arguments);
+        try {
+            if (Array.isArray(S) && v5326pubNow())
+                return S.filter(r => !(r && r[0] === "team"));
+        }
+        catch (e) { }
+        return S;
+    };
+}
+if (typeof v49Answer === "function") {
+    const __a5326 = v49Answer;
+    v49Answer = function (g) {
+        try {
+            if (g && g.t && g.t.id === "team" && v5326pubNow()) {
+                const acts = (g.t.acts || []).map(a => (a && a.f === "#tmInv") ? Object.assign({}, a, { t: "メンバー・担当を開く", f: "#v5326pubMe" }) : a);
+                return __a5326.call(this, Object.assign({}, g, { t: Object.assign({}, g.t, { tips: [V5326PUB.msg].concat(g.t.tips || []), acts }) }));
+            }
+        }
+        catch (e) { }
+        return __a5326.apply(this, arguments);
+    };
+}
+(function () {
+    try {
+        if (typeof tmI18n === "function")
+            tmI18n([
+                [V5326PUB.msg, "This is a shared demo account. Anyone can use it. Members cannot be registered or invited.", "这是演示用的公共账户。任何人都可以操作。不能登记或邀请成员。", "Esta es una cuenta de demostración compartida. Cualquiera puede usarla. No se pueden registrar ni invitar miembros."],
+                [V5326PUB.tag, "(shared demo account)", "（演示用公共账户）", "(cuenta de demostración compartida)"],
+                [V5326PUB.no, "Members cannot be registered or invited in the shared demo account (anyone can use it as it is).", "演示用公共账户不能登记或邀请成员（任何人都可以直接操作）。", "En la cuenta de demostración compartida no se pueden registrar ni invitar miembros (cualquiera puede usarla tal cual)."],
+                [V5326PUB.set, "Your name has been set", "已填写您的姓名", "Se guardó su nombre"],
+                ["名前を入れる", "Set my name", "填写姓名", "Ingresar mi nombre"],
+                ["メンバー・担当を開く", "Open members & assignments", "打开成员与负责", "Abrir miembros y asignaciones"]
+            ]);
     }
     catch (e) { }
 })();
