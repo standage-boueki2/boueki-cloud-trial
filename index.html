@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="f5520271d92a";
+const BC20_BUILD="e301aa3f19a7";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -12093,6 +12093,53 @@ function v215325Reg(q) { V215325_EN++; try {
 finally {
     V215325_EN--;
 } }
+function v215327Aiq(k) { try {
+    const x = ((typeof D !== "undefined" && D && D.aiq) || []).find(y => y && y.q && detectIntent(y.q) === k);
+    return x ? { a: x.a, c: x.c } : null;
+}
+catch (e) {
+    return null;
+} }
+function v215327Cut(v, n) { const t = String(v == null ? "" : v).trim(); return esc(Array.from(t).length > n ? Array.from(t).slice(0, n).join("") + "…" : t); }
+function v215327Terms() {
+    const F = [["最小発注数量（MOQ）", D.moq], ["リードタイム", D.lead], ["取引条件（建値）", D.term], ["支払条件", D.pay], ["賞味期限・保証", D.shelf], ["認証", D.cert]];
+    const has = F.filter(x => x[1]), none = F.filter(x => !x[1]), P = (D.priceRows || []).length;
+    return `<b>商談でよく聞かれる項目</b>（登録してあれば、ここで即答できます）<br>・価格表：${P ? `<b>${P}行</b>` : "未登録"}` +
+        has.map(x => `<br>・${esc(x[0])}：<b>${esc(String(x[1]))}</b>`).join("") +
+        (none.length ? `<br><span style="color:var(--ink-3)">未登録：${none.map(x => esc(x[0])).join("・")}（「商品情報を登録 › AIと埋める」で追加できます）</span>` : "");
+}
+function v215327Prep() {
+    const FB = ((typeof D !== "undefined" && D && D.fb) || []).slice().sort((a, b) => String(b.d || "").localeCompare(String(a.d || "")));
+    if (!FB.length)
+        return { a: `商談記録がまだないため、相手ごとの想定問答は作れません。「商談・バイヤー」に商談を記録すると、相手ごとに出ている要望・条件をここでまとめます。<br><br>` + v215327Terms(),
+            c: "根拠：商談記録 0件／商品マスタ（価格表・MOQ・リードタイムなど）" };
+    const seen = new Set(), rows = [];
+    FB.forEach(f => { const k = String(f.b || ""); if (seen.has(k))
+        return; seen.add(k); rows.push(f); });
+    const R = rows.slice(0, 5).map(f => `・<b>${esc(f.b || "（相手の名前なし）")}</b>${(f.c || f.st) ? `（${esc([f.c, f.st].filter(Boolean).join("・"))}）` : ""}` +
+        [f.spec ? `要望：${v215327Cut(f.spec, 80)}` : "", f.price ? `提示した価格：${esc(f.price)}` : "", f.lot ? `数量：${esc(f.lot)}` : "",
+            f.why ? `断られた理由：${esc(f.why)}` : "", f.note ? `メモ：${v215327Cut(f.note, 80)}` : ""].filter(Boolean).map(x => "<br>　" + x).join(""));
+    return { a: `商談記録 <b>${FB.length}件</b>（${seen.size}社）から、相手ごとに出ている要望・条件をまとめました（相手ごとに、いちばん新しい記録）。<br><br>` + R.join("<br>") +
+            (rows.length > 5 ? `<br>ほか ${rows.length - 5}社` : "") + `<br><br>` + v215327Terms() + `<br><br>相手の名前を入れて聞いていただければ、その相手との経緯をまとめます。`,
+        c: `根拠：商談記録 ${FB.length}件（${seen.size}社）／商品マスタ（価格表・MOQ・リードタイムなど）` };
+}
+function v215327Lost() {
+    const FB = ((typeof D !== "undefined" && D && D.fb) || []).slice();
+    if (!FB.length)
+        return { a: `まだ商談記録がありません。「商談・バイヤー」に商談を記録し、止まった相手の状況を「失注」か「保留」にして理由を入れると、ここで理由をまとめます。`, c: "根拠：商談記録 0件" };
+    const L = FB.filter(f => /失注|保留/.test(f.st || "") || String(f.why || "").trim());
+    if (!L.length) {
+        const m = {};
+        FB.forEach(f => { const v = f.st || "（未設定）"; m[v] = (m[v] || 0) + 1; });
+        return { a: `失注・保留の記録はまだありません（商談記録 <b>${FB.length}件</b>：${esc(Object.entries(m).sort((a, b) => b[1] - a[1]).map(x => x[0] + " " + x[1] + "件").join("・"))}）。<br><br>止まっている相手がいれば、「商談・バイヤー」の記録で状況を「失注」か「保留」にして理由を入れると、ここで理由をまとめます。`,
+            c: `根拠：商談記録 ${FB.length}件・失注／保留 0件` };
+    }
+    const G = {};
+    L.forEach(f => { const w = String(f.why || "").trim() || "（理由の記録なし）"; (G[w] = G[w] || []).push(f); });
+    const R = Object.entries(G).sort((a, b) => b[1].length - a[1].length).map(([w, fs]) => `<b>${esc(w)}：${fs.length}件</b>（${fs.slice(0, 4).map(f => esc([f.b, f.c, f.st].filter(Boolean).join("・"))).join("／")}${fs.length > 4 ? " ほか" : ""}）`);
+    return { a: `断られた・止まっている <b>${L.length}件</b>の理由をまとめました（商談記録 ${FB.length}件のうち）。<br><br>` + R.join("<br>") + `<br><br>相手の名前を入れて聞いていただければ、その相手との経緯をまとめます。`,
+        c: `根拠：商談記録 ${FB.length}件のうち失注 ${L.filter(f => /失注/.test(f.st || "")).length}件・保留 ${L.filter(f => /保留/.test(f.st || "")).length}件／断られた理由` };
+}
 function brain(q) {
     const canned = (D.aiq || []).find(x => x.q === q);
     if (canned)
@@ -12121,12 +12168,10 @@ function brain(q) {
                     `<b>最小発注数量が登録されていません。</b>商談で必ず聞かれる項目です。`,
                 c: `根拠：商品マスタ（MOQ・リードタイム）` };
         }
-        case "market": return (D.aiq && D.aiq[0]) ? { a: D.aiq[0].a, c: D.aiq[0].c } :
+        case "market": return v215327Aiq("market") ||
             { a: `まだ<b>進出希望国が決まっていません</b>。<br>「販売先国の選定」で「🤖 AI商社マンにおまかせ（1クリック）」を押すと、市場性・規制・競合・拠点の4つの観点で採点して、推奨の3か国と理由を出します。確かめて「✅ この3か国で確定」を押すと、進出希望国として規制・価格・物流・出荷に反映されます。` + v51CtyBtn(""), c: "根拠：進出希望国 未登録" };
-        case "lost": return (D.aiq && D.aiq[2]) ? { a: D.aiq[2].a, c: D.aiq[2].c } :
-            { a: `まだ失注の記録がありません。`, c: "根拠：失注 0件" };
-        case "prep": return (D.aiq && D.aiq[1]) ? { a: D.aiq[1].a, c: D.aiq[1].c } :
-            { a: `商談記録がまだないため、想定問答を作れません。`, c: "根拠：商談記録 0件" };
+        case "lost": return v215327Aiq("lost") || v215327Lost();
+        case "prep": return v215327Aiq("prep") || v215327Prep();
         case "terms": {
             const F = [["取引条件（建値）", D.term], ["支払条件", D.pay], ["仕出港", D.pol], ["最小発注数量（MOQ）", D.moq], ["リードタイム", D.lead], ["賞味期限・保証", D.shelf], ["産地", D.origin], ["認証", D.cert], ["カートン入数", D.ctn]];
             const has = F.filter(x => x[1]), none = F.filter(x => !x[1]);
