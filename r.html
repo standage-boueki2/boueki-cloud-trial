@@ -52,14 +52,14 @@ var RQP_L = {
         steps: "Pasos", s1: "Revisar", s2: "Responder", s3: "Enviar", prog: "Sus respuestas {a}/{n}", rql: "Faltan {n} obligatorios", okall: "Todos los campos obligatorios están completos" }
 };
 var RQP = {
-    LANGS: [["ja", "日本語"], ["en", "English"], ["zh", "中文"], ["es", "Español"]],
+    LANGS: [["ja", "日本語"], ["en", "English"], ["zh", "中文"], ["es", "Español"], ["de", "Deutsch"], ["fr", "Français"], ["vi", "Tiếng Việt"], ["th", "ไทย"], ["ko", "한국어"], ["ar", "العربية"]],
     esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]); },
     pick(v, lg) { if (v == null)
         return ""; if (typeof v === "string")
         return v; return v[lg] || v.en || v.ja || v.zh || v.es || Object.values(v)[0] || ""; },
     t(lg, k, n) { const d = RQP_L[lg] || RQP_L.en; return String(d[k] != null ? d[k] : (RQP_L.en[k] || k)).replace("{n}", n); },
     day(ms, lg) { try {
-        return new Date(+ms).toLocaleDateString({ ja: "ja-JP", en: "en-US", zh: "zh-CN", es: "es-ES" }[lg] || "en-US", { year: "numeric", month: "short", day: "numeric" });
+        return new Date(+ms).toLocaleDateString({ ja: "ja-JP", en: "en-US", zh: "zh-CN", es: "es-ES", de: "de-DE", fr: "fr-FR", vi: "vi-VN", th: "th-TH-u-ca-gregory", ko: "ko-KR", ar: "ar-u-ca-gregory-nu-latn" }[lg] || "en-US", { year: "numeric", month: "short", day: "numeric" });
     }
     catch (e) {
         return new Date(+ms).toDateString();
@@ -119,11 +119,7 @@ var RQP = {
                 return String(x.msg);
             return T("err");
         };
-        const fail = (k) => { try {
-            if (!opt.preview)
-                document.documentElement.lang = S.lg;
-        }
-        catch (e) { } el.innerHTML = `<div class="rqp-w"><div class="rqp-c"><p class="rqp-msg ng">${E(T(k))}</p></div><p class="rqp-brand">${E(T("pw"))}</p></div>`; };
+        const fail = (k) => { RQP.dirOf(el, S.lg, opt); el.innerHTML = `<div class="rqp-w"><div class="rqp-c"><p class="rqp-msg ng">${E(T(k))}</p></div><p class="rqp-brand">${E(T("pw"))}</p></div>`; };
         let r;
         try {
             r = await io.get();
@@ -145,24 +141,20 @@ var RQP = {
         S.files = r.files || [];
         S.lg = opt.lang || RQP.savedLang() || S.req.lang || RQP.navLang();
         const draw = () => {
-            const q = S.req.q || [], A = (S.ans && S.ans.a) || {}, left = Math.ceil(((+S.req.exp || 0) - Date.now()) / 864e5), sent = S.state === "sent";
+            const q = S.req.q || [], A = (S.ans && S.ans.a) || {}, left = RQP.left(S.req.exp), sent = S.state === "sent";
             const fOn = S.req.files && S.req.files.on, fMax = (S.req.files && S.req.files.max) || 5;
             const cjk = S.lg === "ja" || S.lg === "zh", CO = cjk ? "：" : ": ", PO = cjk ? "（" : " (", PC = cjk ? "）" : ")";
             const st = RQP.stepOf(S);
-            try {
-                if (!opt.preview)
-                    document.documentElement.lang = S.lg;
-            }
-            catch (e) { }
+            RQP.dirOf(el, S.lg, opt);
             el.innerHTML = `<div class="rqp-w">
-        <div class="rqp-top"><span class="rqp-brand">${E(S.req.from && S.req.from.co || "")}</span>
+        <div class="rqp-top"><span class="rqp-brand">${E(RQP.coOf(S.req, S.lg))}</span>
           <label class="rqp-lg">${E(T("lang"))}<select id="rqplg">${RQP.LANGS.map(([k, n]) => `<option value="${k}"${k === S.lg ? " selected" : ""}>${n}</option>`).join("")}</select></label></div>
         ${opt.preview ? `<p class="rqp-pv">${E(T("pv"))}</p>` : ""}
         <section class="rqp-c"><ol class="rqp-steps" id="rqpsteps" aria-label="${E(T("steps"))}">${["s1", "s2", "s3"].map((k, i) => `<li class="${st > i + 1 || sent ? "ok" : st === i + 1 ? "on" : ""}"${st === i + 1 && !sent ? ' aria-current="step"' : ""}><span class="n">${st > i + 1 || sent ? "✓" : i + 1}</span>${E(T(k))}</li>`).join("")}</ol>
-          <p class="rqp-from">${E(T("from"))}${CO}${E([S.req.from && S.req.from.co, S.req.from && S.req.from.who].filter(Boolean).join(" / "))}</p>
+          <p class="rqp-from">${E(T("from"))}${CO}${E([RQP.coOf(S.req, S.lg), S.req.from && S.req.from.who].filter(Boolean).join(" / "))}</p>
           <h1 class="rqp-h">${E(RQP.pick(S.req.title, S.lg))}${sent ? `<span class="rqp-st">${E(T("st_sent"))}</span>` : S.state === "draft" ? `<span class="rqp-st" style="background:#fff4ec;color:#8a3d0c">${E(T("st_draft"))}</span>` : ""}</h1>
-          ${S.req.item ? `<p class="rqp-from">${E(RQP.pick(S.req.item, S.lg))}</p>` : ""}
-          <span class="rqp-due">${E(T("due"))}${CO}${E(RQP.day(S.req.exp, S.lg))}${PO}${E(left <= 0 ? T("today") : T("left", left))}${PC}</span>
+          ${RQP.prodHtml(S.req, S.lg)}
+          <span class="rqp-due">${E(T("due"))}${CO}${E(RQP.day(S.req.exp, S.lg))}${PO}${E(left <= 0 ? T("today") : T(left === 1 ? "left1" : "left", left))}${PC}</span>
           ${S.req.note ? `<p class="rqp-note">${E(RQP.pick(S.req.note, S.lg))}</p>` : ""}</section>
         <form class="rqp-c" id="rqpf" novalidate>
           <div class="rqp-g2" style="margin-bottom:6px"><div class="rqp-q"><label for="rqp_name">${E(T("name"))}</label><input type="text" id="rqp_name" autocomplete="name" value="${E((S.ans && S.ans.name) || "")}"></div>
@@ -176,7 +168,7 @@ var RQP = {
             }).join("")}
           ${fOn ? `<div class="rqp-q"><label>${E(RQP.pick(S.req.files.label, S.lg) || T("files"))}</label>${S.req.files.help ? `<span class="rqp-help">${E(RQP.pick(S.req.files.help, S.lg))}</span>` : ""}
             <div class="rqp-fz" id="rqpfz"><button type="button" class="rqp-b g s" id="rqpfb">${E(T("addf"))}</button> ${E(T("drop"))}<br><small>${E(T("fmax", fMax))}</small><input type="file" id="rqpfi" multiple hidden>
-            <div class="rqp-fl">${S.files.map(f => `<div class="rqp-f"><span>${E((f.m && f.m.name) || f.id)}（${Math.max(1, Math.round(((f.m && f.m.size) || f.size || 0) / 1024))} KB）</span><button type="button" class="rqp-b g s" data-rmf="${E(f.id)}">${E(T("rmf"))}</button></div>`).join("")}</div></div></div>` : ""}
+            <div class="rqp-fl">${S.files.map(f => `<div class="rqp-f"><span>${E((f.m && f.m.name) || f.id)}${PO}${Math.max(1, Math.round(((f.m && f.m.size) || f.size || 0) / 1024))} KB${PC}</span><button type="button" class="rqp-b g s" data-rmf="${E(f.id)}">${E(T("rmf"))}</button></div>`).join("")}</div></div></div>` : ""}
           <div class="rqp-q"><label for="rqp_note">${E(T("note"))}</label><textarea id="rqp_note">${E((S.ans && S.ans.note) || "")}</textarea></div>
           <p class="rqp-priv">${E(T("priv"))}${sent ? " " + E(T("sentNote")) : ""}</p>
           <div class="rqp-bar">${S.msg ? `<p class="rqp-msg ${S.msg[0]}" role="status">${E(S.msg[1])}</p>` : ""}
@@ -355,7 +347,7 @@ var RQP = {
     },
     stepOf(S) { if (S.state === "sent")
         return 3; const p = RQP.count(S); const nm = S.ans && (String(S.ans.name || "").trim() || String(S.ans.note || "").trim()); return (p.a || nm || S.state === "draft") ? 2 : 1; },
-    navLang() { const l = String((navigator.languages && navigator.languages[0]) || navigator.language || "en").toLowerCase(); return l.startsWith("ja") ? "ja" : l.startsWith("zh") ? "zh" : l.startsWith("es") ? "es" : "en"; },
+    navLang() { const l = String((navigator.languages && navigator.languages[0]) || navigator.language || "en").toLowerCase(); return l.startsWith("ja") ? "ja" : l.startsWith("zh") ? "zh" : l.startsWith("es") ? "es" : l.startsWith("de") ? "de" : l.startsWith("fr") ? "fr" : l.startsWith("vi") ? "vi" : l.startsWith("th") ? "th" : l.startsWith("ko") ? "ko" : l.startsWith("ar") ? "ar" : "en"; },
     savedLang() { try {
         return localStorage.getItem("rqp_lang") || "";
     }
@@ -423,5 +415,102 @@ var RQP = {
         RQP.mount(el, io);
     }
 };
+Object.assign(RQP_L.ja, { left1: "あと1日", prod: "対象の商品", prods: "対象の商品（{n}点）", pn: "品番", pic: "商品の写真" });
+Object.assign(RQP_L.en, { left1: "1 day left", prod: "Product", prods: "Products ({n})", pn: "Part no.", pic: "Product photo" });
+Object.assign(RQP_L.zh, { left1: "还剩1天", prod: "相关商品", prods: "相关商品（{n}个）", pn: "货号", pic: "商品照片" });
+Object.assign(RQP_L.es, { left1: "Queda 1 día", prod: "Producto", prods: "Productos ({n})", pn: "Referencia", pic: "Foto del producto" });
+RQP_L.de = { lang: "Sprache", from: "Anfrage von", due: "Bitte antworten bis", left: "noch {n} Tage", left1: "noch 1 Tag", today: "Heute fällig", save: "Entwurf speichern", send: "Absenden", resend: "Erneut absenden", saved: "Gespeichert. Sie können über diesen Link weitermachen.", sent: "Abgesendet. Vielen Dank.",
+    sentNote: "Bis zur Frist können Sie Änderungen vornehmen und erneut absenden.", req: "Pflichtfeld", need: "Bitte füllen Sie die Pflichtfelder aus.", files: "Dateien", addf: "Dateien hinzufügen", drop: "oder hierher ziehen", fmax: "Je bis 10 MB, höchstens {n} Dateien", rmf: "Entfernen",
+    name: "Ihr Name", co: "Firma", note: "Sonstige Hinweise (optional)", priv: "Ihre Antworten und Dateien werden verschlüsselt und an den Anfragenden übermittelt.",
+    none: "Diese Anfrage wurde nicht gefunden. Bitte prüfen Sie den Link oder wenden Sie sich an den Anfragenden.", closed: "Diese Anfrage ist geschlossen.", expired: "Die Antwortfrist ist abgelaufen. Wenden Sie sich bei Bedarf an den Anfragenden.",
+    err: "Senden fehlgeschlagen. Bitte prüfen Sie Ihre Verbindung und versuchen Sie es erneut.", bad: "Dieser Link ist unvollständig. Bitte kopieren Sie den vollständigen Link.", big: "Datei zu groß (max. 10 MB)", lerr: "Die Anfrage konnte nicht geladen werden. Bitte prüfen Sie Ihre Verbindung und laden Sie die Seite neu.", fcnt: "Höchstens {n} Dateien pro Anfrage.", abig: "Ihre Antwort ist zu lang. Bitte hängen Sie längere Texte als Datei an.", acnt: "Die Höchstzahl an Speichervorgängen ist erreicht. Bitte wenden Sie sich an den Anfragenden.", already: "Bereits abgesendet. Änderungen senden Sie bitte mit „Erneut absenden“.", fgone: "Diese Datei wurde bereits entfernt.",
+    upl: "Wird gesendet …", st_draft: "Entwurf", st_sent: "Abgesendet", pv: "Nur Vorschau (es wird nichts gesendet)", pw: "Powered by BOEKI CLOUD 2.0",
+    steps: "Schritte", s1: "Prüfen", s2: "Antworten", s3: "Absenden", prog: "Ihre Antworten {a}/{n}", rql: "Noch {n} Pflichtfelder", okall: "Alle Pflichtfelder sind ausgefüllt", prod: "Produkt", prods: "Produkte ({n})", pn: "Artikelnr.", pic: "Produktfoto" };
+RQP_L.fr = { lang: "Langue", from: "Demande de", due: "Merci de répondre avant le", left: "{n} jours restants", left1: "1 jour restant", today: "Échéance aujourd’hui", save: "Enregistrer le brouillon", send: "Envoyer", resend: "Envoyer à nouveau", saved: "Enregistré. Vous pouvez reprendre à partir de ce lien.", sent: "Envoyé. Merci beaucoup.",
+    sentNote: "Vous pouvez modifier et renvoyer jusqu’à la date limite.", req: "Obligatoire", need: "Veuillez remplir les champs obligatoires.", files: "Fichiers", addf: "Ajouter des fichiers", drop: "ou faites-les glisser ici", fmax: "10 Mo max. par fichier, {n} fichiers au maximum", rmf: "Supprimer",
+    name: "Votre nom", co: "Société", note: "Autre chose ? (facultatif)", priv: "Vos réponses et fichiers sont chiffrés et transmis au demandeur.",
+    none: "Cette demande est introuvable. Vérifiez le lien ou contactez le demandeur.", closed: "Cette demande est close.", expired: "La date limite de réponse est dépassée. Contactez le demandeur si nécessaire.",
+    err: "Envoi impossible. Vérifiez votre connexion et réessayez.", bad: "Ce lien est incomplet. Assurez-vous d’avoir copié le lien en entier.", big: "Fichier trop volumineux (10 Mo max.)", lerr: "Impossible de charger cette demande. Vérifiez votre connexion et rechargez la page.", fcnt: "{n} fichiers maximum par demande.", abig: "Votre réponse est trop longue. Joignez les textes longs sous forme de fichier.", acnt: "Le nombre maximal d’enregistrements est atteint. Contactez le demandeur.", already: "Déjà envoyé. Pour transmettre des modifications, utilisez « Envoyer à nouveau ».", fgone: "Ce fichier a déjà été supprimé.",
+    upl: "Envoi en cours…", st_draft: "Brouillon", st_sent: "Envoyé", pv: "Aperçu uniquement (rien n’est envoyé)", pw: "Powered by BOEKI CLOUD 2.0",
+    steps: "Étapes", s1: "Vérifier", s2: "Répondre", s3: "Envoyer", prog: "Vos réponses {a}/{n}", rql: "Champs obligatoires restants : {n}", okall: "Tous les champs obligatoires sont remplis", prod: "Produit", prods: "Produits ({n})", pn: "Référence", pic: "Photo du produit" };
+RQP_L.vi = { lang: "Ngôn ngữ", from: "Yêu cầu từ", due: "Vui lòng trả lời trước", left: "còn {n} ngày", left1: "còn 1 ngày", today: "Hạn chót hôm nay", save: "Lưu bản nháp", send: "Gửi", resend: "Gửi lại", saved: "Đã lưu. Bạn có thể tiếp tục từ liên kết này.", sent: "Đã gửi. Xin cảm ơn.",
+    sentNote: "Bạn có thể chỉnh sửa và gửi lại cho đến hạn chót.", req: "Bắt buộc", need: "Vui lòng điền các mục bắt buộc.", files: "Tệp", addf: "Thêm tệp", drop: "hoặc kéo thả vào đây", fmax: "Mỗi tệp tối đa 10 MB, tối đa {n} tệp", rmf: "Xóa",
+    name: "Họ tên", co: "Công ty", note: "Thông tin khác (không bắt buộc)", priv: "Câu trả lời và tệp của bạn được mã hóa và gửi đến bên yêu cầu.",
+    none: "Không tìm thấy yêu cầu này. Vui lòng kiểm tra liên kết hoặc liên hệ bên yêu cầu.", closed: "Yêu cầu này đã đóng.", expired: "Đã quá hạn trả lời. Vui lòng liên hệ bên yêu cầu nếu cần.",
+    err: "Không gửi được. Vui lòng kiểm tra kết nối và thử lại.", bad: "Liên kết không đầy đủ. Vui lòng sao chép toàn bộ liên kết.", big: "Tệp quá lớn (tối đa 10 MB)", lerr: "Không tải được yêu cầu. Vui lòng kiểm tra kết nối và tải lại trang.", fcnt: "Mỗi yêu cầu tối đa {n} tệp.", abig: "Câu trả lời quá dài. Vui lòng đính kèm văn bản dài dưới dạng tệp.", acnt: "Đã đạt giới hạn số lần lưu. Vui lòng liên hệ bên yêu cầu.", already: "Đã gửi. Để gửi nội dung đã sửa, hãy dùng “Gửi lại”.", fgone: "Tệp này đã bị xóa.",
+    upl: "Đang gửi…", st_draft: "Bản nháp", st_sent: "Đã gửi", pv: "Chỉ xem thử (không gửi đi)", pw: "Powered by BOEKI CLOUD 2.0",
+    steps: "Các bước", s1: "Xem nội dung", s2: "Trả lời", s3: "Gửi", prog: "Câu trả lời của bạn {a}/{n}", rql: "Còn {n} mục bắt buộc", okall: "Đã điền đủ các mục bắt buộc", prod: "Sản phẩm", prods: "Sản phẩm ({n})", pn: "Mã sản phẩm", pic: "Ảnh sản phẩm" };
+RQP_L.th = { lang: "ภาษา", from: "คำขอจาก", due: "โปรดตอบกลับภายใน", left: "เหลือ {n} วัน", left1: "เหลือ 1 วัน", today: "ครบกำหนดวันนี้", save: "บันทึกฉบับร่าง", send: "ส่ง", resend: "ส่งอีกครั้ง", saved: "บันทึกแล้ว คุณสามารถทำต่อได้จากลิงก์นี้", sent: "ส่งแล้ว ขอบคุณมาก",
+    sentNote: "คุณสามารถแก้ไขและส่งอีกครั้งได้จนถึงวันครบกำหนด", req: "จำเป็น", need: "โปรดกรอกช่องที่จำเป็น", files: "ไฟล์", addf: "เพิ่มไฟล์", drop: "หรือลากมาวางที่นี่", fmax: "ไฟล์ละไม่เกิน 10 MB สูงสุด {n} ไฟล์", rmf: "ลบ",
+    name: "ชื่อของคุณ", co: "บริษัท", note: "เรื่องอื่น ๆ (ไม่บังคับ)", priv: "คำตอบและไฟล์ของคุณจะถูกเข้ารหัสและส่งถึงผู้ขอ",
+    none: "ไม่พบคำขอนี้ โปรดตรวจสอบลิงก์หรือติดต่อผู้ขอ", closed: "คำขอนี้ปิดแล้ว", expired: "เลยกำหนดการตอบกลับแล้ว หากจำเป็นโปรดติดต่อผู้ขอ",
+    err: "ส่งไม่สำเร็จ โปรดตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง", bad: "ลิงก์ไม่สมบูรณ์ โปรดตรวจสอบว่าคัดลอกลิงก์มาครบถ้วน", big: "ไฟล์ใหญ่เกินไป (ไม่เกิน 10 MB)", lerr: "โหลดคำขอไม่ได้ โปรดตรวจสอบการเชื่อมต่อแล้วโหลดหน้าใหม่", fcnt: "ไม่เกิน {n} ไฟล์ต่อคำขอ", abig: "คำตอบยาวเกินไป โปรดแนบข้อความยาวเป็นไฟล์", acnt: "บันทึกครบจำนวนครั้งสูงสุดแล้ว โปรดติดต่อผู้ขอ", already: "ส่งแล้ว หากต้องการส่งฉบับแก้ไข โปรดใช้ “ส่งอีกครั้ง”", fgone: "ไฟล์นี้ถูกลบไปแล้ว",
+    upl: "กำลังส่ง…", st_draft: "ฉบับร่าง", st_sent: "ส่งแล้ว", pv: "ตัวอย่างเท่านั้น (ไม่มีการส่งจริง)", pw: "Powered by BOEKI CLOUD 2.0",
+    steps: "ขั้นตอน", s1: "ตรวจสอบเนื้อหา", s2: "ตอบคำถาม", s3: "ส่ง", prog: "คำตอบของคุณ {a}/{n}", rql: "เหลือช่องที่จำเป็น {n} ช่อง", okall: "กรอกช่องที่จำเป็นครบแล้ว", prod: "สินค้า", prods: "สินค้า ({n} รายการ)", pn: "รหัสสินค้า", pic: "รูปสินค้า" };
+RQP_L.ko = { lang: "언어", from: "요청자", due: "회신 기한", left: "{n}일 남음", left1: "1일 남음", today: "오늘 마감", save: "임시 저장", send: "제출", resend: "다시 제출", saved: "저장했습니다(이 링크에서 이어서 입력할 수 있습니다).", sent: "제출했습니다. 감사합니다.",
+    sentNote: "기한까지는 수정해서 다시 제출할 수 있습니다.", req: "필수", need: "필수 항목을 입력해 주세요.", files: "파일", addf: "파일 추가", drop: "또는 여기로 끌어다 놓기", fmax: "파일당 10MB까지, 최대 {n}개", rmf: "삭제",
+    name: "성함", co: "회사명", note: "기타 연락 사항(선택)", priv: "입력한 내용과 파일은 암호화되어 요청자에게 전달됩니다.",
+    none: "이 링크의 요청을 찾을 수 없습니다. 링크가 맞는지 요청자에게 확인해 주세요.", closed: "이 요청은 마감되었습니다.", expired: "회신 기한이 지났습니다. 필요한 경우 요청자에게 연락해 주세요.",
+    err: "보내지 못했습니다. 통신 상태를 확인하고 다시 시도해 주세요.", bad: "링크가 올바르지 않습니다(끝까지 붙여 넣었는지 확인해 주세요).", big: "파일이 너무 큽니다(10MB까지)", lerr: "요청을 불러오지 못했습니다. 통신 상태를 확인하고 페이지를 새로 고쳐 주세요.", fcnt: "파일은 요청 1건당 {n}개까지입니다.", abig: "답변이 너무 깁니다. 긴 글은 파일로 첨부해 주세요.", acnt: "저장 횟수가 한도에 도달했습니다. 요청자에게 연락해 주세요.", already: "이미 제출했습니다. 수정한 내용은 “다시 제출”로 보내 주세요.", fgone: "이 파일은 이미 삭제되었습니다.",
+    upl: "보내는 중…", st_draft: "임시 저장", st_sent: "제출 완료", pv: "미리보기 화면입니다(실제로는 전송되지 않습니다)", pw: "Powered by BOEKI CLOUD 2.0",
+    steps: "답변 순서", s1: "내용 확인", s2: "답변 입력", s3: "제출", prog: "내 답변 {a}/{n}", rql: "남은 필수 항목 {n}", okall: "필수 항목을 모두 입력했습니다", prod: "대상 상품", prods: "대상 상품({n}개)", pn: "품번", pic: "상품 사진" };
+RQP_L.ar = { lang: "اللغة", from: "طلب من", due: "يُرجى الرد قبل", left: "الأيام المتبقية: {n}", left1: "متبقٍ يوم واحد", today: "آخر موعد اليوم", save: "حفظ كمسودة", send: "إرسال", resend: "إرسال مرة أخرى", saved: "تم الحفظ. يمكنك المتابعة من هذا الرابط.", sent: "تم الإرسال. شكرًا لك.",
+    sentNote: "يمكنك التعديل والإرسال مرة أخرى حتى الموعد النهائي.", req: "مطلوب", need: "يُرجى تعبئة الحقول المطلوبة.", files: "الملفات", addf: "إضافة ملفات", drop: "أو اسحبها إلى هنا", fmax: "حتى 10 ميغابايت لكل ملف، والحد الأقصى {n} ملفات", rmf: "إزالة",
+    name: "اسمك", co: "الشركة", note: "ملاحظات أخرى (اختياري)", priv: "يتم تشفير إجاباتك وملفاتك وتسليمها إلى مقدّم الطلب.",
+    none: "تعذّر العثور على هذا الطلب. يُرجى التحقق من الرابط أو التواصل مع مقدّم الطلب.", closed: "تم إغلاق هذا الطلب.", expired: "انتهى موعد الرد. يُرجى التواصل مع مقدّم الطلب عند الحاجة.",
+    err: "تعذّر الإرسال. يُرجى التحقق من الاتصال والمحاولة مرة أخرى.", bad: "هذا الرابط غير مكتمل. يُرجى التأكد من نسخ الرابط كاملًا.", big: "الملف كبير جدًا (10 ميغابايت كحد أقصى)", lerr: "تعذّر تحميل هذا الطلب. يُرجى التحقق من الاتصال وإعادة تحميل الصفحة.", fcnt: "الحد الأقصى {n} ملفات لكل طلب.", abig: "إجابتك طويلة جدًا. يُرجى إرفاق النصوص الطويلة كملف.", acnt: "تم بلوغ الحد الأقصى لمرات الحفظ. يُرجى التواصل مع مقدّم الطلب.", already: "تم الإرسال بالفعل. لإرسال التعديلات استخدم «إرسال مرة أخرى».", fgone: "تمت إزالة هذا الملف بالفعل.",
+    upl: "جارٍ الإرسال…", st_draft: "مسودة", st_sent: "تم الإرسال", pv: "معاينة فقط (لن يُرسل أي شيء)", pw: "Powered by BOEKI CLOUD 2.0",
+    steps: "الخطوات", s1: "المراجعة", s2: "الإجابة", s3: "الإرسال", prog: "إجاباتك {a}/{n}", rql: "الحقول المطلوبة المتبقية: {n}", okall: "تم تعبئة جميع الحقول المطلوبة", prod: "المنتج", prods: "المنتجات ({n})", pn: "رقم الصنف", pic: "صورة المنتج" };
+RQP.NEWL = ["de", "fr", "vi", "th", "ko", "ar"];
+RQP.JP = /[぀-ヿ㐀-䶿一-鿿豈-﫿ｦ-ﾟ]/;
+RQP.KANA = /[぀-ヿｦ-ﾟ]/;
+RQP.jpLeft = function (s, lg) { s = String(s == null ? "" : s); if (lg === "ja")
+    return false; return lg === "zh" ? RQP.KANA.test(s) : RQP.JP.test(s); };
+RQP.coOf = function (req, lg) {
+    const f = (req && req.from) || {};
+    const co = String((typeof f.co === "string" ? f.co : RQP.pick(f.co, lg)) || "");
+    const en = String(f.coEn || "").trim();
+    if (!en || RQP.JP.test(en) || lg === "ja")
+        return co || en;
+    if (lg === "zh")
+        return RQP.KANA.test(co) ? en : co;
+    return en;
+};
+RQP.left = function (exp, now) { const d0 = (x) => { const d = new Date(+x); d.setHours(0, 0, 0, 0); return d.getTime(); }; return Math.round((d0(+exp || 0) - d0(now == null ? Date.now() : +now)) / 864e5); };
+RQP.rtl = function (lg) { return lg === "ar"; };
+RQP.dirOf = function (el, lg, opt) { try {
+    const d = RQP.rtl(lg) ? "rtl" : "ltr";
+    el.setAttribute("dir", d);
+    el.setAttribute("lang", lg);
+    if (!(opt && opt.preview)) {
+        document.documentElement.lang = lg;
+        document.documentElement.dir = d;
+    }
+}
+catch (e) { } };
+RQP.img = function (s) { s = String(s || ""); return (s.length < 400000 && /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(s)) ? s : ""; };
+RQP.prodHtml = function (req, lg) {
+    const E = RQP.esc, T = (k, n) => RQP.t(lg, k, n);
+    const P = Array.isArray(req && req.prod) ? req.prod.filter(x => x && x.nm).slice(0, 5) : [];
+    if (!P.length)
+        return (req && req.item) ? `<p class="rqp-from">${E(RQP.pick(req.item, lg))}</p>` : "";
+    const CO = (lg === "ja" || lg === "zh") ? "：" : ": ", hd = P.length > 1 ? T("prods", P.length) : T("prod");
+    const one = x => {
+        const nm = String(RQP.pick(x.nm, lg) || "");
+        const im = RQP.img(x.img);
+        const sp = (Array.isArray(x.spec) ? x.spec : []).map(r => [String(RQP.pick(r && r.k, lg) || ""), String(RQP.pick(r && r.v, lg) || "")]).filter(([k, v]) => k.trim() && v.trim() && !RQP.jpLeft(k, lg) && !RQP.jpLeft(v, lg)).slice(0, 6);
+        return `<div class="rqp-pi">${im ? `<img class="rqp-pimg" src="${E(im)}" alt="${E(T("pic") + CO + nm)}" width="96" height="96">` : ""}<div class="rqp-pm"><b class="rqp-pnm">${E(nm)}</b>${x.pn ? `<span class="rqp-pno">${E(T("pn"))}${CO}<bdi>${E(x.pn)}</bdi></span>` : ""}${sp.length ? `<dl class="rqp-sp">${sp.map(([k, v]) => `<div><dt>${E(k)}</dt><dd>${E(v)}</dd></div>`).join("")}</dl>` : ""}</div></div>`;
+    };
+    return `<div class="rqp-pd" role="group" aria-label="${E(hd)}"><p class="rqp-pdh">${E(hd)}</p>${P.map(one).join("")}</div>`;
+};
+RQP.css += `
+  .rqp-pd{margin-top:12px;border:1px solid var(--rq-line);border-radius:12px;padding:12px 14px;background:#fafbfc;display:grid;gap:10px}
+  .rqp-pdh{margin:0;font-size:12px;font-weight:700;color:var(--rq-ink2);letter-spacing:.02em}
+  .rqp-pi{display:flex;gap:12px;align-items:flex-start}.rqp-pi+.rqp-pi{border-top:1px solid var(--rq-line);padding-top:10px}
+  .rqp-pimg{width:96px;height:96px;object-fit:cover;border-radius:8px;border:1px solid var(--rq-line);flex:none;background:#fff}
+  .rqp-pm{display:grid;gap:2px;min-width:0}.rqp-pnm{font-size:16px;overflow-wrap:anywhere}.rqp-pno{font-size:13px;color:var(--rq-ink2)}
+  .rqp-sp{margin:6px 0 0;display:grid;gap:2px;font-size:13px}.rqp-sp div{display:flex;gap:6px;flex-wrap:wrap}.rqp-sp dt{color:var(--rq-ink2)}.rqp-sp dt::after{content:":"}.rqp-sp dd{margin:0;overflow-wrap:anywhere}
+  .rqp[dir=rtl] .rqp-rq{margin-left:0;margin-right:8px}.rqp[dir=rtl] .rqp-steps li+li::before{margin-right:0;margin-left:2px}
+  @media (max-width:560px){.rqp-pimg{width:72px;height:72px}}`;
 RQP.boot(document.getElementById("rq"), "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec");
 </script></body></html>
