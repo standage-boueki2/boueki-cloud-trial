@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="4d8a9b3c8d32";
+const BC20_BUILD="52d9c81736db";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -5163,7 +5163,7 @@ const PRODUCTS = {
                 ["CI", "Commercial Invoice", "通関に必要な正式な請求書"],
                 ["PL", "Packing List", "何をどの箱に詰めたかの明細"],
                 ["原産地証明書", "Certificate of Origin", "日本製であることの証明。香港では関税0%の根拠に"],
-                ["S/I", "Shipping Instruction", "運送会社への船積指示書"]],
+                ["S/I", "Shipping Instruction", "物流会社への船積指示書"]],
             vessel: "EVER LIBRA V.028E", bl: "EGLV142600881", coNo: "CO-2026-081102",
             link: [["運送会社へ S/I を送信 → ブッキング確定", "本船 EVER LIBRA V.028E／B/L No. EGLV142600881"],
                 ["通関業者へ CI・PL を連携", "HSコード 0902.10 で申告予定。8月12日に通関"],
@@ -5498,7 +5498,7 @@ const PRODUCTS = {
                 ["PL", "Packing List", "何をどの箱に詰めたかの明細"],
                 ["特定原産地証明書", "EPA Certificate of Origin", "日ベトナムEPA様式。これで関税が0%になります"],
                 ["該非判定書", "Export Control Classification", "外為法で規制対象外であることの証明"],
-                ["S/I", "Shipping Instruction", "運送会社への船積指示書"]],
+                ["S/I", "Shipping Instruction", "物流会社への船積指示書"]],
             vessel: "SITC HANOI V.2608N", bl: "SITKNGB2608114", coNo: "JPVN-2026-0811",
             link: [["運送会社へ S/I を送信 → ブッキング確定", "本船 SITC HANOI V.2608N／B/L No. SITKNGB2608114"],
                 ["通関業者へ CI・PL・該非判定書を連携", "HSコード 8482.10 で申告予定。外為法 非該当を確認済み"],
@@ -11944,7 +11944,7 @@ function ansSpec() {
             `<b>${D.dimCols.join(" / ")}</b><br>` +
             D.dimRows.slice(0, 5).map(r => r.filter(Boolean).join("　")).join("<br>") +
             (D.ctn ? `<br><br><b>積付</b>　${esc(D.ctn)}` : "") +
-            `<br><br>この数値から<b>梱包明細（${tm("PL")}）と運賃の見積依頼</b>が自動で作られます。`,
+            `<br><br>この数値は、<b>梱包明細（${tm("PL")}）の下書き</b>と、物流会社への<b>AI見積の依頼</b>に使います。`,
         c: `根拠：商品マスタ（寸法表 ${D.dimRows.length}行）` };
 }
 function ansComp() {
@@ -12114,6 +12114,23 @@ function brain(q) {
         }
         default: return ansFallback(q);
     }
+}
+function v5320FwdQ(q) {
+    try {
+        const s = String(q == null ? "" : q).normalize("NFKC").replace(/\s+/g, "");
+        return /物流会社|運送会社|フォワーダー|乙仲/.test(s) && /大丈夫|問題な|でいい|がいい|良い|よい|おすすめ|お勧め|オススメ|どこ|どれ|選/.test(s);
+    }
+    catch (e) {
+        return false;
+    }
+}
+if (typeof detectIntent === "function") {
+    const __di5320 = detectIntent;
+    detectIntent = function (q) { const r = __di5320.apply(this, arguments); try {
+        if (!r && v5320FwdQ(q))
+            return "logi";
+    }
+    catch (e) { } return r; };
 }
 let G0 = new Date("2026-06-01T00:00:00"), GD = 122;
 const dnum = s => Math.round((new Date(s + "T00:00:00") - G0) / 864e5);
@@ -12743,8 +12760,8 @@ function vOrders() {
     return `<div class="c" style="margin-bottom:11px">
     <div class="rw" style="justify-content:space-between">
       <div><h3>受注・請求・入金</h3>
-        <p class="nn">見積を出したところから入金の消し込みまで、1本の流れで追えます。</p></div>
-      <button class="btn g" onclick="typeof ordNewGuard==='function'?ordNewGuard():toast('受注書を作成しました')">受注書をつくる</button></div>
+        <p class="nn">受注ごとの承認・受注書・請求書・入金の状況の一覧です。</p></div>
+      <button class="btn g" onclick="opsTab='doc';render()">見積書・請求書をつくる</button></div>
     <div class="tw" style="margin-top:10px;max-height:none"><table><thead><tr>
       <th>受注番号</th><th>お相手</th><th>国</th><th class="num">金額</th><th>承認</th><th>受注書</th><th>請求書</th><th>入金</th><th>入金期日</th><th>状況</th>
     </tr></thead><tbody>
@@ -12761,12 +12778,11 @@ function vOrders() {
     <div class="g3" style="margin-top:11px">
       ${[["受注の累計", D.orders.length + "件", "うち入金済 " + D.orders.filter(o => /入金済/.test(String(o.pay || ""))).length + "件"],
         ["入金待ちの金額", D.orders.find(o => o.pay === "入金待ち")?.jpy || "—", "期日 " + (D.orders.find(o => o.pay === "入金待ち")?.due || "—")],
-        ["見積提出前", D.orders.filter(o => o.od === "作成待ち").length + "件", "AIが受注書のドラフトを用意できます"]]
+        ["見積提出前", D.orders.filter(o => o.od === "作成待ち").length + "件", "見積書・請求書の下書きは「書類をつくる」で"]]
         .map(([l, v, d]) => `<div style="padding:10px 12px;border-radius:var(--r2);background:var(--surface-2);border:1px solid var(--line)">
           <p class="lbl">${l}</p><div class="kv n" style="font-size:20px">${esc(v)}</div><div class="kd">${esc(d)}</div></div>`).join("")}
     </div>
-    <p class="nn" style="margin-top:9px">現行版では受注・請求の機能はありますが、<b>商談記録との紐付けが手作業</b>でした。
-      この版では商談フィードバックから受注書まで自動でつながります。</p>
+    <p class="nn" style="margin-top:9px">受注書の作成と、商談記録との自動のつなぎは、まだありません。見積書（PI）・請求書（CI）の下書きは「書類をつくる」でつくれます。</p>
   </div>`;
 }
 function meter(pct) {
@@ -14784,12 +14800,64 @@ function v5313Tags(S) {
         return `<div class="rw" style="margin-top:9px">${L.map(q => `<span class="p">見本：${nm(q)}</span>`).join("")}</div>`;
     return `<div class="rw" style="margin-top:9px">${L.map(q => `<span class="p on">${nm(q)} ${v5313Smp(S) && V5313_TAGS === "keep" ? "へ送信済" : "へ依頼済"}</span>`).join("")}</div>`;
 }
+function v5320Key(k) {
+    const s = String(k || "").trim();
+    if (/^PI$|見積送り状|proforma/i.test(s))
+        return "PI";
+    if (/^CI$|インボイス|invoice/i.test(s))
+        return "CI";
+    if (/^PL$|パッキング|packing|梱包明細/i.test(s))
+        return "PL";
+    if (/^S\/I$|船積指示|shipping\s*instruction/i.test(s))
+        return "S/I";
+    return "";
+}
+function v5320Cs() { try {
+    return (typeof SHIPS !== "undefined" && SHIPS && SHIPS[SHIPA]) || null;
+}
+catch (e) {
+    return null;
+} }
+function v5320Po(S) { const c = v5320Cs(); return !!((S && S.poNo) || (c && c.po && c.ship === S)); }
+function v5320Chip(S, k) {
+    const key = v5320Key(k), po = v5320Po(S);
+    if (key && (key !== "S/I" || po))
+        return ["下書きあり（編集できます）", true];
+    if (key === "S/I")
+        return ["物流会社の書式で用意", false];
+    let co = false;
+    try {
+        co = po && /原産地/.test(String(k || "")) && typeof v5318Co === "function" && v5318Co(S);
+    }
+    catch (e) { }
+    return [co ? "申請・取得が必要（下書きは「書類をつくる」に）" : "申請・取得が必要", false];
+}
+function v5320ChipHtml(S, k, st) { const c = v5320Chip(S, k); return `<span class="p ${c[1] ? "hi" : "lo"}"${st ? ` style="${st}"` : ""}>${c[0]}</span>`; }
+const V5320_OK = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--good)" stroke-width="2.4" style="margin-top:4px;flex:none" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>';
+const V5320_NG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="margin-top:4px;flex:none" aria-hidden="true"><circle cx="12" cy="12" r="8"/></svg>';
+function v5320DocRows(S) {
+    return (S.docs || []).map(([k, e, d]) => {
+        const ok = v5320Chip(S, k)[1];
+        return `<div style="display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line-2)">${ok ? V5320_OK : V5320_NG}
+    <span><b style="font-size:11.5px">${GL[k] ? tm(k) : esc(k)}</b>
+      <span style="font-size:9.5px;color:var(--ink-3)">\u3000${esc(e)}</span><br>
+      <span style="font-size:10.5px;color:var(--ink-2)">${esc(d)}</span><br>${v5320ChipHtml(S, k, "display:inline-block;margin-top:4px;font-size:9.5px")}</span></div>`;
+    }).join("");
+}
+function v5320Ai1(S) {
+    const chk = (typeof shipStep === "undefined" || shipStep === 0) ? `<br>下の受注内容を確かめてください。違うところは「✎ 受注内容を編集・追加」で直せます。` : "";
+    if (!v5320Po(S) && /^（想定）/.test(String(S.buyer || "")))
+        return `これは<b>見本の受注</b>です（実在しない相手の例）。登録した商品情報から、受注の例をつくりました。` + chk;
+    const who = `${esc(S.country)}の ${esc(S.buyer)} さんの受注です。`;
+    if (v5320Po(S))
+        return who + `取り込んだ発注書${S.poNo ? `（${esc(S.poNo)}）` : ""}の内容を読み込みました。` + chk;
+    return who + chk;
+}
 function shipSteps() {
     const S = D.ship, air = /航空/.test(S.pick);
     return [
-        { t: "受注の内容を確認", ai: `${S.country}の ${S.buyer} さんの受注ですね。商談の記録から内容を読み込みました。<br>
-   <b>入力していただくものはありません。</b>商談フィードバックがそのまま使えます。`,
-            art: { h: "受注内容（自動取得）", b: `${shipStep === 0
+        { t: "受注の内容を確認", ai: v5320Ai1(S),
+            art: { h: "受注内容", b: `${shipStep === 0
                     ? `<div class="rw" style="justify-content:flex-end;margin-bottom:5px"><button class="btn g" style="padding:3px 10px;font-size:10.5px" onclick="openStepEdit(0)">✎ 受注内容を編集・追加</button></div>`
                     : `<div style="font-size:9.5px;color:var(--ink-3);margin-bottom:5px">🔒 ステップ2以降に進んだため確定（変更する場合は「この案件を最初から」）</div>`}<div class="doc" style="border:0;padding:0;background:none">
    <div class="dl"><span>案件番号</span><span class="n">${S.no}</span>
@@ -14807,8 +14875,8 @@ function shipSteps() {
    <span style="color:var(--ink-3)">輸送形態：${esc(S.mode)}</span></div>
    ${v5313Tags(S)}` } },
         { t: "見積を比べる", ai: S.reason,
-            art: { h: "見積の比較（自動取得）", b: `<div class="tw" style="max-height:none;border:0"><table><thead><tr>
-   <th>運送会社</th><th class="num">運賃</th><th class="num">諸掛</th><th class="num">合計</th>
+            art: { h: "見積の比較", b: `<div class="tw" style="max-height:none;border:0"><table><thead><tr>
+   <th>物流会社</th><th class="num">運賃</th><th class="num">諸掛</th><th class="num">合計</th>
    <th>便名・本船</th><th>出発</th><th>到着</th></tr></thead><tbody>
    ${S.quotes.map(q => `<tr${q[7] ? ' style="background:var(--or-soft)"' : ""}>
      <td>${q[7] ? `<b>${esc(q[0])}</b> <span class="p or">おすすめ</span>` : esc(q[0])}</td>
@@ -15642,7 +15710,7 @@ function vShipBody() {
           style="display:block;width:100%;border:0;border-radius:0;box-sizing:border-box;resize:none;min-height:80px;max-height:170px;overflow-y:auto;line-height:1.6"></textarea>
         <div class="rw" style="justify-content:flex-end;padding:5px 8px;border-top:1px solid var(--line-2)">
           <button class="btn g" id="sqgo">質問する</button></div></div>
-      <div class="qb" style="margin-top:6px">${["この運送会社で大丈夫？", "書類は何が必要？", "いつ届きますか？", "入金はいつ？"]
+      <div class="qb" style="margin-top:6px">${["この物流会社で大丈夫？", "書類は何が必要？", "いつ届きますか？", "入金はいつ？"]
         .map(x => `<button class="q" data-sq="${x}">${x}</button>`).join("")}</div>
     </div>
     <div class="stk">
@@ -16287,16 +16355,12 @@ function vOpsDoc() {
     <div class="c"><h3>この案件で使う書類 ${S.docs.length}点</h3>
       <p class="nn">送り先の規制調査から、必要な書類が自動で決まります。</p>${v5317NoRegHtml(S)}
       <div style="margin-top:10px;display:flex;flex-direction:column;gap:0">
-        ${S.docs.map(([k, e, d]) => `<div style="display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line-2)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--good)" stroke-width="2.4" style="margin-top:4px;flex:none"><path d="m20 6-11 11-5-5"/></svg>
-          <span><b style="font-size:11.5px">${GL[k] ? tm(k) : esc(k)}</b>
-            <span style="font-size:9.5px;color:var(--ink-3)">　${esc(e)}</span><br>
-            <span style="font-size:10.5px;color:var(--ink-2)">${esc(d)}</span></span></div>`).join("")}
+        ${v5320DocRows(S)}
       </div>
       <div style="margin-top:11px;padding:10px 12px;border-radius:var(--r2);background:var(--or-soft);font-size:11.5px;line-height:1.7">
         <b style="color:var(--or-deep)">現行版との違い</b><br>
         現行の貿易クラウドは書類の<b>保管</b>はできますが、<b>作成</b>はできません。
-        この版では商品マスタ・商談記録・規制調査から、書類そのものを生成します。</div></div>
+        この版では、商品マスタと受注の内容から、<b>見積書・請求書・梱包明細の下書き</b>をつくれます（原産地証明書などは、発行元への申請・取得が必要です）。</div></div>
   </div>`;
 }
 function rReg() {
@@ -27560,7 +27624,7 @@ vDocs = function () {
     const c = (typeof SHIPS !== "undefined" && SHIPS && SHIPS[SHIPA]) || null;
     const S = D.ship;
     const po = c && c.po;
-    const gen = S ? [["PI", "Proforma Invoice", true], ["CI", "Commercial Invoice", true], ["PL", "Packing List", true], ["S/I", "Shipping Instruction", !!po]].concat((S.docs || []).filter(d => !/^(PI|CI|PL|S\/I)$/.test(d[0])).map(d => [d[0], d[1] || "", false])) : [];
+    const gen = S ? [["PI", "Proforma Invoice", true], ["CI", "Commercial Invoice", true], ["PL", "Packing List", true], ["S/I", "Shipping Instruction", !!po]].concat((S.docs || []).filter(d => !(typeof v5320Key === "function" ? v5320Key(d && d[0]) : /^(PI|CI|PL|S\/I)$/.test(d[0]))).map(d => [d[0], d[1] || "", false])) : [];
     const received = [];
     (poStore() || []).forEach(r => { if (r && r.po && r.po.src)
         received.push([r.po.src.name || "発注書", "発注書（PO）", r.ship.buyer + "（" + r.ship.country + "）", r.po.at || r.at || "", 'onclick="opsTab=\'doc\';render()"']); });
@@ -27574,11 +27638,11 @@ vDocs = function () {
     return `<div class="c" style="margin-bottom:11px">
     <div class="rw" style="justify-content:space-between;align-items:flex-start;gap:8px">
       <div><h3>船積書類 ${S ? `<span class="n" style="color:var(--ink-3);font-weight:400">案件 ${esc(S.no)}</span>` : ""}</h3>
-        <p class="nn">この案件で作る書類です。${po ? "発注書から作成済み・" : ""}「書類をつくる」タブで表示・編集・印刷できます。</p></div>
+        <p class="nn">この案件で使う書類です。${po ? "発注書から下書きをつくりました。" : ""}下書きは「書類をつくる」タブで表示・編集・印刷できます。</p></div>
       <button class="btn g" style="flex:none" onclick="opsTab='doc';render()">書類をつくる／編集する</button></div>
     ${S ? `<div class="tw" style="margin-top:10px;max-height:none"><table><thead><tr><th>書類</th><th>名称</th><th>状態</th><th></th></tr></thead><tbody>
-      ${gen.map(([k, e, done]) => `<tr><td><b>${(typeof GL !== "undefined" && GL[k]) ? tm(k) : esc(k)}</b></td><td style="color:var(--ink-2)">${esc(e)}</td><td>${done ? '<span class="p hi">作成済（編集可）</span>' : '<span class="p lo">申請・取得が必要</span>'}</td><td>${done ? `<button class="btn g" style="padding:2px 8px;font-size:10px" onclick="opsTab='doc';window.__poDocK='${k === "S/I" ? "si" : k.toLowerCase()}';render();setTimeout(()=>{const b=document.querySelector('[data-doc=\\'${k === "S/I" ? "si" : k.toLowerCase()}\\']');if(b)b.click();},50)">表示</button>` : ""}</td></tr>`).join("")}
-    </tbody></table></div>` : `<p class="nn" style="margin-top:8px">まだ出荷案件がありません。「書類をつくる」タブでバイヤーの発注書を取り込むと、船積書類が自動で作られます。</p>`}
+      ${gen.map(([k, e, done]) => `<tr><td><b>${(typeof GL !== "undefined" && GL[k]) ? tm(k) : esc(k)}</b></td><td style="color:var(--ink-2)">${esc(e)}</td><td>${typeof v5320ChipHtml === "function" ? v5320ChipHtml(S, k) : (done ? '<span class="p hi">下書きあり（編集できます）</span>' : '<span class="p lo">申請・取得が必要</span>')}</td><td>${done ? `<button class="btn g" style="padding:2px 8px;font-size:10px" onclick="opsTab='doc';window.__poDocK='${k === "S/I" ? "si" : k.toLowerCase()}';render();setTimeout(()=>{const b=document.querySelector('[data-doc=\\'${k === "S/I" ? "si" : k.toLowerCase()}\\']');if(b)b.click();},50)">表示</button>` : ""}</td></tr>`).join("")}
+    </tbody></table></div>` : `<p class="nn" style="margin-top:8px">まだ出荷案件がありません。「書類をつくる」タブでバイヤーの発注書を取り込むと、見積書（PI）・請求書（CI）・梱包明細（PL）・船積指示書（S/I）の下書きをつくれます。</p>`}
   </div>
   <div class="c" style="margin-bottom:11px">
     <h3>受け取った書類・添付 <span class="n" style="color:var(--ink-3);font-weight:400">${received.length}件</span></h3>
@@ -33840,7 +33904,7 @@ I18N_EL_ROWS.push(["<b>この画面でわかること：</b>アップロード�
     "💡 生成后可在PowerPoint中自由编辑。数值・认证等依据直接来自贸易云的登记数据，<b>资料与实际数据不会不一致</b>。",
     "💡 Tras generarlo puedes editarlo libremente en PowerPoint. Cifras y certificaciones salen de los datos de Trade Cloud, así que <b>el material nunca se desvía de los datos reales</b>."]);
 I18N_PAT2.push({ re: /^📄 (.+) から自動抽出$/, en: "📄 Auto-extracted from $1", zh: "📄 从 $1 自动提取", es: "📄 Extraído automáticamente de $1" }, { re: /^(.+) から取り込み$/, en: "Imported from $1", zh: "从 $1 导入", es: "Importado de $1" }, { re: /^強み(\d+)・価格(\d+)・寸法(\d+)・成分(\d+)$/, en: "Strengths $1 · Prices $2 · Dimensions $3 · Ingredients $4", zh: "优势$1・价格$2・尺寸$3・成分$4", es: "Fortalezas $1 · Precios $2 · Medidas $3 · Ingredientes $4" }, { re: /^(\d+)\/(\d+) 件をAIが参照中$/, en: "AI is using $1/$2", zh: "AI正在参考 $1/$2 项", es: "La IA usa $1/$2" }, { re: /^(\d+)件中 (\d+)件を表示$/, en: "Showing $2 of $1", zh: "显示 $1 件中的 $2 件", es: "Mostrando $2 de $1" }, { re: /^納品可能なレベルに必要な情報が、あと(\d+)項目足りません。$/, en: "$1 more item(s) are needed to reach delivery level.", zh: "距交付级别还缺$1项信息。", es: "Faltan $1 elementos para el nivel de entrega." }, { re: /^🤖 AI商社マンと埋める（必須 残り(\d+)件）$/, en: "🤖 Fill in with the AI (required: $1 left)", zh: "🤖 与AI商社专员补齐（必填 剩余$1项）", es: "🤖 Completar con la IA (obligatorios: quedan $1)" }, { re: /^商品写真(\d+)$/, en: "Product photo $1", zh: "商品照片$1", es: "Foto de producto $1" }, { re: /^資料に入る内容（(.+)）$/, en: I18N_T("What goes into the deck ($1)", [1]), zh: I18N_T("资料包含的内容（$1）", [1]), es: I18N_T("Contenido del material ($1)", [1]) }, { re: /^強み(\d+)件・価格表(\d+)行・(.+?)(\d+)項目・規制(\d+)か国ぶんを自動レイアウトします。写真枠はプレースホルダー（PowerPoint上で貴社の製品写真に差し替え）です。$/, en: I18N_T("Auto-lays out $1 strengths, $2 price rows, $4 spec items ($3) and regulations for $5 countries. Photo frames are placeholders (replace with your photos in PowerPoint).", [3]), zh: I18N_T("自动排版优势$1项・价格表$2行・$3$4项・法规$5国。照片框为占位符（请在PowerPoint中替换为贵公司产品照片）。", [3]), es: I18N_T("Maqueta automáticamente $1 fortalezas, $2 filas de precios, $4 datos ($3) y normativa de $5 países. Los marcos de foto son marcadores (sustitúyelos en PowerPoint).", [3]) });
-I18N_ROWS2.push(["ガントチャート を隠す", "Hide Gantt chart", "隐藏甘特图", "Ocultar Gantt"], ["ガントチャート を表示", "Show Gantt chart", "显示甘特图", "Mostrar Gantt"], ["AIにタスクを作らせる", "Let the AI create tasks", "让AI创建任务", "Que la IA cree tareas"], ["期限切れのタスク", "Overdue tasks", "已逾期的任务", "Tareas vencidas"], ["問題ありません", "All good", "没有问题", "Sin problemas"], ["開始が遅れているタスク", "Tasks started late", "开始延迟的任务", "Tareas con inicio retrasado"], ["1週間以内が期限のタスク", "Tasks due within a week", "一周内到期的任务", "Tareas que vencen en una semana"], ["作業期間中のタスク", "Tasks in work period", "工作期间中的任务", "Tareas en periodo de trabajo"], ["終了済みタスクを非表示", "Hide finished tasks", "隐藏已结束任务", "Ocultar tareas terminadas"], ["タスク名", "Task", "任务名", "Tarea"], ["優先度", "Priority", "优先级", "Prioridad"], ["開始日", "Start", "开始日", "Inicio"], ["終了日", "End", "结束日", "Fin"], ["ステータス", "Status", "状态", "Estado"], ["この案件で起きたこと", "What happened in this case", "本案件的动态", "Qué ha pasado en este caso"], ["誰が・いつ・何をしたかが自動で残ります。担当が代わっても経緯を追えます。", "Who did what, and when, is recorded automatically. The history stays even if the person in charge changes.", "自动记录谁・何时・做了什么。即使负责人更换也能追溯经过。", "Quién hizo qué y cuándo queda registrado automáticamente. El historial se conserva aunque cambie el responsable."], ["商品情報をアップロードしました", "Product information uploaded", "已上传商品信息", "Información del producto subida"], ["タスクはどこから生まれたか", "Where tasks come from", "任务从何而来", "De dónde salen las tareas"], ["現行版は空のタスクを手で作る形でした。この版では、たまったデータからAIが作ります。", "In the current version you created empty tasks by hand. In this version the AI creates them from the data collected.", "现行版需要手动创建空任务。本版中由AI根据积累的数据创建。", "En la versión actual creabas tareas vacías a mano. En esta, la IA las crea a partir de los datos."], ["断られた理由から", "From rejection reasons", "来自被拒绝的理由", "De los motivos de rechazo"], ["失注の原因を解消するタスクを自動生成", "Auto-generates tasks to remove the causes of lost deals", "自动生成消除失单原因的任务", "Genera tareas para eliminar las causas de pérdida"], ["規制調査の警告から", "From regulatory warnings", "来自法规调查的警告", "De las alertas regulatorias"], ["未対応の認証・届出をタスク化", "Turns pending certifications and filings into tasks", "将未处理的认证・申报转为任务", "Convierte certificaciones y trámites pendientes en tareas"], ["受注の確定から", "From confirmed orders", "来自确定的订单", "De los pedidos confirmados"], ["出荷手続きの子タスクを一括生成", "Generates shipping subtasks in bulk", "批量生成出货手续的子任务", "Genera en bloque las subtareas de envío"], ["定例会の日程から", "From regular meeting dates", "来自例会日程", "De las reuniones periódicas"], ["資料準備のタスクを前倒しで生成", "Creates preparation tasks ahead of time", "提前生成资料准备任务", "Crea tareas de preparación con antelación"], ["毎月", "Monthly", "每月", "Mensual"], ["案件数は無制限（タブ表示は4件・外した案件は🔍から再開）", "Unlimited cases (4 shown as tabs; reopen removed ones via 🔍)", "案件数量不限（标签显示4个・移除的案件可从🔍重新打开）", "Casos ilimitados (4 en pestañas; los quitados se reabren con 🔍)"], ["いまどこ？", "Where am I?", "当前位置？", "¿Dónde estoy?"], ["受注の内容を確認", "Confirm order details", "确认订单内容", "Confirmar el pedido"], ["運送会社に見積を頼む", "Request freight quotes", "向货运公司询价", "Pedir cotizaciones de flete"], ["見積を比べる", "Compare quotes", "比较报价", "Comparar cotizaciones"], ["船積書類をつくる", "Prepare shipping documents", "制作装运单证", "Preparar documentos de embarque"], ["データを連携する", "Sync data", "联动数据", "Sincronizar datos"], ["予定を登録する", "Register the schedule", "登记日程", "Registrar el calendario"], ["依頼した見積はここに残ります（パネルを閉じても消えません）。「開く」で交渉記録・国ごとの仮押さえ・再見積へ進めます。複数社の回答がある国は、AI物流マンの推奨と相見積もり一覧から自分で選べます。", "Requested quotes stay here (even after closing the panel). “Open” takes you to negotiation notes, per-country holds and re-quotes. Where several forwarders replied, choose yourself from the AI Logistics pick and the comparison list.", "已发出的询价保留在这里（关闭面板也不会消失）。点“打开”可进入谈判记录・各国暂订・重新询价。有多家回复的国家，可根据AI物流专员推荐和比价列表自行选择。", "Las cotizaciones pedidas se conservan aquí (aunque cierres el panel). “Abrir” lleva a notas de negociación, reservas por país y recotización. Si respondieron varias empresas, elige entre la recomendación IA y la lista comparativa."], ["まだ依頼がありません。「＋ 新しくAI見積を依頼」で、貿易クラウド内の物流会社（AI物流マン）へ見積を出せます。", "No requests yet. Use “＋ New AI quote request” to ask the forwarders inside Trade Cloud (AI Logistics) for quotes.", "尚无询价。通过“＋ 新建AI询价”可向贸易云内的物流公司（AI物流专员）询价。", "Aún no hay solicitudes. Con “＋ Nueva cotización IA” pides presupuesto a los transitarios de Trade Cloud (IA logística)."], ["**太字**・*斜体*・「- 」箇条書き・改行OK", "**bold** · *italic* · “- ” bullets · line breaks OK", "**粗体**・*斜体*・“- ”项目符号・可换行", "**negrita** · *cursiva* · viñetas “- ” · saltos de línea"], ["この運送会社で大丈夫？", "Is this forwarder OK?", "这家货运公司可以吗？", "¿Este transitario está bien?"], ["書類は何が必要？", "Which documents are needed?", "需要哪些单证？", "¿Qué documentos hacen falta?"], ["いつ届きますか？", "When will it arrive?", "什么时候到？", "¿Cuándo llegará?"], ["入金はいつ？", "When is payment due?", "什么时候收款？", "¿Cuándo se cobra?"], ["✎ 受注内容を編集・追加", "✎ Edit / add order details", "✎ 编辑・补充订单内容", "✎ Editar / añadir datos del pedido"], ["✎ このステップを編集", "✎ Edit this step", "✎ 编辑此步骤", "✎ Editar este paso"], ["案件番号", "Case no.", "案件编号", "N.º de caso"], ["お相手", "Buyer", "对方", "Comprador"], ["単価", "Unit price", "单价", "Precio unitario"], ["支払", "Payment", "付款", "Pago"], ["希望着荷", "Requested arrival", "希望到货", "Llegada deseada"], ["手入力がゼロになるのは、すでに情報がたまっているからです。", "Zero manual entry, because the information is already there.", "之所以无需手动输入，是因为信息已经积累完毕。", "Cero entrada manual, porque la información ya está acumulada."], ["（記録はこれから）", "(to be recorded)", "（待记录）", "(por registrar)"], ["商品マスタ（シート②）", "Product master (sheet ②)", "商品主数据（表②）", "Maestro de productos (hoja ②)"], ["重量・箱サイズ・単価", "Weight, carton size, unit price", "重量・箱尺寸・单价", "Peso, caja y precio"], ["車両情報表（シート③）", "Vehicle spec sheet (sheet ③)", "车辆信息表（表③）", "Ficha del vehículo (hoja ③)"], ["成分・アレルゲン", "Ingredients & allergens", "成分・过敏原", "Ingredientes y alérgenos"], ["必要書類・関税率", "Required documents & tariff rate", "所需单证・关税率", "Documentos y arancel"], ["会社情報", "Company info", "公司信息", "Datos de la empresa"], ["住所・輸出者登録番号", "Address & exporter registration no.", "地址・出口商登记号", "Dirección y n.º de exportador"], ["① AI法務に相談する", "① Ask AI Legal", "① 咨询AI法务", "① Consultar a IA Legal"], ["📎 ファイル添付", "📎 Attach file", "📎 添加附件", "📎 Adjuntar archivo"], ["② ひな型が来ない → AI法務が起草", "② No draft from the buyer → AI Legal drafts one", "② 对方不提供模板 → AI法务起草", "② Sin borrador del comprador → IA Legal lo redacta"], ["まだ直接メッセージでやり取り中のBuyerがいません。", "No buyers in direct message conversation yet.", "尚无正在直接通讯的买家。", "Aún no hay compradores con mensajes directos."], ["まずは「バイヤーネットワーク・拠点」から気になるバイヤーに直接連絡し、返信のやり取りを始めてください。", "Start by contacting a buyer directly from “Buyer Network & bases” and get a conversation going.", "请先从“买家网络・据点”直接联系感兴趣的买家，开始往来沟通。", "Empieza contactando a un comprador desde “Red de compradores y bases” y mantén la conversación."], ["バイヤーネットワーク・拠点を開く", "Open Buyer Network & bases", "打开买家网络・据点", "Abrir Red de compradores y bases"], ["③ 契約書をチェックに出す", "③ Submit a contract for review", "③ 提交合同审查", "③ Enviar un contrato a revisión"], ["ここに契約書ファイルをドラッグ＆ドロップ", "Drag & drop contract files here", "将合同文件拖放到这里", "Arrastra aquí los archivos del contrato"], ["またはクリックしてファイルを選択（複数可）", "or click to choose files (multiple OK)", "或点击选择文件（可多个）", "o haz clic para elegir archivos (varios)"], ["Google ドキュメント／スライドのURLから取り込む", "Import from a Google Docs / Slides URL", "从Google文档／幻灯片URL导入", "Importar desde URL de Google Docs / Slides"], ["※ AIレビューは法的助言（弁護士業務）ではなく、社内検討のための参考情報です。重要な契約は締結前に弁護士のリーガルチェックを受けてください。", "※ The AI review is not legal advice (attorney services) but reference information for internal review. Have important contracts checked by a lawyer before signing.", "※ AI审查并非法律意见（律师业务），仅为内部讨论的参考信息。重要合同签署前请由律师进行法律审查。", "※ La revisión IA no es asesoría legal, sino información de referencia interna. Haz revisar los contratos importantes por un abogado antes de firmar."]);
+I18N_ROWS2.push(["ガントチャート を隠す", "Hide Gantt chart", "隐藏甘特图", "Ocultar Gantt"], ["ガントチャート を表示", "Show Gantt chart", "显示甘特图", "Mostrar Gantt"], ["AIにタスクを作らせる", "Let the AI create tasks", "让AI创建任务", "Que la IA cree tareas"], ["期限切れのタスク", "Overdue tasks", "已逾期的任务", "Tareas vencidas"], ["問題ありません", "All good", "没有问题", "Sin problemas"], ["開始が遅れているタスク", "Tasks started late", "开始延迟的任务", "Tareas con inicio retrasado"], ["1週間以内が期限のタスク", "Tasks due within a week", "一周内到期的任务", "Tareas que vencen en una semana"], ["作業期間中のタスク", "Tasks in work period", "工作期间中的任务", "Tareas en periodo de trabajo"], ["終了済みタスクを非表示", "Hide finished tasks", "隐藏已结束任务", "Ocultar tareas terminadas"], ["タスク名", "Task", "任务名", "Tarea"], ["優先度", "Priority", "优先级", "Prioridad"], ["開始日", "Start", "开始日", "Inicio"], ["終了日", "End", "结束日", "Fin"], ["ステータス", "Status", "状态", "Estado"], ["この案件で起きたこと", "What happened in this case", "本案件的动态", "Qué ha pasado en este caso"], ["誰が・いつ・何をしたかが自動で残ります。担当が代わっても経緯を追えます。", "Who did what, and when, is recorded automatically. The history stays even if the person in charge changes.", "自动记录谁・何时・做了什么。即使负责人更换也能追溯经过。", "Quién hizo qué y cuándo queda registrado automáticamente. El historial se conserva aunque cambie el responsable."], ["商品情報をアップロードしました", "Product information uploaded", "已上传商品信息", "Información del producto subida"], ["タスクはどこから生まれたか", "Where tasks come from", "任务从何而来", "De dónde salen las tareas"], ["現行版は空のタスクを手で作る形でした。この版では、たまったデータからAIが作ります。", "In the current version you created empty tasks by hand. In this version the AI creates them from the data collected.", "现行版需要手动创建空任务。本版中由AI根据积累的数据创建。", "En la versión actual creabas tareas vacías a mano. En esta, la IA las crea a partir de los datos."], ["断られた理由から", "From rejection reasons", "来自被拒绝的理由", "De los motivos de rechazo"], ["失注の原因を解消するタスクを自動生成", "Auto-generates tasks to remove the causes of lost deals", "自动生成消除失单原因的任务", "Genera tareas para eliminar las causas de pérdida"], ["規制調査の警告から", "From regulatory warnings", "来自法规调查的警告", "De las alertas regulatorias"], ["未対応の認証・届出をタスク化", "Turns pending certifications and filings into tasks", "将未处理的认证・申报转为任务", "Convierte certificaciones y trámites pendientes en tareas"], ["受注の確定から", "From confirmed orders", "来自确定的订单", "De los pedidos confirmados"], ["出荷手続きの子タスクを一括生成", "Generates shipping subtasks in bulk", "批量生成出货手续的子任务", "Genera en bloque las subtareas de envío"], ["定例会の日程から", "From regular meeting dates", "来自例会日程", "De las reuniones periódicas"], ["資料準備のタスクを前倒しで生成", "Creates preparation tasks ahead of time", "提前生成资料准备任务", "Crea tareas de preparación con antelación"], ["毎月", "Monthly", "每月", "Mensual"], ["案件数は無制限（タブ表示は4件・外した案件は🔍から再開）", "Unlimited cases (4 shown as tabs; reopen removed ones via 🔍)", "案件数量不限（标签显示4个・移除的案件可从🔍重新打开）", "Casos ilimitados (4 en pestañas; los quitados se reabren con 🔍)"], ["いまどこ？", "Where am I?", "当前位置？", "¿Dónde estoy?"], ["受注の内容を確認", "Confirm order details", "确认订单内容", "Confirmar el pedido"], ["運送会社に見積を頼む", "Request freight quotes", "向货运公司询价", "Pedir cotizaciones de flete"], ["見積を比べる", "Compare quotes", "比较报价", "Comparar cotizaciones"], ["船積書類をつくる", "Prepare shipping documents", "制作装运单证", "Preparar documentos de embarque"], ["データを連携する", "Sync data", "联动数据", "Sincronizar datos"], ["予定を登録する", "Register the schedule", "登记日程", "Registrar el calendario"], ["依頼した見積はここに残ります（パネルを閉じても消えません）。「開く」で交渉記録・国ごとの仮押さえ・再見積へ進めます。複数社の回答がある国は、AI物流マンの推奨と相見積もり一覧から自分で選べます。", "Requested quotes stay here (even after closing the panel). “Open” takes you to negotiation notes, per-country holds and re-quotes. Where several forwarders replied, choose yourself from the AI Logistics pick and the comparison list.", "已发出的询价保留在这里（关闭面板也不会消失）。点“打开”可进入谈判记录・各国暂订・重新询价。有多家回复的国家，可根据AI物流专员推荐和比价列表自行选择。", "Las cotizaciones pedidas se conservan aquí (aunque cierres el panel). “Abrir” lleva a notas de negociación, reservas por país y recotización. Si respondieron varias empresas, elige entre la recomendación IA y la lista comparativa."], ["まだ依頼がありません。「＋ 新しくAI見積を依頼」で、貿易クラウド内の物流会社（AI物流マン）へ見積を出せます。", "No requests yet. Use “＋ New AI quote request” to ask the forwarders inside Trade Cloud (AI Logistics) for quotes.", "尚无询价。通过“＋ 新建AI询价”可向贸易云内的物流公司（AI物流专员）询价。", "Aún no hay solicitudes. Con “＋ Nueva cotización IA” pides presupuesto a los transitarios de Trade Cloud (IA logística)."], ["**太字**・*斜体*・「- 」箇条書き・改行OK", "**bold** · *italic* · “- ” bullets · line breaks OK", "**粗体**・*斜体*・“- ”项目符号・可换行", "**negrita** · *cursiva* · viñetas “- ” · saltos de línea"], ["この物流会社で大丈夫？", "Is this forwarder OK?", "这家物流公司可以吗？", "¿Este transitario está bien?"], ["書類は何が必要？", "Which documents are needed?", "需要哪些单证？", "¿Qué documentos hacen falta?"], ["いつ届きますか？", "When will it arrive?", "什么时候到？", "¿Cuándo llegará?"], ["入金はいつ？", "When is payment due?", "什么时候收款？", "¿Cuándo se cobra?"], ["✎ 受注内容を編集・追加", "✎ Edit / add order details", "✎ 编辑・补充订单内容", "✎ Editar / añadir datos del pedido"], ["✎ このステップを編集", "✎ Edit this step", "✎ 编辑此步骤", "✎ Editar este paso"], ["案件番号", "Case no.", "案件编号", "N.º de caso"], ["お相手", "Buyer", "对方", "Comprador"], ["単価", "Unit price", "单价", "Precio unitario"], ["支払", "Payment", "付款", "Pago"], ["希望着荷", "Requested arrival", "希望到货", "Llegada deseada"], ["手入力がゼロになるのは、すでに情報がたまっているからです。", "Zero manual entry, because the information is already there.", "之所以无需手动输入，是因为信息已经积累完毕。", "Cero entrada manual, porque la información ya está acumulada."], ["（記録はこれから）", "(to be recorded)", "（待记录）", "(por registrar)"], ["商品マスタ（シート②）", "Product master (sheet ②)", "商品主数据（表②）", "Maestro de productos (hoja ②)"], ["重量・箱サイズ・単価", "Weight, carton size, unit price", "重量・箱尺寸・单价", "Peso, caja y precio"], ["車両情報表（シート③）", "Vehicle spec sheet (sheet ③)", "车辆信息表（表③）", "Ficha del vehículo (hoja ③)"], ["成分・アレルゲン", "Ingredients & allergens", "成分・过敏原", "Ingredientes y alérgenos"], ["必要書類・関税率", "Required documents & tariff rate", "所需单证・关税率", "Documentos y arancel"], ["会社情報", "Company info", "公司信息", "Datos de la empresa"], ["住所・輸出者登録番号", "Address & exporter registration no.", "地址・出口商登记号", "Dirección y n.º de exportador"], ["① AI法務に相談する", "① Ask AI Legal", "① 咨询AI法务", "① Consultar a IA Legal"], ["📎 ファイル添付", "📎 Attach file", "📎 添加附件", "📎 Adjuntar archivo"], ["② ひな型が来ない → AI法務が起草", "② No draft from the buyer → AI Legal drafts one", "② 对方不提供模板 → AI法务起草", "② Sin borrador del comprador → IA Legal lo redacta"], ["まだ直接メッセージでやり取り中のBuyerがいません。", "No buyers in direct message conversation yet.", "尚无正在直接通讯的买家。", "Aún no hay compradores con mensajes directos."], ["まずは「バイヤーネットワーク・拠点」から気になるバイヤーに直接連絡し、返信のやり取りを始めてください。", "Start by contacting a buyer directly from “Buyer Network & bases” and get a conversation going.", "请先从“买家网络・据点”直接联系感兴趣的买家，开始往来沟通。", "Empieza contactando a un comprador desde “Red de compradores y bases” y mantén la conversación."], ["バイヤーネットワーク・拠点を開く", "Open Buyer Network & bases", "打开买家网络・据点", "Abrir Red de compradores y bases"], ["③ 契約書をチェックに出す", "③ Submit a contract for review", "③ 提交合同审查", "③ Enviar un contrato a revisión"], ["ここに契約書ファイルをドラッグ＆ドロップ", "Drag & drop contract files here", "将合同文件拖放到这里", "Arrastra aquí los archivos del contrato"], ["またはクリックしてファイルを選択（複数可）", "or click to choose files (multiple OK)", "或点击选择文件（可多个）", "o haz clic para elegir archivos (varios)"], ["Google ドキュメント／スライドのURLから取り込む", "Import from a Google Docs / Slides URL", "从Google文档／幻灯片URL导入", "Importar desde URL de Google Docs / Slides"], ["※ AIレビューは法的助言（弁護士業務）ではなく、社内検討のための参考情報です。重要な契約は締結前に弁護士のリーガルチェックを受けてください。", "※ The AI review is not legal advice (attorney services) but reference information for internal review. Have important contracts checked by a lawyer before signing.", "※ AI审查并非法律意见（律师业务），仅为内部讨论的参考信息。重要合同签署前请由律师进行法律审查。", "※ La revisión IA no es asesoría legal, sino información de referencia interna. Haz revisar los contratos importantes por un abogado antes de firmar."]);
 I18N_EL_ROWS.push(["<b>この画面でわかること：</b>いま何が終わっていて、何が遅れているか。棒グラフ（ガントチャート）で、いつまでに何をするかが一目で分かります。",
     "<b>What this page shows:</b> What is done and what is behind. The bar chart (Gantt) shows at a glance what to do by when.",
     "<b>本页可见：</b>目前哪些已完成、哪些延迟。通过条形图（甘特图）一眼看出何时该做什么。",
@@ -66579,6 +66643,47 @@ if (typeof deckBind === "function") {
             ]);
         if (typeof I18N !== "undefined" && I18N && Array.isArray(I18N.pat))
             I18N.pat.push({ re: /^受注 (.+) を承認しました（承認の記録を残しました）$/, en: "Order $1 approved (the approval is recorded)", zh: "已批准订单 $1（已记录批准）", es: "Pedido $1 aprobado (la aprobación queda registrada)" }, { re: /^受注 (.+) を「承認待ち」にしました（承認者への通知は送りません。承認者の方にお知らせください）$/, en: "Order $1 set to “awaiting approval” (no notice is sent to the approver; please let them know)", zh: "订单 $1 已设为“待批准”（不会通知批准人，请您告知批准人）", es: "Pedido $1 marcado «pendiente de aprobación» (no se avisa al aprobador; avísele usted)" });
+    }
+    catch (e) { }
+})();
+(function () {
+    try {
+        if (typeof v30I18n === "function")
+            v30I18n([
+                ["受注内容", "Order details", "订单内容", "Datos del pedido"],
+                ["見積の比較", "Quote comparison", "报价比较", "Comparación de cotizaciones"],
+                ["この物流会社で大丈夫？", "Is this forwarder OK?", "这家物流公司可以吗？", "¿Este transitario está bien?"],
+                ["下書きあり（編集できます）", "Draft ready (editable)", "已有草稿（可编辑）", "Borrador listo (editable)"],
+                ["申請・取得が必要", "Must be applied for and obtained", "需申请・取得", "Hay que solicitarlo y obtenerlo"],
+                ["申請・取得が必要（下書きは「書類をつくる」に）", "Must be applied for (draft in “Create documents”)", "需申请・取得（草稿见“制作单证”）", "Hay que solicitarlo (borrador en «Crear documentos»)"],
+                ["物流会社の書式で用意", "Prepare it in the forwarder’s format", "按物流公司的格式准备", "Prepárelo con el formato del transitario"],
+                ["この案件で使う書類です。下書きは「書類をつくる」タブで表示・編集・印刷できます。",
+                    "Documents used in this case. View, edit and print the drafts in the “Create documents” tab.",
+                    "此案件使用的单证。草稿可在“制作单证”标签中查看・编辑・打印。",
+                    "Documentos de este caso. Vea, edite e imprima los borradores en la pestaña «Crear documentos»."],
+                ["この案件で使う書類です。発注書から下書きをつくりました。下書きは「書類をつくる」タブで表示・編集・印刷できます。",
+                    "Documents used in this case. Drafts were made from the purchase order. View, edit and print them in the “Create documents” tab.",
+                    "此案件使用的单证。已根据订单制作草稿。草稿可在“制作单证”标签中查看・编辑・打印。",
+                    "Documentos de este caso. Los borradores se hicieron a partir de la orden de compra. Véalos, edítelos e imprímalos en la pestaña «Crear documentos»."],
+                ["まだ出荷案件がありません。「書類をつくる」タブでバイヤーの発注書を取り込むと、見積書（PI）・請求書（CI）・梱包明細（PL）・船積指示書（S/I）の下書きをつくれます。",
+                    "No shipments yet. Import the buyer’s purchase order in the “Create documents” tab to make drafts of the PI, CI, PL and S/I.",
+                    "还没有出货案件。在“制作单证”标签中导入买家的订单，即可制作PI・CI・PL・S/I的草稿。",
+                    "Aún no hay envíos. Importe la orden de compra del comprador en la pestaña «Crear documentos» para crear borradores de PI, CI, PL y S/I."],
+                ["受注ごとの承認・受注書・請求書・入金の状況の一覧です。", "Approval, order confirmation, invoice and payment status for each order.", "各订单的审批・订单确认书・发票・收款状况一览。", "Estado de aprobación, confirmación de pedido, factura y cobro de cada pedido."],
+                ["見積書・請求書をつくる", "Create quotes and invoices", "制作报价单・发票", "Crear cotizaciones y facturas"],
+                ["見積書・請求書の下書きは「書類をつくる」で", "Draft quotes and invoices in “Create documents”", "报价单・发票的草稿请在“制作单证”中制作", "Borradores de cotizaciones y facturas en «Crear documentos»"],
+                ["受注書の作成と、商談記録との自動のつなぎは、まだありません。見積書（PI）・請求書（CI）の下書きは「書類をつくる」でつくれます。",
+                    "Order confirmations and automatic links to meeting records are not available yet. You can draft the quotation (PI) and invoice (CI) in “Create documents”.",
+                    "尚不支持制作订单确认书以及与商谈记录的自动关联。报价单（PI）・发票（CI）的草稿可在“制作单证”中制作。",
+                    "Aún no se pueden crear confirmaciones de pedido ni vincular automáticamente los registros de reuniones. Puede crear borradores de la cotización (PI) y la factura (CI) en «Crear documentos»."]
+            ]);
+        if (typeof v30I18nEl === "function")
+            v30I18nEl([
+                ["<b>現行版との違い</b><br> 現行の貿易クラウドは書類の<b>保管</b>はできますが、<b>作成</b>はできません。 この版では、商品マスタと受注の内容から、<b>見積書・請求書・梱包明細の下書き</b>をつくれます（原産地証明書などは、発行元への申請・取得が必要です）。",
+                    "<b>What changed from the current version</b><br>The current Trade Cloud can <b>store</b> documents but cannot <b>create</b> them. This version can make <b>drafts of the quotation, invoice and packing list</b> from your product master and the order details (certificates of origin and similar documents must be applied for and obtained from the issuer).",
+                    "<b>与现行版的区别</b><br>现行的贸易云可以<b>保管</b>单证，但不能<b>制作</b>。本版可根据商品主数据和订单内容，制作<b>报价单・发票・装箱单的草稿</b>（原产地证明书等需向签发机构申请・取得）。",
+                    "<b>Diferencia con la versión actual</b><br>La Trade Cloud actual puede <b>guardar</b> documentos, pero no <b>crearlos</b>. Esta versión crea <b>borradores de la cotización, la factura y la lista de empaque</b> a partir del maestro de productos y los datos del pedido (los certificados de origen y similares deben solicitarse al emisor)."]
+            ]);
     }
     catch (e) { }
 })();
