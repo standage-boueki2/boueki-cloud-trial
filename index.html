@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="b0c4ecc8ed4f";
+const BC20_BUILD="4d8a9b3c8d32";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -6714,7 +6714,7 @@ const NEED = [
     { k: "hs", n: "HSコード", w: 5, use: "関税率・必要書類の自動判定",
         q: "HSコード（世界共通の商品分類番号）はお分かりですか？<b>これが決まると関税率と必要書類が自動で出ます。</b>分からなければ「不明」と入力してください。こちらで候補を出します。",
         ex: "例：0902.10" },
-    { k: "priceRows", n: "価格表", w: 5, use: "見積書・受注書の自動作成",
+    { k: "priceRows", n: "価格表", w: 5, use: "見積書・請求書の下書き",
         q: "卸価格を教えてください。<b>数量帯ごと</b>にあると、AIが「その数量ならいくら」を即答できます。",
         ex: "例：〜499個 US$15.80／500〜1,999個 US$14.50／2,000個〜 US$13.20" },
     { k: "moq", n: "最小発注数量（MOQ）", w: 4, use: "商談での即答・失注の予防",
@@ -7669,7 +7669,7 @@ async function buyerAICheck(b) {
     const NEEDB = [["co", "会社名"], ["cty", "国"], ["biz", "業種・業態"], ["ints", "取扱・関心カテゴリ"], ["contact", "担当者・連絡先"]];
     const localMissing = NEEDB.filter(([k]) => !String(b[k] || "").trim()).map(([, n]) => n);
     if (!(typeof ppReady === "function" && ppReady())) {
-        b.ai = { missing: localMissing, advice: ["AIエンジン接続後に、実在確認（ファクトチェック）と商談アドバイスを自動実施します"],
+        b.ai = { missing: localMissing, advice: ["AIエンジンにつながった後に「🔄 AIで再チェック」を押すと、実在確認（ファクトチェック）と商談アドバイスを行います"],
             fact: { verdict: "未実施", note: "AIエンジン未接続のためWeb確認は未実施です", cits: [] }, checkedAt: (typeof legNow === "function" ? legNow() : "") };
         mybSave();
         return b.ai;
@@ -7743,7 +7743,7 @@ function openBuyerAdd(pre) {
     pre = pre || {};
     const on = typeof ppReady === "function" && ppReady();
     openDW(`<h3>＋ Buyerを追加（自社で開拓した相手）</h3>
-    <p class="nn" style="margin-top:4px">保存すると<b>AI商社マンが自動で「不足情報の確認・商談アドバイス・実在のファクトチェック（Web検索）」</b>を行います${on ? "" : "（AIエンジン接続後に自動実施）"}。</p>
+    <p class="nn" style="margin-top:4px">保存すると<b>AI商社マンが自動で「不足情報の確認・商談アドバイス・実在のファクトチェック（Web検索）」</b>を行います${on ? "" : "（いまは AI エンジンにつながっていないため行いません。つながった後に、登録した相手を開いて「🔄 AIで再チェック」で行えます）"}。</p>
     <div class="rw" style="margin-top:9px;gap:6px;flex-wrap:wrap">
       <span class="rw" style="flex:1;min-width:220px;gap:5px">
         <input class="sel" id="mbUrl" placeholder="会社サイトURLから自動入力（任意）" style="flex:1;min-width:0">
@@ -12231,12 +12231,12 @@ function vTask(p) {
         ${D.timeline.map(([w, t, d], i) => `<div class="ti ${i === 0 ? "o" : ""}"><time>${esc(w)}</time><b>${AT(t)}</b><br>
           <span style="color:var(--ink-2)">${AT(d)}</span></div>`).join("")}</div></div>
     <div class="c"><h3>タスクはどこから生まれたか</h3>
-      <p class="nn">現行版は空のタスクを手で作る形でした。この版では、たまったデータからAIが作ります。</p>
+      <p class="nn">現行版は空のタスクを手で作る形でした。この版では、たまったデータからタスクの案を出します。「AIにタスクを作らせる」で案を確かめ、選んだものだけ作ります。</p>
       <div style="margin-top:10px;display:flex;flex-direction:column;gap:7px;font-size:11.5px">
-        ${[["断られた理由から", D.lost.length + "件", "失注の原因を解消するタスクを自動生成", "or"],
-        ["規制調査の警告から", Object.values(D.regs).filter(r => r.warn).length + "件", "未対応の認証・届出をタスク化", "crit"],
-        ["受注の確定から", "1件", "出荷手続きの子タスクを一括生成", "bl"],
-        ["定例会の日程から", "毎月", "資料準備のタスクを前倒しで生成", "good"]]
+        ${[["断られた理由から", (D.lost || []).length + "件", "理由ごとに、解消するタスクの案", "or"],
+        ["規制調査の警告から", Object.values(D.regs || {}).filter(r => r.warn).length + "件", "未対応の認証・届出のタスクの案", "crit"],
+        ["受注の確定から", (D.ship ? 1 : 0) + "件", "いま開いている出荷の案件の、準備のタスクの案", "bl"],
+        ["定例会のタスクから", ((D.tasks || []).some(t => /定例会/.test(String(t && t.n || ""))) ? 1 : 0) + "件", "「定例会」のタスクの、資料準備のタスクの案", "good"]]
         .map(([a, b, c, col]) => `<div style="display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;
             padding:8px 0;border-bottom:1px dashed var(--line-2)">
             <span style="width:8px;height:8px;border-radius:50%;background:var(--${col})"></span>
@@ -12246,7 +12246,7 @@ function vTask(p) {
       <div style="margin-top:11px;padding:10px 12px;border-radius:var(--r2);background:var(--or-soft);font-size:11.5px;line-height:1.7">
         <b style="color:var(--or-deep)">現行版との違い</b><br>
         現行の貿易クラウドには「タスクプリセット」（定型テンプレート）がありますが、<b>どのテンプレートを使うかは人が選ぶ</b>必要がありました。
-        この版では、失注理由・規制の警告・受注データから<b>AIが必要なタスクを提案</b>します。</div></div>
+        この版では、失注理由・規制の警告・出荷の案件から<b>AIがタスクの案を出します</b>（作るかどうかは選べます）。</div></div>
   </div>`;
 }
 function tRows() {
@@ -16233,7 +16233,7 @@ async function askShip(q) {
 function vOps(p) {
     const S = D.ship;
     const tabs = [["reg", "1", "規制を調べる", "送り先の決まりごと・関税・必要書類"], ["doc", "2", "書類をつくる", "発注書の取り込み・PI／CI／PL・S/I"],
-        ["ship", "3", "出荷を進める", "物流AI見積・仮押さえ・出荷手続き"], ["ord", "4", "受注・請求・入金", "受注書・請求書・入金の管理"], ["file", "", "この案件の書類", "作成した書類の一覧"]];
+        ["ship", "3", "出荷を進める", "物流AI見積・仮押さえ・出荷手続き"], ["ord", "4", "受注・請求・入金", "受注書・請求書・入金の管理"], ["file", "", "この案件の書類", "使う書類と、下書き・申請の状況"]];
     const head = ph(p, "<b>この画面でできること：</b>送り先の決まりごとを調べ、書類をつくり、物流会社への見積から出荷・入金までを、この1画面の流れで進めます。") +
         `<div class="optabs" role="tablist">${tabs.map(([k, n, t, d]) => `<button class="optab ${opsTab === k ? "on" : ""} ${n ? "" : "sub"}" role="tab" aria-selected="${opsTab === k}" onclick="opsTab='${jsa(k)}';render()"><i>${n || "📁"}</i><span><b>${t}</b><small>${d}</small></span></button>`).join("")}</div>`;
     if (opsTab === "file")
@@ -17259,12 +17259,32 @@ function openNotif() {
        <div><b>${esc(t)}</b><br><span style="color:var(--ink-2)">${esc(d)}</span><time>${esc(w)}</time></div></div>`).join("")}`);
     document.querySelectorAll("[data-dmnotif]").forEach(x => x.addEventListener("click", () => { openDMThread(x.dataset.dmnotif); }));
 }
+function v5321NetAsk(base) {
+    base = String(base || "").trim();
+    const who = (base ? base + "拠点" : "現地拠点");
+    if (typeof s30TkNew !== "function") {
+        toast("拠点への依頼は、この画面からは送れません（つながっていません）。担当のSTANDAGE営業・CSにご相談ください（別途費用）");
+        return;
+    }
+    s30TkNew();
+    try {
+        const v = (id, x) => { const e = document.getElementById(id); if (e)
+            e.value = x; };
+        v("s30tc", "そのほか");
+        v("s30ts", who + "への依頼の相談（引き合い開拓・商談代行）");
+        v("s30tb", who + "に頼みたいこと：\n相手の国・業種：\n時期：\n（拠点への依頼は別途費用〔稼働費・成果報酬〕がかかります。費用は担当からご案内ください）");
+        const demo = typeof v30Demo === "function" && v30Demo(), f = document.querySelector("#pn .b30form");
+        if (!demo && f && !document.getElementById("v5321net"))
+            f.insertAdjacentHTML("beforebegin", `<p class="nn" id="v5321net" style="margin:0 0 8px">拠点への依頼は、STANDAGE の担当への相談として送ります（別途費用：稼働費・成果報酬）。</p>`);
+    }
+    catch (e) { }
+}
 function openReport() {
     const K = D.kpi;
     const ym = String(TODAYS).slice(0, 7), FBm = (D.fb || []).filter(f => String(f.d || "").slice(0, 7) === ym);
     const mNew = FBm.length, mReact = FBm.filter(f => f.react).length, mQuo = FBm.filter(f => /見積提示|サンプル発送|受注/.test(String(f.st || ""))).length, mWon = FBm.filter(f => String(f.st || "") === "受注").length, mLost = FBm.filter(f => /失注|断られ/.test(String(f.st || ""))).length;
     openDW(`<h3>${ym.replace("-", "年")}月 月次レポート</h3>
-   <p class="nn" style="margin-bottom:11px">毎月1日に自動でつくられ、決裁者の方へ送られます。定例会を待つ必要はありません。</p>
+   <p class="nn" style="margin-bottom:11px">商談の記録から、開いたときにまとめています（自動では送りません）。決裁者の方へは「PDFで書き出す」で PDF に保存して、ご自身で送ってください。</p>
    <div class="doc"><h4>この1か月のまとめ（${D.month || 1}ヶ月目 / 全24ヶ月）</h4>
      <div class="dl"><span>新しい商談</span><span class="n">${mNew}件（累計 ${D.funnel[1][1]}件）</span>
        <span>記録した反応</span><span class="n">${mReact}件（累計 ${K.fbDone}件 / 目標${K.fbGoal}件）</span>
@@ -17768,7 +17788,7 @@ function render() {
             bs.addEventListener("change", rStaff);
         const br = $("#breq");
         if (br)
-            br.onclick = () => toast("依頼を送信しました（" + ($("#bsel")?.value || "") + "拠点）。現地担当が48時間以内に着手します ※別途費用");
+            br.onclick = () => v5321NetAsk(($("#bsel")?.value || ""));
         document.querySelectorAll("[data-base]").forEach(p => p.addEventListener("click", () => {
             if (window.__mapDragged)
                 return;
@@ -23947,7 +23967,7 @@ function notifCalc() {
     try {
         const w = ordApprAll().filter(o => o.appr && o.appr.st === "承認待ち");
         if (w.length)
-            add("appr", "🖋", `承認待ちの受注 ${w.length}件`, "承認が完了するまで注文書・請求書は送付できません", { pg: "ops", pre: "ord" }, `appr:${w.length}`);
+            add("appr", "🖋", `承認待ちの受注 ${w.length}件`, "「受注・請求・入金」で承認・差戻しができます", { pg: "ops", pre: "ord" }, `appr:${w.length}`);
     }
     catch (e) { }
     try {
@@ -24666,8 +24686,8 @@ function ordApprSet(no, st) {
         saveTen();
     if (typeof render === "function")
         render();
-    toast(st === "承認済み" ? ("受注 " + no + " を承認しました（受注書・請求書の送付が可能になりました）")
-        : st === "承認待ち" ? ("受注 " + no + " の承認を依頼しました（承認者に通知されます）") : ("受注 " + no + " を差し戻しました"));
+    toast(st === "承認済み" ? ("受注 " + no + " を承認しました（承認の記録を残しました）")
+        : st === "承認待ち" ? ("受注 " + no + " を「承認待ち」にしました（承認者への通知は送りません。承認者の方にお知らせください）") : ("受注 " + no + " を差し戻しました"));
 }
 function ordNewGuard() {
     toast("受注書のドラフトを作成しました。送付には「承認」列での承認完了が必要です（監査対応）");
@@ -24675,7 +24695,7 @@ function ordNewGuard() {
 function ordApprChip(o) {
     const st = (o.appr && o.appr.st) || "未承認";
     const c = st === "承認済み" ? "hi" : st === "承認待ち" ? "or" : st === "差戻し" ? "no" : "lo";
-    return `<span class="p ${c}" style="font-size:9px" title="${o.appr ? esc((o.appr.by || "") + " " + (o.appr.at || "")) : "監査対応：承認が完了するまで送付できません"}">承認：${esc(st)}</span>`;
+    return `<span class="p ${c}" style="font-size:9px" title="${o.appr ? esc((o.appr.by || "") + " " + (o.appr.at || "")) : "承認の記録です（承認しなくても、送付は止まりません）"}">承認：${esc(st)}</span>`;
 }
 function ordNoJs(s) { return String(s == null ? "" : s).replace(/[\\'\n\r]/g, (c) => ({ "\\": "\\\\", "'": "\\'", "\n": "\\n", "\r": "\\r" })[c]); }
 function ordApprBtns(o) {
@@ -26956,7 +26976,7 @@ function poWorkbenchHtml() {
     const head = `<div class="c" style="margin-bottom:11px;border-color:var(--or)">
     <div class="rw" style="justify-content:space-between;align-items:flex-start;gap:10px">
       <div><h3>📥 バイヤーの発注書から船積書類をつくる <span class="nt">この版で新規</span></h3>
-        <p class="nn" style="margin-top:4px">発注書（PDF・画像・Excel・Word・CSV・テキスト、メールの貼り付け）をAI商社マンが読み取り、<b>PI／CI／PL／S/I</b>を自動作成。発注書に無い梱包・重量・HS・原産地・輸出者情報は<b>貿易クラウドの登録データから引用</b>します。足りない情報はAI商社マンと対話しながら埋め、完成したら物流会社へそのまま共有できます。</p></div>
+        <p class="nn" style="margin-top:4px">発注書（PDF・画像・Excel・Word・CSV・テキスト、メールの貼り付け）をAI商社マンが読み取り、<b>PI／CI／PL／S/I の下書き</b>をつくります。発注書に無い梱包・重量・HS・原産地・輸出者情報は<b>貿易クラウドの登録データから引用</b>します。足りない情報はAI商社マンと対話しながら埋められます。${typeof fwdRequest === "function" ? "「🚚 物流会社へ共有して相談」で、発注書の内容（貨物・仕向地・必要な書類の名前）を物流会社へのAI見積の依頼として送れます（書類のファイルは送りません。PDF に書き出して、ご自身で送ってください）。" : "書類は PDF に書き出して、ご自身で物流会社へ送ってください（デモ版では物流会社と共有できません）。"}</p></div>
       <div class="rw" style="gap:6px;flex:none"><label class="btn" style="cursor:pointer">📥 発注書を取り込む<input type="file" id="pof" hidden accept="${typeof FACCEPT !== "undefined" ? FACCEPT : ".pdf,.xlsx,.docx,.csv,.txt,.png,.jpg"}" onchange="poFile(event)"></label>
         <button class="btn g" onclick="openPoPaste()">📋 メール本文を貼り付け</button></div></div>
     ${tabs}${po ? "" : `<p class="nn" style="margin-top:8px">まだ発注書は取り込まれていません。ファイルをここへドラッグ＆ドロップしても取り込めます。</p>`}</div>`;
@@ -62817,7 +62837,7 @@ catch (e) {
 } }
 function s30TkNew() {
     const pg = (typeof PAGES !== "undefined" && typeof cur !== "undefined") ? ((PAGES.find(p => p.id === cur) || {}).nm || cur) : "";
-    openDW(`<h3>📮 お問い合わせ</h3><p class="nn" style="margin:4px 0 10px">STANDAGE の担当に届きます（「やりとり」に、STANDAGE にも見える「共有」のスレッドとして残ります）。返事はそのスレッドに届き、🔔でお知らせします。</p>
+    openDW(`<h3>📮 お問い合わせ</h3><p class="nn" style="margin:4px 0 10px">${typeof v30Demo === "function" && v30Demo() ? "デモ版では、STANDAGE には届きません（この画面のやりとりに残るだけです）。お問い合わせは、担当の STANDAGE 営業・CS へご連絡ください。" : "STANDAGE の担当に届きます（「やりとり」に、STANDAGE にも見える「共有」のスレッドとして残ります）。返事はそのスレッドに届き、🔔でお知らせします。"}</p>
     <div class="b30form"><div><label>種類</label><select class="sel" id="s30tc">${S30_TKC.map(c => `<option value="${c}">${c}</option>`).join("")}</select></div><div><label>どの画面で</label><input class="sel" id="s30tp" value="${v30Esc(v30T(pg))}"></div>
     <div class="full"><label>件名 <span style="color:var(--crit)">必須</span></label><input class="sel" id="s30ts" placeholder="例：営業資料の英語版が作れない"></div>
     <div class="full"><label>内容</label><textarea class="sel" id="s30tb" style="min-height:120px" placeholder="起きたこと・期待していたこと・試したこと（画面の写真はやりとりで添付できます）"></textarea></div>
@@ -62854,7 +62874,7 @@ function s30TkNew() {
         }
         catch (e) { }
         closeDW();
-        toast("お問い合わせを送りました（やりとりのスレッドで返事が届きます）");
+        toast(typeof v30Demo === "function" && v30Demo() ? "この画面のやりとりに残しました（デモ版のため、STANDAGE には届きません）" : "お問い合わせを送りました（やりとりのスレッドで返事が届きます）");
         try {
             go("msg");
             setTimeout(() => { try {
@@ -66523,6 +66543,42 @@ if (typeof deckBind === "function") {
                 ["規制の詳細調査（AI）→ 必要書類の確定 → 提案", "Detailed regulation research (AI) → confirm the required documents → propose", "法规详细调查（AI）→ 确定所需单证 → 提案", "Investigación detallada de normativa (IA) → confirmar documentos → proponer"],
                 ["規制のひな形なし（関税・規制は要確認）", "No regulation template (duties and rules need checking)", "无法规模板（关税・法规需确认）", "Sin plantilla de normativa (aranceles y normas por comprobar)"]
             ]);
+    }
+    catch (e) { }
+})();
+(function () {
+    try {
+        if (typeof v30I18n === "function")
+            v30I18n([
+                ["使う書類と、下書き・申請の状況", "Documents in use · drafts & applications", "使用的单证・草稿与申请状况", "Documentos del caso · borradores y solicitudes"],
+                ["現行版は空のタスクを手で作る形でした。この版では、たまったデータからタスクの案を出します。「AIにタスクを作らせる」で案を確かめ、選んだものだけ作ります。",
+                    "In the current version you created empty tasks by hand. This version suggests tasks from the data collected. Check the suggestions with “Let the AI create tasks”; only the ones you pick are created.",
+                    "现行版需要手动创建空任务。本版会根据积累的数据提出任务建议。请用“让AI创建任务”确认建议，只创建您选中的任务。",
+                    "En la versión actual creabas tareas vacías a mano. Esta versión sugiere tareas a partir de los datos reunidos. Revise las sugerencias con «Que la IA cree tareas»; solo se crean las que elija."],
+                ["理由ごとに、解消するタスクの案", "A suggested task to resolve each reason", "针对每个原因的解决任务建议", "Una tarea sugerida para resolver cada motivo"],
+                ["未対応の認証・届出のタスクの案", "Suggested tasks for pending certifications and filings", "未处理的认证・申报的任务建议", "Tareas sugeridas para certificaciones y trámites pendientes"],
+                ["いま開いている出荷の案件の、準備のタスクの案", "A suggested preparation task for the shipment case you have open", "当前打开的出货案件的准备任务建议", "Una tarea de preparación sugerida para el envío que tiene abierto"],
+                ["定例会のタスクから", "From regular-meeting tasks", "来自例会任务", "De las tareas de reuniones periódicas"],
+                ["「定例会」のタスクの、資料準備のタスクの案", "A suggested material-preparation task for the “regular meeting” task", "针对“例会”任务的资料准备任务建议", "Una tarea sugerida de preparación de materiales para la tarea «reunión periódica»"],
+                ["デモ版では、STANDAGE には届きません（この画面のやりとりに残るだけです）。お問い合わせは、担当の STANDAGE 営業・CS へご連絡ください。",
+                    "In the demo this does not reach STANDAGE (it only stays in Messages on this screen). For inquiries, please contact your STANDAGE sales or CS representative.",
+                    "演示版不会发送给 STANDAGE（只会留在本画面的往来沟通中）。如需咨询，请联系负责的 STANDAGE 销售・客服。",
+                    "En la demo no llega a STANDAGE (solo queda en Mensajes en esta pantalla). Para consultas, contacte con su representante de ventas o CS de STANDAGE."],
+                ["この画面のやりとりに残しました（デモ版のため、STANDAGE には届きません）", "Saved in Messages on this screen (this is the demo, so it does not reach STANDAGE)", "已保存在本画面的往来沟通中（演示版，不会发送给 STANDAGE）", "Guardado en Mensajes en esta pantalla (es la demo, así que no llega a STANDAGE)"],
+                ["拠点への依頼は、STANDAGE の担当への相談として送ります（別途費用：稼働費・成果報酬）。", "Requests to a local base are sent as a consultation to your STANDAGE contact (extra cost: work fees and success fees).", "对据点的委托将作为咨询发送给 STANDAGE 负责人（另行收费：工时费・成功报酬）。", "Las solicitudes a una base se envían como consulta a su contacto de STANDAGE (coste adicional: dedicación y éxito)."],
+                ["拠点への依頼は、この画面からは送れません（つながっていません）。担当のSTANDAGE営業・CSにご相談ください（別途費用）", "Requests to a local base can't be sent from this screen (not connected). Please consult your STANDAGE sales or CS representative (extra cost).", "无法从本画面发送对据点的委托（未连接）。请咨询负责的 STANDAGE 销售・客服（另行收费）。", "Las solicitudes a una base no se pueden enviar desde esta pantalla (no está conectado). Consulte con su representante de ventas o CS de STANDAGE (coste adicional)."],
+                ["「受注・請求・入金」で承認・差戻しができます", "Approve or send back in “Orders · Invoices · Payments”", "可在“订单・开票・收款”中批准或退回", "Apruebe o devuelva en «Pedidos · Facturas · Cobros»"],
+                ["見積書・請求書の下書き", "Draft quotes and invoices", "报价单・发票的草稿", "Borradores de cotizaciones y facturas"]
+            ]);
+        if (typeof v30I18nEl === "function")
+            v30I18nEl([
+                ["<b>現行版との違い</b><br> 現行の貿易クラウドには「タスクプリセット」（定型テンプレート）がありますが、<b>どのテンプレートを使うかは人が選ぶ</b>必要がありました。 この版では、失注理由・規制の警告・出荷の案件から<b>AIがタスクの案を出します</b>（作るかどうかは選べます）。",
+                    "<b>Difference from the current version</b><br> The current Trade Cloud has “task presets” (fixed templates), but <b>a person had to choose which template to use</b>. In this version <b>the AI suggests tasks</b> from rejection reasons, regulatory warnings and shipment cases (you choose whether to create them).",
+                    "<b>与现行版的区别</b><br> 现行贸易云有“任务预设”（固定模板），但<b>需要由人来选择使用哪个模板</b>。本版中<b>AI根据失单原因・法规警告・出货案件提出任务建议</b>（是否创建由您选择）。",
+                    "<b>Diferencia con la versión actual</b><br> El Trade Cloud actual tiene “plantillas de tareas”, pero <b>alguien debía elegir cuál usar</b>. En esta versión <b>la IA sugiere tareas</b> a partir de rechazos, alertas regulatorias y envíos (usted decide si crearlas)."]
+            ]);
+        if (typeof I18N !== "undefined" && I18N && Array.isArray(I18N.pat))
+            I18N.pat.push({ re: /^受注 (.+) を承認しました（承認の記録を残しました）$/, en: "Order $1 approved (the approval is recorded)", zh: "已批准订单 $1（已记录批准）", es: "Pedido $1 aprobado (la aprobación queda registrada)" }, { re: /^受注 (.+) を「承認待ち」にしました（承認者への通知は送りません。承認者の方にお知らせください）$/, en: "Order $1 set to “awaiting approval” (no notice is sent to the approver; please let them know)", zh: "订单 $1 已设为“待批准”（不会通知批准人，请您告知批准人）", es: "Pedido $1 marcado «pendiente de aprobación» (no se avisa al aprobador; avísele usted)" });
     }
     catch (e) { }
 })();
