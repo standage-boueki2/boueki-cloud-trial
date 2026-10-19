@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="10a83d196fa4";
+const BC20_BUILD="b0c4ecc8ed4f";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 const PRODUCTS = {
     food: {
@@ -7076,6 +7076,36 @@ function catKeyOf(label) {
         return "medical";
     return "other";
 }
+const V5324_NOTPL_CTY = "この国の規制のひな形は、アプリにまだありません。関税・必要書類は基本のものだけで、登録・届出・認証が要るかは分かりません。AI詳細調査で確かめてください（調べた内容は、AI商社マンに反映して残せます）。";
+const V5324_NOTPL_PAIR = "この国×この商材の規制のひな形は、アプリにまだありません。関税・必要書類は基本のものだけで、登録・届出・認証が要るかは分かりません。AI詳細調査で確かめてください（調べた内容は、AI商社マンに反映して残せます）。";
+const V5324_NOTPL_CAT = "この商材カテゴリの規制のひな形は、アプリにまだありません。関税・必要書類は基本のものだけで、登録・届出・認証が要るかは分かりません。AI詳細調査で確かめてください（調べた内容は、AI商社マンに反映して残せます）。";
+const V5324_WHY = "規制のひな形なし（関税・規制は要確認）", V5324_NEXT = "規制の詳細調査（AI）→ 必要書類の確定 → 提案", V5324_DEEP = "規制のひな形が無いため、関税・必要書類は要確認です（AI詳細調査で確かめてください）";
+const V5324_MAP = [["この国はまだ規制データベースに登録がありません。STANDAGEが個別に調査します。", V5324_NOTPL_CTY],
+    ["この国×この商材はSTANDAGEが個別に調査し、ここに蓄積します。", V5324_NOTPL_PAIR], ["この商材カテゴリの規制はSTANDAGEが個別に調査し、ここに蓄積します。", V5324_NOTPL_CAT],
+    ["規制DBに未登録のため、STANDAGEが個別に調査します", V5324_DEEP], ["規制DB未登録（STANDAGEが個別調査）", V5324_WHY], ["規制の個別調査を依頼 → 必要書類の確定 → 提案", V5324_NEXT]];
+function v5324Fix(s) {
+    if (typeof s !== "string" || s.indexOf("STANDAGEが個別") < 0 && s.indexOf("規制の個別調査を依頼") < 0)
+        return s;
+    V5324_MAP.forEach(([a, b]) => { if (s.indexOf(a) >= 0)
+        s = s.split(a).join(b); });
+    return s;
+}
+function v5324NoTpl(w) { return /登録がありません|個別に調査|ひな形は、アプリにまだありません/.test(String(w || "")); }
+function v5324Walk(o, d) {
+    d = d || 0;
+    if (!o || typeof o !== "object" || d > 8)
+        return;
+    try {
+        Object.keys(o).forEach(k => { const v = o[k]; if (typeof v === "string") {
+            const n = v5324Fix(v);
+            if (n !== v)
+                o[k] = n;
+        }
+        else if (v && typeof v === "object")
+            v5324Walk(v, d + 1); });
+    }
+    catch (e) { }
+}
 function regsFor(cat, targets) {
     const out = {};
     if (CIDX[cat] !== undefined) {
@@ -7087,7 +7117,7 @@ function regsFor(cat, targets) {
         (targets || []).forEach(c => {
             const r = RD[c];
             if (!r) {
-                out[c] = { duty: "要確認", docs: base, warn: "この国はまだ規制データベースに登録がありません。STANDAGEが個別に調査します。", lead: "要確認" };
+                out[c] = { duty: "要確認", docs: base, warn: V5324_NOTPL_CTY, lead: "要確認" };
                 return;
             }
             out[c] = { duty: r.d[i], lead: r.lead, docs: base.concat((r.x && r.x[cat]) || []), warn: (r.w && r.w[cat]) || "" };
@@ -7102,11 +7132,11 @@ function regsFor(cat, targets) {
             const duty = (R2.d && R2.d[c]) || "要確認";
             out[c] = { duty, lead: (r && r.lead) || "要確認",
                 docs: base.concat((R2.x && R2.x[c]) || []),
-                warn: (R2.w && (R2.w[c] || R2.w._)) || (duty === "要確認" ? "この国×この商材はSTANDAGEが個別に調査し、ここに蓄積します。" : "") };
+                warn: (R2.w && (R2.w[c] || R2.w._)) || (duty === "要確認" ? V5324_NOTPL_PAIR : "") };
         }
         else {
             out[c] = { duty: "要確認", lead: (r && r.lead) || "要確認", docs: base,
-                warn: "この商材カテゴリの規制はSTANDAGEが個別に調査し、ここに蓄積します。" };
+                warn: V5324_NOTPL_CAT };
         }
     });
     return out;
@@ -41172,6 +41202,21 @@ catch (e) { } try {
 catch (e) { } Object.values(CTY_REGION).flat().forEach(c => set.add(c)); return [...set].filter(Boolean); }
 function ctyStore() { const t = (typeof TEN !== "undefined" && TEN) ? TEN : null; if (!t)
     return (window.__ctySel = window.__ctySel || { cands: [], rec: null, top: [], chosen: [] }); t.ctySel = t.ctySel || { cands: [], rec: null, top: [], chosen: [] }; t.ctySel.cands = t.ctySel.cands || []; t.ctySel.top = t.ctySel.top || []; t.ctySel.chosen = t.ctySel.chosen || []; return t.ctySel; }
+const V5324_SEEN = (typeof WeakSet === "function") ? new WeakSet() : null;
+{
+    const __cs5324 = ctyStore;
+    ctyStore = function () {
+        const s = __cs5324.apply(this, arguments);
+        try {
+            if (s && typeof s === "object" && V5324_SEEN && !V5324_SEEN.has(s)) {
+                V5324_SEEN.add(s);
+                v5324Walk(s);
+            }
+        }
+        catch (e) { }
+        return s;
+    };
+}
 function ctySave() { try {
     if (typeof saveTen === "function" && typeof TEN !== "undefined" && TEN)
         saveTen();
@@ -41284,7 +41329,7 @@ function ctyScoreAll(facts, S) {
     const lg = v => Math.log1p(Math.max(0, +v || 0));
     const maxV = Math.max(...facts.map(f => lg(f.exportUsd)), 0.0001), maxB = Math.max(...facts.map(f => lg(f.buyers)), 0.0001), maxSh = Math.max(...facts.map(f => f.share || 0), 0.0001);
     return facts.map(f => {
-        const warnReal = !!f.warn && !/登録がありません|個別に調査/.test(f.warn);
+        const warnReal = !!f.warn && !v5324NoTpl(f.warn);
         let reg = f.known ? 70 : 50;
         if (f.known) {
             if (f.dutyN === 0)
@@ -41315,16 +41360,16 @@ function ctyScoreAll(facts, S) {
 function ctyWhyLocal(r) { const f = r.facts, a = []; if (f.known)
     a.push(`関税${f.duty}${f.lead && f.lead !== "要確認" ? "・" + String(f.lead).replace(/^通関\s*/, "通関") : ""}`);
 else
-    a.push("規制DB未登録（STANDAGEが個別調査）"); if (f.exportUsd)
+    a.push(V5324_WHY); if (f.exportUsd)
     a.push(`日本からの輸出 ${ctyM(f.exportUsd)}（シェア${Math.round(f.share * 100)}%${f.yoy != null ? "・前年比" + (f.yoy >= 0 ? "+" : "") + Math.round(f.yoy * 100) + "%" : ""}）`); if (f.buyers)
     a.push(v54ctyBuyers(f)); a.push(f.base.kind === "direct" ? `STANDAGE拠点あり（${f.base.c}・メンバー${f.base.staff.length}名）` : f.base.kind === "region" ? `近隣拠点（${f.base.c}）が担当` : "拠点なし（本社対応）"); return a.join("／"); }
 function ctyRiskLocal(r) { const f = r.facts, a = []; if (!f.known)
-    a.push("規制・関税が未確認"); if (f.warn && !/登録がありません|個別に調査/.test(f.warn))
+    a.push("規制・関税が未確認"); if (f.warn && !v5324NoTpl(f.warn))
     a.push(String(f.warn).slice(0, 70)); if (f.share > 0.25)
     a.push("日本勢の競合が多い市場（シェア" + Math.round(f.share * 100) + "%）"); if (f.yoy != null && f.yoy < 0)
     a.push("輸出額が前年比マイナス"); if (f.base.kind === "none")
     a.push("現地拠点なし（本社からの遠隔対応）"); return a.join("／") || "目立ったリスクなし（要確認事項は規制の詳細調査で）"; }
-function ctyNextLocal(r) { const f = r.facts; return f.known ? `規制の詳細調査（AI）→ ${f.docs.slice(0, 3).join("・") || "必要書類"}の準備 → 現地バイヤーへ提案` : "規制の個別調査を依頼 → 必要書類の確定 → 提案"; }
+function ctyNextLocal(r) { const f = r.facts; return f.known ? `規制の詳細調査（AI）→ ${f.docs.slice(0, 3).join("・") || "必要書類"}の準備 → 現地バイヤーへ提案` : V5324_NEXT; }
 function ctyCompLocal(r) { const f = r.facts; if (!f.exportUsd)
     return "通関統計に日本からの輸出実績が無い（先行者不在＝開拓型）"; return `日本からの輸出シェア${Math.round(f.share * 100)}%${f.share > 0.25 ? "＝日本勢の競合が多い" : f.share > 0.08 ? "＝一定の競合あり" : "＝競合は少なめ"}${f.upunit ? "・市場平均単価 $" + f.upunit.toFixed(2) + "/" + (f.unit || "単位") : ""}${f.priceNote ? "・" + f.priceNote : ""}`; }
 function ctyAnalyzeLocal(cands) { const S = ctyStats(); const rec = ctyScoreAll(cands.map(c => ctyFacts(c, S)), S).sort((a, b) => b.sc.total - a.sc.total); rec.forEach((r, i) => { r.rank = i + 1; r.why = ctyWhyLocal(r); r.risk = ctyRiskLocal(r); r.next = ctyNextLocal(r); r.comp = ctyCompLocal(r); }); return rec; }
@@ -41882,7 +41927,7 @@ function ctyDeepLocal(c) {
         overview: { marketSize: q, cagr: q, regulator: b.authority || q, classification: q, entryPeriod: b.known ? (b.lead || q) : q, regCost: q,
             headline: `${b.known ? "関税" + b.duty + "・通関" + b.lead : "規制DB未登録"}${b.exportUsd ? "／日本からの輸出 " + ctyM(b.exportUsd) + "（シェア" + Math.round(b.share * 100) + "%）" : ""}${b.base.kind === "direct" ? "／STANDAGE拠点あり" : ""}`,
             summary: "接続AIがWeb検索で市場規模・成長率・登録制度・競合・チャネルを調査すると、この骨組みが戦略提案の粒度で埋まります。" },
-        entry: { policy: b.known ? (b.warn && !/登録がありません|個別に調査/.test(b.warn) ? "表示・書類の調整" : "即時投入の可能性") : "要確認", reason: b.known ? `規制DBでは関税${b.duty}・必要書類 ${b.docs.join("・")}${b.warn ? "。注意：" + b.warn : ""}` : "規制DBに未登録のため、STANDAGEが個別に調査します", adjustments: b.docs.slice(0, 4) },
+        entry: { policy: b.known ? (b.warn && !v5324NoTpl(b.warn) ? "表示・書類の調整" : "即時投入の可能性") : "要確認", reason: b.known ? `規制DBでは関税${b.duty}・必要書類 ${b.docs.join("・")}${b.warn ? "。注意：" + b.warn : ""}` : V5324_DEEP, adjustments: b.docs.slice(0, 4) },
         regulation: { authority: b.authority || q, scheme: q, registration: q, period: b.lead || q, cost: q, docs: b.docs, labeling: [q], claimsOK: [q], claimsNG: [q], limits: [q], penalty: q, notes: b.warn || "" },
         market: { size: q, growth: q, demand: [q], targets: [q], trend: q, exportFromJapan: b.exportUsd ? `${ctyM(b.exportUsd)}（${b.statsYear}年・日本からの輸出・シェア${Math.round(b.share * 100)}%${b.yoy != null ? "・前年比" + (b.yoy >= 0 ? "+" : "") + Math.round(b.yoy * 100) + "%" : ""}）` : "通関統計に実績なし", ecommerce: q },
         competition: { players: [], shareNote: b.exportUsd ? `日本からの輸出シェア${Math.round(b.share * 100)}%（${b.share > 0.25 ? "日本勢の競合が多い" : b.share > 0.08 ? "一定の競合あり" : "競合は少なめ"}）` : "通関統計に実績なし（開拓型）", position: q, differentiation: b.strengths.slice(0, 3) },
@@ -66463,6 +66508,20 @@ if (typeof deckBind === "function") {
                     "This country is not in the regulation database (the rules for your target countries), so its certificates, registrations and labelling were taken from the app’s regulation template (approximate). Check them before you arrange anything.",
                     "该国不在法规数据库（目标国家的规定）中，因此证明、注册、标签等是根据应用的法规模板（概算）填入的。请在安排前确认。",
                     "Este país no está en la base de normativa (las reglas de sus países objetivo), así que los certificados, registros y etiquetado se tomaron de la plantilla de normativa de la app (aproximada). Compruébelos antes de organizar nada."]
+            ]);
+    }
+    catch (e) { }
+})();
+(function () {
+    try {
+        if (typeof v30I18n === "function")
+            v30I18n([
+                ["この国の規制のひな形は、アプリにまだありません。関税・必要書類は基本のものだけで、登録・届出・認証が要るかは分かりません。AI詳細調査で確かめてください（調べた内容は、AI商社マンに反映して残せます）。", "There is no regulation template for this country in the app yet. Duties and documents shown are only the basic ones, and it is not known whether registration, notification or certification is required. Check with the AI detailed research (you can keep what you find by applying it to the AI Trade Agent).", "应用中尚无该国的法规模板。关税和单证只有基本项目，是否需要注册、申报或认证尚不清楚。请用AI详细调查确认（调查内容可以反映到AI商社专员中保存）。", "La app aún no tiene plantilla de normativa para este país. Los aranceles y documentos son solo los básicos, y no se sabe si se requiere registro, notificación o certificación. Compruébelo con la investigación detallada de IA (puede conservar lo que encuentre aplicándolo al Agente comercial IA)."],
+                ["この国×この商材の規制のひな形は、アプリにまだありません。関税・必要書類は基本のものだけで、登録・届出・認証が要るかは分かりません。AI詳細調査で確かめてください（調べた内容は、AI商社マンに反映して残せます）。", "There is no regulation template for this country and product category in the app yet. Duties and documents shown are only the basic ones, and it is not known whether registration, notification or certification is required. Check with the AI detailed research (you can keep what you find by applying it to the AI Trade Agent).", "应用中尚无该国×该品类的法规模板。关税和单证只有基本项目，是否需要注册、申报或认证尚不清楚。请用AI详细调查确认（调查内容可以反映到AI商社专员中保存）。", "La app aún no tiene plantilla de normativa para este país y esta categoría. Los aranceles y documentos son solo los básicos, y no se sabe si se requiere registro, notificación o certificación. Compruébelo con la investigación detallada de IA (puede conservar lo que encuentre aplicándolo al Agente comercial IA)."],
+                ["この商材カテゴリの規制のひな形は、アプリにまだありません。関税・必要書類は基本のものだけで、登録・届出・認証が要るかは分かりません。AI詳細調査で確かめてください（調べた内容は、AI商社マンに反映して残せます）。", "There is no regulation template for this product category in the app yet. Duties and documents shown are only the basic ones, and it is not known whether registration, notification or certification is required. Check with the AI detailed research (you can keep what you find by applying it to the AI Trade Agent).", "应用中尚无该品类的法规模板。关税和单证只有基本项目，是否需要注册、申报或认证尚不清楚。请用AI详细调查确认（调查内容可以反映到AI商社专员中保存）。", "La app aún no tiene plantilla de normativa para esta categoría de producto. Los aranceles y documentos son solo los básicos, y no se sabe si se requiere registro, notificación o certificación. Compruébelo con la investigación detallada de IA (puede conservar lo que encuentre aplicándolo al Agente comercial IA)."],
+                ["規制のひな形が無いため、関税・必要書類は要確認です（AI詳細調査で確かめてください）", "There is no regulation template, so duties and required documents need checking (check with the AI detailed research)", "尚无法规模板，关税和所需单证需要确认（请用AI详细调查确认）", "No hay plantilla de normativa, así que hay que comprobar aranceles y documentos (compruébelo con la investigación detallada de IA)"],
+                ["規制の詳細調査（AI）→ 必要書類の確定 → 提案", "Detailed regulation research (AI) → confirm the required documents → propose", "法规详细调查（AI）→ 确定所需单证 → 提案", "Investigación detallada de normativa (IA) → confirmar documentos → proponer"],
+                ["規制のひな形なし（関税・規制は要確認）", "No regulation template (duties and rules need checking)", "无法规模板（关税・法规需确认）", "Sin plantilla de normativa (aranceles y normas por comprobar)"]
             ]);
     }
     catch (e) { }
