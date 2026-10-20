@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="676a1bad49fa";
+const BC20_BUILD="1813de3fb0d1";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -115314,6 +115314,537 @@ if (typeof i18nSet === "function") {
                 I18N_EL.zh[k2] = "API密钥只在管理员一侧（本电脑的浏览器，以及服务器上按管理员分别加密的保管处），因此客户的设备默认只用内置引擎运行，也不进行网络搜索。对已开启的账户，会把本设备的AI引擎设置<b>用该账户的密钥加密</b>后保存在同步服务器上。用该账户登录的设备在登录时获取并解密，用真实AI（含网络搜索）回答。";
             if (!I18N_EL.es[k2])
                 I18N_EL.es[k2] = "Las claves API solo están del lado del administrador (el navegador de este PC y un almacenamiento del servidor, cifrado por separado para cada administrador), así que los dispositivos de los clientes funcionan solo con el motor integrado y sin búsqueda web. Para las cuentas activadas, la configuración del motor de IA de este dispositivo se <b>cifra con la clave de esa cuenta</b> y se guarda en el servidor de sincronización. Los dispositivos que inician sesión con esa cuenta la obtienen y descifran al entrar y responden con la IA real (con búsqueda web).";
+        }
+    }
+    catch (e) { }
+})();
+(function () {
+    if (typeof fwdHoldLeg !== "function")
+        return;
+    const __h = fwdHoldLeg;
+    fwdHoldLeg = function (id, cty, on) {
+        try {
+            if (!on && typeof fwdLoad === "function" && typeof FWDB !== "undefined") {
+                fwdLoad();
+                const r = (FWDB.reqs || []).find(x => x && x.id === id);
+                if (r && r.status === "仮押さえ済み" && (r.legs || []).some(x => x && x.hold)) {
+                    r.status = "";
+                    if (typeof fwdSave === "function")
+                        fwdSave();
+                }
+            }
+        }
+        catch (e) { }
+        return __h.apply(this, arguments);
+    };
+})();
+var V59RT = { t: null, busy: 0, last: 0, act: Date.now(), fb: 0, unk: 0, n: 0, pull: 0, pend: 0, ds: { busy: 0, again: 0, t: null, ok: 0, no: "", err: "" }, rel: "" };
+(function () {
+    if (typeof SYNC === "undefined" || typeof syncCall !== "function")
+        return;
+    const POLL = 8000, POLL_IDLE = 60000, IDLE = 2 * 3600e3, FB = 20000, DSK = "bc20_v59ds", EVK = "bc20_v59fev_", EVMAX = 40;
+    const T = (s) => { try {
+        if (typeof I18N !== "undefined" && I18N.lang && I18N.lang !== "ja") {
+            const d = I18N.dict[I18N.lang];
+            if (d && d[s])
+                return d[s];
+        }
+    }
+    catch (e) { } return s; };
+    const lang = () => { try {
+        return (typeof I18N !== "undefined" && I18N.lang) || "ja";
+    }
+    catch (e) {
+        return "ja";
+    } };
+    const on = () => { try {
+        return typeof SES !== "undefined" && !!SES && SES.t === "trial" && !!SYNC.on && !!SYNC.started && !SYNC.kicked;
+    }
+    catch (e) {
+        return false;
+    } };
+    const fwdOn = () => { try {
+        return typeof FWDON !== "undefined" && !!FWDON;
+    }
+    catch (e) {
+        return false;
+    } };
+    const demo = () => { try {
+        return typeof V57DEMO !== "undefined" && !!V57DEMO.on && !V57DEMO.adm;
+    }
+    catch (e) {
+        return false;
+    } };
+    const relOk = () => { const m = /^(\d+)\.(\d+)/.exec(String(V59RT.rel || "")); return !!m && (+m[1] * 100 + +m[2]) >= 222; };
+    function dsGet() { try {
+        const o = JSON.parse(sessionStorage.getItem(DSK) || "null");
+        if (o && o.kid === SYNC.kid && /^[A-Za-z0-9]{12,40}$/.test(String(o.ds || "")))
+            return o.ds;
+    }
+    catch (e) { } return ""; }
+    function dsNew() {
+        let ds = "";
+        try {
+            const a = new Uint8Array(12);
+            crypto.getRandomValues(a);
+            ds = "S" + [...a].map(x => x.toString(36).padStart(2, "0")).join("").slice(0, 23);
+        }
+        catch (e) {
+            ds = "S" + Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
+        }
+        ds = ds.replace(/[^A-Za-z0-9]/g, "").slice(0, 40);
+        try {
+            sessionStorage.setItem(DSK, JSON.stringify({ kid: SYNC.kid, ds }));
+        }
+        catch (e) { }
+        return ds;
+    }
+    {
+        const __sc = syncCall;
+        syncCall = function (op, body, opt) {
+            try {
+                if (op === "pull" && body && body.ns === "fwd" && demo() && !body.ds) {
+                    const ds = dsGet();
+                    if (ds)
+                        body = Object.assign({}, body, { ds });
+                }
+            }
+            catch (e) { }
+            let fresh = false;
+            if (op === "login") {
+                try {
+                    fresh = !!sessionStorage.getItem("bc20_v57demo_fresh");
+                }
+                catch (e) { }
+            }
+            const p = __sc.apply(this, [op, body, opt]);
+            if (op === "login" && p && typeof p.then === "function")
+                return p.then(r => { try {
+                    if (r && r.rel)
+                        V59RT.rel = String(r.rel);
+                    if (r && r.ok && r.acct && +r.acct.demo === 1 && (fresh || !dsGet()))
+                        dsNew();
+                }
+                catch (e) { } return r; });
+            return p;
+        };
+    }
+    async function rawPost(op, body, ms) {
+        const ctrl = ("AbortController" in window) ? new AbortController() : null;
+        const tm = ctrl ? setTimeout(() => ctrl.abort(), ms || 30000) : 0;
+        try {
+            const r = await fetch(SYNC.url, { method: "POST", mode: "cors", redirect: "follow", signal: ctrl && ctrl.signal, headers: { "Content-Type": "text/plain;charset=UTF-8" }, body: JSON.stringify(Object.assign({ op, v: 1, t: Date.now() }, body || {})) });
+            const j = JSON.parse(await r.text());
+            if (j && j.error)
+                throw new Error(j.error);
+            return j;
+        }
+        finally {
+            if (tm)
+                clearTimeout(tm);
+        }
+    }
+    async function demoPush() {
+        if (!on() || !demo() || fwdOn() || !SYNC.kid || typeof FWDB === "undefined" || !FWDB || FWDB.f2l !== 1 || FWDB.fv === 1)
+            return;
+        const ds = dsGet();
+        if (!ds)
+            return;
+        const S = V59RT.ds;
+        if (S.busy) {
+            S.again = 1;
+            return;
+        }
+        S.busy = 1;
+        try {
+            const me = SYNC.kid, body = { v: 1, f2: 1, reqs: (FWDB.reqs || []).filter(r => r && (!r.kid || r.kid === me)), reqDel: FWDB.reqDel || [] };
+            body.reqs.forEach(r => { if (!r._m)
+                r._m = Date.now(); });
+            const r = await rawPost("push", { ns: "fwd", kid: me, ds, base: SYNC.ver.fwd, blob: JSON.stringify(body), at: Date.now(), dev: syncDev() });
+            if (r && r.ok && r.dfwd) {
+                S.ok = Date.now();
+                S.no = "";
+                if (r.ver)
+                    SYNC.ver.fwd = r.ver;
+            }
+            else
+                S.no = (r && r.demo) ? "server" : "ng";
+        }
+        catch (e) {
+            S.err = String(e && e.message || e).slice(0, 120);
+        }
+        finally {
+            S.busy = 0;
+            if (S.again) {
+                S.again = 0;
+                clearTimeout(S.t);
+                S.t = setTimeout(() => demoPush(), 400);
+            }
+        }
+    }
+    window.v59DemoPush = demoPush;
+    if (typeof syncSchedule === "function") {
+        const __ss = syncSchedule;
+        syncSchedule = function (ns) {
+            const r = __ss.apply(this, arguments);
+            try {
+                if (ns === "fwd" && on() && demo() && !fwdOn() && !SYNC.applying) {
+                    clearTimeout(V59RT.ds.t);
+                    V59RT.ds.t = setTimeout(() => demoPush(), 600);
+                }
+            }
+            catch (e) { }
+            return r;
+        };
+    }
+    function quick() {
+        try {
+            if (!on() || fwdOn())
+                return;
+            if (demo()) {
+                clearTimeout(V59RT.ds.t);
+                V59RT.ds.t = setTimeout(() => demoPush(), 250);
+                return;
+            }
+            if (SYNC.fwdDirty && typeof syncPushFwd === "function") {
+                clearTimeout(SYNC.fwdTimer);
+                SYNC.fwdTimer = setTimeout(() => { syncPushFwd().catch(() => { }); }, 250);
+            }
+        }
+        catch (e) { }
+    }
+    ["fwdPickOffer", "fwdHoldLeg", "fwdHoldAll"].forEach(fn => { if (typeof window[fn] === "function") {
+        const __o = window[fn];
+        window[fn] = function () { const r = __o.apply(this, arguments); quick(); return r; };
+    } });
+    if (typeof fwdRequest === "function") {
+        const __fq = fwdRequest;
+        fwdRequest = async function () { try {
+            return await __fq.apply(this, arguments);
+        }
+        finally {
+            quick();
+        } };
+    }
+    const LBL = { nw: "新しい見積依頼", hold: "仮押さえ（貴社）", unhold: "仮押さえの解除", lost: "他社に決定", del: "見積依頼の取り消し" };
+    const IC = { nw: "📥", hold: "📌", unhold: "↩️", lost: "🏁", del: "🗑" };
+    const evKey = () => EVK + String((typeof FWDB !== "undefined" && FWDB && FWDB.fk) || "x").slice(0, 40);
+    function evs() { try {
+        const L = JSON.parse(localStorage.getItem(evKey()) || "[]");
+        return Array.isArray(L) ? L : [];
+    }
+    catch (e) {
+        return [];
+    } }
+    function evSave(L) { try {
+        localStorage.setItem(evKey(), JSON.stringify(L.slice(0, EVMAX)));
+    }
+    catch (e) { } }
+    function snap(R) {
+        const m = {};
+        (R || []).forEach(r => {
+            if (!r || !r.id)
+                return;
+            const L = {};
+            (r.legs || []).forEach(l => { if (l && l.cty)
+                L[l.cty] = { hold: l.hold ? 1 : 0, lost: l.lost ? 1 : 0, ok: l.ok ? 1 : 0 }; });
+            m[r.id] = { co: String(r.co || ""), cty: String(r.cty || ""), L };
+        });
+        return m;
+    }
+    function diff(a, b) {
+        const out = [];
+        Object.keys(b).forEach(id => {
+            const x = b[id], o = a[id];
+            if (!o) {
+                out.push({ k: "nw", rq: id, cty: x.cty, co: x.co });
+                Object.keys(x.L).forEach(c => { if (x.L[c].hold)
+                    out.push({ k: "hold", rq: id, cty: c, co: x.co }); });
+                return;
+            }
+            Object.keys(x.L).forEach(c => {
+                const n = x.L[c], p = o.L[c] || { hold: 0, lost: 0 };
+                if (n.hold && !p.hold)
+                    out.push({ k: "hold", rq: id, cty: c, co: x.co });
+                else if (!n.hold && p.hold)
+                    out.push({ k: n.lost ? "lost" : "unhold", rq: id, cty: c, co: x.co });
+                else if (n.lost && !p.lost)
+                    out.push({ k: "lost", rq: id, cty: c, co: x.co });
+            });
+        });
+        Object.keys(a).forEach(id => { if (!b[id])
+            out.push({ k: "del", rq: id, cty: a[id].cty, co: a[id].co }); });
+        return out;
+    }
+    function evTxt(e) { return T(LBL[e.k] || "") + (lang() === "ja" ? "：" : ": ") + e.rq + (e.cty ? "／" + e.cty : "") + (e.co ? (lang() === "ja" ? "（" : " (") + e.co + (lang() === "ja" ? "）" : ")") : ""); }
+    function notify(list) {
+        if (!list.length)
+            return;
+        const now = Date.now(), L = evs();
+        list.forEach((e, i) => L.unshift({ id: "e" + now.toString(36) + i + Math.random().toString(36).slice(2, 6), t: now, k: e.k, rq: e.rq, cty: e.cty, co: e.co }));
+        evSave(L);
+        V59RT.lastEv = list;
+        try {
+            const top = list.find(e => e.k === "hold") || list.find(e => e.k === "nw") || list[0];
+            const msg = list.length > 1 ? (evTxt(top) + (lang() === "ja" ? "　ほか " + (list.length - 1) + "件" : lang() === "zh" ? "　等 " + list.length + " 条" : lang() === "es" ? "　y " + (list.length - 1) + " más" : "　and " + (list.length - 1) + " more")) : evTxt(top);
+            if (typeof v44Bar === "function")
+                v44Bar(msg, top.k === "del" ? T("見積受信箱を開く") : T("依頼を開く"), () => openEv(top), 15000);
+        }
+        catch (e) { }
+        try {
+            if (typeof v44Badges === "function")
+                v44Badges();
+            else if (typeof notifBadge === "function")
+                notifBadge();
+        }
+        catch (e) { }
+    }
+    function seenRq(rq) { try {
+        if (typeof notifDB !== "function")
+            return;
+        const db = notifDB();
+        let ch = 0;
+        evs().forEach(e => { if (e.rq === rq && !db.seen["f59:" + e.id]) {
+            db.seen["f59:" + e.id] = 1;
+            ch = 1;
+        } });
+        if (ch) {
+            notifSave(db);
+            if (typeof v44Badges === "function")
+                v44Badges();
+        }
+    }
+    catch (e) { } }
+    function openEv(e) {
+        try {
+            if (typeof closeDW === "function")
+                closeDW();
+        }
+        catch (x) { }
+        try {
+            if (typeof v44Go === "function")
+                v44Go("finbox");
+        }
+        catch (x) { }
+        if (e.k !== "del")
+            setTimeout(() => { try {
+                if ((FWDB.reqs || []).some(r => r.id === e.rq))
+                    openFwdQuote(e.rq);
+            }
+            catch (x) { } }, 80);
+        else
+            seenRq(e.rq);
+    }
+    if (typeof openFwdQuote === "function") {
+        const __oq = openFwdQuote;
+        openFwdQuote = function (id) { const r = __oq.apply(this, arguments); try {
+            if (fwdOn())
+                seenRq(id);
+        }
+        catch (e) { } return r; };
+    }
+    if (typeof v44Notifs === "function") {
+        const __n44 = v44Notifs;
+        v44Notifs = function () {
+            const out = __n44.apply(this, arguments);
+            try {
+                if (!fwdOn())
+                    return out;
+                const db = (typeof notifDB === "function") ? notifDB() : { seen: {} };
+                const L = evs().slice(0, 8);
+                const ago = (t) => { try {
+                    return typeof v33Ago === "function" ? v33Ago(t) : "";
+                }
+                catch (e) {
+                    return "";
+                } };
+                const items = L.map(e => ({ key: "f59:" + e.id, ic: IC[e.k] || "🔔", t: T(LBL[e.k] || "") + " " + e.rq, d: [e.cty, e.co, ago(e.t)].filter(Boolean).join(" ・ "),
+                    btn: e.k === "del" ? T("見積受信箱を開く") : T("依頼を開く"), go: () => openEv(e), ex: db.seen["f59:" + e.id] ? 0 : 1 }));
+                return items.concat(out);
+            }
+            catch (e) {
+                return out;
+            }
+        };
+    }
+    const BELL0 = "物流会社の知らせです。急ぎのもの（確認待ち・期限の来た要確認のタスク）だけ、ベルの数字に出します。";
+    const BELL1 = "物流会社の知らせです。新しい見積依頼・仮押さえ・解除・取り消しと、急ぎのもの（確認待ち・期限の来た要確認のタスク）を、ベルの数字に出します。";
+    if (typeof v44Bell === "function") {
+        const __b44 = v44Bell;
+        v44Bell = function () {
+            const r = __b44.apply(this, arguments);
+            try {
+                const sp = document.querySelector("#v33ntbar > span");
+                if (sp && (sp.textContent === BELL0 || sp.textContent === T(BELL0)))
+                    sp.textContent = T(BELL1);
+            }
+            catch (e) { }
+            return r;
+        };
+    }
+    if (typeof syncPullFwd === "function") {
+        const __plf = syncPullFwd;
+        syncPullFwd = async function (initial) {
+            let was = null;
+            try {
+                if (fwdOn() && initial !== true && typeof FWDB !== "undefined" && FWDB && FWDB.fv === 1)
+                    was = snap(FWDB.reqs);
+            }
+            catch (e) { }
+            V59RT.pull++;
+            let r;
+            try {
+                r = await __plf.apply(this, arguments);
+            }
+            finally {
+                V59RT.pull--;
+            }
+            try {
+                if (was && fwdOn() && FWDB && FWDB.fv === 1)
+                    notify(diff(was, snap(FWDB.reqs)));
+            }
+            catch (e) {
+                console.warn("v59 notify", e);
+            }
+            try {
+                if (V59RT.pend && !typing())
+                    flushRender();
+            }
+            catch (e) { }
+            return r;
+        };
+    }
+    function typing() {
+        try {
+            const a = document.activeElement;
+            if (!a || a === document.body)
+                return false;
+            if (!/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && !a.isContentEditable)
+                return false;
+            const w = document.getElementById("well");
+            return !!w && w.contains(a);
+        }
+        catch (e) {
+            return false;
+        }
+    }
+    function flushRender() { V59RT.pend = 0; try {
+        if (fwdOn() && typeof fwdRender === "function")
+            fwdRender();
+    }
+    catch (e) { } }
+    if (typeof fwdRender === "function") {
+        const __fr = fwdRender;
+        fwdRender = function () { if (V59RT.pull > 0 && fwdOn() && typing()) {
+            V59RT.pend = 1;
+            return;
+        } return __fr.apply(this, arguments); };
+    }
+    document.addEventListener("focusout", () => { if (!V59RT.pend)
+        return; setTimeout(() => { if (V59RT.pend && !typing())
+        flushRender(); }, 200); }, true);
+    async function check() {
+        if (V59RT.busy)
+            return;
+        V59RT.busy = 1;
+        V59RT.last = Date.now();
+        try {
+            if (V59RT.unk) {
+                if (Date.now() - V59RT.fb >= FB && typeof syncBeat === "function") {
+                    V59RT.fb = Date.now();
+                    try {
+                        await syncBeat();
+                    }
+                    catch (e) { }
+                }
+                return;
+            }
+            let r = null;
+            try {
+                r = await syncCall("fwd_ver", { kid: SYNC.kid }, { timeout: 10000 });
+            }
+            catch (e) {
+                if (/unknown op/.test(String(e && e.message || e)))
+                    V59RT.unk = 1;
+                return;
+            }
+            if (!r || !r.ok)
+                return;
+            V59RT.n++;
+            if ((+r.ver || 0) > (+SYNC.ver.fwd || 0) && !SYNC.fwdDirty)
+                await syncPullFwd(false);
+        }
+        finally {
+            V59RT.busy = 0;
+        }
+    }
+    function tick() {
+        clearTimeout(V59RT.t);
+        V59RT.t = setTimeout(tick, POLL);
+        try {
+            if (!on() || !fwdOn() || document.visibilityState === "hidden")
+                return;
+            if (Date.now() - V59RT.act > IDLE && Date.now() - V59RT.last < POLL_IDLE)
+                return;
+            check();
+        }
+        catch (e) { }
+    }
+    V59RT.t = setTimeout(tick, POLL);
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && on() && fwdOn())
+        setTimeout(() => check(), 300); });
+    ["pointerdown", "keydown", "wheel"].forEach(ev => document.addEventListener(ev, () => { V59RT.act = Date.now(); }, { passive: true, capture: true }));
+    window.v59FwdCheck = check;
+    const NOTE = "物流会社への見積依頼と仮押さえは、デモ物流株式会社（物流会社のデモ用アカウント）の画面に届きます（3日で消えます）";
+    function note() {
+        try {
+            const b = document.getElementById("v57demobar");
+            if (!b)
+                return;
+            const want = on() && demo() && !fwdOn() && relOk();
+            let s = b.querySelector(".v59note");
+            if (!want) {
+                if (s)
+                    s.remove();
+                return;
+            }
+            const L = lang();
+            if (s && s.dataset.l === L)
+                return;
+            if (!s) {
+                s = document.createElement("span");
+                s.className = "v57demo-sub v59note";
+                s.setAttribute("data-noi18n", "");
+                const btn = b.querySelector("button");
+                b.insertBefore(s, btn || null);
+            }
+            s.dataset.l = L;
+            s.textContent = T(NOTE);
+        }
+        catch (e) { }
+    }
+    setInterval(note, 1500);
+    try {
+        if (typeof I18N !== "undefined" && I18N && I18N.dict) {
+            const rows = [
+                ["新しい見積依頼", "New quote request", "新的报价请求", "Nueva solicitud de cotización"],
+                ["仮押さえ（貴社）", "Provisional booking (your company)", "暂定预订（贵公司）", "Reserva provisional (su empresa)"],
+                ["仮押さえの解除", "Provisional booking released", "暂定预订已解除", "Reserva provisional liberada"],
+                ["他社に決定", "Awarded to another company", "已选定其他公司", "Adjudicado a otra empresa"],
+                ["見積依頼の取り消し", "Quote request withdrawn", "报价请求已撤回", "Solicitud de cotización retirada"],
+                ["依頼を開く", "Open request", "打开请求", "Abrir solicitud"],
+                ["物流会社の知らせです。新しい見積依頼・仮押さえ・解除・取り消しと、急ぎのもの（確認待ち・期限の来た要確認のタスク）を、ベルの数字に出します。",
+                    "Notices for the logistics company. New quote requests, provisional bookings, releases and withdrawals, and urgent items (awaiting confirmation, to-dos that are due) are counted on the bell.",
+                    "物流公司的通知。新的报价请求、暂定预订、解除、撤回，以及紧急事项（待确认、已到期的待确认任务）会显示在铃铛的数字上。",
+                    "Avisos para la empresa de logística. Las nuevas solicitudes de cotización, reservas provisionales, liberaciones y retiros, y los asuntos urgentes (pendientes de confirmar, tareas vencidas) se cuentan en la campana."],
+                ["見積受信箱を開く", "Open quote inbox", "打开报价收件箱", "Abrir bandeja de cotizaciones"],
+                [NOTE, "Quote requests and provisional bookings to logistics companies are delivered to the screen of Demo Butsuryu Co., Ltd. (the logistics demo account) and are removed after 3 days",
+                    "发给物流公司的报价请求和暂定预订，会送到 Demo物流株式会社（物流公司的演示账户）的画面（3天后删除）",
+                    "Las solicitudes de cotización y las reservas provisionales a empresas de logística llegan a la pantalla de Demo Butsuryu Co., Ltd. (la cuenta de demostración de logística) y se eliminan a los 3 días"]
+            ];
+            rows.forEach(r => { ["en", "zh", "es"].forEach((l, i) => { if (!I18N.dict[l])
+                I18N.dict[l] = {}; if (r[i + 1] && !I18N.dict[l][r[0]])
+                I18N.dict[l][r[0]] = r[i + 1]; }); });
         }
     }
     catch (e) { }
