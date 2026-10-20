@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="819a007b0679";
+const BC20_BUILD="21e1cb1aa7bb";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -78728,6 +78728,26 @@ const V49G_PG = { inbox: "受信箱", dash: "ダッシュボード", today: "今
     legal: "契約書関連", task: "タスク・進行", team: "メンバー・担当", trash: "ゴミ箱", ai: "AI商社マン" };
 const V49G_TOP = { "#lang": "画面の上のバー（言語）", "#psw": "画面の上のバー（商品の切り替え）" };
 const V49_OPV = /登録|追加|入れ|入力|作成|作る|作り|つくる|つくり|載せ|取り?込|インポート|読み?込|アップ|足す|足し|加え/;
+const V215328_P = "(?:実AI|本物のAI|外部のAI|生成AI|AIエンジン|Claude|ChatGPT|Chat ?GPT|GPT|Gemini|OpenAI|Anthropic|クロード|チャット ?GPT|ジェミニ)";
+const V215328_USE = new RegExp(V215328_P + "(?:を|が|は|に|と|へ)?(?:使|利用|入れ|導入|切り?替|有効|オン|対応|選)|" + V215328_P + "(?:で|から)(?:答え|回答)|(?:AI|ＡＩ)(?:を|が|は)?(?:有効|オン|ON(?![A-Za-z]))", "i");
+const V215328_SET = new RegExp("(?:AI商社マン|" + V215328_P + "|AI|ＡＩ)(?:の|を|に|と|へ|は|が)?(?:接続|設定|連携|つな|モデル|エンジン|利用プラン|プラン)|API ?キー|API ?key|利用プラン|稼働モデル", "i");
+function v215328NoCue(q) {
+    try {
+        q = String(q || "").trim();
+        if (!q || Array.from(q).length > 30)
+            return null;
+        if (!(V215328_SET.test(q) || V215328_USE.test(q)))
+            return null;
+        const it = (typeof detectIntent === "function") ? detectIntent(q) : null;
+        if (it && it !== "help")
+            return null;
+        const t = V49G.find(x => x && x.id === "ai");
+        return (t && v49Avail(t)) ? t : null;
+    }
+    catch (e) {
+        return null;
+    }
+}
 const V49G = [
     { id: "photo", g: "商品", nm: "商品の写真・ロゴを登録する", pg: "deck", ex: "商品の写真を登録するには？",
         kw: [[/写真|画像|ロゴ|イメージ|フォト|photo|picture|logo/i, 3]], need: /登録|追加|入れ|アップ|取り?込|載せ|使|設定|変え|差し?替|選|貼/,
@@ -78916,12 +78936,12 @@ const V49G = [
         tips: ["外国語の営業資料の言語は、「外国語 営業資料」で別に選びます。"],
         acts: [{ t: "言語の切り替えを示す", pg: "", f: "#lang" }] },
     { id: "ai", g: "チーム・記録・設定", nm: "AI商社マンの使い方（会話・履歴・直す・AIの接続）", pg: "ai", ex: "AI商社マンの履歴を見るには？",
-        kw: [[/AI商社マン|AIに質問|AIの(答え|回答)|AIとの(会話|相談)|会話の履歴|相談の履歴|記憶/, 3], [/実AI|AIエンジン|未接続|APIキー|利用プラン|プラン|スタンダード|プレミアム|ライト|履歴|新しい会話/i, 2], [/(?:AI|ＡＩ|Claude|ChatGPT|GPT|Gemini|OpenAI|Anthropic)(?:の|を|に|と|へ)?(?:接続|設定|連携|つな|モデル|エンジン)|API ?キー|API ?key/i, 2]],
-        need: /使|聞|質問|始め|新しい|戻|直|教え|覚え|接続|つな|変え|切り?替|消|見|開|(?:AI|ＡＩ|Claude|ChatGPT|GPT|Gemini|OpenAI|Anthropic)(?:の|を|に|と|へ)?(?:接続|設定|連携|つな|モデル|エンジン)|API ?キー|API ?key/i,
+        kw: [[/AI商社マン|AIに質問|AIの(答え|回答)|AIとの(会話|相談)|会話の履歴|相談の履歴|記憶/, 3], [/実AI|AIエンジン|未接続|APIキー|利用プラン|プラン|スタンダード|プレミアム|ライト|履歴|新しい会話/i, 2], [/(?:AI|ＡＩ|Claude|ChatGPT|GPT|Gemini|OpenAI|Anthropic)(?:の|を|に|と|へ)?(?:接続|設定|連携|つな|モデル|エンジン)|API ?キー|API ?key/i, 2], [V215328_USE, 2]],
+        need: new RegExp(/使|聞|質問|始め|新しい|戻|直|教え|覚え|接続|つな|変え|切り?替|消|見|開|(?:AI|ＡＩ|Claude|ChatGPT|GPT|Gemini|OpenAI|Anthropic)(?:の|を|に|と|へ)?(?:接続|設定|連携|つな|モデル|エンジン)|API ?キー|API ?key/i.source + "|" + V215328_USE.source, "i"),
         steps: ["どの画面でも、右下の「AIに質問」か各画面の「🤖 AIに質問」で、画面はそのままで右側で聞けます。じっくり使うときは「AI商社マン」の画面で。",
             "「香港に500袋送るといくら？」のように、相手・国・数量を入れて聞くのがコツです。答えには根拠が付き、根拠が無いことは「判断できません」と答えます。",
             "違っていたら「👎 ちがう・直したい」で正しい内容を教えると、次から優先して使います。話題を分けるときは「＋ 新しい会話」、前の会話は「履歴」から開けます。"],
-        tips: ["実AI（AIエンジン）の接続は、STANDAGE の管理者が管理コンソールで行います。利用プランは「AI商社マン」の画面の「AI商社マンの稼働モデル（利用プラン）」で選びます。"],
+        tips: ["実AI（AIエンジン）の接続は、管理コンソールの管理者（STANDAGE、または貴社の管理者）が行います。利用プランは「AI商社マン」の画面の「AI商社マンの稼働モデル（利用プラン）」で選びます。"],
         acts: [{ t: "AI商社マンの画面を開く", pg: "ai", f: "#aiq" }] }
 ];
 const V49_CUE = /(どう|どのよう|どの様|いかに)に?(すれば|したら|やって|やれば|すると|やると|する[のん]?|やる[のん]?|進め|使え|操作)|方法|手順|やり方|仕方|使い方|操作のしかた|どこ(で|から|に|を)(登録|入れ|入力|追加|設定|取り?込|アップ|見|確か|変え|消|招待|作|送|探|開)|どの画面|どこにあ|(する|やる|できる|入れる|出す|見る|変える|消す|外す|決める|頼む|招待する|登録する|追加する|取り?込む|更新する|削除する|直す|つなぐ|接続する|作る|つくる|送る|調べる|探す|つける|付ける|残す|戻す|切り替える|切りかえる|選ぶ|アップロードする|知る|もらう|そろえる|書き出す)には(どう|何を|なにを|どこ|[、,]|[。？?！!]*$)|[うくぐすつぬぶむる]には[。？?！!]*$|方を(教え|知り)|(は|って)どこ(に|で)?(ある|あります)?(の|か)?[。？?！!]*$/;
@@ -78996,8 +79016,10 @@ function v49Howto(q) {
     if (V49_HELP.test(q))
         return { menu: 1 };
     const strong = V49_CUE.test(q) || V49_SHORT.test(q), weak = V49_WEAK.test(q) && !v49Data(q);
-    if (!strong && !weak)
-        return null;
+    if (!strong && !weak) {
+        const t5328 = v215328NoCue(q);
+        return t5328 ? { t: t5328, q, cty: "" } : null;
+    }
     const t = v49Topic(q);
     if (t)
         return { t, q, cty: v49Cty(q) };
