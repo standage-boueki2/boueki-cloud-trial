@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="728748402e42";
+const BC20_BUILD="c5ab267b0c45";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -113704,6 +113704,85 @@ v571WatchLogin();
     }
     catch (e) { }
 })();
+const V5331_TXT = [
+    ["利用の推移（直近14日・全アカウント）", "利用の推移（直近14日・貴社のアカウント）"],
+    ["全アカウント合計", "貴社のアカウントの合計"]
+];
+function v5331Scope() {
+    try {
+        if (typeof v57Co !== "function" || !v57Co())
+            return 0;
+        const well = document.getElementById("well");
+        if (!well)
+            return 0;
+        const map = new Map(V5331_TXT);
+        const hasOrig = typeof I18N !== "undefined" && I18N && I18N.orig instanceof Map;
+        const tw = document.createTreeWalker(well, NodeFilter.SHOW_TEXT);
+        const L = [];
+        let n;
+        while ((n = tw.nextNode()))
+            L.push(n);
+        let k = 0;
+        L.forEach((t) => {
+            const src = hasOrig && I18N.orig.has(t) ? I18N.orig.get(t) : t.nodeValue;
+            const key = String(src || "").trim();
+            if (!map.has(key))
+                return;
+            const ja = String(src).replace(key, map.get(key));
+            if (hasOrig && I18N.orig.has(t)) {
+                I18N.orig.set(t, ja);
+                const d = I18N.lang !== "ja" && I18N.dict && I18N.dict[I18N.lang];
+                if (d && typeof i18nText === "function")
+                    i18nText(t, d);
+                else
+                    t.nodeValue = ja;
+            }
+            else
+                t.nodeValue = ja;
+            k++;
+        });
+        if (k && document.getElementById("uxsec") && typeof ux2SecNav === "function") {
+            ux2SecNav();
+            if (typeof ux17SecUpdate === "function")
+                ux17SecUpdate();
+        }
+        return k;
+    }
+    catch (e) {
+        return 0;
+    }
+}
+if (typeof renderAdmin === "function") {
+    const __ra5331 = renderAdmin;
+    renderAdmin = function () { const r = __ra5331.apply(this, arguments); v5331Scope(); return r; };
+}
+(function () {
+    try {
+        if (document.getElementById("v5331css"))
+            return;
+        const st = document.createElement("style");
+        st.id = "v5331css";
+        st.textContent = "#v57me h3 .v37emo{display:inline!important}";
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N.dict)
+            return;
+        [["利用の推移（直近14日・貴社のアカウント）", "Usage trend (last 14 days · your accounts)", "使用趋势（近14天・贵公司的账户）", "Tendencia de uso (14 días · sus cuentas)"],
+            ["貴社のアカウントの合計", "Total for your accounts", "贵公司账户合计", "Total de sus cuentas"]
+        ].forEach((r) => ["en", "zh", "es"].forEach((l, i) => { const d = I18N.dict[l]; if (d && r[i + 1] && d[r[0]] == null)
+            d[r[0]] = r[i + 1]; }));
+    }
+    catch (e) { }
+})();
+try {
+    if (typeof cur !== "undefined" && cur === "adm")
+        v5331Scope();
+}
+catch (e) { }
 try {
     if (typeof v35Restore === "function")
         v35Restore();
