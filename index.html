@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="c5ab267b0c45";
+const BC20_BUILD="53fa6f089d57";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -113781,6 +113781,566 @@ if (typeof renderAdmin === "function") {
 try {
     if (typeof cur !== "undefined" && cur === "adm")
         v5331Scope();
+}
+catch (e) { }
+const V5332 = { obs: null, t: 0, rev: {} };
+function v5332Adm() { try {
+    return typeof SES !== "undefined" && SES && SES.t === "admin" && typeof cur !== "undefined" && cur === "adm";
+}
+catch (e) {
+    return false;
+} }
+const V5332_EMO = (typeof V37_EMO !== "undefined") ? V37_EMO : /^(\s*)((?:\p{Extended_Pictographic}|[☀-➿])(?:️|‍(?:\p{Extended_Pictographic}|[☀-➿])️?)*)(\s*)/u;
+function v5332Texts(el) { const L = []; const tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement && n.parentElement.closest(".v37emo")) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT }); let n; while ((n = tw.nextNode()))
+    L.push(n); return L; }
+function v5332Emo() {
+    if (!v5332Adm())
+        return 0;
+    const w = document.getElementById("well");
+    if (!w)
+        return 0;
+    let k = 0;
+    const hasOrig = typeof I18N !== "undefined" && I18N && I18N.orig instanceof Map;
+    w.querySelectorAll(".c h3, .btn").forEach((el) => {
+        try {
+            const T = v5332Texts(el);
+            const n = T.find((x) => x.nodeValue.trim());
+            if (!n)
+                return;
+            const m = V5332_EMO.exec(n.nodeValue);
+            if (!m)
+                return;
+            const emo = m[2];
+            if (/🤖|✦/.test(emo))
+                return;
+            const rest = n.nodeValue.slice(m[0].length);
+            if (!rest.trim() && !T.some((x) => x !== n && x.nodeValue.trim()))
+                return;
+            n.nodeValue = rest;
+            if (hasOrig && I18N.orig.has(n)) {
+                const o = String(I18N.orig.get(n));
+                const mo = V5332_EMO.exec(o);
+                if (mo && !/🤖|✦/.test(mo[2]))
+                    I18N.orig.set(n, o.slice(mo[0].length));
+            }
+            if (!el.querySelector(".v37emo")) {
+                const sp = document.createElement("span");
+                sp.className = "v37emo";
+                sp.setAttribute("aria-hidden", "true");
+                sp.textContent = m[1] + emo + m[3];
+                n.parentNode.insertBefore(sp, n);
+            }
+            el.__v37e = el.textContent;
+            k++;
+        }
+        catch (e) { }
+    });
+    return k;
+}
+function v5332Watch() {
+    try {
+        const w = document.getElementById("well");
+        if (!w || V5332.obs)
+            return;
+        V5332.obs = new MutationObserver(() => { if (!v5332Adm())
+            return; clearTimeout(V5332.t); V5332.t = setTimeout(() => { try {
+            v5332Emo();
+        }
+        catch (e) { } try {
+            if (typeof ux32AdmNav === "function")
+                ux32AdmNav();
+        }
+        catch (e) { } }, 0); });
+        V5332.obs.observe(w, { childList: true, subtree: true });
+    }
+    catch (e) { }
+}
+function v5332Rev(l) {
+    try {
+        const d = I18N.dict[l];
+        if (!d)
+            return null;
+        const n = Object.keys(d).length;
+        if (V5332.rev[l] && V5332.rev[l].n === n)
+            return V5332.rev[l].m;
+        const m = new Map();
+        const lead = (x) => x.replace(/^[^\p{L}\p{N}]+/u, "").trim();
+        for (const k in d) {
+            const v = d[k];
+            if (typeof v !== "string" || v.length > 90)
+                continue;
+            if (!m.has(v))
+                m.set(v, k);
+            const v2 = lead(v);
+            if (v2 && v2 !== v && !m.has(v2))
+                m.set(v2, lead(k));
+        }
+        V5332.rev[l] = { n, m };
+        return m;
+    }
+    catch (e) {
+        return null;
+    }
+}
+function v5332JaRun(fn, self, args) {
+    const sw = [];
+    try {
+        if (typeof I18N !== "undefined" && I18N && I18N.lang && I18N.lang !== "ja" && I18N.orig instanceof Map) {
+            const ins = new Set(I18N.elIns || []);
+            const rev = v5332Rev(I18N.lang);
+            document.querySelectorAll("#well h3").forEach((h) => v5332Texts(h).concat([...h.querySelectorAll(".v37emo")].flatMap((s) => [...s.childNodes])).forEach((n) => {
+                if (n.nodeType !== 3)
+                    return;
+                if (I18N.orig.has(n)) {
+                    sw.push([n, n.nodeValue]);
+                    n.nodeValue = I18N.orig.get(n);
+                }
+                else if (ins.has(n)) {
+                    sw.push([n, n.nodeValue]);
+                    n.nodeValue = "";
+                }
+                else if (rev) {
+                    const v = n.nodeValue.trim();
+                    let j = rev.get(v), f = v;
+                    if (!j) {
+                        f = v.replace(/^[^\p{L}\p{N}]+/u, "").trim();
+                        j = f && f !== v ? rev.get(f) : null;
+                    }
+                    if (j && j !== f) {
+                        sw.push([n, n.nodeValue]);
+                        n.nodeValue = n.nodeValue.replace(f, j);
+                    }
+                }
+            }));
+        }
+    }
+    catch (e) { }
+    try {
+        return fn.apply(self, args);
+    }
+    finally {
+        sw.forEach(([n, v]) => { try {
+            n.nodeValue = v;
+        }
+        catch (e) { } });
+    }
+}
+if (typeof ux32AdmNav === "function") {
+    const __nav5332 = ux32AdmNav;
+    ux32AdmNav = function () { return v5332JaRun(__nav5332, this, arguments); };
+}
+if (typeof v57Strip === "function") {
+    const __st5332 = v57Strip;
+    v57Strip = function () { return v5332JaRun(__st5332, this, arguments); };
+}
+function v5332Days() {
+    try {
+        if (typeof I18N === "undefined" || !I18N || I18N.lang === "ja" || !v5332Adm())
+            return 0;
+        const l = I18N.lang;
+        let k = 0;
+        const D = (x) => l === "en" ? x + (+x === 1 ? " day" : " days") : l === "zh" ? x + " 天" : x + (+x === 1 ? " día" : " días");
+        const AGO = (x) => l === "en" ? "Ended " + x + (+x === 1 ? " day" : " days") + " ago" : l === "zh" ? x + " 天前已结束" : "Terminó hace " + x + (+x === 1 ? " día" : " días");
+        const seen = new Set();
+        document.querySelectorAll("#s30exp td, #costcard button").forEach((el) => {
+            const tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+            let n;
+            while ((n = tw.nextNode())) {
+                if (seen.has(n))
+                    continue;
+                seen.add(n);
+                const src = I18N.orig.has(n) ? I18N.orig.get(n) : n.nodeValue;
+                const s = String(src).trim();
+                let t = null, m;
+                if ((m = s.match(/^(\d+)日前に終了$/)))
+                    t = AGO(m[1]);
+                else if ((m = s.match(/^(\d+)日$/)))
+                    t = D(m[1]);
+                if (t == null)
+                    continue;
+                if (!I18N.orig.has(n))
+                    I18N.orig.set(n, n.nodeValue);
+                if (I18N.elNodes)
+                    I18N.elNodes.add(n);
+                if (n.nodeValue !== t)
+                    n.nodeValue = t;
+                k++;
+            }
+        });
+        return k;
+    }
+    catch (e) {
+        return 0;
+    }
+}
+const V5332_GREET = ["管理者AIアシスタントです。発行済みアカウント・利用状況・同期サーバーの端末・AIエンジン設定とコスト・物流会社・通関統計の版を見ています。下の質問例からどうぞ。",
+    "I'm the admin AI assistant. I can see issued accounts, usage, devices on the sync server, AI engine settings and costs, forwarders, and the customs statistics version. Try one of the example questions below.",
+    "我是管理员AI助手。我可以查看已发行账户・使用情况・同步服务器的设备・AI引擎设置与成本・物流公司・通关统计的版本。请从下方的示例问题开始。",
+    "Soy el asistente de IA para administradores. Veo las cuentas emitidas, el uso, los dispositivos del servidor de sincronización, la configuración y los costos de los motores de IA, los transitarios y la versión de las estadísticas aduaneras. Pruebe una de las preguntas de ejemplo de abajo."];
+function v5332Greet() {
+    try {
+        if (typeof I18N === "undefined" || !I18N || I18N.lang === "ja")
+            return 0;
+        const i = { en: 1, zh: 2, es: 3 }[I18N.lang];
+        if (!i)
+            return 0;
+        let k = 0;
+        document.querySelectorAll("#admchat .bb, #dwadmchat .bb").forEach((b) => {
+            const n = b.firstChild;
+            if (!n || n.nodeType !== 3 || b.childNodes.length !== 1)
+                return;
+            const src = I18N.orig.has(n) ? I18N.orig.get(n) : n.nodeValue;
+            if (String(src).trim() !== V5332_GREET[0])
+                return;
+            if (!I18N.orig.has(n))
+                I18N.orig.set(n, n.nodeValue);
+            if (I18N.elNodes)
+                I18N.elNodes.add(n);
+            n.nodeValue = V5332_GREET[i];
+            k++;
+        });
+        return k;
+    }
+    catch (e) {
+        return 0;
+    }
+}
+if (typeof admChatPaint === "function") {
+    const __acp5332 = admChatPaint;
+    admChatPaint = function () { const r = __acp5332.apply(this, arguments); try {
+        v5332Greet();
+    }
+    catch (e) { } return r; };
+}
+function v5332Pill() {
+    try {
+        if (typeof I18N === "undefined" || !I18N || I18N.lang === "ja" || !v5332Adm() || typeof i18nStr !== "function")
+            return;
+        const lp = document.getElementById("lgpill");
+        if (!lp)
+            return;
+        const d = I18N.dict[I18N.lang];
+        const n = lp.firstChild;
+        if (n && n.nodeType === 3 && lp.childNodes.length === 1) {
+            const src = I18N.orig.has(n) ? I18N.orig.get(n) : n.nodeValue;
+            const t1 = i18nStr(src, d);
+            if (t1 != null && t1 !== n.nodeValue) {
+                if (!I18N.orig.has(n))
+                    I18N.orig.set(n, n.nodeValue);
+                n.nodeValue = t1;
+            }
+        }
+        if (!lp.title)
+            return;
+        const t = i18nStr(lp.title, d);
+        if (t == null || t === lp.title)
+            return;
+        const o = I18N.attr.get(lp) || {};
+        if (o.title === undefined)
+            o.title = lp.title;
+        I18N.attr.set(lp, o);
+        lp.title = t;
+    }
+    catch (e) { }
+}
+if (typeof ux18Pill === "function") {
+    const __p5332 = ux18Pill;
+    ux18Pill = function () { const r = __p5332.apply(this, arguments); try {
+        v5332Pill();
+    }
+    catch (e) { } return r; };
+}
+function v5332After() {
+    if (!v5332Adm())
+        return;
+    try {
+        v5332Watch();
+    }
+    catch (e) { }
+    try {
+        v5332Emo();
+    }
+    catch (e) { }
+    try {
+        if (typeof ux2SecNav === "function") {
+            ux2SecNav();
+            if (typeof ux17SecUpdate === "function")
+                ux17SecUpdate();
+        }
+    }
+    catch (e) { }
+    try {
+        v5332Days();
+        v5332Greet();
+        v5332Pill();
+    }
+    catch (e) { }
+}
+if (typeof renderAdmin === "function") {
+    const __ra5332 = renderAdmin;
+    renderAdmin = function () { const r = __ra5332.apply(this, arguments); v5332After(); return r; };
+}
+if (typeof i18nSet === "function") {
+    const __is5332 = i18nSet;
+    i18nSet = function () { const r = __is5332.apply(this, arguments); try {
+        if (v5332Adm()) {
+            v5332Days();
+            v5332Greet();
+            v5332Emo();
+            v5332Pill();
+        }
+    }
+    catch (e) { } return r; };
+}
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N.dict)
+            return;
+        const R = [
+            ["トライアル管理コンソール", "Trial admin console", "试用管理控制台", "Consola de administración de la prueba"],
+            ["AIエンジン設定（複数同時接続・自律ルーティング）", "AI engine settings (multiple connections · auto-routing)", "AI引擎设置（多引擎同时连接・自动路由）", "Configuración del motor de IA (varias conexiones · enrutamiento automático)"],
+            ["自動化向けの搬出API（読み取り専用トークン）", "Export API for automation (read-only tokens)", "面向自动化的导出API（只读令牌）", "API de exportación para automatización (tokens de solo lectura)"],
+            ["LINE／WhatsApp 連携（Webhook）", "LINE / WhatsApp integration (webhook)", "LINE／WhatsApp 联动（Webhook）", "Integración con LINE / WhatsApp (webhook)"],
+            ["メール通知（日次ダイジェスト）", "Email notifications (daily digest)", "邮件通知（每日摘要）", "Notificaciones por correo (resumen diario)"],
+            ["AI商社マンのモード（個社版／全社版）と全社知識プール", "AI Trade Agent mode (single company / company-wide) and company-wide knowledge pool", "AI商社专员的模式（单公司版／全公司版）与全公司知识池", "Modo del Agente comercial IA (individual / global) y fondo de conocimiento global"],
+            ["アップロードされた実ファイル", "Files actually uploaded", "实际上传的文件", "Archivos realmente subidos"],
+            ["直近1週間のアクティブ", "Active in the last week", "近一周活跃", "Activos en la última semana"],
+            ["全アカウント合計", "Total for all accounts", "全部账户合计", "Total de todas las cuentas"],
+            ["まだ記録がありません。お客様が使い始めると、ここに日別の推移が出ます。", "No records yet. Once customers start using it, the daily trend appears here.", "暂无记录。客户开始使用后，这里会显示每日趋势。", "Aún no hay registros. Cuando los clientes empiecen a usarlo, aquí aparecerá la tendencia diaria."],
+            ["解析　■ ログイン", "Parsed　■ Logins", "解析　■ 登录", "Analizados　■ Inicios"],
+            ["未接続（内蔵エンジンで稼働）", "Not connected (running on the built-in engine)", "未连接（使用内置引擎运行）", "Sin conectar (funciona con el motor integrado)"],
+            ["エンジン（✓で有効）", "Engine (✓ to enable)", "引擎（✓ 即启用）", "Motor (✓ para activar)"],
+            ["APIキー", "API key", "API密钥", "Clave API"],
+            ["モデル上書き（任意）", "Model override (optional)", "覆盖模型（可选）", "Modelo personalizado (opcional)"],
+            ["🌐検索対応 🖼画像", "🌐 Search 🖼 Images", "🌐支持搜索 🖼图片", "🌐 Búsqueda 🖼 Imágenes"],
+            ["📄PDF/画像", "📄 PDF/images", "📄PDF/图片", "📄 PDF/imágenes"],
+            ["🌐検索対応 📄PDF/画像", "🌐 Search 📄 PDF/images", "🌐支持搜索 📄PDF/图片", "🌐 Búsqueda 📄 PDF/imágenes"],
+            ["テスト", "Test", "测试", "Probar"],
+            ["🧭 自律ルーティング（2社以上のとき、内容で自動選択）", "🧭 Auto-routing (with 2 or more providers, chosen by content)", "🧭 自动路由（2家以上时按内容自动选择）", "🧭 Enrutamiento automático (con 2 o más proveedores, elige según el contenido)"],
+            ["OFFにすると「優先エンジン」だけを使います：", "When OFF, only the “preferred engine” is used:", "关闭后只使用“优先引擎”：", "Si está en OFF, solo se usa el «motor preferido»:"],
+            ["キー発行：perplexity.ai → Settings → API。標準でWeb検索付きの回答（出典URL表示）。", "Get a key: perplexity.ai → Settings → API. Answers include web search by default (with source URLs).", "获取密钥：perplexity.ai → Settings → API。默认附带网络搜索的回答（显示来源URL）。", "Obtener la clave: perplexity.ai → Settings → API. Respuestas con búsqueda web por defecto (muestra las URL de origen)."],
+            ["キー発行：platform.openai.com → API keys。※環境によりブラウザからの直接接続がブロックされる場合があります（その場合はプロキシ経由のエンドポイントを指定するか、Gemini / Claude / Perplexity をご利用ください）。まず「接続テスト」でご確認を。", "Get a key: platform.openai.com → API keys. *Direct connection from the browser may be blocked in some environments (in that case set an endpoint via a proxy, or use Gemini / Claude / Perplexity). Check with “Connection test” first.", "获取密钥：platform.openai.com → API keys。※在某些环境下，浏览器直接连接可能被阻止（此时请指定经由代理的端点，或使用 Gemini / Claude / Perplexity）。请先用“连接测试”确认。", "Obtener la clave: platform.openai.com → API keys. *En algunos entornos se bloquea la conexión directa desde el navegador (en ese caso indique un endpoint a través de un proxy o use Gemini / Claude / Perplexity). Compruébelo primero con «Prueba de conexión»."],
+            ["キー発行：aistudio.google.com → Get API key。Web検索ONのときはGoogle検索グラウンディングを使用。", "Get a key: aistudio.google.com → Get API key. With web search ON, Google Search grounding is used.", "获取密钥：aistudio.google.com → Get API key。开启网络搜索时使用 Google 搜索落地（grounding）。", "Obtener la clave: aistudio.google.com → Get API key. Con la búsqueda web activada se usa la búsqueda de Google (grounding)."],
+            ["キー発行：platform.claude.com → API keys。ブラウザ直接接続に対応（専用ヘッダーを自動付与）。", "Get a key: platform.claude.com → API keys. Supports direct browser connection (the required header is added automatically).", "获取密钥：platform.claude.com → API keys。支持浏览器直接连接（自动添加专用请求头）。", "Obtener la clave: platform.claude.com → API keys. Admite conexión directa desde el navegador (añade automáticamente la cabecera necesaria)."],
+            ["お客様のLINE公式アカウント（Messaging API）やWhatsApp Business（Cloud API）からのメッセージを同期サーバーが受け取り、「やりとり」へ自動転記します。トークンはサーバー側のプロパティに保存し、この画面や配布HTMLには残しません。", "The sync server receives messages from customers' LINE Official Accounts (Messaging API) and WhatsApp Business (Cloud API) and posts them to “Messages” automatically. Tokens are stored in server-side properties and never kept on this screen or in the distributed HTML.", "同步服务器接收来自客户 LINE 官方账号（Messaging API）和 WhatsApp Business（Cloud API）的消息，并自动转到“往来沟通”。令牌保存在服务器端的属性中，不会留在本页面或分发的 HTML 中。", "El servidor de sincronización recibe los mensajes de las cuentas oficiales de LINE (Messaging API) y de WhatsApp Business (Cloud API) de los clientes y los pasa automáticamente a «Mensajes». Los tokens se guardan en las propiedades del servidor y nunca en esta pantalla ni en el HTML distribuido."],
+            ["設定状況", "Setup status", "设置状态", "Estado de la configuración"],
+            ["Claude等の自動化から、お客様が「自動化向けスナップショット」をONにしたデータを取得するためのトークンです。発行時に一度だけ表示します。取得URL：", "A token that lets automations such as Claude fetch the data of customers who switched “Snapshot for automation” ON. It is shown only once, when issued. Fetch URL: ", "供 Claude 等自动化工具获取客户已开启“面向自动化的快照”的数据的令牌。仅在发行时显示一次。获取URL：", "Token para que automatizaciones como Claude obtengan los datos de los clientes que activaron la «instantánea para automatización». Se muestra una sola vez, al emitirlo. URL de obtención: "],
+            ["トークンを発行", "Issue token", "发行令牌", "Emitir token"],
+            ["一覧", "List", "列表", "Lista"],
+            ["注意：ONの間は、そのアカウントでログインした端末のブラウザにAPIキーが保存されます（ログアウトすると、その端末から消えます）。デモ用・信頼できるお客様に限って使い、終わったらOFFにしてください（OFFにすると端末側からも消えます）。", "Note: while ON, the API key is stored in the browser of every device signed in to that account (it is removed from the device on logout). Use it only for demos and trusted customers, and switch it OFF when done (switching OFF also removes it from the devices).", "注意：开启期间，API密钥会保存在用该账户登录的设备的浏览器中（退出登录后会从该设备删除）。仅限演示用・可信赖的客户使用，结束后请关闭（关闭后设备端也会删除）。", "Atención: mientras esté en ON, la clave API se guarda en el navegador de los dispositivos que inicien sesión con esa cuenta (se borra del dispositivo al cerrar sesión). Úsela solo para demostraciones y clientes de confianza, y desactívela al terminar (al desactivarla también se borra de los dispositivos)."],
+            ["この端末のAIエンジン：", "AI engine on this device: ", "本设备的AI引擎：", "Motor de IA de este dispositivo: "],
+            ["未接続（先に下の「AIエンジン設定」で接続）", "Not connected (connect first in “AI engine settings” below)", "未连接（请先在下方“AI引擎设置”中连接）", "Sin conectar (conecte primero en «Configuración del motor de IA» abajo)"],
+            ["行の「詳細」で、画面別の利用回数と行動の時系列が見られます。台帳はクラウド同期サーバーにも送られます。", "Open “Details” on a row to see usage per screen and a timeline of actions. The ledger is also sent to the cloud sync server.", "点击行的“详情”可查看各页面的使用次数和操作时间线。台账也会发送到云同步服务器。", "En «Detalles» de cada fila verá el uso por pantalla y la cronología de acciones. El registro también se envía al servidor de sincronización."],
+            ["個社版", "Single company", "单公司版", "Versión individual"],
+            ["🏠 個社版", "🏠 Single company", "🏠 单公司版", "🏠 Versión individual"],
+            ["未利用", "Not used", "未使用", "Sin uso"],
+            ["お客様・物流会社が招待したメンバーも、ここにすぐ出ます（台帳の変更を15秒ごとに確認）。役割・担当・停止・削除は、そのアカウントのPC・スマホに反映されます。", "Members invited by customers and forwarders also appear here right away (ledger changes are checked every 15 seconds). Roles, assignments, suspensions and deletions are applied to that account's PCs and phones.", "客户・物流公司邀请的成员也会立即显示在这里（每15秒检查一次台账变更）。角色・负责・停用・删除会反映到该账户的电脑・手机上。", "Los miembros invitados por clientes y transitarios también aparecen aquí al momento (los cambios del registro se revisan cada 15 segundos). Funciones, asignaciones, suspensiones y eliminaciones se aplican en los PC y móviles de esa cuenta."],
+            ["氏名・連絡先", "Name · contact", "姓名・联系方式", "Nombre · contacto"],
+            ["招待・参加", "Invited · joined", "邀请・加入", "Invitación · alta"],
+            ["データはブラウザ内だけ", "Data stays in the browser", "数据仅在浏览器内", "Los datos solo están en el navegador"],
+            ["お客様がアップロードした商品データは、この画面のブラウザ内でのみ解析されます。外部サーバーには送信されません。", "Product data uploaded by customers is analysed only inside this browser. It is not sent to external servers.", "客户上传的商品数据只在本页面的浏览器内解析，不会发送到外部服务器。", "Los datos de producto que suben los clientes se analizan solo en este navegador. No se envían a servidores externos."],
+            ["アカウントはこの端末に保存", "Accounts are saved on this device", "账户保存在本设备", "Las cuentas se guardan en este dispositivo"],
+            ["発行したアカウント・利用状況はこの端末のブラウザに保存されます。商談・画面共有でのトライアルに最適です。製品版ではクラウドで一元管理になります。", "Issued accounts and usage are saved in this device's browser. Ideal for trials in meetings and screen sharing. The product version manages them centrally in the cloud.", "已发行的账户和使用情况保存在本设备的浏览器中。适合在商谈・屏幕共享时试用。正式版将在云端统一管理。", "Las cuentas emitidas y su uso se guardan en el navegador de este dispositivo. Ideal para pruebas en reuniones y al compartir pantalla. La versión de producto las gestiona de forma centralizada en la nube."],
+            ["Web検索はライブ＋内蔵ナレッジ", "Web search: live + built-in knowledge", "网络搜索：实时＋内置知识", "Búsqueda web: en vivo + conocimiento integrado"],
+            ["右側の補助パネル（手順・サンプル等）の表示／非表示", "Show/hide the side panel (steps, samples, etc.)", "显示／隐藏右侧辅助面板（步骤・示例等）", "Mostrar u ocultar el panel lateral (pasos, ejemplos, etc.)"],
+            ["クリックで該当セクションへ", "Click to jump to the section", "点击跳转到该部分", "Clic para ir a la sección"],
+            ["自動（プラン準拠）", "Auto (per plan)", "自动（按套餐）", "Automático (según el plan)"],
+            ["用途（例：定例会自動化）", "Purpose (e.g. review meeting automation)", "用途（例：例会自动化）", "Uso (p. ej., automatizar reuniones periódicas)"],
+            ["個社版＝自社データ＋Web・統計・規制だけを学ぶ／全社版＝貿易クラウド Ver1.0＋Ver2.0 全ユーザーの匿名化された一次情報も学ぶ（社名・商品名は開示しない）", "Single company = learns only from its own data + web, statistics and regulations / Company-wide = also learns from anonymised primary data of all Trade Cloud Ver1.0 + Ver2.0 users (company and product names are never disclosed)", "单公司版＝只学习自家数据＋网络・统计・法规／全公司版＝还学习贸易云 Ver1.0＋Ver2.0 全部用户的匿名一手信息（不公开公司名・商品名）", "Versión individual = aprende solo de sus datos + web, estadísticas y normativa / Versión global = aprende además de la información primaria anonimizada de todos los usuarios de Trade Cloud Ver1.0 + Ver2.0 (no se revelan nombres de empresas ni productos)"],
+            ["やりとり画面から招待されたメンバー（リアルタイム反映）", "Members invited from the Messages screen (updated in real time)", "从往来沟通页面邀请的成员（实时反映）", "Miembros invitados desde la pantalla de mensajes (en tiempo real)"],
+            ["AI商社マンのモード（個社版／全社版）は、STANDAGE マスターが変えます", "The AI Trade Agent mode (single company / company-wide) is changed by the STANDAGE master", "AI商社专员的模式（单公司版／全公司版）由 STANDAGE 主管理员更改", "El modo del Agente comercial IA (individual / global) lo cambia el administrador maestro de STANDAGE"],
+            ["🔍 氏名・メール・会社", "🔍 Name, email, company", "🔍 姓名・邮箱・公司", "🔍 Nombre, correo, empresa"],
+            ["🔒 管理者", "🔒 Admin", "🔒 管理员", "🔒 Administrador"],
+            ["会社の管理者のログイン", "Company admin login", "企业管理员登录", "Inicio de sesión del administrador de empresa"],
+            ["会社の管理者：確認コードを送った", "Company admin: confirmation code sent", "企业管理员：已发送验证码", "Administrador de empresa: código de confirmación enviado"],
+            ["貴社のアカウントを管理する管理者の、ログイン・確認コード・管理の操作の記録（最新の100件）。確認コード・鍵そのものは記録しません。", "Log of logins, confirmation codes and admin operations by the admins who manage your accounts (latest 100). The codes and keys themselves are not recorded.", "管理贵公司账户的管理员的登录・验证码・管理操作记录（最新100条）。不记录验证码和密钥本身。", "Registro de inicios de sesión, códigos de confirmación y operaciones de los administradores que gestionan sus cuentas (últimos 100). No se guardan los códigos ni las claves."],
+            ["端末管理・台帳の共有", "Devices & shared ledger", "设备管理・台账共享", "Dispositivos y registro compartido"],
+            ["接続先：", "Server: ", "连接地址：", "Servidor: "],
+            ["（この端末で上書き設定）", " (overridden on this device)", "（本设备上覆盖设置）", " (sobrescrito en este dispositivo)"],
+            ["URLをコピー", "Copy URL", "复制URL", "Copiar URL"],
+            ["。お客様の商品・商談・書類・案件は", ". Customers' products, deals, documents and cases are stored ", "。客户的商品・商谈・文件・案件", ". Los productos, negociaciones, documentos y casos de los clientes se guardan "],
+            ["アクセスコードで暗号化", "encrypted with the access code", "以访问码加密", "cifrados con el código de acceso"],
+            ["して預けます。当社はアクセスコードを発行・管理しているため、技術的には中身を参照できます（参照はサポートとサービスの提供に必要な範囲に限ります）。AIエンジンの APIキーはこの同期には含めません（「AI接続の共有」をONにしたアカウントにだけ、暗号化して届けます）。", ". Because we issue and manage the access codes, we can technically see the contents (we only look as far as needed for support and providing the service). AI engine API keys are not part of this sync (they are delivered, encrypted, only to accounts with “Sharing the AI connection” ON).", "后保管。由于本公司发行并管理访问码，技术上可以查看内容（仅限于支持和提供服务所需的范围）。AI引擎的API密钥不包含在此同步中（只会加密发送给开启了“共享AI连接”的账户）。", ". Como emitimos y gestionamos los códigos de acceso, técnicamente podemos ver el contenido (solo lo consultamos en la medida necesaria para el soporte y el servicio). Las claves API de los motores de IA no se incluyen en esta sincronización (solo se envían, cifradas, a las cuentas con «Compartir la conexión de IA» activado)."],
+            ["☁ サーバーの台帳を確認しています…", "☁ Checking the server ledger…", "☁ 正在确认服务器台账…", "☁ Comprobando el registro del servidor…"],
+            ["台帳の変更履歴（サーバーに記録・新しい順）", "Ledger change history (recorded on the server · newest first)", "台账变更记录（服务器记录・按时间倒序）", "Historial de cambios del registro (en el servidor · más recientes primero)"],
+            ["接続先URLをこの端末で上書き（テスト・移行用）", "Override the server URL on this device (for testing / migration)", "在本设备上覆盖连接地址（测试・迁移用）", "Sobrescribir la URL del servidor en este dispositivo (pruebas / migración)"],
+            ["保存して再読込", "Save and reload", "保存并重新加载", "Guardar y recargar"],
+            ["上書きを解除", "Remove override", "取消覆盖", "Quitar la sobrescritura"],
+            ["コードとページのURLをお客様に渡すだけで、その場でトライアルを始められます。", "Just give the customer the code and the page URL, and they can start the trial on the spot.", "只需把代码和页面URL交给客户，即可当场开始试用。", "Basta con dar al cliente el código y la URL de la página para que empiece la prueba al momento."],
+            ["発行済みアカウント・利用状況・端末（同期サーバー）・AIエンジン設定とコスト・物流会社の登録・通関統計まで、管理コンソールの全データを根拠に答えます。数値の質問はデータから直接、自由な質問は接続AIが答えます。", "Answers from all admin console data: issued accounts, usage, devices (sync server), AI engine settings and costs, forwarder registrations and customs statistics. Numeric questions are answered directly from the data; free questions by the connected AI.", "以管理控制台的全部数据为依据回答：已发行账户・使用情况・设备（同步服务器）・AI引擎设置与成本・物流公司登记・通关统计。数值类问题直接根据数据回答，自由提问由已连接的AI回答。", "Responde con todos los datos de la consola: cuentas emitidas, uso, dispositivos (servidor de sincronización), configuración y costos de los motores de IA, transitarios registrados y estadísticas aduaneras. Las preguntas numéricas se responden directamente con los datos; las libres, con la IA conectada."],
+            ["期限が7日以内のアカウントは？", "Which accounts expire within 7 days?", "7天内到期的账户有哪些？", "¿Qué cuentas vencen en 7 días?"],
+            ["よく使われているアカウントは？", "Which accounts are used most?", "哪些账户使用最多？", "¿Qué cuentas se usan más?"],
+            ["ログイン中の端末は？", "Which devices are signed in?", "哪些设备正在登录？", "¿Qué dispositivos tienen la sesión iniciada?"],
+            ["AIエンジンの接続状況は？", "What is the AI engine connection status?", "AI引擎的连接状态如何？", "¿Cuál es el estado de conexión de los motores de IA?"],
+            ["今月のAPIコストは？", "What are this month's API costs?", "本月的API成本是多少？", "¿Cuánto cuesta la API este mes?"],
+            ["物流会社の登録状況は？", "How many forwarders are registered?", "物流公司的登记情况如何？", "¿Cuántos transitarios están registrados?"],
+            ["日本酒の輸出統計は？", "What are the sake export statistics?", "日本酒的出口统计如何？", "¿Cuáles son las estadísticas de exportación de sake?"],
+            ["管理データについて自由に質問（Enterで送信）", "Ask anything about the admin data (Enter to send)", "就管理数据自由提问（按Enter发送）", "Pregunte lo que quiera sobre los datos (Enter para enviar)"],
+            ["クラウド同期が未接続のため確認できません。", "Cannot check because cloud sync is not connected.", "云同步未连接，无法确认。", "No se puede comprobar porque la sincronización no está conectada."],
+            ["お客様が「直接連絡」（自社のバイヤー・つなぐ依頼で承諾した相手）から送るメールは、クラウド同期サーバー（Apps Script）の実行ユーザーのGmailから送信され（お客様のアドレスにCC）、返信は件名末尾の [BC-…] で突き合わせて各お客様のスレッドにだけ取り込みます。メールの性質上、送受信の本文は平文でサーバーを経由します。停止はスクリプトプロパティ MAIL_RELAY=off。有効化には sync_gas.js v2.2 の反映（Gmail権限の再承認）が必要です。", "Emails that customers send via “Contact directly” (their own buyers and contacts who accepted a connection request) are sent from the Gmail of the user running the cloud sync server (Apps Script), with the customer's address in CC. Replies are matched by the [BC-…] at the end of the subject and filed only in that customer's thread. By the nature of email, message bodies pass through the server in plain text. To stop, set the script property MAIL_RELAY=off. Enabling requires deploying sync_gas.js v2.2 (re-approving Gmail access).", "客户通过“直接联系”（自家买家・已接受连接请求的对象）发送的邮件，由云同步服务器（Apps Script）执行用户的 Gmail 发出（抄送客户地址），回复按主题末尾的 [BC-…] 匹配，只导入该客户的会话。由于邮件的性质，收发正文以明文经过服务器。停用请设置脚本属性 MAIL_RELAY=off。启用需要部署 sync_gas.js v2.2（重新授权 Gmail 权限）。", "Los correos que los clientes envían con «Contactar directamente» (sus propios compradores y contactos que aceptaron una solicitud) salen del Gmail del usuario que ejecuta el servidor de sincronización (Apps Script), con copia a la dirección del cliente. Las respuestas se asocian por el [BC-…] al final del asunto y se guardan solo en el hilo de ese cliente. Por la naturaleza del correo, los textos pasan por el servidor sin cifrar. Para detenerlo, ponga la propiedad de script MAIL_RELAY=off. Para activarlo hay que desplegar sync_gas.js v2.2 (volver a autorizar Gmail)."],
+            ["実際に発生したAPI呼び出しだけを、トークン実測値で記録した「リアルな金額」です（サンプル・架空データは含みません）。金額は下の参考単価での概算＝実請求は各社の管理画面が正。", "These are “real amounts”: only API calls that actually happened, recorded with measured token counts (no sample or fictional data). Amounts are estimates using the reference prices below; each provider's console is authoritative for actual billing.", "这是只记录实际发生的API调用、按实测令牌数计算的“真实金额”（不含示例・虚构数据）。金额按下方参考单价估算＝实际费用以各公司的管理页面为准。", "Son «importes reales»: solo las llamadas a la API que ocurrieron de verdad, registradas con el recuento real de tokens (sin datos de ejemplo ni ficticios). Los importes son estimaciones con los precios de referencia de abajo; la facturación real es la del panel de cada proveedor."],
+            ["全期間", "All time", "全部期间", "Todo el periodo"],
+            ["期間指定", "Custom range", "指定期间", "Rango personalizado"],
+            ["API呼び出し（記録）", "API calls (recorded)", "API调用（记录）", "Llamadas a la API (registradas)"],
+            ["この期間の記録なし", "No records in this period", "此期间无记录", "Sin registros en este periodo"],
+            ["今月の予算消化", "Budget used this month", "本月预算消耗", "Presupuesto usado este mes"],
+            ["下の「予算を設定」から月次予算を入力できます", "Enter a monthly budget in “Set budget” below", "可在下方“设置预算”中输入月度预算", "Puede introducir un presupuesto mensual en «Fijar presupuesto» abajo"],
+            ["ユーザー別（コスト記録がある行はクリックで内訳）", "By user (click rows with cost records for a breakdown)", "按用户（有成本记录的行可点击查看明细）", "Por usuario (clic en las filas con costos para ver el detalle)"],
+            ["まだ利用がありません。お客様がAI商社マンを使うと、AI質問の回数（全エンジン）と実APIコスト（キー接続時）がここに毎日積み上がります。", "No usage yet. When customers use the AI Trade Agent, the number of AI questions (all engines) and actual API costs (when keys are connected) add up here every day.", "暂无使用。客户使用AI商社专员后，AI提问次数（全部引擎）和实际API成本（连接密钥时）会每天累计在这里。", "Aún no hay uso. Cuando los clientes usen el Agente comercial IA, aquí se acumularán cada día las preguntas a la IA (todos los motores) y el costo real de la API (con claves conectadas)."],
+            ["エンジン別・日次推移（実記録）", "By engine · daily trend (actual records)", "按引擎・每日趋势（实际记录）", "Por motor · tendencia diaria (registros reales)"],
+            ["この期間に実APIの呼び出し記録はありません。接続していないエンジンに金額が付くことはありません。", "No actual API calls recorded in this period. Engines that are not connected never incur charges.", "此期间没有实际API调用记录。未连接的引擎不会产生费用。", "No hay llamadas reales a la API en este periodo. Los motores no conectados nunca generan costos."],
+            ["実API呼び出しが記録されると、ここに日別の実額が毎日積み上がります。", "Once actual API calls are recorded, daily amounts add up here.", "记录到实际API调用后，这里会每天累计每日的实际金额。", "Cuando se registren llamadas reales a la API, aquí se acumularán los importes diarios."],
+            ["予算を設定：", "Set budget:", "设置预算：", "Fijar presupuesto:"],
+            ["月次予算（円）", "Monthly budget (JPY)", "月度预算（日元）", "Presupuesto mensual (JPY)"],
+            ["ユーザー別警戒ライン（円/月）", "Alert line per user (JPY/month)", "每位用户警戒线（日元/月）", "Umbral de alerta por usuario (JPY/mes)"],
+            ["🤖 AIにコスト改善を提案してもらう", "🤖 Ask AI for cost-saving ideas", "🤖 让AI提出降低成本的建议", "🤖 Pedir a la IA ideas para reducir costos"],
+            ["参考単価の確認・編集（USD／100万トークン）", "Check / edit reference prices (USD / 1M tokens)", "查看・编辑参考单价（USD／100万令牌）", "Ver / editar precios de referencia (USD / 1 M tokens)"],
+            ["🌐検索加算/回 $", "🌐 Search surcharge / call $", "🌐搜索附加费/次 $", "🌐 Recargo por búsqueda / llamada $"],
+            ["単価を保存", "Save prices", "保存单价", "Guardar precios"],
+            ["初期値は各社代表モデルの公表単価ベースの参考値（モデルごとの単価差は反映されません）。正確な請求額は各社のダッシュボードでご確認ください。", "Defaults are reference values based on each provider's published prices for its main model (price differences between models are not reflected). Check each provider's dashboard for exact charges.", "初始值是根据各公司代表模型公开单价的参考值（不反映各模型之间的差价）。准确的费用请在各公司的控制台确认。", "Los valores iniciales son de referencia, basados en los precios publicados del modelo principal de cada proveedor (no reflejan diferencias entre modelos). Consulte el importe exacto en el panel de cada proveedor."],
+            ["60日以内・過ぎて30日以内", "within 60 days · up to 30 days past", "60天以内・已过期30天以内", "en 60 días · hasta 30 días vencidas"],
+            ["更新のご提案・データの持ち出しのご案内の時期を逃さないための一覧です（Ver.1 のダッシュボード「契約満了」と同じ考え方）。期限の変更はアカウント一覧で行えます。", "A list so you don't miss the time to propose renewal or explain data export (same idea as “Contract expiry” on the Ver.1 dashboard). Change expiry dates in the account list.", "为了不错过续约提案・数据导出说明时机的一览（与 Ver.1 仪表板的“合同到期”思路相同）。到期日可在账户一览中更改。", "Lista para no perder el momento de proponer la renovación o explicar la exportación de datos (misma idea que «Vencimiento del contrato» en el panel de Ver.1). Las fechas se cambian en la lista de cuentas."],
+            ["残り", "Remaining", "剩余", "Restante"],
+            ["全アカウントの「最後のメッセージ・未返信・承認待ちの商談記録・期限切れタスク」を横断で確認し、案件ごとの承認者を設定します。各社のデータはアクセスコードで復号し、対応の漏れの確認に要る件数・日時・最後の送り手と、メール通知の有無だけをこの画面に表示します（やりとりの本文は表示せず、どこにも保存しません）。参照は、お客様にご案内しているとおり、サポートとサービスの提供に必要な範囲に限ります。", "Check “last message · unanswered · deal records awaiting approval · overdue tasks” across all accounts, and set an approver for each case. Each company's data is decrypted with its access code, and only the counts, dates, last sender and whether email notifications are on — what is needed to spot missed follow-ups — are shown here (message bodies are not shown or stored anywhere). As explained to customers, we only look as far as needed for support and providing the service.", "跨所有账户确认“最后的消息・未回复・待审批的商谈记录・逾期任务”，并为每个案件设置审批人。各公司的数据用访问码解密，本页面只显示确认是否遗漏所需的件数・时间・最后发件人以及是否开启邮件通知（不显示往来正文，也不保存在任何地方）。如向客户说明的那样，查看仅限于支持和提供服务所需的范围。", "Revise en todas las cuentas «último mensaje · sin respuesta · actas pendientes de aprobación · tareas vencidas» y asigne un aprobador a cada caso. Los datos de cada empresa se descifran con su código de acceso y aquí solo se muestran los recuentos, fechas, el último remitente y si hay avisos por correo —lo necesario para detectar olvidos— (no se muestra ni se guarda el texto de los mensajes). Como se explica a los clientes, solo se consulta lo necesario para el soporte y el servicio."],
+            ["最新の状態を取得", "Get the latest status", "获取最新状态", "Obtener el estado actual"],
+            ["🔄 最新の状態を取得", "🔄 Get the latest status", "🔄 获取最新状态", "🔄 Obtener el estado actual"],
+            ["「最新の状態を取得」を押すと、同期サーバーから各社の状態を読み取ります（社数×1〜3秒）。", "Press “Get the latest status” to read each company's status from the sync server (1–3 s per company).", "点击“获取最新状态”，从同步服务器读取各公司的状态（每家约1〜3秒）。", "Pulse «Obtener el estado actual» para leer el estado de cada empresa desde el servidor de sincronización (1–3 s por empresa)."],
+            ["お客様が通知センターでメールアドレスを登録すると、毎朝8時に要対応の件数と見出しだけをお送りします。送信は同期サーバー（Apps Script）から行います。", "When customers register an email address in the notification center, we send only the number of items needing action and their headings every morning at 8:00. Emails are sent from the sync server (Apps Script).", "客户在通知中心登记邮箱后，每天早上8点只发送待处理的件数和标题。由同步服务器（Apps Script）发送。", "Cuando el cliente registra un correo en el centro de notificaciones, cada mañana a las 8:00 enviamos solo el número de asuntos pendientes y sus títulos. El envío se hace desde el servidor de sincronización (Apps Script)."],
+            ["配信状況を取得", "Get delivery status", "获取发送状态", "Ver estado de envío"],
+            ["毎朝8時の配信ジョブを設定", "Set the 8:00 daily delivery job", "设置每天早上8点的发送任务", "Programar el envío diario de las 8:00"],
+            ["今すぐ配信", "Send now", "立即发送", "Enviar ahora"],
+            ["物流", "Forwarder", "物流", "Transitario"],
+            ["🚚 物流", "🚚 Forwarder", "🚚 物流", "🚚 Transitario"],
+            ["全社版のアカウント：", "Company-wide accounts: ", "全公司版账户：", "Cuentas con versión global: "],
+            ["匿名ダイジェスト：", "Anonymous digests: ", "匿名摘要：", "Resúmenes anónimos: "],
+            ["社分", " companies", "家", " empresas"],
+            ["週次更新：", "Weekly update: ", "每周更新：", "Actualización semanal: "],
+            ["未実行", "Not run yet", "未执行", "Sin ejecutar"],
+            ["ジョブ未設定", "Job not set", "未设置任务", "Tarea sin configurar"],
+            ["Ver1.0 集計：", "Ver1.0 aggregates: ", "Ver1.0 统计：", "Agregados Ver1.0: "],
+            ["未取込（端末内の既定値を使用）", "Not imported (using defaults on this device)", "未导入（使用本设备内的默认值）", "Sin importar (se usan los valores por defecto del dispositivo)"],
+            ["API自動取込は未設定（スクリプト プロパティ DIGITRAD_TOKEN）", "Automatic API import not set (script property DIGITRAD_TOKEN)", "未设置API自动导入（脚本属性 DIGITRAD_TOKEN）", "Importación automática por API sin configurar (propiedad de script DIGITRAD_TOKEN)"],
+            ["預かる項目：カテゴリ・HS上4桁・進出希望国・規制調査の国数・価格帯（US$帯）・MOQ帯・リードタイム帯・取引条件（FOB等）・支払方法の種別・認証の種別・交渉ステータスの分布（国別）・初回返信までの日数・商談記録の件数と反応率・失注理由の分類・バイヤーからの質問の種類・成長レベル", "Kept: category · first 4 HS digits · target countries · number of countries with regulation research · price band (US$) · MOQ band · lead-time band · terms of trade (FOB etc.) · payment method type · certification type · negotiation status distribution (by country) · days to first reply · number of deal records and response rate · lost-deal reason category · buyer question type · growth level", "保管的项目：类别・HS前4位・希望进入的国家・法规调查国家数・价格带（US$带）・MOQ带・交货期带・交易条件（FOB等）・付款方式类别・认证类别・谈判状态分布（按国家）・首次回复天数・商谈记录件数与回复率・丢单原因分类・买家提问类型・成长等级", "Se guarda: categoría · 4 primeros dígitos HS · países objetivo · nº de países con estudio normativo · franja de precios (US$) · franja de MOQ · franja de plazo de entrega · condiciones comerciales (FOB, etc.) · tipo de pago · tipo de certificación · distribución del estado de negociación (por país) · días hasta la primera respuesta · nº de actas y tasa de respuesta · motivo de pérdida · tipo de preguntas de compradores · nivel de crecimiento"],
+            ["預からない項目：社名・商品名・品番・担当者名・メール・電話・住所・URL・メッセージ本文・会議メモ・添付資料・価格の実額", "Not kept: company names · product names · item numbers · contact names · email · phone · address · URLs · message bodies · meeting notes · attachments · actual prices", "不保管的项目：公司名・商品名・货号・负责人姓名・邮箱・电话・地址・URL・消息正文・会议记录・附件・实际价格", "No se guarda: nombres de empresa · nombres de producto · referencias · nombres de contacto · correo · teléfono · dirección · URL · texto de mensajes · notas de reuniones · adjuntos · precios reales"],
+            ["各端末は1日1回ダイジェストを送信（内容が変わったときだけ）。全社版の端末はログイン時と6時間ごとに全社データを取得", "Each device sends a digest once a day (only when something changed). Company-wide devices fetch the company-wide data at login and every 6 hours", "各设备每天发送一次摘要（仅在内容变化时）。全公司版设备在登录时及每6小时获取全公司数据", "Cada dispositivo envía un resumen una vez al día (solo si algo cambió). Los dispositivos con versión global obtienen los datos globales al iniciar sesión y cada 6 horas"],
+            ["週次：毎週月曜 6:00（JST）のジョブが Ver1.0 本番DBの集計値（バイヤー数・進捗分布・商談記録数・案件数）を自動取込（スクリプト プロパティ DIGITRAD_TOKEN が有効なとき）。未設定のときは「📥 Ver1.0 集計JSONを取り込む」で手動更新。120日以上更新の無いダイジェストは整理", "Weekly: a job every Monday at 6:00 (JST) imports the Ver1.0 production DB aggregates (number of buyers, progress distribution, deal records, cases) automatically (when the script property DIGITRAD_TOKEN is valid). If not set, update by hand with “📥 Import Ver1.0 aggregates (JSON)”. Digests not updated for 120+ days are cleaned up", "每周：每周一 6:00（JST）的任务自动导入 Ver1.0 正式数据库的统计值（买家数・进度分布・商谈记录数・案件数）（脚本属性 DIGITRAD_TOKEN 有效时）。未设置时用“📥 导入Ver1.0统计JSON”手动更新。超过120天未更新的摘要会被清理", "Semanal: una tarea cada lunes a las 6:00 (JST) importa automáticamente los agregados de la base de producción Ver1.0 (compradores, distribución del avance, actas, casos) (si la propiedad de script DIGITRAD_TOKEN es válida). Si no está configurada, actualice a mano con «📥 Importar agregados Ver1.0 (JSON)». Los resúmenes sin actualizar en 120 días o más se eliminan"],
+            ["取込状態：", "Import status: ", "导入状态：", "Estado de importación: "],
+            ["取込キー：", "Ingestion key: ", "导入密钥：", "Clave de ingesta: "],
+            ["取り込む項目は分布・件数・話題の言及件数だけ。本文・社名・担当者名・連絡先・URLは、ローカルで集計した時点で捨て、サーバーの許可リストでも二重に落とします。出力に固有名の疑いがあるとジョブ自体が中止します", "Only distributions, counts and topic mention counts are imported. Bodies, company names, contact names, contact details and URLs are discarded when aggregated locally, and dropped again by the server's allow list. If the output looks like it contains proper names, the job itself stops", "导入的项目只有分布・件数・话题提及次数。正文・公司名・负责人姓名・联系方式・URL 在本地统计时即丢弃，服务器的许可列表也会再次过滤。若输出疑似含有专有名称，任务本身会中止", "Solo se importan distribuciones, recuentos y menciones de temas. Textos, nombres de empresa, nombres y datos de contacto y URL se descartan al agregarse en local, y la lista de permitidos del servidor los vuelve a filtrar. Si la salida parece contener nombres propios, la tarea se detiene"],
+            ["物流会社を選ぶと、レート管理・AI物流マンの見積対応画面になります", "Choosing Forwarder switches to rate management and the AI Logistics Agent quote screens", "选择物流公司后，将切换为费率管理・AI物流专员的报价页面", "Si elige Transitario, se abren las pantallas de tarifas y cotización del Agente logístico IA"],
+            ["AI商社マンのモード（あとから一覧で切替できます）", "AI Trade Agent mode (can be changed later in the list)", "AI商社专员的模式（之后可在一览中切换）", "Modo del Agente comercial IA (se puede cambiar luego en la lista)"],
+            ["例: 5000", "e.g. 5000", "例: 5000", "p. ej. 5000"]
+        ];
+        R.forEach((r) => ["en", "zh", "es"].forEach((l, i) => { const d = I18N.dict[l]; if (d && r[i + 1] && d[r[0]] == null)
+            d[r[0]] = r[i + 1]; }));
+        if (typeof I18N_EL !== "undefined" && I18N_EL)
+            [
+                ["複数のエンジンに✓を入れると、<b>質問の内容に応じて最適かつ最安のAIを自動で使い分けます</b>： 🌐Web検索が要る質問→Perplexity/Gemini、📄PDF・画像の読取→Gemini/Claude、⚖️契約書など複雑な判断→最上位モデル、✂️抽出・翻訳・通常の質問→最安の高速モデル。",
+                    "When you tick several engines, <b>the best and cheapest AI is chosen automatically for each question</b>: 🌐 questions needing web search → Perplexity/Gemini, 📄 reading PDFs and images → Gemini/Claude, ⚖️ complex judgments such as contracts → top model, ✂️ extraction, translation and ordinary questions → cheapest fast model.",
+                    "勾选多个引擎后，<b>会根据提问内容自动选用最合适且最便宜的AI</b>：🌐需要网络搜索的问题→Perplexity/Gemini、📄读取PDF・图片→Gemini/Claude、⚖️合同等复杂判断→最高级模型、✂️提取・翻译・普通问题→最便宜的高速模型。",
+                    "Si marca varios motores, <b>se elige automáticamente la IA más adecuada y barata para cada pregunta</b>: 🌐 preguntas con búsqueda web → Perplexity/Gemini, 📄 lectura de PDF e imágenes → Gemini/Claude, ⚖️ decisiones complejas como contratos → modelo superior, ✂️ extracción, traducción y preguntas normales → modelo rápido más barato."],
+                ["<b>キーの取り扱い</b>　APIキーは<b>この端末のブラウザにのみ</b>保存されます。キーを入れたままの端末を顧客に渡したり、配布用HTMLにキーを書き込んだりしないでください。顧客配布版は未接続のまま＝内蔵エンジンで動かすのが安全です。<br> ブラウザ直接接続の対応（実測）：Perplexity○／Gemini○／Claude○／OpenAI（環境により可・まず「テスト」で確認）。",
+                    "<b>Handling keys</b>　API keys are stored <b>only in this device's browser</b>. Do not hand a device with keys entered to customers, and do not write keys into the distributed HTML. It is safest to leave the customer version unconnected and run it on the built-in engine.<br>Direct browser connection (tested): Perplexity ○ / Gemini ○ / Claude ○ / OpenAI (depends on the environment; check with “Test” first).",
+                    "<b>密钥的处理</b>　API密钥<b>只保存在本设备的浏览器中</b>。请勿把输入了密钥的设备交给客户，也不要把密钥写进分发用的HTML。客户分发版保持未连接＝使用内置引擎运行最安全。<br>浏览器直接连接的支持情况（实测）：Perplexity○／Gemini○／Claude○／OpenAI（视环境而定・请先用“测试”确认）。",
+                    "<b>Manejo de las claves</b>　Las claves API se guardan <b>solo en el navegador de este dispositivo</b>. No entregue a clientes un dispositivo con claves ni escriba claves en el HTML distribuido. Lo más seguro es dejar la versión para clientes sin conectar y usar el motor integrado.<br>Conexión directa desde el navegador (probada): Perplexity ○ / Gemini ○ / Claude ○ / OpenAI (según el entorno; compruebe primero con «Probar»)."],
+                ["APIキーはこの端末のブラウザにだけ保存されるため、そのままではお客様の端末は内蔵エンジンだけで動き、Web検索も行いません。ONにしたアカウントには、この端末のAIエンジン設定を<b>そのアカウントの鍵で暗号化</b>して同期サーバーに預けます。そのアカウントでログインした端末は、ログイン時に取得・復号して実AI（Web検索つき）で回答します。",
+                    "API keys are stored only in this device's browser, so customers' devices otherwise run on the built-in engine only and do not search the web. For accounts switched ON, this device's AI engine settings are <b>encrypted with that account's key</b> and stored on the sync server. Devices signed in to that account fetch and decrypt them at login and answer with the real AI (with web search).",
+                    "API密钥只保存在本设备的浏览器中，因此客户的设备默认只用内置引擎运行，也不进行网络搜索。对已开启的账户，会把本设备的AI引擎设置<b>用该账户的密钥加密</b>后保存在同步服务器上。用该账户登录的设备在登录时获取并解密，用真实AI（含网络搜索）回答。",
+                    "Las claves API se guardan solo en el navegador de este dispositivo, así que los dispositivos de los clientes funcionan solo con el motor integrado y sin búsqueda web. Para las cuentas activadas, la configuración del motor de IA de este dispositivo se <b>cifra con la clave de esa cuenta</b> y se guarda en el servidor de sincronización. Los dispositivos que inician sesión con esa cuenta la obtienen y descifran al entrar y responden con la IA real (con búsqueda web)."],
+                ["<b>個社版</b>＝そのお客様の会社・商品・取組の登録データ＋Web情報・通関統計・規制情報を一次情報として学習。<b>全社版</b>＝それに加えて<b>貿易クラウド Ver1.0（本番DBの集計値）＋Ver2.0 全ユーザーの匿名ダイジェスト</b>も学習し、国別の交渉状況・失注理由・価格帯・よくある質問などの傾向を伴走に使います。他社の社名・商品名・担当者名・連絡先は<b>そもそも預からない</b>（端末側で帯・語彙に丸め、サーバー側でも許可リスト外を捨てる）ため開示されません。切替はアカウント一覧の「🧠 AI商社マン」列（各アカウントごと・サーバー台帳で強制）。",
+                    "<b>Single company</b> = learns from that customer's registered company, product and activity data plus web information, customs statistics and regulations as primary sources. <b>Company-wide</b> = in addition, learns from <b>Trade Cloud Ver1.0 (production DB aggregates) + anonymous digests of all Ver2.0 users</b>, and uses trends such as negotiation status by country, lost-deal reasons, price bands and frequent questions for support. Other companies' names, product names, contact names and contact details are <b>never stored in the first place</b> (rounded into bands and vocabulary on the device, and anything outside the allow list is discarded on the server), so they are never disclosed. Switch in the “🧠 AI Trade Agent” column of the account list (per account, enforced by the server ledger).",
+                    "<b>单公司版</b>＝以该客户的公司・商品・举措的登记数据＋网络信息・通关统计・法规信息为一手信息学习。<b>全公司版</b>＝在此基础上还学习<b>贸易云 Ver1.0（正式数据库统计值）＋Ver2.0 全部用户的匿名摘要</b>，把按国家的谈判情况・丢单原因・价格带・常见问题等趋势用于陪跑。其他公司的公司名・商品名・负责人姓名・联系方式<b>从一开始就不保管</b>（在设备端归整为区间・词汇，服务器端也丢弃许可列表以外的内容），因此不会公开。切换在账户一览的“🧠 AI商社专员”列（按账户・由服务器台账强制）。",
+                    "<b>Versión individual</b> = aprende de los datos registrados de la empresa, productos y actividades de ese cliente más información web, estadísticas aduaneras y normativa como fuentes primarias. <b>Versión global</b> = además aprende de <b>Trade Cloud Ver1.0 (agregados de la base de producción) + resúmenes anónimos de todos los usuarios de Ver2.0</b>, y usa tendencias como el estado de negociación por país, motivos de pérdida, franjas de precios y preguntas frecuentes. Los nombres de otras empresas, productos, contactos y sus datos <b>no se guardan nunca</b> (se redondean a franjas y vocabulario en el dispositivo y el servidor descarta lo que no está en la lista de permitidos), así que nunca se revelan. Se cambia en la columna «🧠 Agente comercial IA» de la lista de cuentas (por cuenta, impuesto por el registro del servidor)."],
+                ["貿易クラウド Ver1.0（本番DB）の<b>Buyer議事録（商談記録）・バイヤー台帳・案件・タスク（スケジュール進捗）・週次の進捗サマリー・会議メモ・メッセージ</b>を、<b>個社・個人・商品が特定できない集計値だけ</b>に丸めて週次で取り込みます（本文・社名・担当者名・連絡先は保存しない）。全社版のお客様のAI商社マンだけがこの知識を使い、助言は<b>そのお客様の登録データを最優先</b>にします。",
+                    "Each week, <b>buyer minutes (deal records), the buyer ledger, cases, tasks (schedule progress), weekly progress summaries, meeting notes and messages</b> from Trade Cloud Ver1.0 (production DB) are rounded into <b>aggregates that cannot identify any company, person or product</b> and imported (bodies, company names, contact names and contact details are not stored). Only the AI Trade Agent of company-wide customers uses this knowledge, and its advice <b>gives top priority to that customer's own registered data</b>.",
+                    "每周把贸易云 Ver1.0（正式数据库）的<b>Buyer议事录（商谈记录）・买家台账・案件・任务（日程进度）・每周进度摘要・会议记录・消息</b>，归整为<b>无法识别具体公司・个人・商品的统计值</b>后导入（不保存正文・公司名・负责人姓名・联系方式）。只有全公司版客户的AI商社专员使用这些知识，建议<b>以该客户的登记数据为最优先</b>。",
+                    "Cada semana, <b>las actas de compradores (registros de negociación), el registro de compradores, los casos, las tareas (avance del calendario), los resúmenes semanales, las notas de reuniones y los mensajes</b> de Trade Cloud Ver1.0 (base de producción) se redondean a <b>agregados que no identifican ninguna empresa, persona ni producto</b> y se importan (no se guardan textos, nombres de empresa, contactos ni sus datos). Solo el Agente comercial IA de los clientes con versión global usa este conocimiento, y sus consejos <b>dan prioridad máxima a los datos registrados de ese cliente</b>."],
+                ["管理者PCの週次ジョブ（タスク スケジューラ「貿易クラウド2.0_全社版AI_Ver1学習」・毎週月曜 6:30）が <code>v1_learn.py</code> を実行し、Digitrad 本番APIを<b>読み取り専用</b>で集計して、このサーバーに <code>pool_v1_put</code> で預けます（認証は上の取込キー）",
+                    "A weekly job on the admin PC (Task Scheduler “貿易クラウド2.0_全社版AI_Ver1学習”, every Monday 6:30) runs <code>v1_learn.py</code>, aggregates the Digitrad production API <b>read-only</b>, and stores the result on this server with <code>pool_v1_put</code> (authenticated with the ingestion key above)",
+                    "管理员电脑的每周任务（任务计划程序“貿易クラウド2.0_全社版AI_Ver1学習”・每周一 6:30）运行 <code>v1_learn.py</code>，以<b>只读</b>方式统计 Digitrad 正式API，并用 <code>pool_v1_put</code> 保存到本服务器（用上面的导入密钥认证）",
+                    "Una tarea semanal en el PC de administración (Programador de tareas «貿易クラウド2.0_全社版AI_Ver1学習», cada lunes a las 6:30) ejecuta <code>v1_learn.py</code>, agrega la API de producción de Digitrad en <b>solo lectura</b> y guarda el resultado en este servidor con <code>pool_v1_put</code> (autenticado con la clave de ingesta de arriba)"],
+                ["手動で更新するとき：PowerShell で <code>python v1_learn.py --push</code>（約10〜15分）。動作確認だけなら <code>--quick --dry</code>",
+                    "To update by hand: in PowerShell run <code>python v1_learn.py --push</code> (about 10–15 min). For a quick check only, add <code>--quick --dry</code>",
+                    "手动更新时：在 PowerShell 中运行 <code>python v1_learn.py --push</code>（约10〜15分钟）。仅确认运行时加 <code>--quick --dry</code>",
+                    "Para actualizar a mano: en PowerShell ejecute <code>python v1_learn.py --push</code> (unos 10–15 min). Para solo comprobar, añada <code>--quick --dry</code>"],
+                ["Digitrad の認証が切れると取込が止まります（上の状態が「⚠ 更新なし」）。<code>digitrad-openapi-cli auth --user-email …</code> で再認証してから再実行してください",
+                    "Imports stop when the Digitrad sign-in expires (the status above shows “⚠ no update”). Sign in again with <code>digitrad-openapi-cli auth --user-email …</code> and run it again",
+                    "Digitrad 的认证过期后导入会停止（上方状态显示“⚠ 无更新”）。请用 <code>digitrad-openapi-cli auth --user-email …</code> 重新认证后再运行",
+                    "Las importaciones se detienen si caduca la sesión de Digitrad (el estado de arriba muestra «⚠ sin actualizar»). Vuelva a autenticarse con <code>digitrad-openapi-cli auth --user-email …</code> y ejecútelo de nuevo"],
+                ["「📥 Ver1.0 集計JSONを取り込む」（上のカード）でも、ジョブが作った <code>v1_learn_last.json</code> を手動で取り込めます",
+                    "You can also import the <code>v1_learn_last.json</code> made by the job by hand with “📥 Import Ver1.0 aggregates (JSON)” (card above)",
+                    "也可以用“📥 导入Ver1.0统计JSON”（上方卡片）手动导入任务生成的 <code>v1_learn_last.json</code>",
+                    "También puede importar a mano el <code>v1_learn_last.json</code> que genera la tarea con «📥 Importar agregados Ver1.0 (JSON)» (tarjeta de arriba)"]
+            ].concat(["Perplexity", "ChatGPT", "Gemini", "Claude"].map((p) => ["<b>" + p + "</b>　入 <input> 　出 <input>", "<b>" + p + "</b>　In <input> 　Out <input>", "<b>" + p + "</b>　输入 <input> 　输出 <input>", "<b>" + p + "</b>　Entrada <input> 　Salida <input>"]))
+                .forEach((r) => {
+                const tpl = document.createElement("template");
+                tpl.innerHTML = r[0];
+                const k = String(tpl.content.textContent || "").replace(/\s+/g, " ").trim();
+                if (!k)
+                    return;
+                ["en", "zh", "es"].forEach((l, i) => { I18N_EL[l] = I18N_EL[l] || {}; if (!I18N_EL[l][k])
+                    I18N_EL[l][k] = r[i + 1]; });
+            });
+        if (Array.isArray(I18N.pat)) {
+            const P = (re, en, zh, es) => ({ re, en, zh, es });
+            const LOGW = { "削除": ["deleted", "删除", "eliminada"], "有効化": ["enabled", "启用", "activada"], "無効化": ["disabled", "停用", "desactivada"], "物流会社に変更": ["changed to forwarder", "改为物流公司", "cambiada a transitario"], "荷主に変更": ["changed to shipper", "改为货主", "cambiada a cargador"], "会社名・担当者": ["company name / contact", "公司名・负责人", "nombre de empresa / contacto"], "全社版AIへ": ["to company-wide AI", "改为全公司版AI", "a IA global"], "個社版AIへ": ["to single-company AI", "改为单公司版AI", "a IA individual"], "Web検索 ON": ["web search ON", "网络搜索 开", "búsqueda web ON"], "Web検索 OFF": ["web search OFF", "网络搜索 关", "búsqueda web OFF"], "承認者": ["approver", "审批人", "aprobador"], "変更": ["changed", "变更", "cambiada"] };
+            const logLine = (m, li) => {
+                const out = [];
+                for (const w of m[1].split("・")) {
+                    let x;
+                    if ((x = w.match(/^発行（期限 (.+)）$/)))
+                        out.push(["issued (expires " + x[1] + ")", "发行（期限 " + x[1] + "）", "emitida (vence " + x[1] + ")"][li]);
+                    else if ((x = w.match(/^期限 (.+)→(.+)$/)))
+                        out.push(["expiry " + x[1] + "→" + x[2], "期限 " + x[1] + "→" + x[2], "vencimiento " + x[1] + "→" + x[2]][li]);
+                    else if (LOGW[w])
+                        out.push(LOGW[w][li]);
+                    else
+                        return null;
+                }
+                return (li === 1 ? "：" : ": ") + out.join(li === 1 ? "・" : " · ");
+            };
+            const devBy = (s, li) => (li === 1 ? s : s.replace(/・/g, " · ")).replace(/（端末名なし）/g, ["(no device name)", "（无设备名）", "(sin nombre de dispositivo)"][li]).replace(/（マスター）/g, [" (master)", "（主管理员）", " (maestro)"][li]).replace(/（会社の管理者）/g, [" (company admin)", "（企业管理员）", " (admin. de empresa)"][li]);
+            const per = (s, li) => {
+                let x;
+                if ((x = s.match(/^直近(\d+)日$/)))
+                    return ["last " + x[1] + " days", "最近" + x[1] + "天", "últimos " + x[1] + " días"][li];
+                if (/^\d+月（今月）$/.test(s))
+                    return ["this month", "本月", "este mes"][li];
+                if (s === "全期間")
+                    return ["all time", "全部期间", "todo el periodo"][li];
+                if ((x = s.match(/^(.+)〜(.+)$/)))
+                    return x[1] + "–" + (x[2] === "今日" ? ["today", "今天", "hoy"][li] : x[2]);
+                return null;
+            };
+            const NEWP = [
+                P(/^：(.+)$/, (m) => logLine(m, 0), (m) => logLine(m, 1), (m) => logLine(m, 2)),
+                P(/^(\d{1,2}\/\d{1,2} \d{1,2}:\d{2})\s+(.*（(?:端末名なし|マスター|会社の管理者)）.*)$/, (m) => m[1] + "　" + devBy(m[2], 0), (m) => m[1] + "　" + devBy(m[2], 1), (m) => m[1] + "　" + devBy(m[2], 2)),
+                P(/^✓ サーバーの台帳と同期しています（最終確認 (.+?)）。この画面を開いている間は2分ごとに取り込み、変更はすぐにサーバーへ送ります。$/, "✓ In sync with the server ledger (last checked $1). While this screen is open it fetches every 2 minutes and sends changes to the server right away.", "✓ 已与服务器台账同步（最后确认 $1）。打开本页面期间每2分钟导入一次，变更会立即发送到服务器。", "✓ Sincronizado con el registro del servidor (última comprobación $1). Mientras esta pantalla esté abierta, se actualiza cada 2 minutos y los cambios se envían al servidor al momento."),
+                P(/^配布版への恒久設定は build 時の sync_config\.json（BC20_SYNC_URL）で行います。この端末：(.*)（ID (.+)・指紋 (.+)）$/, (m) => "For the distributed version, the permanent setting is made at build time in sync_config.json (BC20_SYNC_URL). This device: " + m[1].replace(/・/g, " · ") + " (ID " + m[2] + " · fingerprint " + m[3] + ")", "分发版的永久设置在 build 时的 sync_config.json（BC20_SYNC_URL）中进行。本设备：$1（ID $2・指纹 $3）", (m) => "En la versión distribuida, el ajuste permanente se hace al compilar en sync_config.json (BC20_SYNC_URL). Este dispositivo: " + m[1].replace(/・/g, " · ") + " (ID " + m[2] + " · huella " + m[3] + ")"),
+                P(/^ONにすると為替レートAPIとWikipediaをライブ検索します。claude\.ai上での表示は外部通信が遮断されるため、内蔵の貿易ナレッジ（(\d+)件）に自動で切り替わります。HTMLファイルとして開けばライブ検索が動きます。$/, "When ON, it searches the exchange-rate API and Wikipedia live. On claude.ai external connections are blocked, so it switches automatically to the built-in trade knowledge ($1 entries). Opened as an HTML file, live search works.", "开启后会实时搜索汇率API和维基百科。在 claude.ai 上显示时外部通信被阻断，会自动切换到内置的贸易知识（$1条）。作为HTML文件打开即可使用实时搜索。", "Si está en ON, busca en vivo en la API de tipos de cambio y en Wikipedia. En claude.ai se bloquean las conexiones externas, así que cambia automáticamente al conocimiento comercial integrado ($1 entradas). Abierto como archivo HTML, la búsqueda en vivo funciona."),
+                P(/^(.+)の実コスト（概算）$/, (m) => { const p = per(m[1], 0); return p ? "Actual cost · " + p + " (estimate)" : null; }, (m) => { const p = per(m[1], 1); return p ? p + "的实际成本（概算）" : null; }, (m) => { const p = per(m[1], 2); return p ? "Costo real · " + p + " (estimado)" : null; }),
+                P(/^\$([\d.,]+)・本日 ¥([\d,.]+)／([\d,]+)回$/, "$$1 · today ¥$2 / $3 calls", "$$1・今天 ¥$2／$3次", "$$1 · hoy ¥$2 / $3 llamadas"),
+                P(/^記録開始 (\d{4}\/\d{1,2}\/\d{1,2})。それ以前の利用はトークン記録がないため金額に含まれません。換算 ¥([\d.,]+)（参照レート8\/28・本日レート取得時に自動更新）。$/, "Recording started $1. Earlier use has no token records, so it is not included in the amounts. Rate ¥$2 (reference rate of 8/28; updated automatically when today's rate is fetched).", "记录开始 $1。此前的使用没有令牌记录，不计入金额。换算 ¥$2（参考汇率8/28・获取当天汇率时自动更新）。", "Registro iniciado el $1. El uso anterior no tiene registros de tokens, así que no se incluye en los importes. Cambio ¥$2 (tipo de referencia del 8/28; se actualiza al obtener el tipo del día)."),
+                P(/^記録開始 (\d{4}\/\d{1,2}\/\d{1,2})。それ以前の利用はトークン記録がないため金額に含まれません。換算 ¥([\d.,]+)（本日TTM・毎日自動更新）。$/, "Recording started $1. Earlier use has no token records, so it is not included in the amounts. Rate ¥$2 (today's TTM; updated daily).", "记录开始 $1。此前的使用没有令牌记录，不计入金额。换算 ¥$2（当天TTM・每天自动更新）。", "Registro iniciado el $1. El uso anterior no tiene registros de tokens, así que no se incluye en los importes. Cambio ¥$2 (TTM del día; se actualiza a diario)."),
+                P(/^発行 ([\d\/]+)$/, "Issued $1", "发行 $1", "Emitida $1"),
+                P(/^参加 ([\d\/: ]+)$/, "Joined $1", "加入 $1", "Alta $1"),
+                P(/^招待 ([\d\/: ]+)$/, "Invited $1", "邀请 $1", "Invitación $1")
+            ];
+            I18N.pat.unshift(...NEWP);
+        }
+    }
+    catch (e) { }
+})();
+try {
+    if (v5332Adm()) {
+        v5332After();
+        if (typeof I18N !== "undefined" && I18N.lang !== "ja" && typeof i18nApply === "function") {
+            i18nApply(document.getElementById("well"));
+            v5332Days();
+        }
+        if (typeof ux32AdmNav === "function")
+            ux32AdmNav();
+    }
 }
 catch (e) { }
 try {
