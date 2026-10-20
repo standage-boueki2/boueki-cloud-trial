@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="b788e0a1e702";
+const BC20_BUILD="676a1bad49fa";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -78754,6 +78754,53 @@ function v215328NoCue(q) {
         return null;
     }
 }
+const V215329_SET = /(?:設定|切り?替え|切りかえ|変更)(?:は|って|について(?:教えて(?:ください)?)?)?[。？?！!]*$/;
+const V215329_WRONG = /^(?:AI商社マン|AI|ＡＩ)?の?(?:答え|回答|返答)(?:が|は)?(?:違|間違|ちが|おかし|誤|正しくな)|^(?:AI商社マン|AI|ＡＩ)(?:が|は)(?:違|間違|ちが|誤)/;
+const V215329_BARE = /^(?:各種)?設定(?:画面|ページ|メニュー)?(?:は|って)?(?:どこ(?:に|で)?(?:ある|あります)?(?:の|か)?)?[。？?！!]*$/;
+const V215329_IDS = null, V215329_BAREON = true;
+function v215329Pick(q) {
+    try {
+        q = String(q || "").replace(/\s+/g, " ").trim();
+        if (!q || !/[ぁ-んァ-ヶ一-龠]/.test(q))
+            return null;
+        const cue = V49_CUE.test(q) || V49_SHORT.test(q) || V49_WEAK.test(q), n = Array.from(q).length;
+        if (V215329_WRONG.test(q) && n <= 40) {
+            const t = V49G.find(x => x && x.id === "ai");
+            return (t && v49Avail(t)) ? { t, q, cty: "" } : null;
+        }
+        if (n > 30)
+            return null;
+        if (V215329_BAREON && V215329_BARE.test(q))
+            return { menu: 1 };
+        if (cue || !V215329_SET.test(q))
+            return null;
+        const t = v49Topic(q);
+        return (t && (!V215329_IDS || V215329_IDS.indexOf(t.id) >= 0)) ? { t, q, cty: v49Cty(q) } : null;
+    }
+    catch (e) {
+        return null;
+    }
+}
+function v215329After(q0, opts, r) {
+    try {
+        if (!r || typeof r.a !== "string" || v49FwdOn() || (opts && opts.att))
+            return r;
+        if (!(/該当する情報が見つかりませんでした/.test(String(r.c || "")) || /答えられませんでした/.test(r.a)))
+            return r;
+        const g = v215329Pick(q0);
+        if (!g)
+            return r;
+        try {
+            if (typeof logU === "function")
+                logU("ai", "AI商社マンに質問（使い方）:" + String(q0).slice(0, 30));
+        }
+        catch (e) { }
+        return { a: v49Answer(g), c: V49_CI };
+    }
+    catch (e) {
+        return r;
+    }
+}
 const V49G = [
     { id: "photo", g: "商品", nm: "商品の写真・ロゴを登録する", pg: "deck", ex: "商品の写真を登録するには？",
         kw: [[/写真|画像|ロゴ|イメージ|フォト|photo|picture|logo/i, 3]], need: /登録|追加|入れ|アップ|取り?込|載せ|使|設定|変え|差し?替|選|貼/,
@@ -79095,7 +79142,8 @@ if (typeof brain === "function") {
         const prev = V49.q;
         V49.q = q0;
         try {
-            return await __br47.apply(this, arguments);
+            const r5329 = await __br47.apply(this, arguments);
+            return v215329After(q0, opts, r5329);
         }
         finally {
             V49.q = prev;
