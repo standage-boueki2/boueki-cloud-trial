@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="53fa6f089d57";
+const BC20_BUILD="b788e0a1e702";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -114343,6 +114343,933 @@ try {
     }
 }
 catch (e) { }
+const V58L = { key: null, id: "", srv: 0, old: 0, err: "", busy: null, pushT: 0, lastPull: 0, held: null, info: null, applied: 0, pushed: 0, boot: 0, tries: 0, lastWhy: "" };
+const V58L_MSG = {
+    st: "☁ このAIエンジン設定は、管理者ごとに暗号化して同期サーバーにも保存しています。別のPCでも、この管理者としてログインすると自動で読み込まれます。",
+    last: "最終保存：",
+    pend: "⚠ サーバーへの保存がまだです（このPCには保存しました。次にこの管理者としてログインしたときに送ります）。",
+    old: "この同期サーバーはまだ対応していないため、この設定はこのPCのブラウザにだけ保存されます（同期サーバー v2.21 の反映が必要です）。",
+    err: "サーバーの保存先を読めませんでした（通信を確かめてください）。このPCの設定で動いています。",
+    restored: "サーバーに保存されたAIエンジン設定を、このPCに読み込みました",
+    merged: "サーバーに保存されたAIエンジン設定を読み込み、このPCだけにあったキーを足して保存しました",
+    pushNg: "AIエンジン設定をサーバーに保存できませんでした（このPCには保存しました。次にログインしたときにもう一度送ります）",
+    held: "共有中（届けていません）",
+    heldT: "同期サーバーで共通アカウントへの共有を止めているため（スクリプトプロパティ LLM_PUB=off）、届けていません",
+    shEng: "共有中（{e}）",
+    shCo: "自社のキーで共有中（会社の管理者が設定）",
+    shM: "STANDAGEのキーで共有中",
+    pubWarn: "⚠ 共通アカウント：コードを知っている人はだれでもキーを取り出せます。AIの会社の管理画面で、月の利用上限を設定してください。",
+    ovBtn: "STANDAGEのキーに置き換える",
+    cfTitle: "会社の管理者が設定した共有です",
+    cfOn: "このアカウントは、会社の管理者が自社のキーで共有しています。STANDAGEのキーに置き換えると、会社の管理者の設定は上書きされます。",
+    cfOff: "このアカウントは、会社の管理者が自社のキーで共有しています。止めると、このアカウントの端末では実AIを使えなくなります。",
+    cfGoOn: "置き換える", cfGoOff: "止める", cfNo: "やめる",
+    pushSkip: "AI接続の共有 {n}件を最新の設定で更新しました（会社の管理者が自社のキーで共有している {m}件はそのまま）",
+    pushSkipAll: "会社の管理者が自社のキーで共有している {m}件は、そのままにしました",
+    keyOld: "APIキーは<b>この端末のブラウザにのみ</b>保存されます。",
+    keyNew: "APIキーは、このPCのブラウザと、<b>管理者ごとに暗号化した同期サーバーの保管場所</b>に保存されます（ほかのPCでも、この管理者としてログインすると読み込まれます）。",
+    shOld: "APIキーはこの端末のブラウザにだけ保存されるため、",
+    shNew: "APIキーは管理者の画面（このPCのブラウザと、管理者ごとに暗号化したサーバーの保管場所）にだけあるため、"
+};
+const V58L_TR = { "held": { "en": "Shared (not delivered)", "zh": "共享中（未送达）", "es": "Compartido (no se entrega)" }, "heldT": { "en": "Not delivered: the sync server has stopped sharing to common accounts (script property LLM_PUB=off)", "zh": "未送达：同步服务器已停止向公用账户共享（脚本属性 LLM_PUB=off）", "es": "No se entrega: el servidor de sincronización detuvo el uso compartido con cuentas comunes (propiedad de script LLM_PUB=off)" }, "shEng": { "en": "Shared ({e})", "zh": "共享中（{e}）", "es": "Compartido ({e})" }, "shCo": { "en": "Shared with the company's own key (set by the company administrator)", "zh": "以该公司自己的密钥共享中（由公司管理员设置）", "es": "Compartido con la clave propia de la empresa (configurado por el administrador de la empresa)" }, "shM": { "en": "Shared with STANDAGE's key", "zh": "以STANDAGE的密钥共享中", "es": "Compartido con la clave de STANDAGE" }, "pubWarn": { "en": "⚠ Common account: anyone who knows the code can extract the key. Set a monthly spending cap in the AI provider's console.", "zh": "⚠ 公用账户：知道代码的任何人都能取出密钥。请在AI公司的管理页面设置每月使用上限。", "es": "⚠ Cuenta común: cualquiera que conozca el código puede extraer la clave. Fije un límite de gasto mensual en la consola del proveedor de IA." }, "ovBtn": { "en": "Replace with STANDAGE's key", "zh": "替换为STANDAGE的密钥", "es": "Reemplazar por la clave de STANDAGE" }, "cfTitle": { "en": "This share was set by the company administrator", "zh": "这是公司管理员设置的共享", "es": "Este uso compartido lo configuró el administrador de la empresa" }, "cfOn": { "en": "The company administrator shares this account with the company's own key. If you replace it with STANDAGE's key, the company administrator's setting is overwritten.", "zh": "此账户由公司管理员以该公司自己的密钥共享。替换为STANDAGE的密钥后，公司管理员的设置将被覆盖。", "es": "El administrador de la empresa comparte esta cuenta con la clave propia de la empresa. Si la reemplaza por la clave de STANDAGE, se sobrescribirá la configuración del administrador de la empresa." }, "cfOff": { "en": "The company administrator shares this account with the company's own key. If you stop it, devices on this account can no longer use the real AI.", "zh": "此账户由公司管理员以该公司自己的密钥共享。停止后，此账户的设备将无法使用真实AI。", "es": "El administrador de la empresa comparte esta cuenta con la clave propia de la empresa. Si lo detiene, los dispositivos de esta cuenta ya no podrán usar la IA real." }, "cfGoOn": { "en": "Replace", "zh": "替换", "es": "Reemplazar" }, "cfGoOff": { "en": "Stop", "zh": "停止", "es": "Detener" }, "cfNo": { "en": "Cancel", "zh": "取消", "es": "Cancelar" }, "pushSkip": { "en": "Updated {n} shared AI connection(s) with the latest settings ({m} shared by the company administrator with its own key were left as they are)", "zh": "已用最新设置更新 {n} 个AI连接共享（由公司管理员以自己的密钥共享的 {m} 个保持不变）", "es": "Se actualizaron {n} conexiones de IA compartidas con la configuración más reciente (las {m} que el administrador de la empresa comparte con su propia clave se dejaron como estaban)" }, "pushSkipAll": { "en": "Left the {m} account(s) shared by the company administrator with its own key as they are", "zh": "由公司管理员以自己的密钥共享的 {m} 个账户保持不变", "es": "Se dejaron como estaban las {m} cuentas que el administrador de la empresa comparte con su propia clave" } };
+function v58lAdm() { try {
+    return typeof SES !== "undefined" && !!SES && SES.t === "admin" && /^tk:/.test(String(SES.apw || "")) && typeof syncOn === "function" && syncOn();
+}
+catch (e) {
+    return false;
+} }
+function v58lT(s) { try {
+    if (typeof I18N !== "undefined" && I18N.lang && I18N.lang !== "ja") {
+        const d = I18N.dict[I18N.lang];
+        if (d && d[s])
+            return d[s];
+    }
+}
+catch (e) { } return s; }
+function v58lSay(m) { try {
+    if (m === V58L_MSG.restored || m === V58L_MSG.merged) {
+        if (V58L.toasted)
+            return;
+        V58L.toasted = 1;
+    }
+    if (typeof toast === "function")
+        toast(v58lT(m));
+}
+catch (e) { } }
+function v58lPick(L) {
+    L = L || {};
+    const str = (o) => { const r = {}; Object.keys(o || {}).sort().forEach(k => { const v = String(o[k] == null ? "" : o[k]).trim(); if (v)
+        r[k] = v; }); return r; };
+    const act = {};
+    Object.keys(L.act || {}).sort().forEach(k => { if (L.act[k])
+        act[k] = true; });
+    return { on: !!L.on, prov: String(L.prov || "perplexity"), keys: str(L.keys), models: str(L.models), eps: str(L.eps), act, route: L.route !== false };
+}
+function v58lSig(o) { const s = JSON.stringify(v58lPick(o)); let h = 2166136261; for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619) >>> 0;
+} return h.toString(36) + ":" + s.length; }
+function v58lHas(o) { return Object.keys((o && o.keys) || {}).length > 0; }
+function v58lMetaK() { return "bc20_v58llm_" + V58L.id; }
+function v58lMeta() { try {
+    return JSON.parse(localStorage.getItem(v58lMetaK()) || "null") || null;
+}
+catch (e) {
+    return null;
+} }
+function v58lSetMeta(m) { try {
+    if (m)
+        localStorage.setItem(v58lMetaK(), JSON.stringify(m));
+    else
+        localStorage.removeItem(v58lMetaK());
+}
+catch (e) { } }
+async function v58lImport(sec) { return crypto.subtle.importKey("raw", ub64(String(sec || "")), { name: "AES-GCM" }, false, ["encrypt", "decrypt"]); }
+function v58lAad() { return new TextEncoder().encode("bc20-admllm|" + V58L.id); }
+async function v58lEnc(obj) {
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv, additionalData: v58lAad() }, V58L.key, new TextEncoder().encode(JSON.stringify(obj))));
+    const out = new Uint8Array(12 + ct.length);
+    out.set(iv);
+    out.set(ct, 12);
+    return "v1:" + b64(out);
+}
+async function v58lDec(s) { const u = ub64(String(s || "").replace(/^v1:/, "")); const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: u.slice(0, 12), additionalData: v58lAad() }, V58L.key, u.slice(12)); return JSON.parse(new TextDecoder().decode(pt)); }
+function v58lDirty() { try {
+    return [...document.querySelectorAll("[data-ppkey]")].some(el => String(el.value || "").trim() !== String((LLM.keys || {})[el.dataset.ppkey] || "").trim());
+}
+catch (e) {
+    return false;
+} }
+function v58lApply(o) {
+    const p = v58lPick(o);
+    LLM.on = p.on;
+    LLM.prov = (typeof PROV !== "undefined" && PROV[p.prov]) ? p.prov : LLM.prov;
+    LLM.keys = Object.assign({}, p.keys);
+    LLM.models = Object.assign({}, p.models);
+    LLM.eps = Object.assign({}, p.eps);
+    LLM.act = Object.assign({}, p.act);
+    LLM.route = p.route;
+    const s = JSON.stringify(LLM);
+    try {
+        localStorage.setItem(typeof PPKEY !== "undefined" ? PPKEY : "bc20_llm_v1", s);
+    }
+    catch (e) { }
+    try {
+        if (localStorage.getItem("bc20_llm_shared") === "1") {
+            const bk = JSON.parse(localStorage.getItem("bc20_llm_backup") || "null") || {};
+            bk.llm = s;
+            localStorage.setItem("bc20_llm_backup", JSON.stringify(bk));
+        }
+    }
+    catch (e) { }
+    V58L.applied++;
+}
+function v58lRedraw() { try {
+    if (typeof cur !== "undefined" && cur === "adm" && typeof renderAdmin === "function" && document.getElementById("ppsave")) {
+        const y = window.scrollY;
+        renderAdmin();
+        try {
+            window.scrollTo(0, y);
+        }
+        catch (e) { }
+    }
+}
+catch (e) { } }
+function v58lMerge(srv, loc) {
+    const m = v58lPick(srv), l = v58lPick(loc);
+    let add = 0;
+    Object.keys(l.keys).forEach(k => {
+        if (m.keys[k])
+            return;
+        try {
+            if (typeof v531Hard === "function" && v531Hard(l.keys[k]))
+                return;
+        }
+        catch (e) { }
+        m.keys[k] = l.keys[k];
+        if (l.act[k])
+            m.act[k] = true;
+        if (l.models[k] && !m.models[k])
+            m.models[k] = l.models[k];
+        if (l.eps[k] && !m.eps[k])
+            m.eps[k] = l.eps[k];
+        add++;
+    });
+    if (Object.keys(m.act).some(k => m.act[k] && m.keys[k]))
+        m.on = true;
+    return { m, add };
+}
+async function v58lOpen() {
+    let r = null;
+    try {
+        r = await syncCall("admllm_get", { pw: SES.apw, dev: (typeof syncDev === "function") ? syncDev() : {} }, { timeout: 20000 });
+    }
+    catch (e) {
+        if (/unknown op/i.test(String(e && e.message || e))) {
+            V58L.old = 1;
+            V58L.err = "";
+        }
+        else
+            V58L.err = "net";
+        return null;
+    }
+    if (!r || !r.ok || !r.sec || !r.id) {
+        V58L.err = (r && r.reason) || "ng";
+        return null;
+    }
+    V58L.old = 0;
+    V58L.err = "";
+    V58L.srv = 1;
+    if (V58L.id !== r.id || !V58L.key) {
+        V58L.id = String(r.id);
+        V58L.key = await v58lImport(r.sec);
+    }
+    V58L.info = { at: +r.at || 0, dev: String(r.dev || "") };
+    return r;
+}
+async function v58lPushNow() {
+    if (!v58lAdm())
+        return false;
+    if (!V58L.key) {
+        const r = await v58lOpen();
+        if (!r)
+            return false;
+    }
+    const loc = v58lPick(LLM), sig = v58lSig(loc);
+    let r = null;
+    try {
+        r = await syncCall("admllm_put", { pw: SES.apw, blob: await v58lEnc({ v: 1, llm: loc }), dev: (typeof syncDev === "function") ? syncDev() : {} }, { timeout: 20000 });
+    }
+    catch (e) {
+        r = null;
+    }
+    const m = v58lMeta() || {};
+    if (r && r.ok) {
+        v58lSetMeta({ srv: +r.at || 0, sig, pend: 0, src: m.src || "typed" });
+        V58L.info = { at: +r.at || 0, dev: (typeof syncDev === "function" && syncDev().name) || "" };
+        V58L.pushed++;
+        v58lPaint();
+        return true;
+    }
+    v58lSetMeta(Object.assign({}, m, { sig, pend: 1, src: "typed" }));
+    v58lPaint();
+    return false;
+}
+function v58lPush() { clearTimeout(V58L.pushT); V58L.pushT = setTimeout(async () => { const ok = await v58lPushNow(); if (!ok && v58lAdm() && !V58L.old)
+    v58lSay(V58L_MSG.pushNg); }, 400); }
+async function v58lPullNow(why) {
+    if (!v58lAdm())
+        return null;
+    V58L.lastPull = Date.now();
+    V58L.lastWhy = why || "";
+    const r = await v58lOpen();
+    if (!r) {
+        v58lPaint();
+        return null;
+    }
+    const loc = v58lPick(LLM), lsig = v58lSig(loc), m = v58lMeta();
+    let srv = null;
+    if (r.blob) {
+        try {
+            const x = await v58lDec(r.blob);
+            srv = x && x.llm ? v58lPick(x.llm) : null;
+        }
+        catch (e) {
+            srv = null;
+        }
+    }
+    const srvAt = +r.at || 0;
+    let act = "same";
+    if (m && m.pend && m.sig === lsig) {
+        act = (await v58lPushNow()) ? "push" : "pushNg";
+        if (act === "push") {
+            try {
+                if (typeof llmSharePushAll === "function")
+                    llmSharePushAll();
+            }
+            catch (e) { }
+        }
+    }
+    else if (!srv) {
+        if (v58lHas(loc)) {
+            act = (await v58lPushNow()) ? (r.blob ? "repair" : "first") : "pushNg";
+        }
+        else
+            act = r.blob ? "undecodable" : "empty";
+    }
+    else if (v58lSig(srv) === lsig) {
+        v58lSetMeta({ srv: srvAt, sig: lsig, pend: 0, src: (m && m.src) || (v58lHas(loc) ? "typed" : "restored") });
+        act = "same";
+    }
+    else if (!m && v58lHas(loc)) {
+        if (v58lDirty())
+            act = "dirty";
+        else {
+            const x = v58lMerge(srv, loc);
+            v58lApply(x.m);
+            if (x.add) {
+                act = (await v58lPushNow()) ? "merged" : "pushNg";
+                if (act === "merged")
+                    v58lSay(V58L_MSG.merged);
+            }
+            else {
+                v58lSetMeta({ srv: srvAt, sig: v58lSig(x.m), pend: 0, src: "typed" });
+                act = "restored";
+                v58lSay(V58L_MSG.restored);
+            }
+            v58lRedraw();
+        }
+    }
+    else if (!m || srvAt > (+m.srv || 0) || m.sig !== lsig) {
+        if (v58lDirty())
+            act = "dirty";
+        else {
+            const src = (m && m.src === "typed") ? "typed" : (v58lHas(loc) && !m ? "typed" : "restored");
+            v58lApply(srv);
+            v58lSetMeta({ srv: srvAt, sig: v58lSig(srv), pend: 0, src });
+            act = "restored";
+            v58lSay(V58L_MSG.restored);
+            v58lRedraw();
+        }
+    }
+    V58L.last = { act, at: Date.now() };
+    v58lPaint();
+    return act;
+}
+function v58lPull(force, why) {
+    if (!v58lAdm())
+        return Promise.resolve(null);
+    if (!force && Date.now() - V58L.lastPull < 20000)
+        return Promise.resolve(null);
+    try {
+        if (!force && SES.at && Date.now() - (+SES.at) > 5.5 * 3600 * 1000)
+            return Promise.resolve(null);
+    }
+    catch (e) { }
+    if (!V58L.busy)
+        V58L.busy = v58lPullNow(why).catch(() => null).finally(() => { V58L.busy = null; });
+    return V58L.busy;
+}
+window.v58llm = { pull: (f) => v58lPull(f !== false, "api"), push: v58lPushNow, state: () => ({ id: V58L.id, srv: V58L.srv, old: V58L.old, err: V58L.err, applied: V58L.applied, pushed: V58L.pushed, last: V58L.last, meta: v58lMeta(), held: V58L.held ? [...V58L.held] : null }) };
+if (typeof ppSave === "function") {
+    const __ppSave58 = ppSave;
+    ppSave = function () {
+        const r = __ppSave58.apply(this, arguments);
+        try {
+            if (v58lAdm() && V58L.id !== "") {
+                const m = v58lMeta() || {};
+                v58lSetMeta(Object.assign({}, m, { sig: v58lSig(LLM), pend: 1, src: "typed" }));
+            }
+            if (v58lAdm())
+                v58lPush();
+        }
+        catch (e) { }
+        return r;
+    };
+}
+function v58lBoot() { try {
+    if (V58L.boot)
+        return;
+    if (!v58lAdm()) {
+        if (typeof SES !== "undefined" && SES && SES.t === "admin" && V58L.tries++ < 20)
+            setTimeout(v58lBoot, 1500);
+        return;
+    }
+    V58L.boot = 1;
+    v58lPull(true, "login");
+}
+catch (e) { } }
+function v58lPerm(force) {
+    try {
+        if (!v58lAdm() || typeof v53List !== "function")
+            return;
+        if (!(typeof cur !== "undefined" && cur === "adm") && !force)
+            return;
+        if (!(typeof V213 !== "undefined" && V213 && V213.admBase))
+            return;
+        if (!force && Date.now() - (V58L.permAt || 0) < 15000)
+            return;
+        V58L.permAt = Date.now();
+        v53List(true).then(() => { try {
+            if (typeof v53Paint === "function")
+                v53Paint();
+            v58lShareFix();
+        }
+        catch (e) { } }).catch(() => { });
+    }
+    catch (e) { }
+}
+if (typeof renderAdmin === "function") {
+    const __ra58 = renderAdmin;
+    renderAdmin = function () { const r = __ra58.apply(this, arguments); try {
+        v58lCard();
+        v58lShareFix();
+        v58lBoot();
+    }
+    catch (e) { } return r; };
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden) {
+    v58lPull(false, "visible");
+    v58lPerm(false);
+} });
+window.addEventListener("focus", () => { v58lPull(false, "focus"); v58lPerm(false); });
+setInterval(() => { try {
+    if (!document.hidden) {
+        v58lPull(false, "timer");
+        v58lPerm(false);
+    }
+}
+catch (e) { } }, 180000);
+function v58lClear(id, raw) {
+    try {
+        const LS = localStorage, mk = "bc20_v58llm_" + id;
+        let m = null;
+        try {
+            m = JSON.parse(LS.getItem(mk) || "null");
+        }
+        catch (e) { }
+        if (!m || m.src !== "restored")
+            return false;
+        const sfx = (raw && id !== "m") ? ("__v57co_" + String(id).replace(/[^0-9A-Za-z]/g, "").slice(0, 24)) : "";
+        const KL = "bc20_llm_v1" + sfx, KS = "bc20_llm_shared" + sfx, KB = "bc20_llm_backup" + sfx;
+        let prov = "perplexity", route = true;
+        try {
+            const j = JSON.parse(LS.getItem(KL) || "null");
+            if (j) {
+                prov = j.prov || prov;
+                route = j.route !== false;
+            }
+        }
+        catch (e) { }
+        const empty = JSON.stringify({ on: false, prov, keys: {}, models: {}, eps: {}, act: {}, route });
+        if (LS.getItem(KS) === "1") {
+            let bk = {};
+            try {
+                bk = JSON.parse(LS.getItem(KB) || "null") || {};
+            }
+            catch (e) { }
+            bk.llm = empty;
+            LS.setItem(KB, JSON.stringify(bk));
+        }
+        else
+            LS.setItem(KL, empty);
+        LS.removeItem(mk);
+        V58L.cleared = (V58L.cleared || 0) + 1;
+        return true;
+    }
+    catch (e) {
+        return false;
+    }
+}
+function v58lClearHere() {
+    try {
+        if (typeof SES === "undefined" || !SES || SES.t !== "admin" || !V58L.id)
+            return false;
+        if (!v58lClear(V58L.id, false))
+            return false;
+        try {
+            LLM.on = false;
+            LLM.keys = {};
+            LLM.act = {};
+            LLM.models = {};
+            LLM.eps = {};
+        }
+        catch (e) { }
+        return true;
+    }
+    catch (e) {
+        return false;
+    }
+}
+document.addEventListener("click", e => { try {
+    const b = e.target && e.target.closest && e.target.closest("#lgout");
+    if (b)
+        v58lClearHere();
+}
+catch (x) { } }, true);
+(function () {
+    try {
+        if (typeof SES !== "undefined" && SES)
+            return;
+        const t = +localStorage.getItem("bc20_act_admin") || 0;
+        if (t && Date.now() - t < 3 * 3600 * 1000)
+            return;
+        let n = 0;
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+            const k = localStorage.key(i);
+            const mm = /^bc20_v58llm_([A-Za-z0-9]{1,24})$/.exec(k || "");
+            if (mm && v58lClear(mm[1], true))
+                n++;
+        }
+        if (n && typeof llmReload === "function")
+            llmReload();
+    }
+    catch (e) { }
+})();
+if (typeof ppCardHtml === "function") {
+    const __ppc58 = ppCardHtml;
+    ppCardHtml = function () {
+        let h = __ppc58.apply(this, arguments);
+        try {
+            h = String(h).replace(V58L_MSG.keyOld, V58L_MSG.keyNew).replace('<p id="ppres" class="nn" style="margin-top:6px"></p>', '<p id="ppres" class="nn" style="margin-top:6px"></p><p class="nn" id="v58lst" style="margin-top:4px"></p>');
+        }
+        catch (e) { }
+        return h;
+    };
+}
+function v58lFmt(t) { try {
+    const d = new Date(+t), p = n => String(n).padStart(2, "0");
+    return (d.getMonth() + 1) + "/" + d.getDate() + " " + p(d.getHours()) + ":" + p(d.getMinutes());
+}
+catch (e) {
+    return "";
+} }
+function v58lPaint() {
+    try {
+        const el = document.getElementById("v58lst");
+        if (!el)
+            return;
+        const m = V58L.id ? v58lMeta() : null;
+        let main = "", sub = "", col = "var(--ink-2)";
+        if (V58L.old) {
+            main = V58L_MSG.old;
+        }
+        else if (m && m.pend) {
+            main = V58L_MSG.pend;
+            col = "var(--warn)";
+        }
+        else if (V58L.err && !V58L.srv) {
+            main = V58L_MSG.err;
+            col = "var(--warn)";
+        }
+        else if (V58L.srv) {
+            main = V58L_MSG.st;
+            if (V58L.info && V58L.info.at)
+                sub = V58L_MSG.last + v58lFmt(V58L.info.at) + (V58L.info.dev ? "（" + V58L.info.dev + "）" : "");
+        }
+        const sig = main + "|" + sub + "|" + ((typeof I18N !== "undefined" && I18N.lang) || "");
+        if (el.dataset.sig === sig)
+            return;
+        el.dataset.sig = sig;
+        el.style.color = col;
+        el.textContent = "";
+        if (main) {
+            const a = document.createElement("span");
+            a.textContent = v58lT(main);
+            el.appendChild(a);
+        }
+        if (sub) {
+            const b = document.createElement("span");
+            b.style.cssText = "display:block;font-size:10.5px;color:var(--ink-3)";
+            let t = sub;
+            try {
+                if (typeof I18N !== "undefined" && I18N.lang && I18N.lang !== "ja") {
+                    const lab = { en: "Last saved: ", zh: "最后保存：", es: "Último guardado: " }[I18N.lang];
+                    if (lab)
+                        t = lab + sub.slice(V58L_MSG.last.length);
+                }
+            }
+            catch (e) { }
+            b.textContent = t;
+            el.appendChild(b);
+        }
+    }
+    catch (e) { }
+}
+function v58lCard() { v58lPaint(); }
+if (typeof admShareHtml === "function") {
+    const __ash58 = admShareHtml;
+    admShareHtml = function () { let h = __ash58.apply(this, arguments); try {
+        h = String(h).replace(V58L_MSG.shOld, V58L_MSG.shNew);
+    }
+    catch (e) { } return h; };
+}
+if (typeof syncCall === "function") {
+    const __sc58 = syncCall;
+    syncCall = function (op, body, opt) {
+        let args = arguments;
+        try {
+            if (op === "llm_set" && body && typeof body === "object") {
+                const b2 = Object.assign({}, body);
+                if (b2.blob) {
+                    let act = [];
+                    try {
+                        act = (typeof v531ShareProvs === "function") ? v531ShareProvs() : llmActive();
+                    }
+                    catch (e) { }
+                    b2.act = act.slice(0, 6);
+                    try {
+                        b2.plan = (typeof USERPLAN !== "undefined" && USERPLAN !== "lite") ? USERPLAN : "std";
+                    }
+                    catch (e) { }
+                }
+                if (V58L.forceKid && b2.kid === V58L.forceKid)
+                    b2.force = 1;
+                args = [op, b2, opt];
+            }
+        }
+        catch (e) { }
+        const p = __sc58.apply(this, args);
+        try {
+            if (p && typeof p.then === "function")
+                return p.then(r => {
+                    try {
+                        if (op === "llm_list" && r && r.ok && Array.isArray(r.kids)) {
+                            V58L.held = new Set((Array.isArray(r.held) ? r.held : []).map(String));
+                            if (Array.isArray(r.items)) {
+                                const m = new Map();
+                                r.items.forEach(x => { if (x && x.kid)
+                                    m.set(String(x.kid), x); });
+                                V58L.shares = m;
+                                V58L.sharesAt = Date.now();
+                            }
+                            setTimeout(v58lShareFix, 0);
+                        }
+                        if (r && r.relogin === 1)
+                            v58lClearHere();
+                    }
+                    catch (e) { }
+                    return r;
+                });
+        }
+        catch (e) { }
+        return p;
+    };
+}
+function v58lKidOf(code) { try {
+    return (typeof V213 !== "undefined" && V213 && V213.kid) ? (V213.kid[code] || "") : "";
+}
+catch (e) {
+    return "";
+} }
+function v58lItem(code) { try {
+    const k = v58lKidOf(code);
+    return (k && V58L.shares) ? (V58L.shares.get(k) || null) : null;
+}
+catch (e) {
+    return null;
+} }
+function v58lHeldCode(code) { try {
+    const it = v58lItem(code);
+    if (it)
+        return !!it.held;
+    if (!V58L.held || !V58L.held.size)
+        return false;
+    const kid = v58lKidOf(code);
+    return !!kid && V58L.held.has(kid);
+}
+catch (e) {
+    return false;
+} }
+function v58lIsCo() { try {
+    return typeof v57Co === "function" && !!v57Co();
+}
+catch (e) {
+    return false;
+} }
+function v58lCoOwned(code) { const it = v58lItem(code); return !!it && it.own === "co"; }
+function v58lEng(act) { const L = (typeof I18N !== "undefined" && I18N.lang) || "ja"; return (act || []).map(k => (typeof PROV !== "undefined" && PROV[k] && PROV[k].short) || k).join(L === "en" || L === "es" ? ", " : "・"); }
+function v58lTr(key, vars) {
+    let s = V58L_MSG[key] || key;
+    const L = (typeof I18N !== "undefined" && I18N.lang) || "ja";
+    if (L !== "ja") {
+        const row = V58L_TR[key];
+        if (row && row[L])
+            s = row[L];
+        else
+            s = v58lT(s);
+    }
+    Object.keys(vars || {}).forEach(k => { s = s.split("{" + k + "}").join(String(vars[k])); });
+    return s;
+}
+function v58lState(a) {
+    const it = v58lItem(a.code), co = v58lIsCo();
+    if (!a.llmShare)
+        return null;
+    if (it && it.held)
+        return { t: v58lTr("held"), c: "mid", title: v58lTr("heldT") };
+    if (it && it.own === "co" && !co)
+        return { t: v58lTr("shCo"), c: "mid", ov: 1 };
+    if (it && it.own !== "co" && co)
+        return { t: v58lTr("shM"), c: "hi" };
+    if (it && it.act && it.act.length)
+        return { t: v58lTr("shEng", { e: v58lEng(it.act) }), c: "hi" };
+    return { t: v58lT("共有中"), c: "hi" };
+}
+function v58lShareFix() {
+    try {
+        document.querySelectorAll("[data-lls]").forEach(cb => {
+            const a = (typeof findAcct === "function") ? findAcct(cb.dataset.lls) : null;
+            const tr = cb.closest("tr");
+            if (!a || !tr)
+                return;
+            const td = tr.lastElementChild;
+            if (!td)
+                return;
+            const st = v58lState(a), it = v58lItem(a.code), L = (typeof I18N !== "undefined" && I18N.lang) || "ja";
+            const warn = !!(st && it && it.pub && !it.held);
+            const sig = st ? [st.t, st.c, st.ov ? 1 : 0, warn ? 1 : 0, L].join("|") : "";
+            if (!st) {
+                if (td.dataset.v58st) {
+                    delete td.dataset.v58st;
+                    td.removeAttribute("data-noi18n");
+                    td.innerHTML = '<span class="p lo">' + esc(v58lT("この端末のみ")) + '</span>';
+                }
+                return;
+            }
+            if (td.dataset.v58st === sig && td.querySelector("[data-v58state]"))
+                return;
+            td.dataset.v58st = sig;
+            td.setAttribute("data-noi18n", "");
+            td.innerHTML = `<span class="p ${st.c}" data-v58state${st.title ? ` title="${esc(st.title)}"` : ""}${it && it.held ? " data-v58held" : ""}>${esc(st.t)}</span>` +
+                (st.ov ? ` <button class="btn g" type="button" data-v58ov="${esc(a.code)}" style="padding:2px 8px;font-size:10.5px;margin-left:4px">${esc(v58lTr("ovBtn"))}</button>` : "") +
+                (warn ? `<div class="v58lwarn" data-v58warn>${esc(v58lTr("pubWarn"))}</div>` : "");
+        });
+        document.querySelectorAll("[data-llsb]").forEach(b => {
+            const a = (typeof findAcct === "function") ? findAcct(b.dataset.llsb) : null;
+            if (!a)
+                return;
+            const st = v58lState(a);
+            if (st && st.c === "mid") {
+                b.title = st.title || st.t;
+                b.classList.add("mid");
+            }
+            else if (st) {
+                b.classList.remove("mid");
+                b.title = st.t;
+            }
+        });
+        document.querySelectorAll("[data-v58ov]").forEach(x => { if (x.dataset.v58b)
+            return; x.dataset.v58b = "1"; x.onclick = async () => { x.disabled = true; try {
+            await v58lOverride(x.dataset.v58ov);
+        }
+        finally {
+            try {
+                x.disabled = false;
+            }
+            catch (e) { }
+        } }; });
+    }
+    catch (e) { }
+}
+function v58lConfirm(on) {
+    return new Promise(res => {
+        try {
+            const old = document.getElementById("v58lcf");
+            if (old)
+                old.remove();
+            const v = document.createElement("div");
+            v.id = "v58lcf";
+            v.setAttribute("role", "dialog");
+            v.setAttribute("aria-modal", "true");
+            v.setAttribute("aria-labelledby", "v58lcft");
+            v.setAttribute("data-noi18n", "");
+            v.style.cssText = "position:fixed;inset:0;z-index:215;background:rgba(20,26,34,.55);display:grid;place-items:center;padding:16px";
+            v.innerHTML = `<div style="width:min(480px,calc(100vw - 32px));box-sizing:border-box;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:var(--pop);padding:20px 22px">
+    <b id="v58lcft" style="font-size:15px">${esc(v58lTr("cfTitle"))}</b><p class="nn" style="margin-top:8px;line-height:1.75">${esc(v58lTr(on ? "cfOn" : "cfOff"))}</p>
+    <div class="rw" style="gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:flex-end"><button class="btn g" type="button" id="v58lcfNo">${esc(v58lTr("cfNo"))}</button><button class="btn" type="button" id="v58lcfOk">${esc(v58lTr(on ? "cfGoOn" : "cfGoOff"))}</button></div></div>`;
+            document.body.appendChild(v);
+            const done = x => { try {
+                v.remove();
+            }
+            catch (e) { } res(x); };
+            v.querySelector("#v58lcfNo").onclick = () => done(false);
+            v.querySelector("#v58lcfOk").onclick = () => done(true);
+            v.addEventListener("keydown", e => { if (e.key === "Escape")
+                done(false); });
+            setTimeout(() => { try {
+                v.querySelector("#v58lcfNo").focus();
+            }
+            catch (e) { } }, 30);
+        }
+        catch (e) {
+            res(false);
+        }
+    });
+}
+let __v58tog = null;
+async function v58lForced(code, on) {
+    const kid = (typeof v213Kid === "function") ? await v213Kid(code) : "";
+    V58L.forceKid = kid;
+    try {
+        return await __v58tog(code, on);
+    }
+    finally {
+        V58L.forceKid = "";
+    }
+}
+async function v58lOverride(code) {
+    if (v58lIsCo() || !v58lCoOwned(code) || !__v58tog)
+        return null;
+    if (!(await v58lConfirm(true)))
+        return null;
+    try {
+        const a = await v58lForced(code, true);
+        try {
+            if (typeof admShareRefresh === "function")
+                admShareRefresh();
+            v58lPerm(true);
+        }
+        catch (e) { }
+        return a;
+    }
+    catch (e) {
+        try {
+            toast(v58lT("設定できませんでした：") + String(e.message || e).slice(0, 50));
+        }
+        catch (x) { }
+        return null;
+    }
+}
+if (typeof admShareToggle === "function") {
+    __v58tog = admShareToggle;
+    admShareToggle = async function (code, on) {
+        if (!on && !v58lIsCo() && v58lCoOwned(code)) {
+            if (!(await v58lConfirm(false)))
+                return (typeof findAcct === "function") ? findAcct(code) : null;
+            const a = await v58lForced(code, false);
+            try {
+                v58lPerm(true);
+            }
+            catch (e) { }
+            return a;
+        }
+        const a = await __v58tog.apply(this, arguments);
+        try {
+            clearTimeout(V58L.heldT);
+            V58L.heldT = setTimeout(() => { try {
+                v58lPerm(true);
+            }
+            catch (e) { } }, 800);
+        }
+        catch (e) { }
+        return a;
+    };
+}
+if (typeof llmSharePushAll === "function" && typeof v53List === "function") {
+    llmSharePushAll = function () {
+        if (!(typeof v53Adm === "function" && v53Adm()))
+            return;
+        clearTimeout(__llmShareT);
+        __llmShareT = setTimeout(async () => {
+            try {
+                await v53List(true);
+            }
+            catch (e) { }
+            try {
+                v53Paint();
+            }
+            catch (e) { }
+            const all = v53Shared();
+            if (!all.length)
+                return;
+            const skip = v58lIsCo() ? [] : all.filter(a => v58lCoOwned(a.code)), A = all.filter(a => !skip.includes(a));
+            if (!A.length) {
+                if (skip.length)
+                    toast(v58lTr("pushSkipAll", { m: skip.length }));
+                return;
+            }
+            if (!v53Act().length) {
+                toast(`この端末のAIエンジンが未接続のため、共有中の ${A.length}件には送りませんでした（お客様の端末は前の設定のまま使えます。共有をやめるときは、アカウントごとに外してください）`);
+                return;
+            }
+            let n = 0;
+            for (const a of A) {
+                try {
+                    await llmShareSet(a.code, true);
+                    n++;
+                }
+                catch (e) { }
+            }
+            if (n === A.length)
+                toast(skip.length ? v58lTr("pushSkip", { n, m: skip.length }) : `AI接続の共有 ${n}件を最新の設定で更新しました`);
+            else
+                toast(`AI接続の共有：${n}件を更新し、${A.length - n}件は送れませんでした（通信を確かめて、もう一度「保存」してください）`);
+            try {
+                v58lPerm(true);
+            }
+            catch (e) { }
+        }, 1500);
+    };
+}
+try {
+    if (!document.getElementById("v58lcss")) {
+        const st = document.createElement("style");
+        st.id = "v58lcss";
+        st.textContent = ".v58lwarn{margin-top:4px;font-size:10.5px;line-height:1.55;color:var(--warn);max-width:340px;white-space:normal}";
+        document.head.appendChild(st);
+    }
+}
+catch (e) { }
+if (typeof admShareRefresh === "function") {
+    const __asr58 = admShareRefresh;
+    admShareRefresh = function () { const r = __asr58.apply(this, arguments); try {
+        v58lShareFix();
+    }
+    catch (e) { } return r; };
+}
+if (typeof i18nSet === "function") {
+    const __is58 = i18nSet;
+    i18nSet = function () { const r = __is58.apply(this, arguments); try {
+        const el = document.getElementById("v58lst");
+        if (el)
+            el.dataset.sig = "";
+        v58lPaint();
+        v58lShareFix();
+    }
+    catch (e) { } return r; };
+}
+(function () {
+    try {
+        if (typeof I18N !== "undefined" && I18N && I18N.dict) {
+            const rows = [
+                [V58L_MSG.st, "☁ These AI engine settings are also saved on the sync server, encrypted separately for each administrator. They load automatically when you log in as this administrator on another PC.", "☁ 此AI引擎设置也按管理员分别加密保存在同步服务器上。在其他电脑上以此管理员身份登录时会自动读取。", "☁ Esta configuración del motor de IA también se guarda en el servidor de sincronización, cifrada por separado para cada administrador. Se carga automáticamente al iniciar sesión como este administrador en otro PC."],
+                [V58L_MSG.pend, "⚠ Not yet saved on the server (saved on this PC; it will be sent the next time you log in as this administrator).", "⚠ 尚未保存到服务器（已保存在本电脑；下次以此管理员身份登录时发送）。", "⚠ Aún no se ha guardado en el servidor (se guardó en este PC; se enviará la próxima vez que inicie sesión como este administrador)."],
+                [V58L_MSG.old, "This sync server does not support it yet, so these settings are saved only in this PC's browser (the sync server needs to be updated to v2.21).", "此同步服务器尚不支持，因此此设置只保存在本电脑的浏览器中（需要将同步服务器更新到 v2.21）。", "Este servidor de sincronización aún no lo admite, así que esta configuración solo se guarda en el navegador de este PC (hay que actualizar el servidor de sincronización a la v2.21)."],
+                [V58L_MSG.err, "Could not read the saved settings on the server (please check the connection). Running with this PC's settings.", "无法读取服务器上保存的设置（请检查网络）。正在使用本电脑的设置。", "No se pudo leer la configuración guardada en el servidor (compruebe la conexión). Se usa la configuración de este PC."],
+                [V58L_MSG.restored, "Loaded the AI engine settings saved on the server onto this PC", "已将服务器上保存的AI引擎设置读取到本电脑", "Se cargó en este PC la configuración del motor de IA guardada en el servidor"],
+                [V58L_MSG.merged, "Loaded the AI engine settings saved on the server, added the keys that existed only on this PC, and saved them", "已读取服务器上保存的AI引擎设置，并补充了仅在本电脑上的密钥后保存", "Se cargó la configuración del motor de IA guardada en el servidor, se añadieron las claves que solo había en este PC y se guardó"],
+                [V58L_MSG.pushNg, "Could not save the AI engine settings on the server (they are saved on this PC; they will be sent again the next time you log in)", "无法将AI引擎设置保存到服务器（已保存在本电脑；下次登录时会再次发送）", "No se pudo guardar la configuración del motor de IA en el servidor (se guardó en este PC; se volverá a enviar la próxima vez que inicie sesión)"],
+                [V58L_MSG.held, "Shared (not delivered)", "共享中（未送达）", "Compartido (no se entrega)"],
+                [V58L_MSG.shCo, "Shared with the company's own key (set by the company administrator)", "以该公司自己的密钥共享中（由公司管理员设置）", "Compartido con la clave propia de la empresa (configurado por el administrador de la empresa)"],
+                [V58L_MSG.shM, "Shared with STANDAGE's key", "以STANDAGE的密钥共享中", "Compartido con la clave de STANDAGE"],
+                [V58L_MSG.pubWarn, "⚠ Common account: anyone who knows the code can extract the key. Set a monthly spending cap in the AI provider's console.", "⚠ 公用账户：知道代码的任何人都能取出密钥。请在AI公司的管理页面设置每月使用上限。", "⚠ Cuenta común: cualquiera que conozca el código puede extraer la clave. Fije un límite de gasto mensual en la consola del proveedor de IA."],
+                [V58L_MSG.ovBtn, "Replace with STANDAGE's key", "替换为STANDAGE的密钥", "Reemplazar por la clave de STANDAGE"],
+                [V58L_MSG.cfTitle, "This share was set by the company administrator", "这是公司管理员设置的共享", "Este uso compartido lo configuró el administrador de la empresa"],
+                [V58L_MSG.cfOn, "The company administrator shares this account with the company's own key. If you replace it with STANDAGE's key, the company administrator's setting is overwritten.", "此账户由公司管理员以该公司自己的密钥共享。替换为STANDAGE的密钥后，公司管理员的设置将被覆盖。", "El administrador de la empresa comparte esta cuenta con la clave propia de la empresa. Si la reemplaza por la clave de STANDAGE, se sobrescribirá la configuración del administrador de la empresa."],
+                [V58L_MSG.cfOff, "The company administrator shares this account with the company's own key. If you stop it, devices on this account can no longer use the real AI.", "此账户由公司管理员以该公司自己的密钥共享。停止后，此账户的设备将无法使用真实AI。", "El administrador de la empresa comparte esta cuenta con la clave propia de la empresa. Si lo detiene, los dispositivos de esta cuenta ya no podrán usar la IA real."],
+                [V58L_MSG.cfGoOn, "Replace", "替换", "Reemplazar"],
+                [V58L_MSG.cfGoOff, "Stop", "停止", "Detener"],
+                [V58L_MSG.cfNo, "Cancel", "取消", "Cancelar"],
+                [V58L_MSG.heldT, "Not delivered: the sync server has stopped sharing to common accounts (script property LLM_PUB=off)", "未送达：同步服务器已停止向公用账户共享（脚本属性 LLM_PUB=off）", "No se entrega: el servidor de sincronización detuvo el uso compartido con cuentas comunes (propiedad de script LLM_PUB=off)"]
+            ];
+            rows.forEach(r => { ["en", "zh", "es"].forEach((l, i) => { if (!I18N.dict[l])
+                I18N.dict[l] = {}; if (r[i + 1] && !I18N.dict[l][r[0]])
+                I18N.dict[l][r[0]] = r[i + 1]; }); });
+        }
+        if (typeof I18N_EL !== "undefined") {
+            const tpl = document.createElement("template"), key = (html) => { tpl.innerHTML = html; return String(tpl.content.textContent || "").replace(/\s+/g, " ").trim(); };
+            const P1 = '<b>キーの取り扱い</b>　' + V58L_MSG.keyNew + 'キーを入れたままの端末を顧客に渡したり、配布用HTMLにキーを書き込んだりしないでください。顧客配布版は未接続のまま＝内蔵エンジンで動かすのが安全です。<br>\n      ブラウザ直接接続の対応（実測）：Perplexity○／Gemini○／Claude○／OpenAI（環境により可・まず「テスト」で確認）。';
+            const k1 = key(P1);
+            if (!I18N_EL.en[k1])
+                I18N_EL.en[k1] = "<b>Handling keys</b>　API keys are stored in this PC's browser and in <b>a storage place on the sync server, encrypted separately for each administrator</b> (they also load on other PCs when you log in as this administrator). Do not hand a device with keys entered to customers, and do not write keys into the distributed HTML. It is safest to leave the customer version unconnected and run it on the built-in engine.<br>Direct browser connection (tested): Perplexity ○ / Gemini ○ / Claude ○ / OpenAI (depends on the environment; check with “Test” first).";
+            if (!I18N_EL.zh[k1])
+                I18N_EL.zh[k1] = "<b>密钥的处理</b>　API密钥保存在本电脑的浏览器中，以及<b>同步服务器上按管理员分别加密的保管处</b>（在其他电脑上以此管理员身份登录时也会读取）。请勿把输入了密钥的设备交给客户，也不要把密钥写进分发用的HTML。客户分发版保持未连接＝使用内置引擎运行最安全。<br>浏览器直接连接的支持情况（实测）：Perplexity○／Gemini○／Claude○／OpenAI（视环境而定・请先用“测试”确认）。";
+            if (!I18N_EL.es[k1])
+                I18N_EL.es[k1] = "<b>Manejo de las claves</b>　Las claves API se guardan en el navegador de este PC y en <b>un almacenamiento del servidor de sincronización, cifrado por separado para cada administrador</b> (también se cargan en otros PC al iniciar sesión como este administrador). No entregue a clientes un dispositivo con claves ni escriba claves en el HTML distribuido. Lo más seguro es dejar la versión para clientes sin conectar y usar el motor integrado.<br>Conexión directa desde el navegador (probada): Perplexity ○ / Gemini ○ / Claude ○ / OpenAI (según el entorno; compruebe primero con «Probar»).";
+            const P2 = V58L_MSG.shNew + 'そのままではお客様の端末は内蔵エンジンだけで動き、Web検索も行いません。ONにしたアカウントには、この端末のAIエンジン設定を<b>そのアカウントの鍵で暗号化</b>して同期サーバーに預けます。そのアカウントでログインした端末は、ログイン時に取得・復号して実AI（Web検索つき）で回答します。';
+            const k2 = key(P2);
+            if (!I18N_EL.en[k2])
+                I18N_EL.en[k2] = "API keys exist only on the administrator's side (this PC's browser and a storage place on the server, encrypted separately for each administrator), so customers' devices otherwise run on the built-in engine only and do not search the web. For accounts switched ON, this device's AI engine settings are <b>encrypted with that account's key</b> and stored on the sync server. Devices signed in to that account fetch and decrypt them at login and answer with the real AI (with web search).";
+            if (!I18N_EL.zh[k2])
+                I18N_EL.zh[k2] = "API密钥只在管理员一侧（本电脑的浏览器，以及服务器上按管理员分别加密的保管处），因此客户的设备默认只用内置引擎运行，也不进行网络搜索。对已开启的账户，会把本设备的AI引擎设置<b>用该账户的密钥加密</b>后保存在同步服务器上。用该账户登录的设备在登录时获取并解密，用真实AI（含网络搜索）回答。";
+            if (!I18N_EL.es[k2])
+                I18N_EL.es[k2] = "Las claves API solo están del lado del administrador (el navegador de este PC y un almacenamiento del servidor, cifrado por separado para cada administrador), así que los dispositivos de los clientes funcionan solo con el motor integrado y sin búsqueda web. Para las cuentas activadas, la configuración del motor de IA de este dispositivo se <b>cifra con la clave de esa cuenta</b> y se guarda en el servidor de sincronización. Los dispositivos que inician sesión con esa cuenta la obtienen y descifran al entrar y responden con la IA real (con búsqueda web).";
+        }
+    }
+    catch (e) { }
+})();
 try {
     if (typeof v35Restore === "function")
         v35Restore();
