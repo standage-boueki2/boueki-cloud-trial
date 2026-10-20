@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="1813de3fb0d1";
+const BC20_BUILD="cfa4d182a9b1";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -115846,6 +115846,765 @@ var V59RT = { t: null, busy: 0, last: 0, act: Date.now(), fb: 0, unk: 0, n: 0, p
                 I18N.dict[l] = {}; if (r[i + 1] && !I18N.dict[l][r[0]])
                 I18N.dict[l][r[0]] = r[i + 1]; }); });
         }
+    }
+    catch (e) { }
+})();
+var DFW_COS = ["デモ物流①株式会社", "デモ物流②株式会社", "デモ物流③株式会社", "デモ物流④株式会社", "デモ物流⑤株式会社"];
+var DFW_NOTE = "本見積はデモ環境のイメージであり、実際の見積金額や条件と異なります";
+var DFW_DEST = [
+    ["韓国", "釜山", "A", 3, 1, 2], ["台湾", "基隆", "A", 5, 1, 2], ["中国", "上海", "A", 4, 1, 2], ["香港", "香港", "A", 6, 1, 2],
+    ["タイ", "レムチャバン", "B", 10, 2, 3], ["ベトナム", "ホーチミン", "B", 11, 2, 3], ["シンガポール", "シンガポール", "B", 9, 2, 3],
+    ["マレーシア", "ポートケラン", "B", 11, 2, 3], ["インドネシア", "ジャカルタ", "B", 12, 2, 3], ["フィリピン", "マニラ", "B", 7, 2, 3],
+    ["インド", "ナバシェバ", "C", 20, 3, 4], ["UAE", "ジェベルアリ", "C", 22, 3, 4], ["オーストラリア", "シドニー", "C", 16, 2, 4],
+    ["アメリカ", "ロサンゼルス", "D", 13, 2, 3], ["アメリカ", "ニューヨーク", "D", 28, 2, 4], ["カナダ", "バンクーバー", "D", 12, 2, 3],
+    ["イギリス", "フェリクストウ", "E", 42, 3, 4], ["ドイツ", "ハンブルク", "E", 44, 3, 4], ["フランス", "ルアーブル", "E", 43, 3, 4],
+    ["ブラジル", "サントス", "F", 40, 4, 6]
+];
+var DFW_ZONE = { A: [7600, 52000, 430, 4800], B: [10200, 82000, 520, 6100], C: [14800, 158000, 720, 8400], D: [16800, 255000, 790, 8900], E: [19800, 335000, 890, 10400], F: [24500, 410000, 1150, 13600] };
+var DFW_SEA = { "東京港": [1, 1, 1, 0, 0, 0], "横浜港": [1, 1, 1, 0, 0, 0], "名古屋港": [1.03, 1.03, 1.03, 1, 1, 1], "大阪港": [0.98, 1, 1.01, 0, 0, 1], "神戸港": [0.98, 1, 1.01, 0, 0, 1], "博多港": [0.93, 1.03, 1.08, -1, 1, 2] };
+var DFW_AIRP = { "成田空港": 1, "羽田空港": 1.04, "関西空港": 1, "中部空港": 1.05, "福岡空港": 1.06 };
+var DFW_MODE = { LCL: [1, "/R.T."], FCL20: [1, "/本"], FCL40: [1.55, "/本"], FCL40HC: [1.62, "/本"], FCL20RF: [2.35, "/本"], FCL40RF: [3.5, "/本"], AIR: [1, "/kg"], AIRTC: [1.6, "/kg"], COURIER: [1, "/個(1kg)"] };
+var DFW_SPEC = [
+    { z: "ABCDEF", sea: ["東京港", "横浜港", "名古屋港", "大阪港", "神戸港"], seaA: ["博多港"], md: ["LCL", "FCL20", "FCL40"], hc: ["東京港", "横浜港", "神戸港"], air: ["成田空港", "関西空港", "中部空港"], tc: [], cr: 1,
+        pf: [1, 1, 1, 1], tt: [0, 0], vm: 2, pk: "段ボール・パレット・木箱・ドラム",
+        note: { LCL: "週2便・CFS渡し・パレット／木箱可（最低1R.T.）", FCL: "週3便・本船直行・重量物は要相談", AIR: "直行便・一般貨物・パレット可", COURIER: "ドアツードア・1個70kgまで" } },
+    { z: "AB", zx: ["インド"], sea: ["東京港", "横浜港", "大阪港", "神戸港", "博多港"], seaA: [], md: ["LCL", "FCL20", "FCL40"], hc: [], air: ["成田空港"], tc: [], cr: 1,
+        pf: [0.86, 0.91, 0.95, 0.9], tt: [2, 1], vm: 1, pk: "段ボール・パレット",
+        note: { LCL: "積替あり（週1便）・段ボール／パレットのみ", FCL: "積替あり・週2便・混載の取りまとめ割", AIR: "経由便・空港渡し", COURIER: "エコノミー便・1個30kgまで" } },
+    { z: "ABCDEF", sea: [], seaAB: ["東京港", "横浜港", "大阪港"], md: ["LCL"], hc: [], air: ["成田空港", "羽田空港", "関西空港", "中部空港", "福岡空港"], tc: ["成田空港", "関西空港"], cr: 1,
+        pf: [1.08, 1, 1.06, 0.93], tt: [0, -1], vm: 1, pk: "段ボール・パレット・木箱",
+        note: { LCL: "混載・週2便（航空との組み合わせ可）", AIR: "直行便・当日搭載（15時締切）・容積重量 1m³=167kg", AIRTC: "定温（2〜8℃／15〜25℃）・保冷容器込み", COURIER: "翌日集荷・通関込み・1個70kgまで" } },
+    { z: "CDEF", zx: ["中国"], sea: ["東京港", "横浜港", "名古屋港", "神戸港"], seaA: [], md: ["LCL", "FCL20", "FCL40"], hc: ["東京港", "横浜港", "名古屋港", "神戸港"], air: ["成田空港"], tc: [], cr: 0,
+        pf: [1.05, 0.95, 1, 1], tt: [-1, 0], vm: 2, pk: "段ボール・パレット・木箱・ドラム・バルク・長尺",
+        note: { LCL: "混載・木箱／ドラム可", FCL: "大口割引（月5本以上）・木箱／ドラム／バルク／長尺可・重量物対応", AIR: "重量物・長尺は要相談" } },
+    { z: "ABC", zx: ["アメリカ"], zno: ["インド", "ニューヨーク"], sea: ["横浜港", "神戸港"], seaA: ["博多港"], md: ["LCL", "FCL20", "FCL20RF", "FCL40RF"], hc: [], air: ["関西空港"], tc: ["成田空港", "関西空港"], cr: 0,
+        pf: [1.1, 1.02, 1.02, 1], tt: [0, 0], vm: 1, pk: "段ボール・パレット",
+        note: { LCL: "常温混載・食品のみ", FCL: "食品専用コンテナ・燻蒸の手配可", RF: "リーファー（-25〜+25℃）・温度ログ付き・食品の衛生証明の手配可", AIR: "食品の一般貨物", AIRTC: "定温（2〜8℃）・保冷パレット" } }
+];
+function dfwHash(s) { var h = 5381; s = String(s); for (var i = 0; i < s.length; i++)
+    h = ((h << 5) + h + s.charCodeAt(i)) | 0; return (h >>> 0) / 4294967296; }
+function dfwEom(today, k) {
+    var m = String(today || "").match(/^(\d{4})-(\d{1,2})/);
+    var y = m ? +m[1] : 2026, mo = m ? +m[2] : 10;
+    mo += k;
+    while (mo > 12) {
+        mo -= 12;
+        y++;
+    }
+    var last = new Date(Date.UTC(y, mo, 0)).getUTCDate();
+    return y + "-" + (mo < 10 ? "0" : "") + mo + "-" + last;
+}
+function dfwRound(x, u) { return Math.max(u, Math.round(x / u) * u); }
+function dfwRates(today) {
+    var out = [];
+    for (var ci = 0; ci < 5; ci++) {
+        var S = DFW_SPEC[ci], co = DFW_COS[ci], n = ci + 1, valid = dfwEom(today, S.vm);
+        for (var di = 0; di < DFW_DEST.length; di++) {
+            var D = DFW_DEST[di], cty = D[0], pod = D[1], z = D[2], Z = DFW_ZONE[z];
+            var inZ = S.z.indexOf(z) >= 0 || (S.zx || []).indexOf(cty) >= 0;
+            if (!inZ || (S.zno || []).indexOf(cty) >= 0 || (S.zno || []).indexOf(pod) >= 0)
+                continue;
+            var zi = z === "A" ? 0 : z === "B" ? 1 : 2;
+            var add = function (pol, mode, base, tt, noteKey) {
+                var v = dfwHash(co + "|" + pol + "|" + pod + "|" + mode), M = DFW_MODE[mode];
+                var price = base * (0.94 + v * 0.12), unit = M[1];
+                price = /COURIER/.test(mode) ? dfwRound(price, 10) : /AIR/.test(mode) ? dfwRound(price, 5) : dfwRound(price, /FCL/.test(mode) ? 1000 : 100);
+                var t = Math.max(1, Math.round(tt + (v > 0.82 ? 1 : v < 0.12 ? -1 : 0)));
+                out.push({ co: co, pol: pol, pod: pod, mode: mode, price: price, cur: "¥", unit: unit, tt: t, valid: valid, note: S.note[noteKey] || "", cty: cty, pk: S.pk, dfw: n, fk: "dfw", at: 0 });
+            };
+            var pols = S.sea.slice();
+            if (zi === 0)
+                pols = pols.concat(S.seaA || []);
+            if (zi <= 1)
+                pols = pols.concat(S.seaAB || []);
+            for (var pi = 0; pi < pols.length; pi++) {
+                var pol = pols[pi], P = DFW_SEA[pol];
+                if (!P)
+                    continue;
+                var pfx = P[zi], ttx = D[3] + P[3 + zi] + S.tt[0];
+                for (var mi = 0; mi < S.md.length; mi++) {
+                    var md = S.md[mi];
+                    if (md === "LCL")
+                        add(pol, md, Z[0] * pfx * S.pf[0], ttx + (ci === 1 ? 1 : 0), "LCL");
+                    else if (/RF$/.test(md))
+                        add(pol, md, Z[1] * DFW_MODE[md][0] * pfx * S.pf[1], ttx, "RF");
+                    else
+                        add(pol, md, Z[1] * DFW_MODE[md][0] * pfx * S.pf[1] * (md === "FCL40" && ci === 3 ? 0.94 : 1), ttx, "FCL");
+                }
+                if (S.hc.indexOf(pol) >= 0)
+                    add(pol, "FCL40HC", Z[1] * DFW_MODE.FCL40HC[0] * pfx * S.pf[1] * (ci === 3 ? 0.93 : 1), ttx, "FCL");
+            }
+            if (pod !== "ニューヨーク" || ci === 2) {
+                for (var ai = 0; ai < S.air.length; ai++) {
+                    var ap = S.air[ai];
+                    if (ci === 1 && zi > 1 && D[0] !== "インド")
+                        continue;
+                    if (ci === 3 && zi < 2 && D[0] !== "中国")
+                        continue;
+                    add(ap, "AIR", Z[2] * DFW_AIRP[ap] * S.pf[2], D[4] + S.tt[1] + (ci === 1 ? 1 : 0), "AIR");
+                }
+                for (var ti = 0; ti < S.tc.length; ti++) {
+                    var tp = S.tc[ti];
+                    if (z === "F")
+                        continue;
+                    add(tp, "AIRTC", Z[2] * DFW_MODE.AIRTC[0] * DFW_AIRP[tp] * S.pf[2], D[4] + S.tt[1], "AIRTC");
+                }
+            }
+            if (S.cr && pod !== "ニューヨーク")
+                add("日本（全国集荷）", "COURIER", Z[3] * S.pf[3], D[5] + (ci === 2 ? -1 : ci === 1 ? 1 : 0), "COURIER");
+        }
+    }
+    return out;
+}
+const V60 = { ctx: null, cache: { k: "", rows: [] }, go: 0, extra: null };
+const V60_OLD = { "デモ物流株式会社": 1, "サンプル海運（デモ）": 1, "エアシー・ロジ（デモ）": 1 };
+const V60_PACKS = ["段ボール", "パレット", "木箱", "ドラム", "バルク", "長尺"];
+const V60_MODES = [["LCL", "LCL（混載）"], ["FCL20", "FCL20（20ft）"], ["FCL40", "FCL40（40ft）"], ["FCL40HC", "FCL40HC（40ftハイキューブ）"], ["FCL20RF", "FCL20RF（リーファー20ft）"], ["FCL40RF", "FCL40RF（リーファー40ft）"], ["AIR", "AIR（航空）"], ["AIRTC", "AIRTC（航空・定温）"], ["COURIER", "COURIER（クーリエ）"]];
+function v60E(s) { return (typeof esc === "function") ? esc(s) : String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v60Today() { try {
+    return (typeof fwdToday === "function") ? fwdToday() : new Date().toISOString().slice(0, 10);
+}
+catch (e) {
+    return new Date().toISOString().slice(0, 10);
+} }
+function v60Rows() { const t = v60Today(); if (V60.cache.k !== t)
+    V60.cache = { k: t, rows: dfwRates(t) }; return V60.cache.rows; }
+function v60IsCo(co) { return DFW_COS.indexOf(String(co || "")) >= 0; }
+function v60On() { return typeof FWDON !== "undefined" && !!FWDON; }
+function v60F() { return (typeof FWDB !== "undefined" && FWDB && typeof FWDB === "object") ? FWDB : null; }
+function v60PubShip() { const F = v60F(); return !v60On() && !!F && F.f2l === 1 && F.fv !== 1 && F.w === "pub"; }
+function v60SmpShip() { const F = v60F(); return !v60On() && !!F && F.f2l === 1 && F.fv !== 1 && F.w !== "pub" && F.smp === 1; }
+function v60Dfwd() { const F = v60F(); return (v60On() && !!F && F.fv === 1 && +F.dfw >= 1 && +F.dfw <= 5) ? +F.dfw : 0; }
+function v60Inject() {
+    const F = v60F();
+    if (!F || !Array.isArray(F.rates))
+        return;
+    let base = F.rates.filter(r => r && !r.dfw);
+    if (v60PubShip()) {
+        base = base.filter(r => !(V60_OLD[r.co] && !(+r.at)));
+        F.rates = base.concat(v60Rows());
+        return;
+    }
+    const n = v60Dfwd();
+    if (n) {
+        F.rates = base.concat(v60Rows().filter(r => r.dfw === n));
+        return;
+    }
+    if (base.length !== F.rates.length)
+        F.rates = base;
+}
+function v60Strip(F) { return (F && Array.isArray(F.rates)) ? F.rates.filter(r => r && !r.dfw) : []; }
+if (typeof fwdLoad === "function") {
+    const __fl60 = fwdLoad;
+    fwdLoad = function () { const o = __fl60.apply(this, arguments); try {
+        v60Inject();
+    }
+    catch (e) { } return o; };
+}
+if (typeof fwdSave === "function") {
+    const __fs60 = fwdSave;
+    fwdSave = function () {
+        const F = v60F();
+        if (!F || !Array.isArray(F.rates) || !F.rates.some(r => r && r.dfw))
+            return __fs60.apply(this, arguments);
+        const keep = F.rates;
+        F.rates = v60Strip(F);
+        try {
+            return __fs60.apply(this, arguments);
+        }
+        finally {
+            F.rates = keep;
+        }
+    };
+}
+if (typeof fwdMerge === "function") {
+    const __fm60 = fwdMerge;
+    fwdMerge = function (loc, rem) {
+        try {
+            if (loc && Array.isArray(loc.rates) && loc.rates.some(r => r && r.dfw))
+                loc = Object.assign({}, loc, { rates: v60Strip(loc) });
+        }
+        catch (e) { }
+        const out = __fm60.call(this, loc, rem);
+        try {
+            if (out && typeof out === "object" && rem && +rem.dfw)
+                out.dfw = +rem.dfw;
+            if (out && typeof out === "object")
+                setTimeout(() => { try {
+                    v60Inject();
+                }
+                catch (e) { } }, 0);
+        }
+        catch (e) { }
+        return out;
+    };
+}
+if (typeof v45Samples === "function") {
+    v45Samples = function () { return v60Rows().map(r => Object.assign({}, r, { smp: 1 })); };
+}
+try {
+    if (typeof V45_SMPCO !== "undefined")
+        DFW_COS.forEach(c => { V45_SMPCO[c] = 1; });
+}
+catch (e) { }
+try {
+    if (typeof FWD_POD !== "undefined") {
+        if (!FWD_POD["カナダ"])
+            FWD_POD["カナダ"] = "バンクーバー";
+        if (!FWD_POD["フィリピン"])
+            FWD_POD["フィリピン"] = "マニラ";
+        if (!FWD_POD["ブラジル"])
+            FWD_POD["ブラジル"] = "サントス";
+    }
+}
+catch (e) { }
+function v60PackOf(s) { s = String(s || ""); for (const p of V60_PACKS)
+    if (s.indexOf(p) >= 0)
+        return p; if (/カートン|ケース|ctn|carton/i.test(s))
+    return "段ボール"; if (/pallet/i.test(s))
+    return "パレット"; if (/crate/i.test(s))
+    return "木箱"; if (/drum/i.test(s))
+    return "ドラム"; return ""; }
+function v60PolKey(s) { try {
+    if (typeof v56shipPolKey === "function")
+        return v56shipPolKey(s);
+}
+catch (e) { } return String(s || "").trim().replace(/(?:国際)?(?:空港|港)$/, ""); }
+const V60_AIRP = { "東京": ["成田空港", "羽田空港"], "横浜": ["成田空港", "羽田空港"], "川崎": ["成田空港", "羽田空港"], "千葉": ["成田空港", "羽田空港"], "名古屋": ["中部空港"], "四日市": ["中部空港"], "大阪": ["関西空港"], "神戸": ["関西空港"], "堺": ["関西空港"], "博多": ["福岡空港", "関西空港"], "福岡": ["福岡空港", "関西空港"], "北九州": ["福岡空港", "関西空港"], "門司": ["福岡空港", "関西空港"] };
+function v60Ctx(mode) {
+    const c = Object.assign({}, V60.ctx || {});
+    c.md = String(mode || c.mode || "LCL").toUpperCase();
+    let pol = "";
+    try {
+        if (typeof V56SHIP !== "undefined" && V56SHIP && V56SHIP.req && V56SHIP.req.pol)
+            pol = V56SHIP.req.pol;
+    }
+    catch (e) { }
+    if (!pol)
+        pol = c.pol || "";
+    if (!pol) {
+        try {
+            pol = (D && D.ship && D.ship.pol) || (D && D.pol) || "";
+        }
+        catch (e) { }
+    }
+    c.pol = pol;
+    c.polKey = pol ? v60PolKey(pol) : "";
+    return c;
+}
+let V60_SEAKEYS = null;
+function v60SeaKeys() { if (V60_SEAKEYS)
+    return V60_SEAKEYS; const o = {}; try {
+    Object.keys(DFW_SEA).forEach(p => { o[v60PolKey(p)] = 1; });
+}
+catch (e) { } V60_SEAKEYS = o; return o; }
+function v60Temp(m) { return /RF$|AIRTC/.test(String(m || "").toUpperCase()); }
+function v60Fam(m) { m = String(m || "").toUpperCase(); return /COURIER/.test(m) ? "cr" : /AIR/.test(m) ? "air" : "sea"; }
+function v60Ok(r, c) {
+    const M = String(r.mode || "").toUpperCase();
+    if (v60Temp(c.md) !== v60Temp(M))
+        return false;
+    if (v60Fam(c.md) !== v60Fam(M))
+        return false;
+    if (c.pack && r.pk && String(r.pk).indexOf(c.pack) < 0)
+        return false;
+    if (c.pack === "バルク" && !/^FCL(20|40|40HC)$/.test(M))
+        return false;
+    const w = +c.weight || 0, cbm = Math.max(0.01, +c.cbm || 2);
+    if (M === "COURIER") {
+        const ch = Math.max(w, cbm * 200);
+        if (ch > 300)
+            return false;
+        const n = +c.cartons || 0;
+        if (n && w / n > (r.dfw === 2 ? 30 : 70))
+            return false;
+        if (c.pack && !/段ボール|木箱/.test(c.pack))
+            return false;
+    }
+    if (!c.polKey || !v60SeaKeys()[c.polKey])
+        return true;
+    if (M === "COURIER")
+        return true;
+    if (/AIR/.test(M)) {
+        const ap = V60_AIRP[c.polKey];
+        return !ap || ap.indexOf(r.pol) >= 0;
+    }
+    return v60PolKey(r.pol) === c.polKey;
+}
+function v60Adj(r, c) {
+    const x = Object.assign({}, r), pk = c.pack || "";
+    let add = 0, nt = "";
+    if (pk === "木箱") {
+        add = 1;
+        nt = "木箱（輸出梱包材の消毒証明つき）";
+    }
+    else if (pk === "ドラム") {
+        add = 1;
+        nt = "ドラム（漏れ対策・積付け指定）";
+    }
+    else if (pk === "長尺") {
+        add = 2;
+        nt = "長尺（特殊な積付け）";
+    }
+    else if (pk === "パレット") {
+        nt = "パレット";
+    }
+    else if (pk === "バルク") {
+        nt = "バルク（コンテナ内の内袋）";
+    }
+    if (add)
+        x.tt = (+x.tt || 0) + add;
+    if (nt)
+        x.note = (x.note ? x.note + "・" : "") + nt;
+    x.v60pk = pk;
+    return x;
+}
+if (typeof fwdRatesFor === "function") {
+    const __rf60 = fwdRatesFor;
+    fwdRatesFor = function (pod, mode, coFilter) {
+        const F = v60F();
+        if (!F || !Array.isArray(F.rates) || !F.rates.some(r => r && r.dfw))
+            return __rf60.apply(this, arguments);
+        const keep = F.rates, c = v60Ctx(mode);
+        let rs;
+        let cp = "";
+        try {
+            if (typeof V56SHIP !== "undefined" && V56SHIP && V56SHIP.req && V56SHIP.req.pol && !V56SHIP.req.fob)
+                cp = V56SHIP.req.pol;
+        }
+        catch (e) { }
+        F.rates = keep.filter(r => !r || !r.dfw || v60Ok(r, c)).map(r => (cp && r && r.dfw && /AIR|COURIER/.test(String(r.mode || "").toUpperCase()) && v60PolKey(r.pol) !== v60PolKey(cp)) ? Object.assign({}, r, { pol: cp, v60apol: r.pol }) : r);
+        try {
+            rs = __rf60.apply(this, arguments) || [];
+        }
+        finally {
+            F.rates = keep;
+        }
+        return rs.map(r => { if (!r || !r.dfw)
+            return r; let x = r; if (x.v60apol) {
+            x = Object.assign({}, x, { pol: x.v60apol });
+            delete x.v60apol;
+        } return v60Adj(x, c); });
+    };
+}
+const V60_CNT = { FCL20: [28, 21000, 36000], FCL40: [58, 26000, 48000], FCL40HC: [68, 26000, 50000], FCL20RF: [26, 20000, 52000], FCL40RF: [58, 27000, 68000] };
+function v60Num(x) { return Math.round(+x || 0).toLocaleString(); }
+function v60Calc(r, cbm, q) {
+    const c = V60.ctx || {}, w = Math.max(0, Math.round(+c.weight || 0)), M = String(r.mode || "").toUpperCase(), pj = fwdRateJpy(r), pk = r.v60pk || c.pack || "";
+    const v = Math.max(0.01, Math.round(((+c.cbm > 0 && +c.cbm < (+cbm || 1)) ? +c.cbm : (+cbm || 1)) * 100) / 100), pkF = pk === "木箱" ? 1.06 : pk === "ドラム" ? 1.08 : pk === "長尺" ? 1.12 : 1, wtxt = w ? `・実重量 ${v60Num(w)}kg` : "";
+    let fr = 0, thc = 0, doc = 0, basis = "";
+    if (M === "COURIER") {
+        const ch = Math.max(0.5, Math.ceil(Math.max(w, v * 200) * 2) / 2), steps = Math.max(0, Math.ceil((ch - 1) / 0.5));
+        fr = Math.round((pj + steps * pj * 0.16) / 10) * 10;
+        basis = `課金重量 ${ch}kg（容積重量 ${v60Num(v * 200)}kg${wtxt}）`;
+        Object.assign(q, { freight: fr, thc: 0, doc: 0, total: fr, basis, courier: 1, dfw: r.dfw });
+        return q;
+    }
+    if (/AIR/.test(M)) {
+        const ch = Math.max(1, Math.ceil(Math.max(w, v * 167)));
+        const T = ch < 45 ? [1.25, "45kg未満"] : ch < 100 ? [1, "45kg以上"] : ch < 300 ? [0.9, "100kg以上"] : ch < 500 ? [0.84, "300kg以上"] : ch < 1000 ? [0.78, "500kg以上"] : [0.72, "1,000kg以上"];
+        fr = Math.max(M === "AIRTC" ? 18000 : 12000, Math.round(pj * ch * T[0] * pkF));
+        thc = Math.round(4500 + 15 * ch + (M === "AIRTC" ? 8000 : 0));
+        doc = 7000;
+        basis = `課金重量 ${v60Num(ch)}kg（容積重量 ${v60Num(Math.round(v * 167))}kg${wtxt}）・重量帯 ${T[1]}${pkF > 1 ? "・" + pk + "の割増" : ""}`;
+    }
+    else if (/^FCL/.test(M)) {
+        const C = V60_CNT[M] || V60_CNT.FCL20, n = Math.max(1, Math.ceil(v / C[0]), w ? Math.ceil(w / C[1]) : 1), heavy = !!w && w / n > C[1] * 0.8;
+        fr = Math.round(pj * n * (pk === "長尺" ? 1.12 : 1)) + (heavy ? 18000 * n : 0);
+        thc = C[2] * n;
+        doc = 9000;
+        basis = `コンテナ ${n}本（容積 ${v}m³${wtxt}／1本の目安 ${C[0]}m³・${C[1] / 1000}t）${heavy ? "・重量物の割増" : ""}${pk === "長尺" ? "・長尺の割増" : ""}`;
+    }
+    else {
+        const rt = Math.max(1, Math.round(Math.max(v, w / 1000) * 100) / 100), disc = rt >= 10 ? 0.9 : rt >= 5 ? 0.94 : 1;
+        fr = Math.round(pj * rt * disc * pkF);
+        thc = Math.max(6000, Math.round(4200 * rt)) + (pk === "パレット" ? 2500 * Math.max(1, +c.cartons || Math.ceil(v / 1.2)) : 0);
+        doc = 8000;
+        basis = `${rt} R.T.（容積 ${v}m³${wtxt}）${disc < 1 ? "・数量割引 " + Math.round((1 - disc) * 100) + "%" : ""}${pkF > 1 ? "・" + pk + "の割増" : ""}`;
+    }
+    Object.assign(q, { freight: fr, thc, doc, total: fr + thc + doc, basis, dfw: r.dfw });
+    return q;
+}
+if (typeof fwdQuoteCalc === "function") {
+    const __qc60 = fwdQuoteCalc;
+    fwdQuoteCalc = function (rate, cbm) {
+        const q = __qc60.apply(this, arguments);
+        try {
+            if (rate && rate.dfw && q && !q.v56shipFob)
+                v60Calc(rate, cbm, q);
+            else if (rate && rate.dfw && q)
+                q.dfw = rate.dfw;
+        }
+        catch (e) { }
+        return q;
+    };
+}
+function v60CondRead() {
+    const g = id => { const e = document.getElementById(id); return e ? String(e.value || "").trim() : ""; };
+    const o = {};
+    const md = g("v60md"), cb = parseFloat(g("v60cbm")), kg = parseFloat(g("v60kg")), pk = g("v60pk"), n = parseInt(g("v60n"), 10);
+    if (md)
+        o.mode = md;
+    if (cb > 0)
+        o.cbm = cb;
+    if (kg > 0)
+        o.weight = kg;
+    if (pk)
+        o.pack = pk;
+    if (n > 0)
+        o.cartons = n;
+    return o;
+}
+document.addEventListener("click", e => { try {
+    if (e.target && e.target.closest && e.target.closest("#fwdgo,#fwdgo2"))
+        V60.go = Date.now();
+}
+catch (x) { } }, true);
+if (typeof v56shipPack === "function") {
+    const __pk60 = v56shipPack;
+    v56shipPack = function () {
+        const r = __pk60.apply(this, arguments);
+        try {
+            const c = V60.ctx;
+            if (c && r && r.ok) {
+                if (!c.weight && r.gw)
+                    c.weight = r.gw;
+                if (!c.cartons && r.cartons)
+                    c.cartons = r.cartons;
+                if (!c.pack)
+                    c.pack = "段ボール";
+                if (!c.cbm && r.cbm)
+                    c.cbm = r.cbm;
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof fwdRequest === "function") {
+    const __rq60 = fwdRequest;
+    fwdRequest = async function (opts) {
+        opts = Object.assign({}, opts || {});
+        try {
+            if (V60.go && Date.now() - V60.go < 2000) {
+                V60.go = 0;
+                const o = v60CondRead();
+                Object.keys(o).forEach(k => { if (opts[k] == null || opts[k] === "")
+                    opts[k] = o[k]; });
+            }
+            if (V60.extra) {
+                const x = V60.extra;
+                V60.extra = null;
+                Object.keys(x).forEach(k => { if (x[k] != null && x[k] !== "" && (opts[k] == null || opts[k] === ""))
+                    opts[k] = x[k]; });
+            }
+        }
+        catch (e) { }
+        const F0 = v60F(), before = new Set(((F0 && F0.reqs) || []).map(r => r && r.id)), keep = V60.ctx;
+        V60.ctx = { weight: +opts.weight || 0, pack: opts.pack || v60PackOf(opts.cargo), cartons: +opts.cartons || 0, cbm: +opts.cbm || 0, mode: opts.mode || "" };
+        const ctx = V60.ctx;
+        try {
+            return await __rq60.call(this, opts);
+        }
+        finally {
+            V60.ctx = keep;
+            try {
+                const F = v60F();
+                const r = F && (F.reqs || []).find(x => x && !before.has(x.id));
+                if (r && (ctx.pack || ctx.weight || ctx.cartons)) {
+                    if (ctx.pack)
+                        r.pack = ctx.pack;
+                    if (!r.weight && ctx.weight)
+                        r.weight = ctx.weight;
+                    if (!r.cartons && ctx.cartons)
+                        r.cartons = ctx.cartons;
+                    if (ctx.pack && String(r.cargo || "").indexOf(ctx.pack) < 0)
+                        r.cargo = (r.cargo ? r.cargo + "／" : "") + "荷姿：" + ctx.pack;
+                    r._m = Date.now();
+                    fwdSave();
+                    try {
+                        if (typeof syncSchedule === "function")
+                            syncSchedule("fwd");
+                    }
+                    catch (e) { }
+                }
+            }
+            catch (e) { }
+        }
+    };
+}
+if (typeof fwdReevalPending === "function") {
+    const __re60 = fwdReevalPending;
+    fwdReevalPending = function () {
+        const F = v60F();
+        if (!F || !Array.isArray(F.reqs) || !F.reqs.length)
+            return __re60.apply(this, arguments);
+        const all = F.reqs, keep = V60.ctx;
+        let n = 0;
+        try {
+            for (const r of all) {
+                if (!r)
+                    continue;
+                F.reqs = [r];
+                V60.ctx = { weight: +r.weight || 0, pack: r.pack || v60PackOf(r.cargo), cartons: +r.cartons || 0, cbm: +r.cbm || 0, mode: r.mode || "", pol: r.pol || "" };
+                n += (+__re60.apply(this, arguments) || 0);
+            }
+        }
+        finally {
+            F.reqs = all;
+            V60.ctx = keep;
+        }
+        return n;
+    };
+}
+function v60ReqHas(r) { try {
+    return !!r && (r.legs || []).some(l => l && ((l.offers || []).some(o => o && v60IsCo(o.co)) || v60IsCo(l.co) || v60IsCo(l.sel) || (l.quote && l.quote.dfw)));
+}
+catch (e) {
+    return false;
+} }
+function v60NoteHtml(cls) { return `<div class="v60note ${cls || ""}" role="note"><span class="v60i" aria-hidden="true">i</span><span class="v60t">${DFW_NOTE}</span></div>`; }
+if (typeof openFwdQuote === "function") {
+    const __oq60 = openFwdQuote;
+    openFwdQuote = function (id) {
+        const out = __oq60.apply(this, arguments);
+        try {
+            const F = v60F();
+            const r = F && (F.reqs || []).find(x => x && x.id === id);
+            if (r && (v60ReqHas(r) || v60Dfwd())) {
+                const pn = document.getElementById("pn"), b = pn && pn.querySelector(".dwbody");
+                if (b && !b.querySelector(":scope > .v60note"))
+                    b.insertAdjacentHTML("afterbegin", v60NoteHtml("v60top"));
+            }
+        }
+        catch (e) { }
+        return out;
+    };
+}
+if (typeof fwdCompareHtml === "function") {
+    const __cm60 = fwdCompareHtml;
+    fwdCompareHtml = function (r, l) {
+        const s = __cm60.apply(this, arguments);
+        try {
+            if (s && l && (l.offers || []).some(o => o && v60IsCo(o.co)))
+                return s + `<p class="nn v60cn">${DFW_NOTE}</p>`;
+        }
+        catch (e) { }
+        return s;
+    };
+}
+if (typeof fwdHistCardHtml === "function") {
+    const __hc60 = fwdHistCardHtml;
+    fwdHistCardHtml = function (S) {
+        const s = String(__hc60.apply(this, arguments) || "");
+        try {
+            const L = (typeof fwdCaseReqs === "function") ? fwdCaseReqs(S) : [];
+            if (L.some(v60ReqHas))
+                return s.replace(/<\/div>\s*$/, `<p class="nn v60cn" style="margin-top:6px">${DFW_NOTE}</p></div>`);
+        }
+        catch (e) { }
+        return s;
+    };
+}
+function v60CondHtml() {
+    const opt = (a, sel) => a.map(([v, t]) => `<option value="${v60E(v)}"${v === sel ? " selected" : ""}>${v60E(t)}</option>`).join("");
+    return `<details class="v60cond"><summary>条件を指定して依頼（輸送形態・容積・重量・荷姿）</summary>
+    <div class="v60cg">
+      <label class="lbl">輸送形態<select class="sel" id="v60md"><option value="">自動</option>${opt(V60_MODES, "")}</select></label>
+      <label class="lbl">容積（m³）<input class="sel n" id="v60cbm" type="number" min="0.01" step="0.01" placeholder="自動"></label>
+      <label class="lbl">総重量（kg）<input class="sel n" id="v60kg" type="number" min="0" step="1" placeholder="例：480"></label>
+      <label class="lbl">荷姿<select class="sel" id="v60pk"><option value="">指定なし</option>${opt(V60_PACKS.map(p => [p, p]), "")}</select></label>
+      <label class="lbl">個数<input class="sel n" id="v60n" type="number" min="0" step="1" placeholder="例：12"></label></div>
+    <p class="nn" style="margin:4px 0 0">容積と重量の大きい方で運賃を計算します（混載＝R.T.・航空＝課金重量・FCL＝必要な本数）。荷姿によっては受けない物流会社があります。</p></details>`;
+}
+if (typeof fwdInlineHtml === "function") {
+    const __in60 = fwdInlineHtml;
+    fwdInlineHtml = function () {
+        let s = String(__in60.apply(this, arguments) || "");
+        try {
+            const has = v60PubShip() || v60SmpShip();
+            if (!has)
+                return s;
+            if (v60SmpShip()) {
+                const nR = v60Rows().length;
+                s = s.replace(/参加物流会社 \d+社・レート\d+レーン/, `見本の物流会社 5社（架空）・レート${nR.toLocaleString()}レーン`).replace(/<b>見本の3社（架空）<\/b>/, "<b>見本の5社（架空）</b>");
+            }
+            else
+                s = s.replace(/レート(\d+)レーン/, (m, a) => "レート" + (+a).toLocaleString() + "レーン");
+            s = s.replace(/<p style="font-size:9.5px;color:var\(--ink-3\);margin:6px 0 0">/, m => v60CondHtml() + `<p class="nn v60cn" style="margin:6px 0 0">${DFW_NOTE}</p>` + m);
+        }
+        catch (e) { }
+        return s;
+    };
+}
+if (typeof fwdMsgsLocal === "function") {
+    const __ml60 = fwdMsgsLocal;
+    fwdMsgsLocal = function (req) {
+        const m = __ml60.apply(this, arguments);
+        try {
+            if (m && m[0])
+                m[0].t = String(m[0].t).replace("見本の物流会社（架空の3社）", "見本の物流会社（架空の5社）");
+            if (req && m && m[0] && (req.pack || req.weight))
+                m[0].t = String(m[0].t).replace(/各([\d.]+)m³ /, (x, a) => `各${a}m³${req.weight ? "・" + v60Num(req.weight) + "kg" : ""}${req.pack ? "・" + v60E(req.pack) : ""} `);
+        }
+        catch (e) { }
+        return m;
+    };
+}
+if (typeof fwdRequoteForm === "function") {
+    const __rf60b = fwdRequoteForm;
+    fwdRequoteForm = function (id, cty, co) {
+        const out = __rf60b.apply(this, arguments);
+        try {
+            const F = v60F(), r = F && (F.reqs || []).find(x => x && x.id === id);
+            const sel = document.getElementById("rqMode");
+            if (sel && !sel.dataset.v60) {
+                sel.dataset.v60 = "1";
+                const cur = String((r && r.mode) || sel.value || "LCL");
+                sel.innerHTML = V60_MODES.map(([v, t]) => `<option value="${v60E(v)}">${v60E(t)}</option>`).join("");
+                sel.value = V60_MODES.some(x => x[0] === cur) ? cur : "LCL";
+                const cb = document.getElementById("rqCbm"), lab = cb && cb.closest("label");
+                if (lab)
+                    lab.insertAdjacentHTML("afterend", `<label class="lbl" style="display:block">総重量（kg）<input class="sel n" id="v60rqKg" type="number" min="0" step="1" value="${r && +r.weight ? Math.round(+r.weight) : ""}" style="width:100%;box-sizing:border-box;margin-top:3px"></label>
+        <label class="lbl" style="display:block">荷姿<select class="sel" id="v60rqPk" style="width:100%;box-sizing:border-box;margin-top:3px"><option value="">指定なし</option>${V60_PACKS.map(p => `<option${r && r.pack === p ? " selected" : ""}>${p}</option>`).join("")}</select></label>
+        <label class="lbl" style="display:block">個数<input class="sel n" id="v60rqN" type="number" min="0" step="1" value="${r && +r.cartons ? +r.cartons : ""}" style="width:100%;box-sizing:border-box;margin-top:3px"></label>`);
+            }
+        }
+        catch (e) { }
+        return out;
+    };
+}
+if (typeof fwdRequoteSend === "function") {
+    const __rs60 = fwdRequoteSend;
+    fwdRequoteSend = async function (id, cty) {
+        try {
+            const g = k => { const e = document.getElementById(k); return e ? String(e.value || "").trim() : ""; };
+            const kg = parseFloat(g("v60rqKg")), pk = g("v60rqPk"), n = parseInt(g("v60rqN"), 10);
+            const F = v60F(), r = F && (F.reqs || []).find(x => x && x.id === id);
+            V60.extra = { weight: kg > 0 ? kg : ((r && +r.weight) || 0), pack: pk || "", cartons: n > 0 ? n : ((r && +r.cartons) || 0) };
+        }
+        catch (e) { }
+        try {
+            return await __rs60.apply(this, arguments);
+        }
+        finally {
+            V60.extra = null;
+        }
+    };
+}
+document.addEventListener("click", e => {
+    try {
+        const b = e.target && e.target.closest && e.target.closest("[data-frdel]");
+        if (!b)
+            return;
+        const F = v60F();
+        const r = F && F.rates && F.rates[+b.dataset.frdel];
+        if (r && r.dfw) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            if (typeof toast === "function")
+                toast("デモ物流①〜⑤のレートはデモ用に組み込まれた固定のレートのため、削除できません");
+        }
+    }
+    catch (x) { }
+}, true);
+if (typeof syncPullFwd === "function") {
+    const __pl60 = syncPullFwd;
+    syncPullFwd = function (initial) {
+        let k = 0;
+        try {
+            if (v60Dfwd() && typeof V57DEMO !== "undefined" && V57DEMO && V57DEMO.on && !V57DEMO.adm) {
+                k = V57DEMO.on;
+                V57DEMO.on = 0;
+            }
+        }
+        catch (e) { }
+        try {
+            return __pl60.apply(this, arguments);
+        }
+        finally {
+            if (k)
+                V57DEMO.on = k;
+        }
+    };
+}
+function v60FwdAfter() {
+    if (!v60On())
+        return;
+    const F = v60F();
+    if (!F)
+        return;
+    const w = document.getElementById("well");
+    if (!w)
+        return;
+    const n = v60Dfwd(), show = n || (F.fv === 1 && F.w === "pub" && (F.reqs || []).some(v60ReqHas));
+    if (show && !w.querySelector(".v60note")) {
+        const ph = w.querySelector(".ph");
+        const h = v60NoteHtml("v60fwd") + (n ? `<p class="nn v60dm" style="margin:-4px 0 10px">デモ用の物流会社アカウントです。操作はこの PC の中だけで、サーバーには保存しません。</p>` : "");
+        if (ph)
+            ph.insertAdjacentHTML("afterend", h);
+        else
+            w.insertAdjacentHTML("afterbegin", h);
+    }
+    if (n)
+        w.querySelectorAll("[data-frdel]").forEach(b => { const r = F.rates[+b.dataset.frdel]; if (r && r.dfw) {
+            b.disabled = true;
+            b.title = "デモ用の固定のレート（削除できません）";
+        } });
+}
+if (typeof fwdRender === "function") {
+    const __fr60 = fwdRender;
+    fwdRender = function () { const o = __fr60.apply(this, arguments); try {
+        v60FwdAfter();
+    }
+    catch (e) { } return o; };
+}
+(function () {
+    try {
+        const st = document.createElement("style");
+        st.textContent = `.v60note{display:flex;gap:8px;align-items:flex-start;margin:0 0 10px;padding:8px 11px;border:1px solid var(--warn);border-radius:var(--r2);background:var(--surface-2);font-size:11.5px;line-height:1.6;color:var(--ink)}
+.v60note .v60i{flex:none;width:17px;height:17px;border-radius:50%;display:grid;place-items:center;font-size:10.5px;font-weight:800;font-style:italic;color:#fff;background:var(--warn);margin-top:1px}
+.v60cn{color:var(--ink-2)!important;font-weight:600}
+.v60cond{margin-top:8px;font-size:11px}.v60cond>summary{cursor:pointer;color:var(--bl);font-weight:700}
+.v60cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:6px 8px;margin-top:6px}.v60cg .lbl{display:flex;flex-direction:column;gap:3px;margin:0;font-size:10.5px}.v60cg .sel{width:100%;box-sizing:border-box;min-width:0;min-height:30px;padding:4px 8px;font-size:12px}.v60cond .nn{font-size:10px}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+(function () {
+    const R = [
+        [DFW_NOTE, "This quote is a demo-environment illustration; actual quoted amounts and conditions will differ.", "本报价为演示环境的示意，与实际报价金额及条件不同。", "Esta cotización es una ilustración del entorno de demostración; los importes y condiciones reales serán distintos."],
+        ["条件を指定して依頼（輸送形態・容積・重量・荷姿）", "Request with conditions (mode, volume, weight, packing)", "指定条件后申请（运输方式・体积・重量・包装）", "Solicitar con condiciones (modo, volumen, peso, embalaje)"],
+        ["輸送形態", "Mode", "运输方式", "Modo"], ["容積（m³）", "Volume (m³)", "体积（m³）", "Volumen (m³)"], ["総重量（kg）", "Gross weight (kg)", "总重量（kg）", "Peso bruto (kg)"], ["荷姿", "Packing", "包装", "Embalaje"], ["個数", "Pieces", "件数", "Bultos"],
+        ["自動", "Auto", "自动", "Automático"], ["指定なし", "Not specified", "未指定", "Sin especificar"],
+        ["例：480", "e.g. 480", "例：480", "p. ej. 480"], ["例：12", "e.g. 12", "例：12", "p. ej. 12"],
+        ["段ボール", "Carton", "纸箱", "Caja de cartón"], ["パレット", "Pallet", "托盘", "Palé"], ["木箱", "Wooden crate", "木箱", "Caja de madera"], ["ドラム", "Drum", "桶", "Bidón"], ["バルク", "Bulk", "散装", "Granel"], ["長尺", "Long cargo", "超长货物", "Carga larga"],
+        ["LCL（混載）", "LCL (consolidated)", "LCL（拼箱）", "LCL (consolidado)"], ["FCL20（20ft）", "FCL20 (20 ft)", "FCL20（20尺）", "FCL20 (20 pies)"], ["FCL40（40ft）", "FCL40 (40 ft)", "FCL40（40尺）", "FCL40 (40 pies)"], ["FCL40HC（40ftハイキューブ）", "FCL40HC (40 ft high cube)", "FCL40HC（40尺高柜）", "FCL40HC (40 pies high cube)"],
+        ["FCL20RF（リーファー20ft）", "FCL20RF (20 ft reefer)", "FCL20RF（20尺冷藏柜）", "FCL20RF (reefer 20 pies)"], ["FCL40RF（リーファー40ft）", "FCL40RF (40 ft reefer)", "FCL40RF（40尺冷藏柜）", "FCL40RF (reefer 40 pies)"], ["AIR（航空）", "AIR (air)", "AIR（空运）", "AIR (aéreo)"], ["AIRTC（航空・定温）", "AIRTC (air · temperature-controlled)", "AIRTC（空运・恒温）", "AIRTC (aéreo · temperatura controlada)"], ["COURIER（クーリエ）", "COURIER (courier)", "COURIER（快递）", "COURIER (mensajería)"],
+        ["容積と重量の大きい方で運賃を計算します（混載＝R.T.・航空＝課金重量・FCL＝必要な本数）。荷姿によっては受けない物流会社があります。", "Freight is based on the larger of volume and weight (LCL = R.T., air = chargeable weight, FCL = containers needed). Some forwarders do not accept certain packing.", "运费按体积与重量中较大者计算（拼箱＝R.T.・空运＝计费重量・整箱＝所需柜数）。部分物流公司不接受某些包装。", "El flete se calcula con el mayor entre volumen y peso (LCL = R.T., aéreo = peso tasable, FCL = contenedores necesarios). Algunos transitarios no aceptan ciertos embalajes."],
+        ["デモ物流①〜⑤のレートはデモ用に組み込まれた固定のレートのため、削除できません", "Demo Logistics ①–⑤ rates are fixed demo rates and cannot be deleted", "演示物流①〜⑤的费率是演示用的固定费率，无法删除", "Las tarifas de Demo Logística ①–⑤ son fijas de demostración y no se pueden eliminar"],
+        ["デモ用の固定のレート（削除できません）", "Fixed demo rate (cannot be deleted)", "演示用固定费率（无法删除）", "Tarifa fija de demostración (no se puede eliminar)"],
+        ["デモ用の物流会社アカウントです。操作はこの PC の中だけで、サーバーには保存しません。", "This is a demo forwarder account. Changes stay on this PC and are not saved to the server.", "这是演示用的物流公司账户。操作仅保留在本电脑中，不会保存到服务器。", "Es una cuenta de transitario de demostración. Los cambios quedan en este PC y no se guardan en el servidor."],
+        ["デモ物流①株式会社", "Demo Logistics ① Co., Ltd.", "演示物流①株式会社", "Demo Logística ① S.A."], ["デモ物流②株式会社", "Demo Logistics ② Co., Ltd.", "演示物流②株式会社", "Demo Logística ② S.A."], ["デモ物流③株式会社", "Demo Logistics ③ Co., Ltd.", "演示物流③株式会社", "Demo Logística ③ S.A."], ["デモ物流④株式会社", "Demo Logistics ④ Co., Ltd.", "演示物流④株式会社", "Demo Logística ④ S.A."], ["デモ物流⑤株式会社", "Demo Logistics ⑤ Co., Ltd.", "演示物流⑤株式会社", "Demo Logística ⑤ S.A."]
+    ];
+    try {
+        if (typeof I18N !== "undefined" && I18N && I18N.dict)
+            R.forEach(r => ["en", "zh", "es"].forEach((l, i) => { const d = I18N.dict[l]; if (d && r[i + 1])
+                d[r[0]] = r[i + 1]; }));
+    }
+    catch (e) { }
+    try {
+        if (typeof I18N_EL !== "undefined" && I18N_EL) {
+            const tpl = document.createElement("template");
+            [
+                ["本物の物流会社のレートが無い区間は、<b>見本の5社（架空）</b>で見積の流れを体験できます（「見本」の札・仮押さえと指名はできません）。", "Lanes with no real forwarder rate use <b>5 sample forwarders (fictitious)</b> so you can try the quote flow (marked “Sample”; holding and naming are not available).", "没有真实物流公司费率的线路，可用<b>5家样本公司（虚构）</b>体验报价流程（标有“样本”，无法暂订或指定）。", "En los trayectos sin tarifa de un transitario real, <b>5 transitarios de muestra (ficticios)</b> le permiten probar el flujo (marcados «Muestra»; no se puede reservar ni designar)."]
+            ].forEach(r => { tpl.innerHTML = r[0]; const k = String(tpl.content.textContent || "").replace(/\s+/g, " ").trim(); ["en", "zh", "es"].forEach((l, i) => { I18N_EL[l] = I18N_EL[l] || {}; I18N_EL[l][k] = r[i + 1]; }); });
+        }
+    }
+    catch (e) { }
+    try {
+        if (typeof I18N !== "undefined" && I18N && Array.isArray(I18N.pat))
+            I18N.pat.unshift({ re: /^見本の物流会社 5社（架空）・レート([\d,]+)レーン$/, en: "5 sample forwarders (fictitious) · $1 lanes", zh: "5家样本物流公司（虚构）・费率$1条线路", es: "5 transitarios de muestra (ficticios) · $1 trayectos" });
     }
     catch (e) { }
 })();
