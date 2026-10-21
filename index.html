@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="f020b46b82c3";
+const BC20_BUILD="e0897429138f";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -120973,6 +120973,231 @@ addEventListener("keydown", e => {
     }
     catch (e) { }
 })();
+var V62S = { st: "", kid: "", exp: 0, rel: "", pre: null, busy: null, lastRe: 0, kickAt: 0, flow: null };
+const V62S_G = /^(pull|push|beat|digest_set|digest_test|lw_pull|lw_send|lw_me|mail_status|mail_send|mail_pull|pool_put|pool_get|export_set|llm_get|deck_put|deck_list|deck_get|deck_del|file_put|file_get|file_del|file_list|req_put|req_list|req_got|req_fget|req_close|req_del|req_rem|members_put|mem_mail|mem_setmail|mem_untrust|fs_notify|lookup|logout)$/;
+function v62sTrial() { try {
+    return typeof SES !== "undefined" && !!SES && SES.t === "trial";
+}
+catch (e) {
+    return false;
+} }
+function v62sAdmin() { try {
+    return typeof SES !== "undefined" && !!SES && SES.t === "admin";
+}
+catch (e) {
+    return false;
+} }
+function v62sAdmPw() { try {
+    return (typeof v42AdmCred === "function" && v42AdmCred()) || (SES && SES.apw) || "";
+}
+catch (e) {
+    return "";
+} }
+function v62sFx() { try {
+    return (typeof v45Fx === "function") ? v45Fx() : null;
+}
+catch (e) {
+    return null;
+} }
+function v62sRel25() { const m = /^(\d+)\.(\d+)/.exec(String(V62S.rel || "")); return !!m && (+m[1] > 2 || (+m[1] === 2 && +m[2] >= 25)); }
+function v62sRelOld() { const m = /^(\d+)\.(\d+)/.exec(String(V62S.rel || "")); return !!m && !v62sRel25(); }
+function v62sClear() { V62S.st = ""; V62S.kid = ""; V62S.exp = 0; V62S.pre = null; }
+function v62sSeen(op, j, kid) {
+    if (!j || typeof j !== "object")
+        return;
+    if (j.rel)
+        V62S.rel = String(j.rel);
+    if (op === "login" && j.ok) {
+        if (j.stok) {
+            V62S.st = String(j.stok);
+            V62S.kid = kid;
+            V62S.exp = +j.stExp || 0;
+            V62S.pre = (j.pre && typeof j.pre === "object") ? { kid, at: Date.now(), acct: j.pre.acct || null, fwd: j.pre.fwd || null, fwdFx: j.pre.fwdFx == null ? null : j.pre.fwdFx, used: {} } : null;
+        }
+        else
+            v62sClear();
+    }
+    if (op === "beat" && j.ok && !V62S.st && v62sRel25() && v62sTrial())
+        setTimeout(() => { v62sRelogin("upgrade").catch(() => { }); }, 0);
+}
+(function () {
+    if (typeof window === "undefined" || typeof window.fetch !== "function" || window.__v62sFetch)
+        return;
+    window.__v62sFetch = 1;
+    const of = window.fetch;
+    const isSync = (u) => { try {
+        const s = (typeof SYNC !== "undefined" && SYNC && SYNC.url) || "";
+        return !!s && String((u && u.url) || u) === s;
+    }
+    catch (e) {
+        return false;
+    } };
+    window.fetch = async function (u, init) {
+        if (!isSync(u) || !init || typeof init.body !== "string" || init.body.charAt(0) !== "{")
+            return of.apply(this, arguments);
+        let body = init.body;
+        const m = /^\{"op":"([a-z_0-9]+)"/.exec(body), op = m ? m[1] : "";
+        if (!op)
+            return of.apply(this, arguments);
+        const km = /"kid":"([0-9a-f]{20,64})"/.exec(body), kid = km ? km[1] : "", add = {};
+        try {
+            if (op === "login") {
+                add.stc = 1;
+                add.pre = 1;
+                const fx = v62sFx();
+                if (fx != null)
+                    add.prefwd = { fx };
+            }
+            else if (V62S_G.test(op)) {
+                if (v62sAdmin()) {
+                    if (op === "pull" && !/"pw":"/.test(body)) {
+                        const pw = v62sAdmPw();
+                        if (pw)
+                            add.pw = pw;
+                    }
+                }
+                else if (kid && !/"stok":"/.test(body)) {
+                    if (!V62S.st && V62S.flow && typeof SYNC !== "undefined" && SYNC && kid === SYNC.kid) {
+                        await Promise.race([V62S.flow.catch(() => { }), new Promise(r => setTimeout(r, 15000))]);
+                    }
+                    if (V62S.st && kid === V62S.kid)
+                        add.stok = V62S.st;
+                }
+            }
+        }
+        catch (e) { }
+        if (Object.keys(add).length) {
+            const s = JSON.stringify(add);
+            body = "{" + s.slice(1, -1) + "," + body.slice(1);
+            init = Object.assign({}, init, { body });
+        }
+        const res = await of.call(this, u, init);
+        if (op === "login" || op === "ping" || op === "lookup" || op === "beat") {
+            try {
+                v62sSeen(op, JSON.parse(await res.clone().text()), kid);
+            }
+            catch (e) { }
+        }
+        if (op === "logout" && kid && kid === V62S.kid)
+            v62sClear();
+        return res;
+    };
+})();
+async function v62sRelogin(why) {
+    if (V62S.busy)
+        return V62S.busy;
+    if (Date.now() - V62S.lastRe < 60000)
+        return false;
+    V62S.lastRe = Date.now();
+    V62S.busy = (async () => {
+        try {
+            if (!v62sTrial() || typeof SYNC === "undefined" || !SYNC || !SYNC.kid || SYNC.kicked)
+                return false;
+            if (V62S.flow || document.getElementById("v61otp"))
+                return false;
+            const r = await syncCall("login", { kid: SYNC.kid, dev: syncDev(), usage: syncUsage(), code_hint: String(SES.code || "").slice(0, 3) });
+            if (r && r.ok)
+                return !!V62S.st;
+            const k = String((r && r.reason) || "");
+            if (/^otp/.test(k) || k === "member" || k === "disabled" || k === "expired")
+                setTimeout(() => { try {
+                    syncKicked(null, k);
+                }
+                catch (e) { } }, 0);
+            return false;
+        }
+        catch (e) {
+            return false;
+        }
+        finally {
+            setTimeout(() => { V62S.busy = null; }, 0);
+        }
+    })();
+    return V62S.busy;
+}
+function v62sPreTake(body) {
+    try {
+        const P = V62S.pre;
+        if (!P || !body || body.kid !== P.kid || Date.now() - P.at > 60000)
+            return null;
+        const k = body.ns === "fwd" ? "fwd" : body.ns === "acct" ? "acct" : "";
+        if (!k || !P[k] || P.used[k])
+            return null;
+        if (Object.keys(body).some(x => x !== "kid" && x !== "ns"))
+            return null;
+        if (k === "fwd") {
+            const fx = v62sFx();
+            if ((fx == null ? null : fx) !== P.fwdFx)
+                return null;
+            try {
+                if (typeof dsGet === "function" && dsGet())
+                    return null;
+            }
+            catch (e) { }
+        }
+        P.used[k] = 1;
+        return JSON.parse(JSON.stringify(P[k]));
+    }
+    catch (e) {
+        return null;
+    }
+}
+if (typeof syncCall === "function") {
+    const __sc62s = syncCall;
+    syncCall = async function (op, body, opt) {
+        if (op === "pull" && opt && opt.v56authPre && !v62sRelOld())
+            return { ok: false, reason: "session", pre: 1 };
+        if (op === "pull" && !(opt && opt.v56authPre)) {
+            const x = v62sPreTake(body);
+            if (x)
+                return x;
+        }
+        if (op === "login") {
+            const p = Promise.resolve(__sc62s.apply(this, arguments));
+            V62S.flow = p;
+            try {
+                return await p;
+            }
+            finally {
+                if (V62S.flow === p)
+                    V62S.flow = null;
+            }
+        }
+        let r = await __sc62s.apply(this, arguments);
+        try {
+            if (r && r.ok === false && op !== "login" && v62sTrial() && !(opt && opt.v62sRetry)) {
+                if (r.reason === "kicked" && !r.upd && op !== "beat") {
+                    if (Date.now() - V62S.kickAt > 5000) {
+                        V62S.kickAt = Date.now();
+                        setTimeout(() => { try {
+                            if (!SYNC.kicked)
+                                syncKicked(r.by || null);
+                        }
+                        catch (e) { } }, 0);
+                    }
+                }
+                else if (r.reason === "session" || (op === "beat" && r.reason === "kicked" && r.upd === 1)) {
+                    const ok = await v62sRelogin(r.why || r.reason);
+                    if (ok) {
+                        try {
+                            r = await __sc62s.call(this, op, body, Object.assign({}, opt || {}, { v62sRetry: 1 }));
+                        }
+                        catch (e) { }
+                    }
+                }
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof syncKicked === "function") {
+    const __sk62s = syncKicked;
+    syncKicked = function () { try {
+        V62S.pre = null;
+    }
+    catch (e) { } return __sk62s.apply(this, arguments); };
+}
 try {
     if (typeof v35Restore === "function")
         v35Restore();
