@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="cfa4d182a9b1";
+const BC20_BUILD="5b46fd9c3336";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -14966,6 +14966,165 @@ function v5320Ai1(S) {
         return who + `取り込んだ発注書${S.poNo ? `（${esc(S.poNo)}）` : ""}の内容を読み込みました。` + chk;
     return who + chk;
 }
+const V5316_DOC = { PI: ["見積書（PI）", "Proforma Invoice", "注文内容の確認に使う見積書"], CI: ["請求書（CI）", "Commercial Invoice", "通関で使う正式な請求書"],
+    PL: ["梱包明細（PL）", "Packing List", "何をどの箱に・何kgで詰めたかの明細"], "S/I": ["船積指示書（S/I）", "Shipping Instruction", "物流会社へ渡す船積指示書"] };
+function v5316Cs() { try {
+    return (typeof SHIPS !== "undefined" && SHIPS && SHIPS[SHIPA]) || null;
+}
+catch (e) {
+    return null;
+} }
+function v5316Po(S) { const c = v5316Cs(); return !!((S && S.poNo) || (c && c.po && c.ship === S)); }
+function v5316Key(k) {
+    const s = String(k || "").trim();
+    if (/^PI$|見積送り状|proforma/i.test(s))
+        return "PI";
+    if (/^CI$|インボイス|invoice/i.test(s))
+        return "CI";
+    if (/^PL$|パッキング|packing|梱包明細/i.test(s))
+        return "PL";
+    if (/^S\/I$|船積指示|shipping\s*instruction/i.test(s))
+        return "S/I";
+    return "";
+}
+function v5316Nm(k) { try {
+    return (typeof GL !== "undefined" && GL[k] && typeof tm === "function") ? tm(k) : esc(k);
+}
+catch (e) {
+    return esc(k);
+} }
+function v5316Co(S) {
+    try {
+        const c = v5316Cs();
+        if (!(c && c.po))
+            return false;
+        return (S.docs || []).some(d => /原産地/.test(String((d && d[0]) || ""))) || !!(c.po.research && /原産地証明.{0,12}(必要|要)/.test(String(c.po.research.txt || "")));
+    }
+    catch (e) {
+        return false;
+    }
+}
+function v5316Docs(S) {
+    const po = v5316Po(S);
+    const made = ["PI", "CI", "PL"].concat(po ? ["S/I"] : []).map(k => { const d = (S.docs || []).find(x => x && v5316Key(x[0]) === k), b = V5316_DOC[k]; return [b[0], (d && d[1]) || b[1], (d && d[2]) || b[2]]; });
+    const need = [], proc = [], si = [];
+    (S.docs || []).forEach(x => {
+        if (!x || !x[0])
+            return;
+        const k = v5316Key(x[0]);
+        if (k) {
+            if (k === "S/I" && !po)
+                si.push(x);
+            return;
+        }
+        let kd = "doc";
+        try {
+            if (typeof v54rKind === "function")
+                kd = v54rKind(x[0]);
+        }
+        catch (e) { }
+        (kd === "doc" ? need : proc).push(x);
+    });
+    return { made, need, proc, si, co: v5316Co(S) };
+}
+function v5316Pick(S) {
+    try {
+        if (typeof fwdCaseReqs === "function")
+            for (const r of (fwdCaseReqs(S) || [])) {
+                const L = (r && r.legs) || [];
+                const l = L.find(x => x && x.ok && x.sel && x.cty === S.country) || L.find(x => x && x.ok && x.sel);
+                if (l)
+                    return String(l.sel);
+            }
+    }
+    catch (e) { }
+    const p = String((S && S.pick) || "");
+    if (!p || /^（/.test(p) || ((S && S.quotes) || []).some(q => String((q && q[4]) || "") === "（想定）"))
+        return "";
+    return p;
+}
+function v5316Fwd() { return typeof fwdRequest === "function"; }
+function v5316Req(S) { try {
+    if (typeof fwdCaseReqs === "function") {
+        const L = fwdCaseReqs(S) || [];
+        if (L.length)
+            return L[0];
+    }
+}
+catch (e) { } return null; }
+function v5316Chip(t, ok) { return `<span class="p ${ok ? "hi" : "lo"}" style="display:inline-block;margin-top:5px;font-size:9.5px">${t}</span>`; }
+const V5316_OK = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--good)" stroke-width="2.4" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>';
+const V5316_NG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/></svg>';
+function v5316Ai4(S) {
+    const d = v5316Docs(S), p = v5316Pick(S);
+    const nm = d.made.map(x => x[0]).join("・") + (d.co ? "・原産地証明書（申請用）" : "");
+    const ns = d.need.map(x => esc(x[0]));
+    return (p ? `${esc(p)}で進めます。<br>` : "") +
+        `受注データから、<b>${esc(nm)}の下書き</b>をつくりました。「書類をつくる」で中身を確かめ、直してから使ってください。` +
+        (d.need.length ? `<br>${ns.slice(0, 3).join("・")}${d.need.length > 3 ? " など" : ""}の${d.need.length}点は、発行元への申請・取得が必要です（自動ではつくりません）。` : "") +
+        (d.si.length ? `<br>船積指示書（S/I）は、物流会社の書式で用意してください。` : "");
+}
+function v5316Art4(S) {
+    const d = v5316Docs(S);
+    const card = (nm, e, ds, ok, chip) => `<div style="border:1px solid var(--line);border-radius:var(--r2);padding:8px 10px;background:${ok ? "var(--surface)" : "var(--surface-2)"}">
+    <div class="rw" style="gap:6px;flex-wrap:wrap">${ok ? V5316_OK : V5316_NG}<b style="font-size:11.5px">${nm}</b>${e ? `<span style="font-size:9.5px;color:var(--ink-3)">${esc(e)}</span>` : ""}</div>
+    ${ds ? `<p style="font-size:10.5px;color:var(--ink-2);margin-top:3px">${esc(ds)}</p>` : ""}${v5316Chip(chip, ok)}</div>`;
+    const co = k => d.co && /原産地/.test(String(k));
+    let oth = "";
+    if (d.proc.length) {
+        let h = "販売・出荷の前に必要な手続き（別に進めます）", p = "次は、書類として自動でつくるものではありません。登録・届出・表示などの手続きです。";
+        try {
+            if (typeof V54R_OTHER_H === "string")
+                h = V54R_OTHER_H;
+            if (typeof V54R_OTHER_P === "string")
+                p = V54R_OTHER_P;
+        }
+        catch (e) { }
+        oth = `<div class="v5316oth" style="margin-top:9px;padding:8px 10px;border:1px dashed var(--line);border-radius:var(--r2)"><p style="font-size:11px;font-weight:600">${esc(h)}</p><p class="nn" style="margin-top:3px">${esc(p)}</p>
+      <ul style="margin:5px 0 0 16px;font-size:10.5px;line-height:1.6">${d.proc.map(([k, e, ds]) => `<li><b>${v5316Nm(k)}</b>${e ? ` <span style="color:var(--ink-3)">${esc(e)}</span>` : ""}${ds ? `<br><span class="nn">${esc(ds)}</span>` : ""}</li>`).join("")}</ul></div>`;
+    }
+    return `<div class="v5316docs" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px">` +
+        d.made.map(([nm, e, ds]) => card(esc(nm), e, ds, true, "下書きあり（編集できます）")).join("") +
+        d.need.map(([k, e, ds]) => card(v5316Nm(k), e, ds, false, co(k) ? "申請・取得が必要（下書きは「書類をつくる」に）" : "申請・取得が必要")).join("") +
+        d.si.map(([k, e, ds]) => card(v5316Nm(k), e, ds, false, "物流会社の書式で用意")).join("") + `</div>` + oth;
+}
+function v5316Ai5(S) {
+    const r = v5316Fwd() ? v5316Req(S) : null;
+    if (!v5316Fwd())
+        return `<b>物流会社・通関業者・商工会議所・会計システムとは、つながっていません</b>（自動では送りません）。<br>「書類をつくる」で印刷・PDFにした書類を、それぞれへ送ってください。`;
+    return `<b>通関業者・商工会議所・会計システムとは、つながっていません</b>（自動では送りません）。<br>「書類をつくる」で印刷・PDFにした書類を、それぞれへ送ってください。<br>` +
+        (r ? `物流会社には、AI見積の依頼で貨物情報を共有しています。S/I などの書類は、決めた物流会社へ送ってください。`
+            : `物流会社とは、貿易クラウドの中で貨物情報を共有できます（2段目の「AI見積を依頼」）。`);
+}
+function v5316Art5(S) {
+    const fw = v5316Fwd(), r = fw ? v5316Req(S) : null, hs = String(S.hs || (typeof D !== "undefined" && D && D.hs) || "").trim();
+    const row = (to, what, sub, st, ok) => `<div class="ti ${ok ? "g" : ""}"><b>${to}</b><br><span style="color:var(--ink-2)">${what}</span>${sub ? `<span style="color:var(--ink-2)">${sub}</span>` : ""}<br>${st}</div>`;
+    return `<div class="tl" style="margin-top:2px">` +
+        row("物流会社（フォワーダー）", "S/I・貨物情報（寸法・重量・希望ETD）", "", r ? v5316Chip("AI見積の依頼で共有しています", true) + (r.id ? ` <span class="n" style="font-size:9.5px;color:var(--ink-3)">${esc(r.id)}</span>` : "") : v5316Chip(fw ? "「AI見積を依頼」で共有できます" : "ご自身で送ります", false), !!r) +
+        row("通関業者", "CI・PL", `（${tm("HSコード")} ${esc(hs || "未登録")}）`, v5316Chip("ご自身で送ります", false), false) +
+        row("商工会議所", "原産地証明書の申請（必要なときだけ）", "", v5316Chip("ご自身で申請します", false), false) +
+        row("社内の会計", "売上・入金期日", "", v5316Chip("会計システムには送りません", false) + `<br><span class="nn">この案件は「受注・請求・入金」の一覧にも自動では入りません。</span>`, false) + `</div>`;
+}
+function v5316Ai6(S, air) {
+    return `${air ? "出発" : "出港"}から入金までの<b>予定の目安</b>です。<br>この予定は、どこにも登録していません。日付が決まったら「タスク・進行」に入れておくと、期限が近づいたときに🔔でお知らせします。`;
+}
+function v5316Art6(S) {
+    return `<div class="tl" style="margin-top:2px">${(S.sched || []).map(([w, t, c]) => `<div class="ti ${c || ""}"><time>${w}</time>${T(t)}</div>`).join("")}</div>`;
+}
+function v5316Ai7(S) {
+    return `この画面での手順は、ここまでです。<br>このあと、書類の送付と、必要な申請を進めてください（一覧にまとめました）。この案件の内容は、貿易クラウドに記録として残ります。`;
+}
+function v5316Art7(S) {
+    const d = v5316Docs(S);
+    const li = (t, sub) => `<li style="margin:3px 0;list-style:none"><span aria-hidden="true" style="color:var(--ink-3)">□ </span><span>${t}</span>${sub ? `<span style="color:var(--ink-3)">${sub}</span>` : ""}</li>`;
+    return `<ul class="v5316left" style="margin:2px 0 0;padding:0;font-size:11.5px;line-height:1.7">` +
+        li("書類の中身を確かめて、印刷・PDFにする", "（「書類をつくる」）") +
+        li("物流会社へ S/I・貨物情報を渡して、ブッキングする", "") +
+        li("通関業者へ CI・PL を渡す", "") +
+        (d.need.length ? li("申請・取得が必要な書類を手配する", "（" + d.need.map(x => esc(x[0])).join("・") + "）") : "") +
+        (d.proc.length ? li("販売・出荷の前に必要な手続きを進める", "（" + d.proc.map(x => esc(x[0])).join("・") + "）") : "") +
+        li("入金を確かめる", "") + `</ul>`;
+}
 function shipSteps() {
     const S = D.ship, air = /航空/.test(S.pick);
     return [
@@ -14998,33 +15157,10 @@ function shipSteps() {
      <td class="n" style="color:${q[7] ? "var(--good)" : "var(--crit)"}">${q[7] ? `<b>${q[6]}</b>` : q[6]}</td></tr>`).join("")}
    </tbody></table></div>
    <p style="font-size:10.5px;color:var(--ink-3);margin-top:7px">到着日の色は、希望着荷 ${S.want} に間に合うかどうかで付けています。</p>` } },
-        { t: "船積書類をつくる", ai: `${esc(S.pick)}で進めます。
-   <b>必要な書類${S.docs.length}点を、受注データと${D.cat == "工業部品" ? "材質表" : D.cat == "化粧品" ? "成分表" : "成分表"}からすべて自動でつくりました。</b>転記の作業はありません。`,
-            art: { h: `作成した書類（${S.docs.length}点）`, b: `<div class="g2" style="gap:8px">
-   ${S.docs.map(([k, e, d]) => `<div style="border:1px solid var(--line);border-radius:var(--r2);padding:8px 10px;background:var(--surface)">
-       <div class="rw" style="gap:6px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--good)" stroke-width="2.4"><path d="m20 6-11 11-5-5"/></svg>
-       <b style="font-size:11.5px">${GL[k] ? tm(k) : esc(k)}</b><span style="font-size:9.5px;color:var(--ink-3)">${esc(e)}</span></div>
-       <p style="font-size:10.5px;color:var(--ink-2);margin-top:3px">${esc(d)}</p></div>`).join("")}</div>` } },
-        { t: "データを連携する", ai: `つくった書類を、関係するところへ<b>自動で送りました</b>。ひとつずつメールする必要はありません。`,
-            art: { h: "連携の結果", b: `<div class="tl" style="margin-top:2px">
-   ${S.link.map(([t, d], i) => `<div class="ti g"><time>16:0${i + 3}</time><b>${T(t)}</b><br>
-     <span style="color:var(--ink-2)">${T(d)}</span></div>`).join("")}</div>` } },
-        { t: "予定を登録する", ai: `${air ? "出発" : "出港"}から入金までの予定を、${D.co}さんのスケジュールに登録しました。
-   <b>当日が近づいたら通知でお知らせします。</b>「あれ、いつだっけ」を防げます。`,
-            art: { h: "登録した予定", b: `<div class="tl" style="margin-top:2px">
-   ${S.sched.map(([w, t, c]) => `<div class="ti ${c || ""}"><time>${w}</time>${T(t)}</div>`).join("")}</div>` } },
-        { t: "完了", ai: `これで出荷の手続きは<b>すべて完了</b>です。おつかれさまでした。<br><br>
-   今回のやりとりも全部、貿易クラウドに記録として残ります。
-   <b>次に${S.country}へ同じ商品を送るときは、3分で終わります。</b>`,
-            art: { h: "今回の記録", b: `<div class="g3" style="gap:8px">
-   ${[[S.min, "AIとのやりとりだけで完了", "var(--or)"], ["0通", "自分で書いたメールの数", "var(--good)"],
-                    ["0回", "書類への転記作業", "var(--good)"]]
-                    .map(([v, l, c]) => `<div style="text-align:center;padding:11px;border:1px solid var(--line);border-radius:var(--r2);background:var(--surface)">
-       <div style="font-size:23px;font-weight:300;letter-spacing:-.03em;color:${c}">${v}</div>
-       <div style="font-size:10.5px;color:var(--ink-2);margin-top:2px">${l}</div></div>`).join("")}</div>
-   <p style="font-size:11.5px;color:var(--ink-2);margin-top:10px;line-height:1.75">
-   従来のやり方だと、運送会社3社へのメール・書類の転記・通関業者への送付・証明書の申請で
-   <b>社内外あわせて${S.mails}通のやりとり・${S.days}</b>かかっていた作業です。</p>` } }
+        { t: "船積書類をつくる", ai: v5316Ai4(S), art: { h: "書類（下書き／申請が必要）", b: v5316Art4(S) } },
+        { t: "書類を送る", ai: v5316Ai5(S), art: { h: "送る先と送るもの（ご自身で送ります）", b: v5316Art5(S) } },
+        { t: "予定を確かめる", ai: v5316Ai6(S, air), art: { h: "予定の目安（登録はしていません）", b: v5316Art6(S) } },
+        { t: "完了", ai: v5316Ai7(S), art: { h: "残っていること", b: v5316Art7(S) } }
     ];
 }
 function shipEnsure() {
@@ -15638,9 +15774,9 @@ function shipStepDigest(i, S) {
         `${esc(shipShort(S.buyer))}（${esc(S.country)}）／${esc(S.qty)}／単価 ${esc(S.unitPrice)}・合計 ${esc(S.total)}／${esc(S.term)}／${esc(S.pay || "T/T 30日")}／着荷 ${esc(S.want)}${ex ? "／" + esc(ex) : ""}`,
         `${esc(S.pol || "神戸港")} → ${esc(S.pod || S.country)}／<b>貿易クラウド内の物流会社にAI見積</b>${typeof fwdInlineHtml === "function" ? "（下の「AI見積を依頼」から）" : ""}`,
         `届いた見積を金額・日数・実績で比較して1社を選定`,
-        `PI・CI・PLを自動作成（「貿易実務・書類・出荷」で確認できます）`,
-        `通関業者・銀行・保険会社へデータを連携`,
-        `出荷予定を登録し、バイヤーと共有`,
+        `PI・CI・PLの下書きをつくる（「書類をつくる」で確かめて直せます）`,
+        `つくった書類を物流会社・通関業者へ送る（自動では送りません）`,
+        `出港から入金までの予定の目安（どこにも登録しません）`,
         `完了`
     ][i] || "";
 }
@@ -15789,7 +15925,7 @@ function vShipBody() {
        <button class="btn g" onclick="openAskAI()">🤖 AIに聞いてみる</button></div></div>`;
     shipEnsure();
     const S = D.ship, ST = shipSteps();
-    return `<p class="nn" style="margin:-2px 0 10px">受注が決まったあとの手続きを、<b>AI商社マンと会話するだけ</b>で進めます。物流会社へのAI見積（相見積・推奨）、書類づくり、関係先への連携まで。複数の相手先は<b>案件タブ（最大4件）</b>で並行できます。</p>
+    return `<p class="nn" style="margin:-2px 0 10px">受注が決まったあとの手続きを、<b>AI商社マンと会話するだけ</b>で進めます。物流会社へのAI見積（相見積・推奨）と、書類の下書きまで。関係先へは、つくった書類をご自身で送ります。複数の相手先は<b>案件タブ（最大4件）</b>で並行できます。</p>
   <div class="c" style="margin-bottom:11px;padding:9px 13px">
     <div class="rw" style="gap:6px;flex-wrap:wrap;align-items:center">
       <span class="lbl" style="margin:0 4px 0 0">案件</span>
@@ -66806,6 +66942,55 @@ if (typeof deckBind === "function") {
                     "<b>What changed from the current version</b><br>The current Trade Cloud can <b>store</b> documents but cannot <b>create</b> them. This version can make <b>drafts of the quotation, invoice and packing list</b> from your product master and the order details (certificates of origin and similar documents must be applied for and obtained from the issuer).",
                     "<b>与现行版的区别</b><br>现行的贸易云可以<b>保管</b>单证，但不能<b>制作</b>。本版可根据商品主数据和订单内容，制作<b>报价单・发票・装箱单的草稿</b>（原产地证明书等需向签发机构申请・取得）。",
                     "<b>Diferencia con la versión actual</b><br>La Trade Cloud actual puede <b>guardar</b> documentos, pero no <b>crearlos</b>. Esta versión crea <b>borradores de la cotización, la factura y la lista de empaque</b> a partir del maestro de productos y los datos del pedido (los certificados de origen y similares deben solicitarse al emisor)."]
+            ]);
+    }
+    catch (e) { }
+})();
+(function () {
+    try {
+        if (typeof v30I18n === "function")
+            v30I18n([
+                ["書類を送る", "Send the documents", "发送单证", "Enviar los documentos"],
+                ["予定を確かめる", "Check the schedule", "确认日程", "Revisar el calendario"],
+                ["書類（下書き／申請が必要）", "Documents (drafts / to apply for)", "单证（草稿／需申请）", "Documentos (borradores / por solicitar)"],
+                ["下書きあり（編集できます）", "Draft ready (editable)", "已有草稿（可编辑）", "Borrador listo (editable)"],
+                ["申請・取得が必要", "Must be applied for and obtained", "需申请・取得", "Hay que solicitarlo y obtenerlo"],
+                ["申請・取得が必要（下書きは「書類をつくる」に）", "Must be applied for (draft in “Create documents”)", "需申请・取得（草稿见“制作单证”）", "Hay que solicitarlo (borrador en «Crear documentos»)"],
+                ["物流会社の書式で用意", "Prepare it in the forwarder’s format", "按物流公司的格式准备", "Prepárelo con el formato del transitario"],
+                ["送る先と送るもの（ご自身で送ります）", "Where to send what (you send it yourself)", "发送对象与内容（需自行发送）", "A quién enviar qué (lo envía usted)"],
+                ["物流会社（フォワーダー）", "Forwarder", "物流公司（货代）", "Transitario"],
+                ["S/I・貨物情報（寸法・重量・希望ETD）", "S/I and cargo details (size, weight, requested ETD)", "S/I・货物信息（尺寸・重量・希望ETD）", "S/I y datos de la carga (medidas, peso, ETD deseada)"],
+                ["AI見積の依頼で共有しています", "Shared through your AI quote request", "已通过AI报价申请共享", "Compartido con su solicitud de cotización IA"],
+                ["「AI見積を依頼」で共有できます", "You can share it with “Request AI quote”", "可通过“申请AI报价”共享", "Puede compartirlo con «Pedir cotización IA»"],
+                ["ご自身で送ります", "You send it yourself", "需自行发送", "Lo envía usted"],
+                ["通関業者", "Customs broker", "报关行", "Agente de aduanas"],
+                ["CI・PL", "CI and PL", "CI・PL", "CI y PL"],
+                ["商工会議所", "Chamber of commerce", "商工会议所", "Cámara de comercio"],
+                ["原産地証明書の申請（必要なときだけ）", "Certificate of origin application (only when required)", "原产地证明书申请（仅在需要时）", "Solicitud del certificado de origen (solo si se exige)"],
+                ["ご自身で申請します", "You apply yourself", "需自行申请", "Lo solicita usted"],
+                ["社内の会計", "Your accounting", "公司内部会计", "Su contabilidad"],
+                ["売上・入金期日", "Sales and payment due date", "销售额・收款期限", "Ventas y fecha de cobro"],
+                ["会計システムには送りません", "Not sent to an accounting system", "不发送到会计系统", "No se envía a un sistema contable"],
+                ["この案件は「受注・請求・入金」の一覧にも自動では入りません。", "This case is not added to “Orders, invoices & payments” automatically either.", "此案件也不会自动加入“订单・请款・收款”一览。", "Este caso tampoco se añade automáticamente a «Pedidos, facturas y cobros»."],
+                ["予定の目安（登録はしていません）", "Estimated schedule (not registered anywhere)", "预计日程（未登记）", "Calendario estimado (no se ha registrado)"],
+                ["残っていること", "What is left to do", "剩余事项", "Lo que queda por hacer"],
+                ["書類の中身を確かめて、印刷・PDFにする", "Check the documents and print them or save as PDF", "确认单证内容并打印或保存为PDF", "Revise los documentos e imprímalos o guárdelos en PDF"],
+                ["（「書類をつくる」）", "(“Create documents”)", "（“制作单证”）", "(«Crear documentos»)"],
+                ["物流会社へ S/I・貨物情報を渡して、ブッキングする", "Give the S/I and cargo details to the forwarder and book", "将S/I和货物信息交给物流公司并订舱", "Entregue la S/I y los datos de la carga al transitario y reserve"],
+                ["通関業者へ CI・PL を渡す", "Give the CI and PL to the customs broker", "将CI・PL交给报关行", "Entregue la CI y la PL al agente de aduanas"],
+                ["申請・取得が必要な書類を手配する", "Arrange the documents you must apply for", "办理需申请・取得的单证", "Tramite los documentos que hay que solicitar"],
+                ["販売・出荷の前に必要な手続きを進める", "Complete the procedures required before selling and shipping", "办理销售・出货前所需的手续", "Complete los trámites previos a la venta y el envío"],
+                ["入金を確かめる", "Confirm the payment", "确认收款", "Confirme el cobro"],
+                ["PI・CI・PLの下書きをつくる（「書類をつくる」で確かめて直せます）", "Draft the PI, CI and PL (check and edit them in “Create documents”)", "制作PI・CI・PL草稿（可在“制作单证”中确认和修改）", "Crear borradores de PI, CI y PL (revíselos y edítelos en «Crear documentos»)"],
+                ["つくった書類を物流会社・通関業者へ送る（自動では送りません）", "Send the documents to the forwarder and customs broker (not sent automatically)", "将制作的单证发送给物流公司・报关行（不会自动发送）", "Enviar los documentos al transitario y al agente de aduanas (no se envían automáticamente)"],
+                ["出港から入金までの予定の目安（どこにも登録しません）", "Estimated schedule from departure to payment (not registered anywhere)", "从出港到收款的预计日程（不登记到任何地方）", "Calendario estimado desde la salida hasta el cobro (no se registra)"]
+            ]);
+        if (typeof v30I18nEl === "function")
+            v30I18nEl([
+                ["受注が決まったあとの手続きを、<b>AI商社マンと会話するだけ</b>で進めます。物流会社へのAI見積（相見積・推奨）と、書類の下書きまで。関係先へは、つくった書類をご自身で送ります。複数の相手先は<b>案件タブ（最大4件）</b>で並行できます。",
+                    "Handle the steps after the order <b>just by talking with the AI Trade Agent</b>: AI freight quotes (comparison and recommendation) and draft documents. You send the documents to your partners yourself. Run several buyers in parallel with <b>case tabs (up to 4)</b>.",
+                    "订单确定后的手续<b>只需与AI商社专员对话</b>即可推进：向物流公司AI询价（比价・推荐）和单证草稿。单证需由您自行发送给相关方。多个对象可通过<b>案件标签（最多4个）</b>并行处理。",
+                    "Gestiona los trámites posteriores al pedido <b>solo conversando con el agente IA</b>: cotizaciones de flete IA (comparación y recomendación) y borradores de documentos. Los documentos los envía usted a cada destinatario. Lleva varios compradores en paralelo con <b>pestañas de caso (hasta 4)</b>."]
             ]);
     }
     catch (e) { }
