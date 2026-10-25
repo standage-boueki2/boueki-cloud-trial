@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="e0897429138f";
+const BC20_BUILD="fc4ab7b7071f";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -121197,6 +121197,547 @@ if (typeof syncKicked === "function") {
         V62S.pre = null;
     }
     catch (e) { } return __sk62s.apply(this, arguments); };
+}
+const V63A_TAG = "@air";
+const V63A = { at: 0, busy: null, last: null, old: 0, toastAt: {}, adm: null, admAt: 0, admBusy: null, admErr: "" };
+const V63A_PROVS = ["openai", "gemini", "anthropic", "perplexity"];
+const V63A_HOST = [["api.openai.com", "openai"], ["api.anthropic.com", "anthropic"], ["generativelanguage.googleapis.com", "gemini"], ["api.perplexity.ai", "perplexity"]];
+const V63A_MSG = {
+    on: { ja: "STANDAGE の AI につながりました（AI への依頼は同期サーバーを通します）", en: "Connected to STANDAGE AI (requests go through the sync server).", zh: "已连接 STANDAGE 的 AI（请求经由同步服务器）。", es: "Conectado a la IA de STANDAGE (las solicitudes pasan por el servidor de sincronización)." },
+    off: { ja: "STANDAGE の AI 接続が止まりました。内蔵エンジンで答えます", en: "STANDAGE AI connection has been turned off. The built-in engine will answer.", zh: "STANDAGE 的 AI 连接已停止。将由内置引擎回答。", es: "La conexión con la IA de STANDAGE se ha desactivado. Responderá el motor integrado." },
+    net: { ja: "接続不可：同期サーバーにつながりませんでした（ネットワークを確かめてください）", en: "Could not reach the sync server (please check the network).", zh: "无法连接同步服务器（请检查网络）。", es: "No se pudo conectar con el servidor de sincronización (revise la red)." }
+};
+function v63aLang() { try {
+    return (typeof I18N !== "undefined" && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v63aT(k) { const m = V63A_MSG[k] || {}; return m[v63aLang()] || m.ja || ""; }
+function v63aToast(k) { try {
+    const t = V63A.toastAt[k] || 0;
+    if (Date.now() - t < 60000)
+        return;
+    V63A.toastAt[k] = Date.now();
+    if (typeof toast === "function")
+        toast(v63aT(k));
+}
+catch (e) { } }
+function v63aE(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v63aCust() { try {
+    return typeof SES !== "undefined" && !!SES && SES.t === "trial" && typeof SYNC !== "undefined" && !!SYNC && !!SYNC.on && !!SYNC.kid && !SYNC.kicked;
+}
+catch (e) {
+    return false;
+} }
+function v63aIsOn() { try {
+    return localStorage.getItem("bc20_llm_air") === "1";
+}
+catch (e) {
+    return false;
+} }
+function v63aLlm() { try {
+    return JSON.parse(localStorage.getItem("bc20_llm_v1") || "null");
+}
+catch (e) {
+    return null;
+} }
+function v63aApply(r) {
+    const LS = localStorage, was = v63aIsOn();
+    try {
+        if (!was) {
+            if (LS.getItem("bc20_llm_shared") === "1") {
+                let bk = null;
+                try {
+                    bk = JSON.parse(LS.getItem("bc20_llm_backup") || "null");
+                }
+                catch (e) { }
+                if (bk && bk.llm) {
+                    LS.setItem("bc20_llm_v1", bk.llm);
+                    if (bk.plan)
+                        LS.setItem("bc20_plan_v1", bk.plan);
+                }
+                else {
+                    const L0 = v63aLlm() || {};
+                    L0.on = false;
+                    L0.keys = {};
+                    L0.act = {};
+                    LS.setItem("bc20_llm_v1", JSON.stringify(L0));
+                }
+                LS.removeItem("bc20_llm_shared");
+                LS.removeItem("bc20_llm_backup");
+            }
+            LS.setItem("bc20_llm_airbk", JSON.stringify({ llm: LS.getItem("bc20_llm_v1") || "", plan: LS.getItem("bc20_plan_v1") || "" }));
+        }
+        const provs = (r.provs || []).filter(p => V63A_PROVS.includes(p) && typeof PROV !== "undefined" && PROV[p]);
+        if (!provs.length)
+            return v63aOff("nokey", 1);
+        const before = (typeof llmSig === "function") ? llmSig() : "";
+        const keys = {}, act = {}, models = {};
+        provs.forEach(p => { keys[p] = V63A_TAG; act[p] = true; const m = String((r.models || {})[p] || ""); if (m)
+            models[p] = m; });
+        LLM.on = true;
+        LLM.prov = provs[0];
+        LLM.keys = keys;
+        LLM.act = act;
+        LLM.models = models;
+        LLM.eps = {};
+        LLM.route = r.route !== 0;
+        LS.setItem("bc20_llm_v1", JSON.stringify(LLM));
+        LS.setItem("bc20_llm_air", "1");
+        if (r.plan && typeof PLANS !== "undefined" && PLANS[r.plan]) {
+            USERPLAN = r.plan;
+            LS.setItem("bc20_plan_v1", r.plan);
+        }
+        if (!was)
+            v63aToast("on");
+        if (((typeof llmSig === "function") ? llmSig() : "") !== before && typeof render === "function")
+            render();
+    }
+    catch (e) { }
+}
+function v63aOff(why, quiet) {
+    if (!v63aIsOn())
+        return;
+    const LS = localStorage;
+    try {
+        let bk = null;
+        try {
+            bk = JSON.parse(LS.getItem("bc20_llm_airbk") || "null");
+        }
+        catch (e) { }
+        if (bk && bk.llm) {
+            LS.setItem("bc20_llm_v1", bk.llm);
+            if (bk.plan)
+                LS.setItem("bc20_plan_v1", bk.plan);
+            else
+                LS.removeItem("bc20_plan_v1");
+        }
+        else {
+            const L0 = v63aLlm() || {};
+            L0.on = false;
+            L0.keys = {};
+            L0.act = {};
+            LS.setItem("bc20_llm_v1", JSON.stringify(L0));
+        }
+        LS.removeItem("bc20_llm_air");
+        LS.removeItem("bc20_llm_airbk");
+    }
+    catch (e) { }
+    try {
+        if (typeof llmReload === "function")
+            llmReload();
+    }
+    catch (e) { }
+    if (!quiet)
+        v63aToast("off");
+    try {
+        if (typeof render === "function" && typeof SES !== "undefined" && SES && SES.t === "trial")
+            render();
+    }
+    catch (e) { }
+}
+async function v63aPull(force) {
+    if (V63A.old || !v63aCust())
+        return null;
+    if (!force && Date.now() - V63A.at < 110000)
+        return null;
+    if (V63A.busy)
+        return V63A.busy;
+    V63A.at = Date.now();
+    V63A.busy = (async () => {
+        try {
+            const r = await syncCall("air_me", { kid: SYNC.kid, dev: (typeof syncDev === "function") ? syncDev() : {} }, { timeout: 20000 });
+            if (!r || r.ok !== true)
+                return r;
+            V63A.last = r;
+            if (r.on && Array.isArray(r.provs) && r.provs.length)
+                v63aApply(r);
+            else
+                v63aOff(r.why || "off");
+            return r;
+        }
+        catch (e) {
+            if (/unknown op/i.test(String(e && e.message || e)))
+                V63A.old = 1;
+            return null;
+        }
+        finally {
+            setTimeout(() => { V63A.busy = null; }, 0);
+        }
+    })();
+    return V63A.busy;
+}
+function v63aHv(h, k) { try {
+    if (!h)
+        return "";
+    if (typeof h.get === "function")
+        return String(h.get(k) || "");
+    const kk = Object.keys(h).find(x => x.toLowerCase() === k);
+    return kk ? String(h[kk]) : "";
+}
+catch (e) {
+    return "";
+} }
+function v63aResp(code, msg) { return new Response(JSON.stringify({ error: { message: String(msg || ""), type: "bc20_air" } }), { status: code, headers: { "Content-Type": "application/json" } }); }
+async function v63aRelay(url, init) {
+    const hit = V63A_HOST.find(([h]) => { try {
+        return new URL(url).hostname === h;
+    }
+    catch (e) {
+        return false;
+    } });
+    if (!hit)
+        return v63aResp(400, "AI への依頼の行き先が正しくありません");
+    const prov = hit[1];
+    let path = "";
+    if (prov === "gemini") {
+        const m = /\/v1beta(\/models\/[^?#]+)/.exec(url);
+        try {
+            path = m ? decodeURIComponent(m[1]) : "";
+        }
+        catch (e) {
+            path = "";
+        }
+    }
+    let body = null;
+    try {
+        body = JSON.parse(String(init && init.body || ""));
+    }
+    catch (e) {
+        body = null;
+    }
+    if (!body || typeof body !== "object")
+        return v63aResp(400, "AI への依頼の形が正しくありません");
+    if (!v63aCust()) {
+        v63aOff("nocust", 1);
+        return v63aResp(403, v63aT("off"));
+    }
+    let r = null;
+    try {
+        r = await syncCall("ai_relay", { kid: SYNC.kid, dev: (typeof syncDev === "function") ? syncDev() : {}, prov, path, body }, { timeout: 200000 });
+    }
+    catch (e) {
+        if (/unknown op/i.test(String(e && e.message || e))) {
+            V63A.old = 1;
+            v63aOff("old", 1);
+            return v63aResp(403, v63aT("off"));
+        }
+        throw new TypeError("Failed to fetch");
+    }
+    if (r && r.ok)
+        return new Response(String(r.body == null ? "" : r.body), { status: +r.status || 200, headers: { "Content-Type": "application/json" } });
+    const why = String((r && r.reason) || "");
+    if (/^air_(off|stop|nokey)$/.test(why) || why === "inactive")
+        v63aOff(why);
+    return v63aResp(/^(air_cap|air_all|rate)$/.test(why) ? 429 : 403, (r && r.msg) || v63aT("off"));
+}
+(function () {
+    if (typeof window === "undefined" || typeof window.fetch !== "function" || window.__v63aFetch)
+        return;
+    window.__v63aFetch = 1;
+    const of = window.fetch;
+    const isSync = (u) => { try {
+        const s = (typeof SYNC !== "undefined" && SYNC && SYNC.url) || "";
+        return !!s && String((u && u.url) || u) === s;
+    }
+    catch (e) {
+        return false;
+    } };
+    window.fetch = async function (u, init) {
+        try {
+            const H = init && init.headers;
+            if (H && (v63aHv(H, "authorization") === "Bearer " + V63A_TAG || v63aHv(H, "x-api-key") === V63A_TAG || v63aHv(H, "x-goog-api-key") === V63A_TAG))
+                return await v63aRelay(String((u && u.url) || u || ""), init);
+            if (isSync(u) && init && typeof init.body === "string" && /^\{"op":"(ai_relay|air_me)"/.test(init.body) && !/"stok":"/.test(init.body)) {
+                const km = /"kid":"([0-9a-f]{20,64})"/.exec(init.body), kid = km ? km[1] : "";
+                if (typeof V62S !== "undefined" && V62S && !V62S.st && V62S.flow && typeof SYNC !== "undefined" && SYNC && kid === SYNC.kid)
+                    await Promise.race([V62S.flow.catch(() => { }), new Promise(r => setTimeout(r, 15000))]);
+                if (typeof V62S !== "undefined" && V62S && V62S.st && kid && kid === V62S.kid) {
+                    const add = JSON.stringify({ stok: V62S.st });
+                    init = Object.assign({}, init, { body: "{" + add.slice(1, -1) + "," + init.body.slice(1) });
+                    return of.call(this, u, init);
+                }
+            }
+        }
+        catch (e) {
+            if (e instanceof TypeError)
+                throw e;
+        }
+        return of.apply(this, arguments);
+    };
+})();
+if (typeof syncStart === "function") {
+    const __ss63a = syncStart;
+    syncStart = async function () { const r = await __ss63a.apply(this, arguments); try {
+        if (r && r.ok && !r.skip)
+            setTimeout(() => { v63aPull(true); }, 0);
+    }
+    catch (e) { } return r; };
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden)
+    v63aPull(false); });
+setInterval(() => { if (!document.hidden)
+    v63aPull(false); }, 120000);
+if (typeof llmSharePull === "function") {
+    const __lsp63a = llmSharePull;
+    llmSharePull = async function () {
+        if (v63aIsOn() && !V63A.old)
+            return;
+        const r = await __lsp63a.apply(this, arguments);
+        try {
+            if (v63aIsOn() && V63A.last && V63A.last.on && !Object.values(LLM.keys || {}).includes(V63A_TAG))
+                v63aApply(V63A.last);
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof v54sClearLs === "function") {
+    const __cl63a = v54sClearLs;
+    v54sClearLs = function () { try {
+        v63aOff("logout", 1);
+    }
+    catch (e) { } return __cl63a.apply(this, arguments); };
+}
+function v63aPw() { try {
+    return (typeof v42AdmCred === "function" && v42AdmCred()) || (SES && SES.apw) || "";
+}
+catch (e) {
+    return "";
+} }
+function v63aMaster() { try {
+    return typeof SES !== "undefined" && !!SES && SES.t === "admin" && !(SES.v57 && SES.v57.role === "co") && /^tk:/.test(String(v63aPw())) && typeof syncOn === "function" && syncOn();
+}
+catch (e) {
+    return false;
+} }
+function v63aReady() { const k = V63A.adm && V63A.adm.keys; return !!k && Object.keys(k).some(p => k[p] && k[p].set); }
+function v63aNm(p) { try {
+    return (PROV[p] && PROV[p].short) || p;
+}
+catch (e) {
+    return p;
+} }
+function v63aDt(t) { if (!t)
+    return ""; const d = new Date(+t); const z = (n) => String(n).padStart(2, "0"); return (d.getMonth() + 1) + "/" + d.getDate() + " " + z(d.getHours()) + ":" + z(d.getMinutes()); }
+async function v63aCall(op, b) { const r = await syncCall(op, Object.assign({ pw: v63aPw() }, b || {}), { timeout: 30000 }); if (r && r.ok === false && (r.relogin || r.reason === "token" || r.reason === "mfa"))
+    V63A.admErr = r.msg || "マスターの管理者としてログインし直してください"; return r; }
+async function v63aLoad(force) {
+    if (!v63aMaster() || V63A.old)
+        return null;
+    if (!force && V63A.adm && Date.now() - V63A.admAt < 30000)
+        return V63A.adm;
+    if (V63A.admBusy)
+        return V63A.admBusy;
+    V63A.admBusy = (async () => {
+        try {
+            const r = await v63aCall("air_get");
+            if (r && r.ok) {
+                V63A.adm = r;
+                V63A.admAt = Date.now();
+                V63A.admErr = "";
+            }
+            else if (r && !V63A.admErr)
+                V63A.admErr = r.msg || "読めませんでした";
+            return r;
+        }
+        catch (e) {
+            if (/unknown op/i.test(String(e && e.message || e)))
+                V63A.old = 1;
+            else
+                V63A.admErr = "同期サーバーにつながりませんでした";
+            return null;
+        }
+        finally {
+            setTimeout(() => { V63A.admBusy = null; }, 0);
+        }
+    })();
+    return V63A.admBusy;
+}
+function v63aCardHtml() {
+    const R = V63A.adm, C = (R && R.conf) || {}, K = (R && R.keys) || {}, T = (R && R.today) || {};
+    const keys = V63A_PROVS.map(p => { const k = K[p] || {}; return `<span class="p ${k.set ? "on" : "lo"}" style="font-size:10.5px">${v63aE(v63aNm(p))}：${k.set ? v63aE(k.tail) + (k.at ? "（" + v63aE(v63aDt(k.at)) + "）" : "") : "未"}</span>`; }).join(" ");
+    const accts = ((R && R.accts) || []).filter(a => a && a.kid);
+    const live = (a) => a.st === "active" && !(a.expires && a.expires < Date.now());
+    const rows = accts.map(a => {
+        const lim = a.cap > 0 ? a.cap : (+C.capAcct || 0);
+        const tag = (a.pub ? ' <span class="p hi" style="font-size:8.5px">共通</span>' : "") + (a.demo && !a.pub ? ' <span class="p hi" style="font-size:8.5px">デモ</span>' : "") + (a.role === "fwd" ? ' <span class="p on" style="font-size:8.5px">🚚 物流</span>' : "");
+        return `<tr data-v63a="${v63aE(a.kid)}"><td><input type="checkbox" data-v63aon="${v63aE(a.kid)}" ${a.on ? "checked" : ""} style="accent-color:var(--or);width:16px;height:16px" aria-label="${v63aE(a.code)} の AI 接続"></td>
+      <td><span class="acode">${v63aE(a.code)}</span>${tag}</td><td>${v63aE(a.co)}</td>
+      <td>${live(a) ? '<span class="p on">有効</span>' : '<span class="p lo">' + (a.st === "active" ? "期限切れ" : "停止") + '</span>'}${a.src === "def" ? ' <span class="nn" style="font-size:10px">（新規の既定）</span>' : ""}</td>
+      <td style="white-space:nowrap">${+a.used || 0} / ${lim || "上限なし"}</td>
+      <td><input class="sel" type="number" min="0" step="10" data-v63acap="${v63aE(a.kid)}" value="${a.cap > 0 ? a.cap : ""}" placeholder="既定" style="width:84px;min-height:30px;padding:4px 6px;font-size:12px" aria-label="${v63aE(a.code)} の1日の上限"></td></tr>`;
+    }).join("");
+    const err = V63A.admErr ? `<p class="nn" style="color:var(--crit)">${v63aE(V63A.admErr)}</p>` : "";
+    return `<div class="c" id="v63air" style="margin-bottom:11px"><h3>🛰 AI 接続（お客様の PC・サーバー経由） <span class="nt">この版で新規</span></h3>
+    <p class="nn">STANDAGE の AI のキーは同期サーバーだけが持ち、お客様の PC には配りません。お客様の PC の AI商社マン・AI物流マンは、同期サーバーを通して AI に頼みます。下の一覧で、アカウントごとに遠隔で ON/OFF できます（OFF は次の質問からすぐ効きます）。</p>${err}
+    ${R ? `<div class="rw" style="gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px">
+      <span>全体：${C.stop ? '<span class="p lo">止めている</span>' : '<span class="p on">動いている</span>'}</span>
+      <button class="btn ${C.stop ? "" : "g"}" type="button" id="v63astop">${C.stop ? "再開する" : "全体を止める"}</button>
+      <label style="display:flex;gap:6px;align-items:center;font-size:12px"><input type="checkbox" id="v63adef" ${C.def ? "checked" : ""} style="accent-color:var(--or)"> 新しく発行するアカウントは最初から ON</label></div>
+    <div class="rw" style="gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:12px">1日の上限：1アカウント <input class="sel" type="number" min="0" id="v63acapa" value="${+C.capAcct || 0}" style="width:90px;min-height:30px;padding:4px 6px"> 回・全体 <input class="sel" type="number" min="0" id="v63acapall" value="${+C.capAll || 0}" style="width:100px;min-height:30px;padding:4px 6px"> 回 <button class="btn g" type="button" id="v63acapsave">上限を保存</button>
+      <span class="nn">今日：${+T.all || 0} 回（入力 ${+T.tin || 0}・出力 ${+T.tout || 0} トークン）</span></div>
+    <div style="margin-top:10px;font-size:12px">預けているキー：${keys}</div>
+    <div class="rw" style="gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn" type="button" id="v63adep">この PC の AI エンジン設定のキーを預ける</button><button class="btn g" type="button" id="v63adel">預けたキーを消す</button></div>
+    <p class="nn" style="margin-top:4px">キーを替えるときは、AI 各社の画面で新しいキーを作り、下の「AIエンジン設定」に入れて「保存」してから「預ける」を押します。古いキーは AI 各社の画面で消してください（AI 各社の画面で月の利用額の上限も付けてください）。${v63aReady() ? "キーを預けたので、前の「AI接続の共有（キーを端末に配る）」は使いません。" : ""}</p>
+    <div class="rw" style="gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn g" type="button" id="v63aallon">有効なアカウントを全部 ON</button><button class="btn g" type="button" id="v63aalloff">全部 OFF</button></div>
+    <div class="tw" style="max-height:none;margin-top:8px"><table><thead><tr><th>ON</th><th>アカウント</th><th>会社</th><th>状態</th><th>今日／上限</th><th>上限（1日）</th></tr></thead><tbody>
+    ${rows || '<tr><td colspan="6" style="text-align:center;color:var(--ink-3);padding:12px">アカウントがありません</td></tr>'}</tbody></table></div>` : (V63A.old ? '<p class="nn">同期サーバーが古い版のため使えません（v2.26 から）。</p>' : '<p class="nn">読み込んでいます…</p>')}</div>`;
+}
+function v63aOldHide() {
+    const hide = v63aReady();
+    try {
+        const c = document.getElementById("admshare");
+        if (c)
+            c.style.display = hide ? "none" : "";
+    }
+    catch (e) { }
+    try {
+        document.querySelectorAll("th[data-llscol]").forEach(th => { th.style.display = hide ? "none" : ""; });
+        document.querySelectorAll("[data-llsb]").forEach(b => { const td = b.closest("td"); if (td)
+            td.style.display = hide ? "none" : ""; });
+    }
+    catch (e) { }
+    try {
+        if (typeof UX32_ADM !== "undefined" && Array.isArray(UX32_ADM)) {
+            const g = UX32_ADM.find(x => x && x[0] === "AI");
+            if (g && Array.isArray(g[1])) {
+                const L = g[1];
+                if (!L.some(x => x[0] === "AI 接続（サーバー経由）"))
+                    L.splice(1, 0, ["AI 接続（サーバー経由）", /お客様の PC・サーバー経由/]);
+                const i = L.findIndex(x => x[0] === "AI接続の共有");
+                if (i >= 0)
+                    L[i] = ["AI接続の共有", hide ? /(?!)/ : /AI接続の共有/];
+            }
+            if (typeof ux32AdmNav === "function")
+                ux32AdmNav();
+        }
+    }
+    catch (e) { }
+}
+function v63aPaint() {
+    if (!v63aMaster())
+        return;
+    const old = document.getElementById("v63air"), anchor = document.getElementById("admshare") || document.getElementById("accounts") || document.getElementById("admtok");
+    if (!old && !anchor)
+        return;
+    const tmp = document.createElement("div");
+    tmp.innerHTML = v63aCardHtml();
+    const card = tmp.firstElementChild;
+    if (old)
+        old.replaceWith(card);
+    else
+        anchor.before(card);
+    v63aBind(card);
+    v63aOldHide();
+}
+async function v63aDo(btn, fn) { if (btn)
+    btn.disabled = true; try {
+    const r = await fn();
+    if (r && r.ok === false) {
+        if (typeof toast === "function")
+            toast("できませんでした：" + String(r.msg || r.reason || "").slice(0, 80));
+    }
+    else {
+        await v63aLoad(true);
+    }
+}
+catch (e) {
+    if (typeof toast === "function")
+        toast("できませんでした：" + String(e && e.message || e).slice(0, 60));
+} if (btn)
+    btn.disabled = false; v63aPaint(); }
+function v63aBind(card) {
+    const q = (s) => card.querySelector(s), C = (V63A.adm && V63A.adm.conf) || {};
+    card.querySelectorAll("[data-v63aon]").forEach(cb => cb.onchange = () => v63aDo(cb, () => v63aCall("air_set", { kids: [cb.dataset.v63aon], on: cb.checked ? 1 : 0 })));
+    card.querySelectorAll("[data-v63acap]").forEach(i => i.onchange = () => v63aDo(i, () => v63aCall("air_set", { kids: [i.dataset.v63acap], cap: i.value === "" ? 0 : Math.max(0, Math.floor(+i.value || 0)) })));
+    const st = q("#v63astop");
+    if (st)
+        st.onclick = () => { const stop = !C.stop; if (stop && !confirm("お客様の PC すべてで、STANDAGE の AI 接続を止めます（内蔵エンジンで答えるようになります）。よろしいですか？"))
+            return; v63aDo(st, () => v63aCall("air_conf", { stop: stop ? 1 : 0 })); };
+    const df = q("#v63adef");
+    if (df)
+        df.onchange = () => v63aDo(df, () => v63aCall("air_conf", { def: df.checked ? 1 : 0 }));
+    const cs = q("#v63acapsave");
+    if (cs)
+        cs.onclick = () => v63aDo(cs, () => v63aCall("air_conf", { capAcct: Math.max(0, Math.floor(+q("#v63acapa").value || 0)), capAll: Math.max(0, Math.floor(+q("#v63acapall").value || 0)) }));
+    const bulk = (on) => {
+        const A = ((V63A.adm && V63A.adm.accts) || []).filter(a => a && (!on || (a.st === "active" && !(a.expires && a.expires < Date.now())))).map(a => a.kid);
+        if (!A.length)
+            return;
+        if (!confirm((on ? "有効なアカウント " + A.length + " 件の AI 接続を ON にします" : "アカウント " + A.length + " 件の AI 接続を OFF にします") + "。よろしいですか？"))
+            return;
+        v63aDo(q(on ? "#v63aallon" : "#v63aalloff"), () => v63aCall("air_set", { kids: A, on: on ? 1 : 0 }));
+    };
+    const ao = q("#v63aallon");
+    if (ao)
+        ao.onclick = () => bulk(true);
+    const af = q("#v63aalloff");
+    if (af)
+        af.onclick = () => bulk(false);
+    const dp = q("#v63adep");
+    if (dp)
+        dp.onclick = () => {
+            let act = [];
+            try {
+                act = llmActive();
+            }
+            catch (e) { }
+            const K = {};
+            act.forEach(p => { const v = (LLM.keys[p] || "").trim(); let bad = ""; try {
+                bad = (typeof v531Hard === "function") ? v531Hard(v) : "";
+            }
+            catch (e) { } if (v && !bad && v !== V63A_TAG)
+                K[p] = v; });
+            const ps = Object.keys(K);
+            if (!ps.length) {
+                if (typeof toast === "function")
+                    toast("この PC の AI エンジン設定にキーがありません。下の「AIエンジン設定」でキーを入れて「保存」してください");
+                return;
+            }
+            if (!confirm("この PC の AI エンジン設定のキー（" + ps.map(v63aNm).join("・") + "）を同期サーバーに預けます。お客様の PC には配りません。よろしいですか？"))
+                return;
+            const models = {};
+            ps.forEach(p => { const m = String((LLM.models || {})[p] || "").trim(); if (m)
+                models[p] = m; });
+            const plan = (typeof USERPLAN !== "undefined" && /^(std|pro)$/.test(USERPLAN)) ? USERPLAN : "std", act2 = {};
+            ps.forEach(p => { act2[p] = 1; });
+            v63aDo(dp, async () => { const r = await v63aCall("air_keys", { keys: K }); if (!r || r.ok === false)
+                return r; return v63aCall("air_conf", { act: act2, models, route: LLM.route === false ? 0 : 1, plan }); });
+        };
+    const dl = q("#v63adel");
+    if (dl)
+        dl.onclick = () => { if (!confirm("同期サーバーに預けたキーを消します（お客様の PC の AI 接続は止まります）。よろしいですか？"))
+            return; const K = {}; V63A_PROVS.forEach(p => { K[p] = ""; }); v63aDo(dl, () => v63aCall("air_keys", { keys: K })); };
+}
+if (typeof renderAdmin === "function") {
+    const __ra63a = renderAdmin;
+    renderAdmin = function () {
+        const r = __ra63a.apply(this, arguments);
+        try {
+            if (v63aMaster()) {
+                if (v63aIsOn())
+                    v63aOff("admin", 1);
+                v63aPaint();
+                v63aLoad(false).then(() => { try {
+                    if (document.getElementById("v63air") || document.getElementById("admshare"))
+                        v63aPaint();
+                }
+                catch (e) { } });
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof llmSharePushAll === "function") {
+    const __pa63a = llmSharePushAll;
+    llmSharePushAll = function () { try {
+        if (v63aMaster() && v63aReady())
+            return;
+    }
+    catch (e) { } return __pa63a.apply(this, arguments); };
 }
 try {
     if (typeof v35Restore === "function")
