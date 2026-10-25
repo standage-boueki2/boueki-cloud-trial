@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="fc4ab7b7071f";
+const BC20_BUILD="1af509eb7e6c";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -121739,6 +121739,217 @@ if (typeof llmSharePushAll === "function") {
     }
     catch (e) { } return __pa63a.apply(this, arguments); };
 }
+const V64MQ = { seen: {}, FK: "bc20_fwd_v1" };
+function v64mqKid() { try {
+    return String((typeof SYNC !== "undefined" && SYNC && SYNC.kid) || "").slice(0, 16);
+}
+catch (e) {
+    return "";
+} }
+function v64mqKey() { const k = v64mqKid(); return k ? V64MQ.FK + "@" + k : V64MQ.FK; }
+(function () {
+    try {
+        const P = Storage.prototype, g0 = P.getItem, s0 = P.setItem, r0 = P.removeItem, FK = V64MQ.FK;
+        const isLs = s => { try {
+            return s === window.localStorage;
+        }
+        catch (e) {
+            return false;
+        } };
+        function carry(st, kk) {
+            const v = g0.call(st, FK);
+            if (v == null)
+                return null;
+            let j = null;
+            try {
+                j = JSON.parse(v);
+            }
+            catch (e) {
+                return null;
+            }
+            const fwdTab = (typeof FWDON !== "undefined" && !!FWDON), fv = !!j && j.fv === 1;
+            if (!j || fv !== fwdTab)
+                return null;
+            try {
+                s0.call(st, kk, v);
+            }
+            catch (e) { }
+            return v;
+        }
+        P.getItem = function (k) { if (k === FK && isLs(this)) {
+            const kk = v64mqKey();
+            if (kk !== FK) {
+                const v = g0.call(this, kk);
+                return v != null ? v : carry(this, kk);
+            }
+        } return g0.apply(this, arguments); };
+        P.setItem = function (k, v) { if (k === FK && isLs(this)) {
+            const kk = v64mqKey();
+            if (kk !== FK)
+                return s0.call(this, kk, v);
+        } return s0.apply(this, arguments); };
+        P.removeItem = function (k) { if (k === FK && isLs(this)) {
+            const ks = [];
+            try {
+                for (let i = 0; i < this.length; i++) {
+                    const x = this.key(i);
+                    if (x && x.indexOf(FK + "@") === 0)
+                        ks.push(x);
+                }
+            }
+            catch (e) { }
+            ks.forEach(x => { try {
+                r0.call(this, x);
+            }
+            catch (e) { } });
+        } return r0.apply(this, arguments); };
+    }
+    catch (e) { }
+})();
+const V64MQ_FOB = [[1, 8000], [0.86, 6500], [1.14, 9000], [0.95, 7500], [1.07, 8500]];
+if (typeof fwdQuoteCalc === "function") {
+    const __qc64 = fwdQuoteCalc;
+    fwdQuoteCalc = function (rate, cbm) {
+        const q = __qc64.apply(this, arguments);
+        try {
+            if (q && q.v56shipFob && !q.courier && rate && +rate.dfw >= 1 && +rate.dfw <= 5) {
+                const c = (typeof V60 !== "undefined" && V60 && V60.ctx) || {}, F = V64MQ_FOB[+rate.dfw - 1];
+                const v = Math.max(0.01, +c.cbm > 0 ? +c.cbm : (+cbm || 1)), w = Math.max(0, +c.weight || 0), rt = Math.max(1, Math.round(Math.max(v, w / 1000) * 100) / 100);
+                const h = (typeof dfwHash === "function") ? dfwHash(String(rate.co) + "|" + String(rate.pol) + "|fob") : 0.5;
+                const pal = (rate.v60pk || c.pack) === "パレット" ? 2500 * Math.max(1, +c.cartons || Math.ceil(v / 1.2)) : 0;
+                q.thc = Math.round(Math.max(6000, 4200 * rt) * F[0] * (0.95 + h * 0.1) / 100) * 100 + pal;
+                q.doc = F[1];
+                q.total = q.thc + q.doc;
+                q.v64fob = 1;
+            }
+        }
+        catch (e) { }
+        return q;
+    };
+}
+if (typeof fwdLegBuild === "function") {
+    const __lb64 = fwdLegBuild;
+    fwdLegBuild = function (cty, pod, mode, cbm, etd, coFilter) {
+        const l = __lb64.apply(this, arguments);
+        try {
+            const O = (l && l.ok && l.v56shipFob && l.offers) || [];
+            if (O.length > 1 && new Set(O.map(o => o.quote && o.quote.total)).size > 1) {
+                const top = O[0], minT = Math.min.apply(null, O.map(o => o.quote.total));
+                let s;
+                if (top.quote.total === minT) {
+                    const nx = O.filter(o => o !== top).sort((a, b) => a.quote.total - b.quote.total)[0];
+                    s = `港での費用（THC等諸掛・書類費）は ${top.co} が ${O.length}社中 最安（¥${minT.toLocaleString()}。次点 ${nx.co} より ¥${(nx.quote.total - minT).toLocaleString()} 安い）`;
+                }
+                else
+                    s = `港での費用（THC等諸掛・書類費）は最安ではない（最安との差 ¥${(top.quote.total - minT).toLocaleString()}）が、有効期限などを含めた総合点で上回る`;
+                l.recWhy = (l.recWhy || []).map(x => /社とも港での費用は同じ目安/.test(String(x)) ? s : x);
+            }
+        }
+        catch (e) { }
+        return l;
+    };
+}
+function v64mqE(s) { return (typeof esc === "function") ? esc(s) : String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v64mqTt(o) { const t = o && o.rate && o.rate.tt; return (t == null || t === "" || !isFinite(+t)) ? null : +t; }
+function v64mqSteps(r, l) {
+    const O = (l && l.offers) || [];
+    if (O.length < 2)
+        return "";
+    const key = String(r.id) + "|" + String(l.cty), anim = !V64MQ.seen[key];
+    V64MQ.seen[key] = 1;
+    const rec = O.find(o => o.co === l.rec) || O[0], maxT = Math.max.apply(null, O.map(o => o.quote.total)), minT = Math.min.apply(null, O.map(o => o.quote.total));
+    const tts = O.map(v64mqTt).filter(x => x !== null), fob = !!l.v56shipFob;
+    const conds = [];
+    try {
+        if (r.mode)
+            conds.push(String(r.mode));
+        if (+r.cbm)
+            conds.push(r.cbm + "m³");
+        if (+r.weight)
+            conds.push(Math.round(+r.weight).toLocaleString() + "kg");
+        if (r.pack)
+            conds.push(String(r.pack));
+        if (r.etd)
+            conds.push("希望納期 " + r.etd);
+        if (fob)
+            conds.push("FOB");
+    }
+    catch (e) { }
+    const chips = O.map(o => `<span class="v64chip${o === rec ? " on" : ""}">${v64mqE(o.co)}</span>`).join("");
+    const bars = O.map(o => {
+        const tt = v64mqTt(o), wd = Math.max(8, Math.round(o.quote.total / Math.max(1, maxT) * 100));
+        return `<div class="v64row${o === rec ? " on" : ""}"><span class="v64co">${v64mqE(o.co)}</span><span class="v64bar" aria-hidden="true"><i style="width:${wd}%"></i></span>
+      <span class="v64amt n">¥${o.quote.total.toLocaleString()}</span><span class="v64tt n">${tt === null ? "—" : "約" + tt + "日"}</span><span class="v64vd n">${v64mqE(String(o.rate.valid || "").slice(5) || "—")}</span>
+      <span class="v64tg">${(o.tags || []).filter(t => /最安|最速/.test(t)).map(t => `<span class="p ${t === "最安" ? "hi" : "on"}">${v64mqE(t)}</span>`).join("")}</span></div>`;
+    }).join("");
+    const why = (l.recWhy || []).filter(x => !/^FOB（本船渡し）のため/.test(String(x))).slice(0, 2);
+    const rtt = v64mqTt(rec);
+    return `<div class="v64ai${anim ? " v64anim" : ""}">
+    <div class="v64hd"><span class="v64ic" aria-hidden="true">AI</span><b>AI物流マンの選定</b><span class="v64sub">相見積の結果から、最適な物流会社と条件を選びました</span></div>
+    <ol class="v64st">
+      <li class="v64s v64s1"><span class="v64no">1</span><div class="v64bd"><div><b>回答を受信</b> <span class="v64k n">${O.length}社</span></div><div class="v64chips">${chips}</div></div></li>
+      <li class="v64s v64s2"><span class="v64no">2</span><div class="v64bd"><div><b>金額・所要日数・有効期限・条件を比べる</b>${conds.length ? ` <span class="v64k">${v64mqE(conds.join("・"))}</span>` : ""}</div>
+        <div class="v64tbl"><div class="v64row v64th"><span class="v64co">物流会社</span><span class="v64bar"></span><span class="v64amt">合計</span><span class="v64tt">所要</span><span class="v64vd">有効期限</span><span class="v64tg"></span></div>${bars}</div>
+        <div class="v64rng">金額 ¥${minT.toLocaleString()}〜¥${maxT.toLocaleString()}${tts.length ? `／所要 約${Math.min.apply(null, tts)}〜${Math.max.apply(null, tts)}日` : ""}</div></div></li>
+      <li class="v64s v64s3"><span class="v64no">3</span><div class="v64bd"><div><b>推奨</b> <b class="v64rec">${v64mqE(rec.co)}</b> <span class="v64k n">¥${rec.quote.total.toLocaleString()}${rtt === null ? "" : "・約" + rtt + "日"}・有効期限 ${v64mqE(rec.rate.valid || "—")}</span></div>
+        ${why.length ? `<ul class="v64why">${why.map(x => `<li>${v64mqE(x)}</li>`).join("")}</ul>` : ""}</div></li>
+    </ol></div>`;
+}
+if (typeof fwdRecHtml === "function") {
+    const __rh64 = fwdRecHtml;
+    fwdRecHtml = function (r, l) {
+        const s = __rh64.apply(this, arguments);
+        try {
+            if (!(typeof FWDON !== "undefined" && FWDON) && r && l)
+                return v64mqSteps(r, l) + s;
+        }
+        catch (e) { }
+        return s;
+    };
+}
+(function () {
+    try {
+        const st = document.createElement("style");
+        st.textContent = `.v64ai{margin:8px 0 6px;padding:10px 12px 8px;border:1px solid var(--or);border-radius:var(--r2);background:var(--surface-2)}
+.v64hd{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12px}.v64ic{flex:none;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--or);color:#fff;font-size:9.5px;font-weight:800}
+.v64sub{font-size:10.5px;color:var(--ink-3)}
+.v64st{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:7px}.v64s{display:flex;gap:8px;align-items:flex-start;font-size:11.5px;line-height:1.55}
+.v64no{flex:none;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--or);color:var(--or);font-size:10.5px;font-weight:800;margin-top:1px}
+.v64s3 .v64no{background:var(--or);color:#fff}.v64bd{flex:1;min-width:0}.v64k{font-size:10.5px;color:var(--ink-2)}
+.v64chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}.v64chip{font-size:10px;padding:2px 7px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink-2)}.v64chip.on{border-color:var(--or);color:var(--ink);font-weight:700}
+.v64tbl{margin-top:5px;display:flex;flex-direction:column;gap:3px}.v64row{display:grid;grid-template-columns:minmax(92px,1.3fr) minmax(50px,1.6fr) 68px 46px 44px minmax(0,auto);gap:6px;align-items:center;font-size:10.5px;padding:2px 4px;border-radius:5px}
+.v64row.on{background:var(--surface);outline:1px solid var(--or)}.v64th{font-size:9.5px;color:var(--ink-3);padding-top:0;padding-bottom:0}.v64co{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v64bar{height:7px;border-radius:4px;background:var(--line);overflow:hidden}.v64th .v64bar{background:none}.v64bar i{display:block;height:100%;border-radius:4px;background:var(--ink-3);transform-origin:left}.v64row.on .v64bar i{background:var(--or)}
+.v64amt{text-align:right;font-weight:700}.v64tt,.v64vd{text-align:right;color:var(--ink-2)}.v64tg .p{font-size:8.5px;margin-left:2px}
+.v64rng{margin-top:3px;font-size:10px;color:var(--ink-3)}.v64rec{font-size:12.5px}.v64why{margin:3px 0 0;padding-left:16px;font-size:10.5px;color:var(--ink-2)}
+@media (max-width:560px){.v64row{grid-template-columns:minmax(0,1.9fr) minmax(24px,.6fr) 60px 40px}.v64vd,.v64tg{display:none}}
+@keyframes v64in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}@keyframes v64grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.v64anim .v64s{animation:v64in .45s ease-out both}.v64anim .v64s2{animation-delay:.55s}.v64anim .v64s3{animation-delay:1.25s}.v64anim .v64bar i{animation:v64grow .7s .7s ease-out both}
+@media (prefers-reduced-motion:reduce){.v64anim .v64s,.v64anim .v64bar i{animation:none}}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+(function () {
+    const R = [
+        ["AI物流マンの選定", "AI logistics agent's selection", "AI物流专员的选择", "Selección del agente logístico IA"],
+        ["相見積の結果から、最適な物流会社と条件を選びました", "Picked the best forwarder and terms from the competing quotes", "根据比价结果，选出了最合适的物流公司和条件", "Eligió el mejor transitario y condiciones a partir de las cotizaciones"],
+        ["回答を受信", "Quotes received", "收到报价", "Cotizaciones recibidas"],
+        ["金額・所要日数・有効期限・条件を比べる", "Compare price, transit days, validity and terms", "比较金额・所需天数・有效期・条件", "Comparar precio, días de tránsito, validez y condiciones"],
+        ["推奨", "Recommended", "推荐", "Recomendado"], ["物流会社", "Forwarder", "物流公司", "Transitario"], ["合計", "Total", "合计", "Total"], ["所要", "Transit", "所需", "Tránsito"], ["有効期限", "Valid until", "有效期", "Válido hasta"]
+    ];
+    try {
+        if (typeof I18N !== "undefined" && I18N && I18N.dict)
+            R.forEach(r => ["en", "zh", "es"].forEach((lg, i) => { const d = I18N.dict[lg]; if (d && r[i + 1] && !d[r[0]])
+                d[r[0]] = r[i + 1]; }));
+    }
+    catch (e) { }
+    try {
+        if (typeof I18N !== "undefined" && I18N && Array.isArray(I18N.pat))
+            I18N.pat.unshift({ re: /^(\d+)社$/, en: "$1 forwarders", zh: "$1家", es: "$1 transitarios" }, { re: /^金額 ¥([\d,]+)〜¥([\d,]+)(?:／所要 約(\d+)〜(\d+)日)?$/, en: m => `Price ¥${m[1]}–¥${m[2]}` + (m[3] ? ` / transit approx. ${m[3]}–${m[4]} days` : ""), zh: m => `金额 ¥${m[1]}〜¥${m[2]}` + (m[3] ? `／所需 约${m[3]}〜${m[4]}天` : ""), es: m => `Precio ¥${m[1]}–¥${m[2]}` + (m[3] ? ` / tránsito aprox. ${m[3]}–${m[4]} días` : "") }, { re: /^約(\d+)日$/, en: "approx. $1 days", zh: "约$1天", es: "aprox. $1 días" }, { re: /^港での費用（THC等諸掛・書類費）は (.+) が (\d+)社中 最安（¥([\d,]+)。次点 (.+) より ¥([\d,]+) 安い）$/, en: "Port charges (THC etc. + documents): $1 is the cheapest of $2 (¥$3, ¥$5 below runner-up $4)", zh: "港口费用（THC等杂费・文件费）：$1 在$2家中最低（¥$3，比第二名 $4 低 ¥$5）", es: "Gastos portuarios (THC + documentos): $1 es el más barato de $2 (¥$3, ¥$5 menos que $4)" });
+    }
+    catch (e) { }
+})();
 try {
     if (typeof v35Restore === "function")
         v35Restore();
