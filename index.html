@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="ca91ed865a0f";
+const BC20_BUILD="761b9fa6ab0f";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -127078,6 +127078,379 @@ try {
     }
 }
 catch (e) { }
+var V66KB = { st: null, stAt: 0, on: 0, old: 0, ctx: null, cur: null, busy: null };
+const V66KB_TY = { reg: ["規制・認証", "Regulations", "法规认证", "Normativa"], buyer: ["バイヤーの反応", "Buyer feedback", "买家反馈", "Opinión de compradores"], comp: ["競合", "Competitors", "竞争", "Competencia"],
+    price: ["価格・条件", "Prices & terms", "价格条件", "Precios y condiciones"], logi: ["物流・書類", "Logistics & documents", "物流单证", "Logística y documentos"], biz: ["商習慣・販路", "Channels & practices", "商业惯例渠道", "Canales y prácticas"], win: ["成約・見送りの理由", "Why deals win or stall", "成交/搁置原因", "Por qué se cierran o no"] };
+const V66KB_MSG = {
+    title: ["AI商社マンが学んだ「STANDAGE の一次情報」", "What the AI Trading Advisor has learned: STANDAGE first-hand data", "AI贸易顾问学习的“STANDAGE一手信息”", "Lo que aprendió el Asesor IA: datos de primera mano de STANDAGE"],
+    daily: ["毎朝更新", "Updated every morning", "每天早上更新", "Se actualiza cada mañana"],
+    lead: ["汎用AIが読めるのは Web の公開情報だけ。AI商社マンは、STANDAGE の商社マンが海外の現場（商談・展示会・現地訪問）で集めた非公開の一次情報も根拠に答えます。社名・人名・商品名は消して匿名にしています。",
+        "General-purpose AI only reads public web pages. The AI Trading Advisor also answers from non-public, first-hand records that STANDAGE trade staff gathered on the ground overseas (meetings, trade shows, visits). Company, personal and product names are removed.",
+        "通用AI只能读取网上的公开信息。AI贸易顾问还会依据STANDAGE贸易人员在海外现场（洽谈、展会、实地拜访）收集的非公开一手信息作答。公司名、人名、商品名均已匿名化。",
+        "La IA general solo lee páginas web públicas. El Asesor IA también responde con registros de primera mano, no públicos, que el equipo de STANDAGE recogió en el terreno (reuniones, ferias, visitas). Se eliminan nombres de empresas, personas y productos."],
+    fb: ["件の商談記録（バイヤーの声）", "buyer meeting records", "条洽谈记录（买家反馈）", "registros de reuniones"], face: ["件は現地での対面の商談", "face-to-face on site", "条为现场面对面洽谈", "presenciales en el terreno"],
+    cty: ["か国", "countries", "个国家", "países"], cards: ["枚の知識カード", "knowledge cards", "张知识卡", "fichas de conocimiento"],
+    upd: ["最終更新", "Last updated", "最近更新", "Última actualización"], add30: ["直近30日の新しい商談記録", "new meeting records in the last 30 days", "最近30天的新洽谈记录", "registros nuevos en 30 días"],
+    from: ["おまかせ貿易（導入企業 500社超）の現場から。カードは質問のたびに関係するものだけを使います", "From the field work of Omakase Trade (500+ client companies). Only cards relevant to each question are used.", "来自“おまかせ貿易”（客户企业超过500家）的现场。每次提问只使用相关的卡片。", "Del trabajo de campo de Omakase Trade (más de 500 empresas clientes). Solo se usan las fichas relevantes para cada pregunta."],
+    solo: ["いまは個社版です。全社版にすると、この一次情報も根拠に答えます（STANDAGE の担当にご相談ください）", "You are on the single-company edition. Switch to the company-wide edition to use this data (ask your STANDAGE contact).", "当前为单公司版。切换为全公司版后，也会依据这些一手信息作答（请联系STANDAGE负责人）。", "Está en la edición individual. Con la edición global también se usan estos datos (consulte a su contacto de STANDAGE)."],
+    used: ["AI商社マンが参照した STANDAGE の一次情報", "STANDAGE first-hand records used for this answer", "本次回答参考的STANDAGE一手信息", "Registros de primera mano de STANDAGE usados"],
+    anon: ["おまかせ貿易の現場の記録・匿名", "Omakase Trade field records, anonymized", "おまかせ貿易现场记录・匿名", "Registros de campo de Omakase Trade, anónimos"],
+    off: ["STANDAGE の一次情報（現場の記録）から", "From STANDAGE first-hand records", "来自STANDAGE一手信息（现场记录）", "De los registros de primera mano de STANDAGE"],
+    seen: ["🧭 STANDAGE の一次情報（現場の記録）", "🧭 STANDAGE first-hand records", "🧭 STANDAGE一手信息", "🧭 Datos de primera mano de STANDAGE"],
+    badge: ["✓ STANDAGE 一次情報（おまかせ貿易の現場）", "✓ STANDAGE first-hand data (field records)", "✓ STANDAGE一手信息（现场）", "✓ Datos de primera mano de STANDAGE"],
+    chip: ["現場の一次情報", "Field records", "现场一手信息", "Registros de campo"], unit: ["件", "", "条", ""]
+};
+const V66KB_CH = { "対面": ["対面の商談", "face-to-face", "面对面", "presencial"], "オンライン": ["オンライン商談", "online meeting", "线上洽谈", "en línea"], "メール": ["メール", "email", "邮件", "correo"], "WhatsApp": ["WhatsApp", "WhatsApp", "WhatsApp", "WhatsApp"], "電話": ["電話", "phone", "电话", "teléfono"], "会議": ["会議メモ", "meeting notes", "会议记录", "notas de reunión"] };
+function v66kbL() { try {
+    const l = (typeof I18N !== "undefined" && I18N.lang) || "ja";
+    return { ja: 0, en: 1, zh: 2, es: 3 }[l] || 0;
+}
+catch (e) {
+    return 0;
+} }
+function v66kbT(k) { const m = V66KB_MSG[k]; return m ? (m[v66kbL()] || m[0]) : ""; }
+function v66kbTy(t) { const m = V66KB_TY[t]; return m ? (m[v66kbL()] || m[0]) : t; }
+function v66kbE(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v66kbN(n) { return (n == null || n === "") ? "-" : Number(n).toLocaleString(); }
+function v66kbCust() { try {
+    return typeof SES !== "undefined" && !!SES && SES.t === "trial" && typeof SYNC !== "undefined" && !!SYNC && !!SYNC.kid && (typeof syncOn !== "function" || syncOn());
+}
+catch (e) {
+    return false;
+} }
+function v66kbAll() { try {
+    return V66KB.on === 1 && (typeof poolMode !== "function" || poolMode() === "all");
+}
+catch (e) {
+    return false;
+} }
+function v66kbLSKey() { try {
+    return "bc20_kbst_" + String(SYNC.kid || "").slice(0, 16);
+}
+catch (e) {
+    return "bc20_kbst";
+} }
+async function v66kbStats(force) {
+    if (!v66kbCust() || V66KB.old)
+        return null;
+    if (!force && V66KB.st && Date.now() - V66KB.stAt < 6 * 3600 * 1000)
+        return V66KB.st;
+    try {
+        const r = await syncCall("kb_stats", { kid: SYNC.kid }, { timeout: 15000 });
+        if (r && r.ok) {
+            V66KB.on = r.on ? 1 : 0;
+            V66KB.st = r.stats && r.stats.cards ? Object.assign({ asof: r.asof || "" }, r.stats) : null;
+            V66KB.stAt = Date.now();
+            try {
+                localStorage.setItem(v66kbLSKey(), JSON.stringify({ on: V66KB.on, st: V66KB.st, at: V66KB.stAt }));
+            }
+            catch (e) { }
+            return V66KB.st;
+        }
+        if (r && r.error && /unknown op/i.test(String(r.error)))
+            V66KB.old = 1;
+    }
+    catch (e) {
+        if (/unknown op/i.test(String(e && e.message || e)))
+            V66KB.old = 1;
+    }
+    return null;
+}
+function v66kbLoadLS() { try {
+    const o = JSON.parse(localStorage.getItem(v66kbLSKey()) || "null");
+    if (o && !V66KB.st) {
+        V66KB.on = o.on ? 1 : 0;
+        V66KB.st = o.st || null;
+    }
+}
+catch (e) { } }
+function v66kbTargets() {
+    const out = [];
+    try {
+        const T = (typeof TEN !== "undefined" && TEN && TEN.targets) || (typeof D !== "undefined" && D && D.targets) || [];
+        (Array.isArray(T) ? T : String(T).split(/[、,，\/]/)).forEach(x => { const s = String(x && x.c || x || "").trim(); if (s && out.length < 5 && !out.includes(s))
+            out.push(s); });
+    }
+    catch (e) { }
+    return out;
+}
+function v66kbCat() { try {
+    return [D && D.cat, D && D.item].filter(Boolean).join(" ").slice(0, 40);
+}
+catch (e) {
+    return "";
+} }
+async function v66kbSearch(q, cty) {
+    if (!v66kbCust() || V66KB.old)
+        return null;
+    if (V66KB.on !== 1 && !V66KB.stAt)
+        await v66kbStats(false);
+    if (!v66kbAll())
+        return null;
+    try {
+        const p = syncCall("kb_search", { kid: SYNC.kid, dev: (typeof syncDev === "function") ? syncDev() : {}, q: String(q || "").slice(0, 600), cty: cty || v66kbTargets(), cat: v66kbCat(), n: 8 }, { timeout: 9000 });
+        const r = await Promise.race([p, new Promise(res => setTimeout(() => res(null), 9500))]);
+        if (r && r.ok && Array.isArray(r.items)) {
+            if (r.stats && V66KB.st)
+                Object.assign(V66KB.st, { cards: r.stats.cards || V66KB.st.cards });
+            return { q: String(q || ""), items: r.items, asof: r.asof || "", at: Date.now() };
+        }
+        if (r && r.reason === "off")
+            V66KB.on = 0;
+        if (r && r.error && /unknown op/i.test(String(r.error)))
+            V66KB.old = 1;
+    }
+    catch (e) {
+        if (/unknown op/i.test(String(e && e.message || e)))
+            V66KB.old = 1;
+    }
+    return null;
+}
+function v66kbMeta(c) {
+    const L = v66kbL();
+    const ch = V66KB_CH[c.ch] ? V66KB_CH[c.ch][L] : c.ch;
+    const o = c.o === "FS" ? ["現地", "on site", "现场", "en el terreno"][L] : (/^(Nigeria|Egypt|Oversea|US)$/.test(c.o) ? ["海外拠点", "overseas office", "海外据点", "oficina en el extranjero"][L] : "");
+    return [c.cn, [c.g, c.s].filter(Boolean).join("・"), c.m, [ch, o].filter(Boolean).join("・")].filter(Boolean).join("｜");
+}
+function v66kbSection(S) {
+    if (!S || !S.items || !S.items.length)
+        return "";
+    return "\n## STANDAGE 一次情報（おまかせ貿易の現場の記録を匿名にした知識カード " + S.items.length + "件・" + (S.asof || "") + " 時点・社名と人名は消してある）\n" +
+        S.items.map(c => "- [" + [c.cn || "国の指定なし", [c.g, c.s].filter(Boolean).join("・"), V66KB_TY[c.t] ? V66KB_TY[c.t][0] : c.t, c.m, (c.src === "memo" ? "会議メモ" : (c.ch || "商談") + "の商談記録") + (c.o === "FS" ? "（現地）" : "")].filter(Boolean).join("｜") + "] " + c.x).join("\n") + "\n";
+}
+const V66KB_RULE = `
+【STANDAGE 一次情報の使い方（21.66）】
+・「STANDAGE 一次情報」の節は、STANDAGE の商社マンが海外の現場（商談・展示会・現地訪問）で集めた非公開の記録を匿名にしたもの。関係があれば Web の一般論より優先して根拠にし、使った文には番号を付け、「STANDAGE の現場の記録では」と分かるように書く
+・記録の国・時期・相手の業種を添える（例：「2026年8月、ドバイの食品輸入商社との対面の商談では…」）。1〜2件だけの記録は「事例」として書き、言い切らない
+・記録から社名・人名・商品名を推測して書かない。節に関係する記録が無いときは、一般知識であることを分かるように書く`;
+if (typeof ppContext === "function") {
+    const __pc66 = ppContext;
+    ppContext = function () { const s = __pc66.apply(this, arguments); try {
+        const S = V66KB.ctx;
+        if (S && S.items && S.items.length) {
+            const sec = v66kbSection(S), str = String(s == null ? "" : s), i = str.indexOf("\n## ");
+            return i >= 0 ? str.slice(0, i) + sec + str.slice(i) : str + sec;
+        }
+    }
+    catch (e) { } return s; };
+}
+if (typeof llmSysPrompt === "function") {
+    const __sp66 = llmSysPrompt;
+    llmSysPrompt = function () { const s = __sp66.apply(this, arguments); try {
+        if (V66KB.ctx && V66KB.ctx.items && V66KB.ctx.items.length)
+            return s + "\n" + V66KB_RULE;
+    }
+    catch (e) { } return s; };
+}
+if (typeof v33SrcKind === "function") {
+    const __sk66 = v33SrcKind;
+    v33SrcKind = function (h) { if (/STANDAGE 一次情報/.test(String(h || "")))
+        return { k: "v1kb", b: v66kbT("badge"), ok: 1 }; return __sk66.apply(this, arguments); };
+}
+async function v66kbWith(q, cty, fn) {
+    let S = null;
+    try {
+        S = await v66kbSearch(q, cty);
+    }
+    catch (e) { }
+    const prev = V66KB.ctx;
+    V66KB.ctx = S;
+    V66KB.cur = S;
+    try {
+        return await fn();
+    }
+    finally {
+        V66KB.ctx = prev;
+    }
+}
+function v66kbList(S, n, head) {
+    const L = (S && S.items || []).slice(0, n || 8);
+    if (!L.length)
+        return "";
+    return `<details class="v66kb"${head ? " open" : ""}><summary>🧭 ${v66kbE(head || v66kbT("used"))}（${L.length}）<span class="v66kbs">${v66kbE(v66kbT("anon"))}</span></summary><ol>${L.map(c => `<li><span class="v66kbt v66kbt-${v66kbE(c.t)}">${v66kbE(v66kbTy(c.t))}</span><span class="v66kbx" data-noi18n>${v66kbE(c.x)}</span><span class="v66kbm">${v66kbE(v66kbMeta(c))}</span></li>`).join("")}</ol></details>`;
+}
+if (typeof ppFormat === "function") {
+    const __pf66 = ppFormat;
+    ppFormat = function (txt) {
+        let a = __pf66.apply(this, arguments);
+        try {
+            const S = V66KB.ctx;
+            if (!S || !S.items || !S.items.length || typeof V33ANS === "undefined" || !V33ANS.chat)
+                return a;
+            const sec = (V33ANS.map || []).find(x => x.k === "v1kb");
+            if (!sec || !new RegExp("\\[S" + sec.n + "\\]").test(String(txt || "")))
+                return a;
+            return a + v66kbList(S, 8);
+        }
+        catch (e) {
+            return a;
+        }
+    };
+}
+if (typeof brain === "function") {
+    const __br66 = brain;
+    brain = async function (q) {
+        const args = arguments, self = this;
+        if (!v66kbCust() || V66KB.old)
+            return __br66.apply(self, args);
+        return v66kbWith(String((args[1] && args[1].raw) || q || ""), null, async () => {
+            const r = await Promise.resolve(__br66.apply(self, args));
+            try {
+                const S = V66KB.cur;
+                const ai = (typeof ppReady === "function") && ppReady();
+                if (r && typeof r === "object" && typeof r.a === "string" && S && S.items && S.items.length && !ai && !/class="v66kb"/.test(r.a))
+                    r.a += v66kbList(S, 4, v66kbT("off"));
+            }
+            catch (e) { }
+            return r;
+        });
+    };
+}
+if (typeof regAskAI === "function") {
+    const __ra66 = regAskAI;
+    regAskAI = function (c, q, web) { const args = arguments, self = this; if (!v66kbCust())
+        return __ra66.apply(self, args); return v66kbWith(String(c || "") + " 規制 認証 ラベル " + String(q || ""), [String(c || "")], () => __ra66.apply(self, args)); };
+}
+if (typeof regAIRun === "function") {
+    const __rr66 = regAIRun;
+    regAIRun = function (c) { const args = arguments, self = this; if (!v66kbCust())
+        return __rr66.apply(self, args); return v66kbWith(String(c || "") + " 規制 認証 登録 ラベル 輸入条件", [String(c || "")], () => __rr66.apply(self, args)); };
+}
+if (typeof ctyDeepAI === "function") {
+    const __cd66 = ctyDeepAI;
+    ctyDeepAI = function (c) { const args = arguments, self = this; if (!v66kbCust())
+        return __cd66.apply(self, args); return v66kbWith(String(c || "") + " 市場 バイヤー 競合 価格 規制 販路", [String(c || "")], () => __cd66.apply(self, args)); };
+}
+function v66kbCard() {
+    const S = V66KB.st;
+    if (!S || !S.cards)
+        return "";
+    const all = v66kbAll();
+    const ty = Object.keys(V66KB_TY).filter(k => (S.byType || {})[k]).map(k => `<span class="v66kbt v66kbt-${k}">${v66kbE(v66kbTy(k))} ${v66kbN(S.byType[k])}</span>`).join("");
+    const num = (n, k) => `<div class="v66kbn"><b>${v66kbN(n)}</b><span>${v66kbE(v66kbT(k))}</span></div>`;
+    return `<div class="c v66kbc" id="v66kbc"><div class="rw" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><h3>🧭 ${v66kbE(v66kbT("title"))}</h3><span class="p or">${v66kbE(v66kbT("daily"))}</span></div>
+    <div class="v66kblead">${v66kbE(v66kbT("lead"))}</div>
+    <div class="v66kbg">${num(S.fb, "fb")}${num(S.fbFace, "face")}${num(S.countries, "cty")}${num(S.cards, "cards")}</div>
+    ${ty ? `<div class="v66kbty">${ty}</div>` : ""}
+    <p class="nn" style="margin-top:8px">${v66kbE(v66kbT("upd"))} ${v66kbE(S.asof || "")}${S.fbMonth ? "・" + v66kbE(v66kbT("add30")) + " " + v66kbN(S.fbMonth) : ""}。${v66kbE(v66kbT("from"))}</p>
+    ${all ? "" : `<p class="nn v66kbsolo">${v66kbE(v66kbT("solo"))}</p>`}</div>`;
+}
+function v66kbChip() {
+    const S = V66KB.st;
+    if (!S || !S.cards || !v66kbAll())
+        return "";
+    return `<a class="p or v66kbchip" href="#v66kbc" title="${v66kbE(v66kbT("lead"))}" onclick="try{document.getElementById('v66kbc').scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}return false;">🧭 ${v66kbE(v66kbT("chip"))} ${v66kbN(S.fb)}${v66kbE(v66kbT("unit"))}</a>`;
+}
+if (typeof vAI === "function") {
+    const __vAI66 = vAI;
+    vAI = function () {
+        let h = __vAI66.apply(this, arguments);
+        try {
+            if (!v66kbCust())
+                return h;
+            const card = v66kbCard();
+            if (card) {
+                const i = h.indexOf('<div class="g2"');
+                h = i >= 0 ? h.slice(0, i) + card + h.slice(i) : h + card;
+            }
+            const chip = v66kbChip();
+            if (chip)
+                h = h.replace(/(<span class="p [^"]*poolbadge[^"]*"[^>]*>[^<]*<\/span>)/, "$1 " + chip);
+        }
+        catch (e) { }
+        return h;
+    };
+}
+if (typeof kbSeen === "function") {
+    const __seen66 = kbSeen;
+    kbSeen = function () { const r = __seen66.apply(this, arguments); try {
+        const S = V66KB.st;
+        if (v66kbCust() && S && S.cards && v66kbAll())
+            return (Array.isArray(r) ? r : []).concat([[v66kbT("seen"), v66kbN(S.cards) + " / " + v66kbN(S.fb), 100]]);
+    }
+    catch (e) { } return r; };
+}
+(function () {
+    if (typeof window === "undefined" || typeof window.fetch !== "function" || window.__v66kbFetch)
+        return;
+    window.__v66kbFetch = 1;
+    const of = window.fetch;
+    const isSync = (u) => { try {
+        const s = (typeof SYNC !== "undefined" && SYNC && SYNC.url) || "";
+        return !!s && String((u && u.url) || u) === s;
+    }
+    catch (e) {
+        return false;
+    } };
+    window.fetch = async function (u, init) {
+        try {
+            if (isSync(u) && init && typeof init.body === "string" && /^\{"op":"kb_search"/.test(init.body) && !/"stok":"/.test(init.body)) {
+                const km = /"kid":"([0-9a-f]{20,64})"/.exec(init.body), kid = km ? km[1] : "";
+                if (typeof V62S !== "undefined" && V62S && !V62S.st && V62S.flow && typeof SYNC !== "undefined" && SYNC && kid === SYNC.kid)
+                    await Promise.race([V62S.flow.catch(() => { }), new Promise(r => setTimeout(r, 15000))]);
+                if (typeof V62S !== "undefined" && V62S && V62S.st && kid && kid === V62S.kid) {
+                    const add = JSON.stringify({ stok: V62S.st });
+                    init = Object.assign({}, init, { body: "{" + add.slice(1, -1) + "," + init.body.slice(1) });
+                    return of.call(this, u, init);
+                }
+            }
+        }
+        catch (e) {
+            if (e instanceof TypeError)
+                throw e;
+        }
+        return of.apply(this, arguments);
+    };
+})();
+function v66kbRepaint() { try {
+    if (typeof render === "function" && typeof cur !== "undefined" && cur === "ai" && !document.querySelector("#aiq:focus"))
+        render();
+}
+catch (e) { } }
+if (typeof syncStart === "function") {
+    const __ss66 = syncStart;
+    syncStart = async function () { const r = await __ss66.apply(this, arguments); try {
+        if (r && r.ok && !r.skip) {
+            v66kbLoadLS();
+            setTimeout(() => { v66kbStats(true).then(st => { if (st)
+                v66kbRepaint(); }); }, 1500);
+        }
+    }
+    catch (e) { } return r; };
+}
+document.addEventListener("visibilitychange", () => { try {
+    if (!document.hidden && v66kbCust())
+        v66kbStats(false);
+}
+catch (e) { } });
+if (typeof logout === "function") {
+    const __lo66 = logout;
+    logout = function () { V66KB.st = null; V66KB.on = 0; V66KB.stAt = 0; V66KB.ctx = null; V66KB.cur = null; return __lo66.apply(this, arguments); };
+}
+(function () {
+    try {
+        const css = `.v66kbc{border:1px solid var(--line);background:linear-gradient(180deg,rgba(248,149,29,.06),transparent 70%)}
+.v66kbg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.v66kbn{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--card,#fff)}
+.v66kbn b{display:block;font-size:20px;line-height:1.2;color:var(--ink,#14243C)}.v66kbn span{display:block;font-size:12px;color:var(--ink-3,#56637A)}
+.v66kbty{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.v66kbt{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);background:var(--card,#fff);color:var(--ink,#14243C);white-space:nowrap}
+.v66kbt-reg{border-color:#0064BF55}.v66kbt-buyer{border-color:#F8951D88}.v66kbt-comp{border-color:#B5302E55}.v66kbt-price{border-color:#0B6B3A55}
+details.v66kb{margin-top:8px;border:1px solid var(--line);border-radius:10px;padding:6px 10px;background:rgba(248,149,29,.05)}
+details.v66kb summary{cursor:pointer;font-weight:700;font-size:13px}.v66kbs{font-weight:400;color:var(--ink-3,#56637A);font-size:11.5px;margin-left:6px}
+details.v66kb ol{margin:6px 0 2px;padding-left:18px}details.v66kb li{margin:5px 0;font-size:13px;line-height:1.55}
+.v66kbx{display:block;margin-top:2px}.v66kbm{display:block;font-size:11.5px;color:var(--ink-3,#56637A)}
+.v66kbsolo{border-top:1px dashed var(--line);padding-top:6px}
+.v66kblead{margin:6px 0 10px;font-size:13.5px;line-height:1.65;color:var(--ink-2,#2B3A55);font-weight:500}
+a.v66kbchip,a.v66kbchip:hover{text-decoration:none;cursor:pointer}
+@media (max-width:760px){.v66kbg{grid-template-columns:repeat(2,minmax(0,1fr))}.v66kbn b{font-size:18px}}`;
+        const st = document.createElement("style");
+        st.id = "v66kbcss";
+        st.textContent = css;
+        (document.head || document.documentElement).appendChild(st);
+    }
+    catch (e) { }
+})();
 try {
     if (typeof v35Restore === "function")
         v35Restore();
