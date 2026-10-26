@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="761b9fa6ab0f";
+const BC20_BUILD="d3191076e868";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -127451,6 +127451,19 @@ a.v66kbchip,a.v66kbchip:hover{text-decoration:none;cursor:pointer}
     }
     catch (e) { }
 })();
+const V67FH_RULE = `
+【STANDAGE 一次情報と「一般的な目安」（21.67）】
+・「STANDAGE 一次情報」の節も、登録データ・Web・統計と同じく根拠です。一次情報で裏づけられる答えは、最初の行を「一般的な目安です（要確認）」や「判断できません」にしないでください。根拠にした文に番号を付け、「STANDAGE の現場の記録では（国・時期）」と分かるように書いてください
+・一次情報でも裏づけられない部分（税率・最新の手続き・費用の内訳など）だけを、その文の中で「要確認」と書いてください
+・【優先順位（全社版）】の②「全社知識（匿名統計・傾向）」は件数・相場などの統計のことです。「STANDAGE 一次情報」の節は②の補助ではなく、①この利用者の登録データの次、Web の一般論より前に使う現場の記録です`;
+if (typeof llmSysPrompt === "function") {
+    const __sp67 = llmSysPrompt;
+    llmSysPrompt = function () { const s = __sp67.apply(this, arguments); try {
+        if (typeof V66KB !== "undefined" && V66KB.ctx && V66KB.ctx.items && V66KB.ctx.items.length)
+            return s + "\n" + V67FH_RULE;
+    }
+    catch (e) { } return s; };
+}
 try {
     if (typeof v35Restore === "function")
         v35Restore();
