@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="e490831cca18";
+const BC20_BUILD="718b85e23e2e";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -59016,7 +59016,28 @@ function v30Put(sec, id, patch) {
 function v30Del(sec, id) { return v30Put(sec, id, { del: 1 }); }
 function v30Undel(sec, id) { return v30Put(sec, id, { del: 0 }); }
 function v30One(sec, id) { const e = (v30Get()[sec] || {})[id]; return (e && !e.del) ? e : null; }
-function v30List(sec, f) { const S = v30Get()[sec] || {}; return Object.keys(S).map(k => Object.assign({ id: k }, S[k])).filter(v => v && !v.del && (!f || f(v))); }
+function v30LogAtOld(v) {
+    try {
+        const at = +v.at, c = +v._c;
+        if (!at || !c)
+            return v;
+        for (const back of [0, 60000]) {
+            const d = new Date(c - back);
+            const hm = (d.getHours() * 3600 + d.getMinutes() * 60) * 1000;
+            const u = at - hm;
+            if (u % 864e5 !== 0)
+                continue;
+            const U = new Date(u);
+            const fix = new Date(U.getUTCFullYear(), U.getUTCMonth(), U.getUTCDate(), d.getHours(), d.getMinutes()).getTime();
+            if (!isNaN(fix))
+                v.at = fix;
+            return v;
+        }
+    }
+    catch (e) { }
+    return v;
+}
+function v30List(sec, f) { const S = v30Get()[sec] || {}; return Object.keys(S).map(k => { const v = Object.assign({ id: k }, S[k]); return sec === "bl" ? v30LogAtOld(v) : v; }).filter(v => v && !v.del && (!f || f(v))); }
 function v30MergeEntry(a, b) {
     if (!b)
         return a;
@@ -59625,6 +59646,14 @@ function b30Stage(s) { return Math.max(0, B30_ST.indexOf(s)); }
 function b30FromBm(st) { return ({ "コンタクト中（一方的なアプローチ）": "営業中", "商談中": "商談中", "サンプル出荷": "商談中", "見積提示": "商談中", "契約交渉": "契約待ち", "取引中": "取引中", "失注": "" })[st]; }
 function b30FromFb(st) { return ({ "商談中": "商談中", "見積提示": "商談中", "サンプル発送": "商談中", "受注": "取引中", "保留": "営業中", "失注": "商談中" })[st] || "営業中"; }
 function b30Date(s) { const t = Date.parse(String(s || "").trim().replace(/\//g, "-").replace(" ", "T")); return isNaN(t) ? 0 : t; }
+function b30LogAt(dv) {
+    const n = new Date();
+    const m = String(dv || "").trim().replace(/\//g, "-").match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if (!m)
+        return n.getTime();
+    const d = new Date(+m[1], +m[2] - 1, +m[3], n.getHours(), n.getMinutes(), n.getSeconds(), n.getMilliseconds());
+    return (d.getFullYear() === +m[1] && d.getMonth() === +m[2] - 1 && d.getDate() === +m[3]) ? d.getTime() : n.getTime();
+}
 function b30Collect() {
     const cur = b30CurTen();
     const M = new Map();
@@ -60014,7 +60043,7 @@ function b30Open(key, tab) {
                 catch (e) {
                     toast("ファイルを保存できませんでした：" + String(e.message || e).slice(0, 60));
                 }
-                const at = b30Date(dv) ? b30Date(dv) + ((new Date()).getHours() * 3600 + (new Date()).getMinutes() * 60) * 1000 : Date.now();
+                const at = b30LogAt(dv);
                 v30Put("bl", v30Id("l"), { bk: key, type: file && !body2 ? "file" : lt, body: body2 || (file ? file.name : ""), at, doc });
                 try {
                     if (typeof logU === "function")
