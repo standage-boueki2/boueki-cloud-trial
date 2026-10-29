@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="718b85e23e2e";
+const BC20_BUILD="deed9b5cc129";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -135381,6 +135381,647 @@ if (typeof v1811Open === "function") {
 if (typeof uxCountUp === "function") {
     uxCountUp = function () { return; };
 }
+var V69F = { pull: null, okAt: 0, demoAt: 0 };
+function v69fOn() { try {
+    return typeof FWDON !== "undefined" && !!FWDON;
+}
+catch (e) {
+    return false;
+} }
+function v69fE(s) { return (typeof esc === "function") ? esc(String(s == null ? "" : s)) : String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v69fM(ja, en, zh, es) { try {
+    const l = (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+    return l === "en" ? en : l === "zh" ? zh : l === "es" ? es : ja;
+}
+catch (e) {
+    return ja;
+} }
+function v69fT(s) { try {
+    return (typeof v33T === "function") ? v33T(s) : s;
+}
+catch (e) {
+    return s;
+} }
+function v69fReal() { try {
+    return typeof v45RealFwd === "function" && v45RealFwd();
+}
+catch (e) {
+    return false;
+} }
+function v69fPub() { try {
+    if (v69fOn())
+        return typeof FWDB !== "undefined" && !!FWDB && FWDB.fk === "pub";
+    return typeof v39IsPublic === "function" && !!v39IsPublic();
+}
+catch (e) {
+    return false;
+} }
+function v69fDemo() { try {
+    return typeof V57DEMO !== "undefined" && !!V57DEMO && !!V57DEMO.on;
+}
+catch (e) {
+    return false;
+} }
+function v69fHm(ms) { const d = new Date(ms); return (d.getMonth() + 1) + "/" + d.getDate() + " " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+function v69fMe() { try {
+    return (typeof fwdCo === "function") ? fwdCo() : ((FWDB && FWDB.profile && FWDB.profile.co) || "");
+}
+catch (e) {
+    return "";
+} }
+function v69fWhy(p) { if (!p)
+    return "net"; if (p.auth === false)
+    return "auth"; if (p.ok === false) {
+    const k = String(p.reason || "err");
+    return /^(disabled|expired|readonly|member)$/.test(k) ? "auth" : k;
+} if (!p.blob)
+    return "empty"; return ""; }
+function v69fWhyTxt(k) {
+    if (k === "auth")
+        return v69fM("このアカウントが同期サーバーで有効になっていません（期限切れ・停止など）。STANDAGE にお知らせください", "This account is not active on the sync server (expired or stopped). Please contact STANDAGE", "此账户在同步服务器上无效（已过期或停用等）。请联系 STANDAGE", "Esta cuenta no está activa en el servidor (vencida o detenida). Avise a STANDAGE");
+    if (k === "session" || k === "kicked")
+        return v69fM("ログインの確かめが切れています（別の端末でのログインなど）。ログインし直してください", "Your sign-in check has expired (e.g. signed in on another device). Please sign in again", "登录确认已失效（例如在其他设备登录）。请重新登录", "La verificación de inicio de sesión caducó. Vuelva a iniciar sesión");
+    if (k === "net")
+        return v69fM("同期サーバーにつながりません（通信を確かめてください）", "Cannot reach the sync server (check the connection)", "无法连接同步服务器（请检查网络）", "No se puede conectar con el servidor (revise la conexión)");
+    return v69fM("同期サーバーから読み込めませんでした（" + k + "）", "Could not load from the sync server (" + k + ")", "无法从同步服务器读取（" + k + "）", "No se pudo cargar del servidor (" + k + ")");
+}
+if (typeof syncCall === "function") {
+    const __sc69f = syncCall;
+    syncCall = function (op, body, opt) {
+        const p = __sc69f.apply(this, arguments);
+        try {
+            if (op === "pull" && body && body.ns === "fwd" && v69fOn() && p && typeof p.then === "function") {
+                return p.then(r => { try {
+                    const k = v69fWhy(r);
+                    V69F.pull = { ok: k ? 0 : 1, why: k, at: Date.now() };
+                    if (!k)
+                        V69F.okAt = Date.now();
+                }
+                catch (e) { } return r; }, e => { try {
+                    V69F.pull = { ok: 0, why: "net", at: Date.now() };
+                }
+                catch (x) { } throw e; });
+            }
+            if (op === "fwd_ver" && v69fOn() && p && typeof p.then === "function") {
+                return p.then(r => {
+                    try {
+                        if (r && r.ok) {
+                            if (!((+r.ver || 0) > (+((typeof SYNC !== "undefined" && SYNC.ver && SYNC.ver.fwd) || 0)))) {
+                                V69F.okAt = Date.now();
+                                if (V69F.pull && !V69F.pull.ok && V69F.pull.why !== "auth")
+                                    V69F.pull = { ok: 1, why: "", at: Date.now() };
+                            }
+                        }
+                        else if (r && r.ok === false) {
+                            const k = v69fWhy(r);
+                            V69F.pull = { ok: 0, why: k, at: Date.now() };
+                            try {
+                                v69fBanner();
+                            }
+                            catch (e) { }
+                        }
+                    }
+                    catch (e) { }
+                    return r;
+                });
+            }
+            if (/^(login|pw_login|pw_resume|pw_otp)$/.test(String(op || "")) && p && typeof p.then === "function") {
+                return p.then(r => { try {
+                    const f = r && r.pre && r.pre.fwd;
+                    if (f && f.blob && f.ok !== false)
+                        V69F.okAt = Date.now();
+                }
+                catch (e) { } return r; });
+            }
+        }
+        catch (e) { }
+        return p;
+    };
+}
+if (typeof syncPullFwd === "function") {
+    const __pl69f = syncPullFwd;
+    syncPullFwd = function (initial) {
+        let k = 0;
+        try {
+            if (v69fOn() && typeof V57DEMO !== "undefined" && V57DEMO && V57DEMO.on && !V57DEMO.adm) {
+                k = V57DEMO.on;
+                V57DEMO.on = 0;
+            }
+        }
+        catch (e) { }
+        let o;
+        try {
+            o = __pl69f.apply(this, arguments);
+        }
+        finally {
+            if (k)
+                V57DEMO.on = k;
+        }
+        return o;
+    };
+}
+function v69fBanner() { try {
+    if (!v69fOn())
+        return;
+    const w = document.getElementById("well");
+    if (!w)
+        return;
+    w.querySelectorAll(".v69fst.warn[role=alert]").forEach(x => x.remove());
+    const h = v69fPullBox();
+    if (!h)
+        return;
+    const ph = w.querySelector(".ph");
+    if (ph)
+        ph.insertAdjacentHTML("afterend", h);
+    else
+        w.insertAdjacentHTML("afterbegin", h);
+}
+catch (e) { } }
+function v69fPullBox() {
+    const P = V69F.pull;
+    if (!P || P.ok)
+        return "";
+    return `<div class="v69fst warn" role="alert" data-noi18n><b>⚠ ${v69fE(v69fM("受信箱を最新にできていません", "The inbox could not be refreshed", "收件箱未能更新", "No se pudo actualizar la bandeja"))}</b>
+    <span>${v69fE(v69fWhyTxt(P.why))}${v69fE(V69F.okAt ? v69fM("。最後に読み込めたのは " + v69fHm(V69F.okAt) + " です（それより新しい依頼は、まだ出ていません）", ". Last loaded at " + v69fHm(V69F.okAt) + " (newer requests are not shown yet)", "。最后一次读取是 " + v69fHm(V69F.okAt) + "（更新的请求尚未显示）", ". Última carga: " + v69fHm(V69F.okAt)) : v69fM("。表示は、この端末に前に残っていた控えです", ". What you see is an older copy on this device", "。显示的是此设备上之前保留的副本", ". Lo que ve es una copia anterior en este equipo"))}</span>
+    <button type="button" class="btn" data-v69repull>${v69fE(v69fM("今すぐ読み直す", "Reload now", "立即重新读取", "Recargar ahora"))}</button></div>`;
+}
+function v69fInboxNote() {
+    if (v69fReal())
+        return "";
+    const R = (typeof FWDB !== "undefined" && FWDB && FWDB.reqs) || [];
+    const last = R.map(r => String(r.d || "")).sort().pop() || "";
+    const dfw = (typeof v60Dfwd === "function") ? v60Dfwd() : 0;
+    const what = dfw ? v69fM("ここに届くのは、お客様デモ用のアカウントや社内のデモ用のアカウントからの依頼のうち、貴社が見積を出した依頼と、貴社を指名した依頼です。", "Requests from the customer demo account and internal demo accounts where you quoted or were named arrive here.", "这里收到的是客户演示账户和公司内部演示账户中，贵司已报价或被指定的请求。", "Aquí llegan las solicitudes de la cuenta demo de clientes y cuentas internas en las que cotizó o fue designado.")
+        : v69fM("体験用の物流会社アカウントに届くのは、お客様デモ用のアカウントからの依頼（3日で消えます）と、どの物流会社も見積を出せなかった区間の依頼（荷主は非公開）です。お客様ごとのトライアル（BC-…）の依頼は本物の物流会社にだけ届き、ここには届きません。", "This trial forwarder account receives requests from the customer demo account (removed after 3 days) and requests for lanes no forwarder could quote (shipper hidden). Requests from customers' own trial accounts (BC-…) go only to real forwarders, not here.", "体验用物流公司账户收到的是客户演示账户的请求（3天后删除）和所有物流公司都无法报价的线路请求（不公开货主）。客户自己的试用账户（BC-…）的请求只发给真实物流公司，不会到这里。", "Esta cuenta de prueba recibe solicitudes de la cuenta demo de clientes (se borran a los 3 días) y de trayectos que nadie pudo cotizar (cargador oculto). Las de las cuentas de prueba propias de los clientes (BC-…) solo van a transitarios reales.");
+    const when = V69F.okAt ? v69fM("最後に読み直した時刻 " + v69fHm(V69F.okAt) + "（開いている間は数秒ごとに確かめます）", "Last refreshed " + v69fHm(V69F.okAt) + " (checked every few seconds while open)", "最后刷新 " + v69fHm(V69F.okAt) + "（打开期间每隔几秒检查）", "Última actualización " + v69fHm(V69F.okAt)) : "";
+    return `<div class="v69fst info" role="note" data-noi18n><b>${v69fE(v69fM("ここに届く依頼", "Requests that arrive here", "这里收到的请求", "Solicitudes que llegan aquí"))}</b><span>${v69fE(what)}${last ? v69fE(v69fM(" いちばん新しい依頼の受信日：" + last + "。", " Newest request: " + last + ".", " 最新请求日期：" + last + "。", " Solicitud más reciente: " + last + ".")) : ""}${when ? " " + v69fE(when) : ""}</span></div>`;
+}
+function v69fChatKey() { try {
+    return "bc20_v69fchat_" + String((typeof SYNC !== "undefined" && SYNC && SYNC.kid) || "x").slice(0, 16);
+}
+catch (e) {
+    return "bc20_v69fchat_x";
+} }
+function v69fChatClr() { try {
+    return +localStorage.getItem(v69fChatKey()) || 0;
+}
+catch (e) {
+    return 0;
+} }
+function v69fChatCut(F) { try {
+    const c = v69fChatClr();
+    if (c && F && Array.isArray(F.chat))
+        F.chat = F.chat.filter(m => (+(m && m.ts) || 0) > c);
+}
+catch (e) { } return F; }
+if (typeof fwdMerge === "function") {
+    const __fm69f = fwdMerge;
+    fwdMerge = function () { return v69fChatCut(__fm69f.apply(this, arguments)); };
+}
+if (typeof fwdChatHtml === "function") {
+    const __ch69f = fwdChatHtml;
+    fwdChatHtml = function () { try {
+        if (typeof FWDB !== "undefined" && FWDB)
+            v69fChatCut(FWDB);
+    }
+    catch (e) { } return __ch69f.apply(this, arguments); };
+}
+function v69fChatClear() {
+    try {
+        localStorage.setItem(v69fChatKey(), String(Date.now()));
+    }
+    catch (e) { }
+    try {
+        FWDB.chat = [];
+        if (typeof fwdSave === "function")
+            fwdSave();
+    }
+    catch (e) { }
+    try {
+        if (typeof toast === "function")
+            toast(v69fM("この端末の AI物流マンの相談の履歴を消しました", "Cleared the AI Logistics chat history on this device", "已清除此设备上的 AI 物流专员咨询记录", "Se borró el historial de consultas en este equipo"));
+    }
+    catch (e) { }
+    try {
+        fwdRender();
+    }
+    catch (e) { }
+}
+function v69fShareNote(pg) {
+    if (v69fReal() || !v69fPub())
+        return "";
+    if (v69fDemo())
+        return `<div class="v69fst info" role="note" data-noi18n><b>${v69fE(v69fM("デモ用の物流会社アカウント", "Demo forwarder account", "演示用物流公司账户", "Cuenta de transitario de demostración"))}</b><span>${v69fE(v69fM("この PC での変更（レート・B/L・担当と状態・依頼ページ・AI相談）はサーバーに保存されず、ログアウトするとログインのときの状態に戻ります。荷主からの依頼は数秒ごとに読み直します。", "Changes on this PC (rates, B/L, assignments, request pages, AI chats) are not saved to the server and are reset when you log out. Requests from shippers are reloaded every few seconds.", "此电脑上的更改（费率・提单・负责与状态・请求页面・AI 咨询）不会保存到服务器，注销后恢复到登录时的状态。货主的请求每隔几秒重新读取。", "Los cambios en este PC no se guardan en el servidor y se restablecen al cerrar sesión. Las solicitudes se recargan cada pocos segundos."))}</span></div>`;
+    const how = pg === "fai" ? v69fM("相談の履歴は「相談の履歴を消す（この端末）」で、この端末の画面から消せます。", "Use “Clear chat history (this device)” to clear the chat on this device.", "可通过「清除咨询记录（此设备）」清除此设备上的记录。", "Use «Borrar historial (este equipo)» para borrarlo en este equipo.")
+        : pg === "frates" ? v69fM("足したレートは、行の「削除」で外せます。", "Remove added rates with “Delete” on the row.", "添加的费率可通过行的「删除」移除。", "Quite las tarifas añadidas con «Eliminar».")
+            : pg === "fcase" ? v69fM("B/L・出荷の情報は「B/L・出荷の情報を入れる」で消して保存し直せます。担当と状態は「担当・状態を変える」で戻せます。", "Clear B/L info via “Enter B/L / shipment info”; change assignments via “Change assignment / status”.", "提单信息可在「填写提单・出货信息」中清除后重新保存；负责与状态可通过「更改负责・状态」改回。", "Borre los datos de B/L en «Introducir B/L» y cambie el estado con «Cambiar responsable/estado».")
+                : "";
+    return `<div class="v69fst warn" role="note" data-noi18n><b>${v69fE(v69fM("体験用の物流会社アカウント（だれでも入れる共有のアカウント）：操作は残ります", "Shared trial forwarder account: changes are kept", "体验用物流公司账户（共享）：操作会保留", "Cuenta de transitario de prueba compartida: los cambios se conservan"))}</b><span>${v69fE(v69fM("ここでの操作（レートの追加・B/L・担当と状態・依頼ページ・AI相談）はサーバーに保存され、ほかの体験の人にも見えます。ログアウトしても消えず、初期の状態には戻りません。", "Changes here (added rates, B/L, assignments, request pages, AI chats) are saved on the server and visible to other trial users. They stay after you log out and are not reset.", "此处的操作（添加费率・提单・负责与状态・请求页面・AI 咨询）会保存到服务器，其他体验者也能看到。注销后也不会消失，不会恢复初始状态。", "Los cambios se guardan en el servidor y los ven otros usuarios de prueba. No se borran al cerrar sesión."))}${how ? " " + v69fE(how) : ""}</span></div>`;
+}
+function v69fOwnMark(id) {
+    try {
+        if (!v69fOn() || v69fReal())
+            return;
+        const pn = document.getElementById("pn");
+        if (!pn)
+            return;
+        const me = v69fMe();
+        if (!me)
+            return;
+        const lab = (own) => `<span class="p ${own ? "hi" : "lo"} v69fown" style="font-size:8.5px;margin-left:3px" data-noi18n>${v69fE(own ? v69fM("自社", "Your company", "本公司", "Su empresa") : v69fM("他社", "Other forwarder", "其他公司", "Otro"))}</span>`;
+        let any = false;
+        pn.querySelectorAll(".fwdcmp tbody tr").forEach(tr => { const b = tr.querySelector("td b"); if (!b || tr.querySelector(".v69fown"))
+            return; const co = b.textContent.trim(); b.insertAdjacentHTML("afterend", lab(co === me)); any = true; });
+        pn.querySelectorAll(".fwdleg").forEach(cd => {
+            cd.querySelectorAll("span > b, .fwdrec > b").forEach(b => {
+                if (b.dataset.v69f)
+                    return;
+                const isRec = b.parentElement && b.parentElement.classList.contains("fwdrec");
+                if (!isRec && !/^(選択中|仮押さえ先)/.test(String(b.parentElement && b.parentElement.textContent || "").trim()))
+                    return;
+                const t = b.textContent.replace(/^🤖\s*AI物流マンの推奨：/, "").trim();
+                if (!t)
+                    return;
+                b.dataset.v69f = "1";
+                b.insertAdjacentHTML("afterend", lab(t === me));
+                any = true;
+            });
+        });
+        const body = pn.querySelector(".dwbody");
+        if (any && body && !body.querySelector(".v69fownnote"))
+            body.insertAdjacentHTML("afterbegin", `<p class="nn v69fownnote" data-noi18n>${v69fE(v69fM(`貴社（${me}）の見積は「自社」の札の行です。デモ物流①〜⑤株式会社などは、体験の世界の別の物流会社（架空）です。推奨・選択中が他社のときは、他社の札が付きます。`, `Your company's (${me}) quotes are the rows marked “Your company”. Demo Logistics ①–⑤ etc. are other (fictitious) forwarders.`, `贵司（${me}）的报价是标有「本公司」的行。演示物流①〜⑤等是体验环境中的其他（虚构）物流公司。`, `Las cotizaciones de su empresa (${me}) son las filas marcadas «Su empresa». Demo Logística ①–⑤ son otros transitarios (ficticios).`))}</p>`);
+    }
+    catch (e) { }
+}
+function v69fShipNote(id) {
+    try {
+        if (v69fOn())
+            return;
+        const F = (typeof FWDB !== "undefined") ? FWDB : null;
+        if (!F)
+            return;
+        const pn = document.getElementById("pn");
+        const body = pn && pn.querySelector(".dwbody");
+        if (!body || body.querySelector(".v69fdeliv"))
+            return;
+        const r = (F.reqs || []).find(x => x && x.id === id);
+        if (!r)
+            return;
+        let t = "";
+        if (F.f2l === 1 && F.w === "real")
+            t = v69fM("この依頼は、貿易クラウドに登録している本物の物流会社に届きます。体験用の物流会社アカウント（デモ物流株式会社）には届きません。", "This request goes to real forwarders registered on Boeki Cloud. It does not reach the trial forwarder account.", "此请求发送给在贸易云登记的真实物流公司，不会到达体验用物流公司账户。", "Esta solicitud va a transitarios reales registrados. No llega a la cuenta de prueba.");
+        else if (F.f2l === 1 && F.w === "pub" && v69fDemo()) {
+            const S = (typeof V59RT !== "undefined" && V59RT && V59RT.ds) || {};
+            const m = +r._m || 0;
+            if (S.ok && S.ok >= m - 2000)
+                t = v69fM("この依頼は、体験用の物流会社（デモ物流株式会社）の受信箱に届きました（3日で消えます）。", "This request reached the trial forwarder inbox (removed after 3 days).", "此请求已送达体验用物流公司的收件箱（3天后删除）。", "La solicitud llegó a la bandeja del transitario de prueba (se borra a los 3 días).");
+            else if (S.err || S.no)
+                t = v69fM("この依頼を、体験用の物流会社の画面に送れませんでした（" + String(S.err || S.no).slice(0, 60) + "）。通信を確かめて、もう一度開くと送り直します。", "Could not send this request to the trial forwarder (" + String(S.err || S.no).slice(0, 60) + ").", "未能将此请求发送到体验用物流公司（" + String(S.err || S.no).slice(0, 60) + "）。", "No se pudo enviar al transitario de prueba.");
+            else
+                t = v69fM("この依頼は、体験用の物流会社（デモ物流株式会社）の受信箱に送ります（数秒）。", "Sending this request to the trial forwarder inbox (a few seconds).", "正在发送到体验用物流公司的收件箱（数秒）。", "Enviando a la bandeja del transitario de prueba.");
+        }
+        if (t)
+            body.insertAdjacentHTML("afterbegin", `<p class="nn v69fdeliv" data-noi18n>📬 ${v69fE(t)}</p>`);
+    }
+    catch (e) { }
+}
+if (typeof openFwdQuote === "function") {
+    const __oq69f = openFwdQuote;
+    openFwdQuote = function (id) { const o = __oq69f.apply(this, arguments); try {
+        v69fOwnMark(id);
+        v69fShipNote(id);
+    }
+    catch (e) { } return o; };
+}
+if (typeof fwdLaneAgg === "function") {
+    const __la69f = fwdLaneAgg;
+    fwdLaneAgg = function () {
+        const A = __la69f.apply(this, arguments);
+        try {
+            if (v69fReal() || !Array.isArray(A))
+                return A;
+            return A.map(x => (!x || x.nAll != null) ? x : Object.assign({}, x, { nAll: x.n, n: +x.valid || 0, cos: x.cos }));
+        }
+        catch (e) {
+            return A;
+        }
+    };
+}
+if (typeof fwdAggHtml === "function") {
+    const __ag69f = fwdAggHtml;
+    fwdAggHtml = function () {
+        const s = __ag69f.apply(this, arguments);
+        try {
+            if (v69fReal())
+                return s;
+            const A = fwdLaneAgg();
+            const tp = document.createElement("template");
+            tp.innerHTML = String(s);
+            const th = [...tp.content.querySelectorAll("table thead th")].find(x => /^社数/.test(x.textContent.trim()));
+            if (th && !th.querySelector(".v69fth"))
+                th.insertAdjacentHTML("beforeend", `<span class="v69fth" data-noi18n style="display:block;font-weight:400;font-size:9px">${v69fE(v69fM("（有効なレート）", "(valid rates)", "（有效费率）", "(tarifas vigentes)"))}</span>`);
+            [...tp.content.querySelectorAll("table tbody tr")].forEach((tr, i) => {
+                const x = A[i];
+                const td = tr.children[1];
+                if (!x || !td || x.nAll == null || x.nAll === x.n || td.querySelector(".v69fex"))
+                    return;
+                td.insertAdjacentHTML("beforeend", `<br><span class="v69fex" data-noi18n style="font-size:9.5px;color:var(--ink-3)">${v69fE(v69fM(`期限切れだけの ${x.nAll - x.n}社は数えない`, `${x.nAll - x.n} with only expired rates not counted`, `仅有过期费率的 ${x.nAll - x.n} 家不计`, `${x.nAll - x.n} solo con tarifas vencidas no cuentan`))}</span>`);
+            });
+            return tp.innerHTML;
+        }
+        catch (e) {
+            return s;
+        }
+    };
+}
+function v69fNum(s) { const m = String(s == null ? "" : s).replace(/,/g, "").match(/-?\d+(?:\.\d+)?/); return m ? +m[0] : null; }
+function v69fCtn(s) { const m = String(s == null ? "" : s).replace(/,/g, "").match(/(\d+)\s*(?:カートン|箱|ケース|ctns?|cartons?|cs\b)/i); return m ? +m[1] : null; }
+function v69fShared(reqs) {
+    const o = { gw: null, ctn: null, cbm: null, src: "" };
+    (reqs || []).forEach(r => {
+        if (!r)
+            return;
+        const cg = String(r.cargo || "");
+        if (o.gw == null) {
+            const w = +r.weight || null || v69fNum((cg.match(/総重量\s*約?\s*([\d.,]+)\s*kg/) || [])[1]);
+            if (w)
+                o.gw = w;
+        }
+        if (o.ctn == null) {
+            const c = +r.cartons || null || v69fCtn(cg);
+            if (c)
+                o.ctn = c;
+        }
+        if (o.cbm == null) {
+            const v = +r.cbm || null;
+            if (v)
+                o.cbm = v;
+        }
+    });
+    return o;
+}
+function v69fDiff(cs, sh) {
+    const out = [], E = (a, b, t) => a != null && b != null && b > 0 && Math.abs(a - b) / b > t;
+    const gw = v69fNum(cs.gw);
+    if (E(gw, sh.gw, 0.05))
+        out.push(v69fM(`総重量 ${gw} kg（荷主の共有：約${sh.gw} kg）`, `Gross weight ${gw} kg (shipper: approx. ${sh.gw} kg)`, `毛重 ${gw} kg（货主共享：约${sh.gw} kg）`, `Peso bruto ${gw} kg (cargador: aprox. ${sh.gw} kg)`));
+    const ctn = v69fCtn(cs.qty) ?? v69fCtn(cs.pack);
+    if (ctn != null && sh.ctn != null && ctn !== sh.ctn)
+        out.push(v69fM(`カートン ${ctn}（荷主の共有：${sh.ctn}）`, `Cartons ${ctn} (shipper: ${sh.ctn})`, `纸箱 ${ctn}（货主共享：${sh.ctn}）`, `Cajas ${ctn} (cargador: ${sh.ctn})`));
+    const cbm = v69fNum(cs.cbm);
+    if (E(cbm, sh.cbm, 0.1))
+        out.push(v69fM(`容積 ${cbm} m³（荷主の共有：${sh.cbm} m³）`, `Volume ${cbm} m³ (shipper: ${sh.cbm} m³)`, `体积 ${cbm} m³（货主共享：${sh.cbm} m³）`, `Volumen ${cbm} m³ (cargador: ${sh.cbm} m³)`));
+    return out;
+}
+function v69fStLab(st, who) { return st === "done" ? v69fM("対応：完了", "Handling: done", "处理：完成", "Gestión: hecho") : st === "mine" ? v69fM("対応：担当 " + who, "Handling: " + who, "处理：负责 " + who, "Gestión: " + who) : v69fM("対応：未担当", "Handling: unassigned", "处理：未分配", "Gestión: sin asignar"); }
+if (typeof vCase33 === "function") {
+    const __vc69f = vCase33;
+    vCase33 = function () {
+        const s = __vc69f.apply(this, arguments);
+        try {
+            if (!v69fOn() || typeof v33Cases !== "function")
+                return s;
+            const C = v33Cases();
+            const tp = document.createElement("template");
+            tp.innerHTML = String(s);
+            tp.content.querySelectorAll("section.v33case").forEach(sec => {
+                const ed = sec.querySelector("[data-csed]");
+                if (!ed)
+                    return;
+                const cid = ed.dataset.csed;
+                const c = C.find(k => v33CsId(k.key) === cid);
+                if (!c)
+                    return;
+                const cnt = { none: 0, mine: 0, done: 0 };
+                sec.querySelectorAll("ul.v33list > li.v33li").forEach(li => {
+                    const b = li.querySelector(".v33li-m b");
+                    const r = b && c.reqs.find(x => x.id === b.textContent.trim());
+                    if (!r || li.querySelector(".v69fst2"))
+                        return;
+                    const st = (typeof v33FwdState === "function") ? v33FwdState(r) : "none", a = (typeof v33FaOf === "function") ? v33FaOf(r.id) : {};
+                    cnt[st] = (cnt[st] || 0) + 1;
+                    const lv = [...li.children].filter(x => x.classList && x.classList.contains("v33lv")).pop();
+                    if (lv && !/^荷主/.test(lv.textContent)) {
+                        lv.textContent = v69fM("荷主：" + lv.textContent, "Shipper: " + lv.textContent, "货主：" + lv.textContent, "Cargador: " + lv.textContent);
+                        lv.setAttribute("data-noi18n", "");
+                    }
+                    li.insertAdjacentHTML("beforeend", `<span class="v33lv v33lv-${st === "done" ? "good" : st === "mine" ? "warn" : "mute"} v69fst2" data-noi18n>${v69fE(v69fStLab(st, a.who || ""))}</span><button type="button" class="btn g" data-v69fwas="${v69fE(r.id)}" data-noi18n>${v69fE(v69fM("担当・状態を変える", "Change assignment / status", "更改负责・状态", "Cambiar responsable/estado"))}</button>`);
+                });
+                const n = c.reqs.length, h = sec.querySelector(".v33case-h");
+                if (h && !h.querySelector(".v69fcs"))
+                    h.insertAdjacentHTML("beforeend", `<span class="v33lv v33lv-${cnt.done === n ? "good" : "mute"} v69fcs" data-noi18n>${v69fE(cnt.done === n ? v69fM("対応：完了", "Handling: done", "处理：完成", "Gestión: hecho") : v69fM(`対応：完了 ${cnt.done}/${n}`, `Handling: done ${cnt.done}/${n}`, `处理：完成 ${cnt.done}/${n}`, `Gestión: hecho ${cnt.done}/${n}`))}</span>`);
+                const row = sec.querySelector(".v33row");
+                if (row && cnt.done < n && !row.querySelector("[data-v69fcsdone]"))
+                    row.insertAdjacentHTML("beforeend", `<button type="button" class="btn g" data-v69fcsdone="${v69fE(cid)}" data-noi18n>${v69fE(v69fM("この案件を完了にする", "Mark this case done", "将此案件设为完成", "Marcar el caso como hecho"))}</button>`);
+                try {
+                    const cs = (typeof v33One === "function" ? v33One("cs", cid) : null) || {};
+                    const d = v69fDiff(cs, v69fShared(c.reqs));
+                    const dl = sec.querySelector(".v33dl");
+                    if (d.length && dl && !sec.querySelector(".v69fdiff"))
+                        dl.insertAdjacentHTML("afterend", `<p class="v69fdiff" role="note" data-noi18n>⚠ ${v69fE(v69fM("荷主から共有された貨物情報と違います：", "Differs from the cargo info shared by the shipper: ", "与货主共享的货物信息不一致：", "Difiere de la información de carga del cargador: ") + d.join(v69fM("／", " / ", "／", " / ")))}${v69fE(v69fM("。B/L の値と荷主の情報のどちらが正しいか確かめてください。", ". Please check which is correct.", "。请确认提单与货主信息哪个正确。", ". Compruebe cuál es correcto."))}</p>`);
+                }
+                catch (e) { }
+            });
+            return tp.innerHTML;
+        }
+        catch (e) {
+            return s;
+        }
+    };
+}
+if (typeof v33CaseEdit === "function") {
+    const __ce69f = v33CaseEdit;
+    v33CaseEdit = function (id, key) {
+        const r0 = __ce69f.apply(this, arguments);
+        try {
+            if (!v69fOn())
+                return r0;
+            const c = (typeof v33Cases === "function" ? v33Cases() : []).find(k => v33CsId(k.key) === id);
+            const sh = v69fShared(c && c.reqs);
+            const el = document.getElementById("v33sheet");
+            const bd = el && el.querySelector(".v33sh-bd");
+            if (bd && !bd.querySelector(".v69fshref") && (sh.gw || sh.ctn || sh.cbm)) {
+                const parts = [sh.ctn ? v69fM(sh.ctn + "カートン", sh.ctn + " cartons", sh.ctn + "纸箱", sh.ctn + " cajas") : "", sh.gw ? v69fM("総重量 約" + sh.gw + "kg", "gross approx. " + sh.gw + " kg", "毛重约" + sh.gw + "kg", "peso aprox. " + sh.gw + " kg") : "", sh.cbm ? sh.cbm + "m³" : ""].filter(Boolean);
+                bd.insertAdjacentHTML("afterbegin", `<p class="nn v69fshref" data-noi18n>${v69fE(v69fM("荷主から共有された貨物情報：", "Cargo info shared by the shipper: ", "货主共享的货物信息：", "Carga compartida por el cargador: ") + parts.join("・"))}${v69fE(v69fM("（保存したとき、違う値があれば案件のカードに知らせます）", " (differences are flagged on the case card)", "（保存后如有不同会在案件卡片上提示）", " (las diferencias se marcan en la tarjeta)"))}</p>`);
+            }
+        }
+        catch (e) { }
+        return r0;
+    };
+}
+document.addEventListener("click", e => {
+    try {
+        const b = e.target && e.target.closest && e.target.closest("[data-v69fwas],[data-v69fcsdone],[data-v69repull],[data-v69chatclr]");
+        if (!b || !v69fOn())
+            return;
+        if (b.dataset.v69fwas) {
+            if (typeof v33FwdAssign === "function")
+                v33FwdAssign(b.dataset.v69fwas);
+            return;
+        }
+        if (b.dataset.v69fcsdone) {
+            const c = (typeof v33Cases === "function" ? v33Cases() : []).find(k => v33CsId(k.key) === b.dataset.v69fcsdone);
+            if (!c)
+                return;
+            const me = (typeof v33Me === "function") ? v33Me() : "";
+            c.reqs.forEach(r => { const a = v33FaOf(r.id); v33FaSet(r.id, Object.assign({ st: "done", who: a.who || me }, a.task && !a.task.done ? { task: Object.assign({}, a.task, { done: 1, doneAt: Date.now(), by: me }) } : {})); });
+            try {
+                if (typeof toast === "function")
+                    toast(v69fM("案件を完了にしました（受信箱の状態も完了）", "Case marked done (also in the inbox)", "案件已设为完成（收件箱状态也已完成）", "Caso marcado como hecho"));
+            }
+            catch (x) { }
+            try {
+                fwdRender();
+            }
+            catch (x) { }
+            return;
+        }
+        if (b.dataset.v69repull !== undefined) {
+            b.disabled = true;
+            Promise.resolve(syncPullFwd(false)).catch(() => { }).then(() => { try {
+                fwdRender();
+            }
+            catch (x) { } });
+            return;
+        }
+        if (b.dataset.v69chatclr !== undefined) {
+            v69fChatClear();
+            return;
+        }
+    }
+    catch (x) { }
+}, true);
+if (typeof v33Sheet === "function") {
+    const __sh69f = v33Sheet;
+    v33Sheet = function (o) {
+        const el = __sh69f.apply(this, arguments);
+        try {
+            if (o && o.title === "新しい依頼" && el && v69fOn() && (v69fPub() || v69fDemo())) {
+                const bd = el.querySelector(".v33sh-bd");
+                if (bd && !bd.querySelector(".v69frq"))
+                    bd.insertAdjacentHTML("afterbegin", `<div class="v69fst warn v69frq" role="note" data-noi18n>⚠ ${v69fE(v69fM("体験用の物流会社アカウント（共有）では、依頼ページのリンクは試用だけです。相手（荷主）はこのリンクを開けません。「相手の画面を試す」で、相手の画面と回答の流れをこの端末の中で体験できます。お客様ごとの物流会社アカウントでは、相手がログインなしで開けます。", "With the shared trial forwarder account, request-page links are for trial only. The shipper cannot open this link. Use “Try the other party's screen” on this device. With your own forwarder account, the other party can open it without logging in.", "在体验用物流公司账户（共享）中，请求页面链接仅供试用，货主无法打开。可通过「试用对方画面」在此设备上体验。使用贵司自己的物流公司账户时，对方无需登录即可打开。", "Con la cuenta de transitario de prueba compartida, los enlaces son solo de prueba; el cargador no puede abrirlos. Use «Probar la pantalla» en este equipo."))}</div>`);
+                const ok = el.querySelector("[data-rqok]");
+                if (ok && !ok.dataset.v69f) {
+                    ok.dataset.v69f = "1";
+                    ok.textContent = v69fM("試用のリンクを作る（相手は開けません）", "Create a trial link (the other party cannot open it)", "创建试用链接（对方无法打开）", "Crear enlace de prueba (no se puede abrir)");
+                    ok.setAttribute("data-noi18n", "");
+                }
+            }
+        }
+        catch (e) { }
+        return el;
+    };
+}
+const V69F_MKT = /相場|考え方|妥当|適正|高い|安い|割高|割安|水準|扱い|比べ|比較|なぜ|理由|どう思|評価/;
+const V69F_OPS = /どこ(で|から|に|を)|どうやって|どうすれば|どうしたら|手順|方法|やり方|画面|ボタン|操作/;
+if (typeof v422Howto === "function") {
+    const __hw69f = v422Howto;
+    v422Howto = function (q) { try {
+        const s = String(q || "");
+        if (V69F_MKT.test(s) && !V69F_OPS.test(s))
+            return null;
+    }
+    catch (e) { } return __hw69f.apply(this, arguments); };
+}
+function v69fMktAns(q) {
+    if (v69fReal() || typeof FWDB === "undefined" || !FWDB || typeof fwdLaneAgg !== "function")
+        return null;
+    const s = String(q || "");
+    if (!/相場|妥当|適正|高い|安い|割高|割安|水準|扱い/.test(s))
+        return null;
+    const P = (typeof FWD_POD !== "undefined" && FWD_POD) || {};
+    const ctyHit = Object.keys(P).find(c => s.includes(c)) || null;
+    const podHit = [...new Set((FWDB.rates || []).map(r => r.pod).filter(Boolean))].find(p => p.length >= 2 && s.includes(p));
+    const key = podHit || (ctyHit && P[ctyHit]) || ctyHit;
+    if (!key)
+        return null;
+    const md = (s.match(/LCL|FCL20|FCL40|AIR|COURIER/i) || [""])[0].toUpperCase();
+    const R = (FWDB.rates || []).filter(r => r && (r.pod === key || String(r.pod || "").includes(key)) && (!md || String(r.mode || "").toUpperCase() === md) && (typeof fwdRateValid !== "function" || fwdRateValid(r)));
+    if (!R.length)
+        return null;
+    const me = v69fMe(), E = v69fE, Y = x => "¥" + Math.round(+x || 0).toLocaleString();
+    const jp = r => (typeof fwdRateJpy === "function") ? fwdRateJpy(r) : (+r.price || 0);
+    const ps = R.map(jp).sort((a, b) => a - b);
+    const own = R.filter(r => r.co === me).sort((a, b) => jp(a) - jp(b))[0];
+    const typed = (s.match(/[¥￥]\s*([\d,]+)/) || [])[1];
+    const tv = typed ? +typed.replace(/,/g, "") : null;
+    let a = `<b>${E(ctyHit || podHit)}向け${md ? "（" + E(md) + "）" : ""}</b>の登録レート（貿易クラウドの登録データ・有効なものだけ）：<br>` + R.slice(0, 8).map(r => `・${E(r.co || me)}${r.co === me ? "（自社）" : ""}：${E(r.pol)}→${E(r.pod)} ${E(r.cur || "¥")}${(+r.price || 0).toLocaleString()}${E(r.unit || "")}・約${+r.tt || "—"}日・有効期限 ${E(r.valid || "")}`).join("<br>");
+    a += `<br>登録の幅：${Y(ps[0])}〜${Y(ps[ps.length - 1])}${E(R[0].unit || "")}（${R.length}本）`;
+    if (own)
+        a += `<br>自社の登録：<b>${E(own.cur || "¥")}${(+own.price || 0).toLocaleString()}${E(own.unit || "")}</b>（登録の中で ${ps.filter(x => x < jp(own)).length + 1}番目に安い）。見積では、この単価×容積（混載は m³）に THC等諸掛と書類費を足した合計を出し、相見積では価格・所要日数・有効期限の総合点で並べます。`;
+    if (tv && own && tv !== Math.round(+own.price || 0))
+        a += `<br>⚠ 質問の ¥${tv.toLocaleString()} と、登録の ${(+own.price || 0).toLocaleString()} が違います。登録を直すときは「物流レート管理」で同じ区間を登録し直すと置き換わります。`;
+    a += `<br><b>外の市場の相場</b>（ほかの物流会社の一般の運賃・指数）は、登録データに無いため判断できません（要確認）。`;
+    return { a, c: `根拠：登録レート ${R.length}本（貿易クラウドの登録データ・内蔵の計算。外の相場は使っていません）` };
+}
+if (typeof fwdBrain === "function") {
+    const __br69f = fwdBrain;
+    fwdBrain = function (q) { let o = null; try {
+        o = v69fMktAns(q);
+    }
+    catch (e) {
+        o = null;
+    } return o || __br69f.apply(this, arguments); };
+}
+if (typeof v33AnsDecorate === "function") {
+    const __ad69f = v33AnsDecorate;
+    v33AnsDecorate = function () {
+        let h = __ad69f.apply(this, arguments);
+        try {
+            if (v69fOn() && /class="v33cant"/.test(String(h)) && !/class="v33refs"/.test(String(h))) {
+                const map = (typeof V68F !== "undefined" && V68F && Array.isArray(V68F.map) && V68F.map.length) ? V68F.map : ((typeof V33ANS !== "undefined" && V33ANS && V33ANS.map) || []);
+                if (map.length)
+                    h += `<details class="v33refs v69fchk" open><summary data-noi18n>${v69fE(v69fM(`調べた社内データ（${map.length}）・答えに使える根拠はありませんでした`, `Data checked (${map.length}) · no usable basis found`, `查阅的内部数据（${map.length}）・未找到可用依据`, `Datos revisados (${map.length}) · sin base utilizable`))}</summary><ol>${map.map(r => `<li><span class="v33refn">${+r.n || ""}</span>${v69fE(r.h || "")}</li>`).join("")}</ol></details>`;
+            }
+        }
+        catch (e) { }
+        return h;
+    };
+}
+if (typeof fwdRender === "function") {
+    const __fr69f = fwdRender;
+    fwdRender = function () {
+        const o = __fr69f.apply(this, arguments);
+        try {
+            if (!v69fOn())
+                return o;
+            const w = document.getElementById("well");
+            if (!w)
+                return o;
+            const pg = (typeof fwdCur !== "undefined" && fwdCur) || "finbox";
+            const ph = w.querySelector(".ph");
+            w.querySelectorAll(".v69fst").forEach(x => { if (!x.closest(".v33sh"))
+                x.remove(); });
+            const parts = [v69fPullBox(), pg === "finbox" ? v69fInboxNote() : "", /^(frates|fcase|fai|frq)$/.test(pg) ? v69fShareNote(pg) : ""].filter(Boolean).join("");
+            if (parts) {
+                if (ph)
+                    ph.insertAdjacentHTML("afterend", parts);
+                else
+                    w.insertAdjacentHTML("afterbegin", parts);
+            }
+            if (pg === "fai" && !w.querySelector("[data-v69chatclr]")) {
+                const h3 = [...w.querySelectorAll(".c h3")].find(x => x.textContent.trim() === "AI物流マン");
+                const row = h3 && h3.parentElement;
+                if (row)
+                    row.insertAdjacentHTML("beforeend", `<button type="button" class="btn g" data-v69chatclr style="padding:3px 9px;font-size:10.5px" data-noi18n>${v69fE(v69fM("相談の履歴を消す（この端末）", "Clear chat history (this device)", "清除咨询记录（此设备）", "Borrar historial (este equipo)"))}</button>`);
+            }
+        }
+        catch (e) { }
+        return o;
+    };
+}
+(function () {
+    try {
+        const st = document.createElement("style");
+        st.id = "v69fcss";
+        st.textContent = `.v69fst{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 0 10px;padding:9px 12px;border-radius:var(--r2);font-size:11.5px;line-height:1.65;border:1px solid var(--line);background:var(--surface-2)}
+.v69fst b{flex:none}.v69fst span{flex:1 1 260px;min-width:0;color:var(--ink-2);overflow-wrap:anywhere}.v69fst.warn{border-color:var(--warn)}.v69fst.info{border-color:var(--bl);background:var(--bl-soft)}
+.v69fdiff{margin:6px 0;padding:7px 10px;border:1px solid var(--warn);border-radius:var(--r2);background:var(--surface-2);font-size:11.5px;line-height:1.6}
+.v69fdeliv,.v69fownnote,.v69fshref{margin:0 0 8px}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
 try {
     if (typeof v35Restore === "function")
         v35Restore();
