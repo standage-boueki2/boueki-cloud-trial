@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="21a0670590fe";
+const BC20_BUILD="9b18ce898a5a";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -7608,7 +7608,7 @@ function bnCtyBase(c) { const e = BN_CTY.find(x => x[0] === c); return e ? e[1] 
 function bnCtxDb() {
     try {
         const s = bnStats();
-        return `## バイヤーネットワーク・拠点（社内データベース・週次更新・AIから照会可）
+        return `## AIバイヤー開拓・拠点（社内データベース・週次更新・AIから照会可）
 登録バイヤー総数: ${s.total.toLocaleString()}名／${s.countries}か国（別枠で国未設定${BN_CTY_REST.noCty}名）／取引先企業 ${s.companies.toLocaleString()}社／今週の新規追加 +${s.thisWeek}名${s.catNm ? `／自社カテゴリ（${s.catNm}）該当 約${s.catCount.toLocaleString()}名` : ""}
 データの出所: 総数・国別分布・週次追加数は貿易クラウド本番DB（Ver.1）の全件API集計による【実数】（基準日 ${s.asof}）。カテゴリ別の内訳のみ推定シェアによる目安。
 更新サイクル: 本番DBの新規登録を毎週月曜にまとめて反映（前回反映 ${s.lastSync}／次回 ${s.nextSync}）。月曜以外の日に総数が変わらないのは正常で、バグではない。基準日より後の未来週の増加数は、直近8週の実績レンジに基づく見込み値。
@@ -7672,7 +7672,7 @@ function bnAsk(q) {
 カテゴリ別の目安：${esc(bnCatBreak(c))}。<br>
 実績順の上位${rows.length}件（見本${myNm ? "・" + esc(myNm) + "を優先" : ""}）はこちらです。名称・連絡先は<b>つなぐ依頼で相手が承諾すると開示</b>されます。` + tbl(rows) +
             `<p class="nn" style="margin-top:6px">※「相手を探す」の一覧に出るのは、基準登録数のうち<b>業種・国まで開示できる匿名見本</b>です（一覧の件数＝見本数、基準登録数＝実数）。</p>
-絞り込みは「バイヤーネットワーク・拠点」の<b>相手を探す</b>（国・カテゴリ・脈あり度）、コンタクトは各行の<b>直接連絡</b>から。気になるIDがあれば、このまま「${esc(c)}のID ×××に何を提案すべき？」と聞いてください。`;
+絞り込みは「AIバイヤー開拓・拠点」の<b>相手を探す</b>（国・カテゴリ・脈あり度）、コンタクトは各行の<b>直接連絡</b>から。気になるIDがあれば、このまま「${esc(c)}のID ×××に何を提案すべき？」と聞いてください。`;
     }
     else {
         a = `社内バイヤーネットワークの現在の登録は<b>${st.total.toLocaleString()}名／${st.countries}か国</b>（本番DB実数・今週 +${st.thisWeek}名）${st.catNm ? `。うち自社カテゴリ（${esc(st.catNm)}）該当は<b>約${st.catCount.toLocaleString()}名</b>` : ""}。<br>
@@ -12037,7 +12037,7 @@ function ansBuyer(q) {
         if (d)
             return { a: `<b>${esc(d[0])}</b>（${d[1]}・${esc(d[2])}）<br>取扱：${esc(d[3])}／脈あり度 <b>${d[4]}</b>／
       貿易クラウド上の取引実績 ${d[5]}件<br><br>まだ商談記録はありません。
-      「バイヤーネットワーク・拠点」から現地担当に引き合いを依頼できます。`, c: "根拠：バイヤーネットワーク" };
+      「AIバイヤー開拓・拠点」から現地担当に引き合いを依頼できます。`, c: "根拠：バイヤーネットワーク" };
     }
     const fb = D.fb || [];
     if (!fb.length)
@@ -13417,8 +13417,8 @@ function vLegal(p) {
       <button class="btn g" id="legwhich" ${on ? "" : "disabled"}>どの契約書が良いか相談する</button></div>
     <div id="legdraftout"></div>`
         : `<div style="margin-top:10px;padding:12px;border:1.5px dashed var(--line);border-radius:8px;font-size:12px;color:var(--ink-2)">
-      まだ直接メッセージでやり取り中のBuyerがいません。<br>まずは「バイヤーネットワーク・拠点」で「つなぐ依頼」を出すか、自社のバイヤーに直接連絡して、やり取りを始めてください。
-      <div style="margin-top:8px"><button class="btn g" onclick="go('db')">バイヤーネットワーク・拠点を開く</button></div></div>`}
+      まだ直接メッセージでやり取り中のBuyerがいません。<br>まずは「AIバイヤー開拓・拠点」で「つなぐ依頼」を出すか、自社のバイヤーに直接連絡して、やり取りを始めてください。
+      <div style="margin-top:8px"><button class="btn g" onclick="go('db')">AIバイヤー開拓・拠点を開く</button></div></div>`}
    </div>
    <div class="c" id="legdz">
     <h3>③ 契約書をチェックに出す <span class="nt">この版で新規</span></h3>
@@ -13969,7 +13969,7 @@ const PAGES = [
         ic: '<path d="M3 16V9l9-5 9 5v7"/><path d="M3 16l9 5 9-5"/><path d="M12 11v10"/>' },
     { id: "msg", ly: "④", nm: "やりとり", grp: "外とつながる", nw: 1,
         ic: '<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-5.1A8.4 8.4 0 0 1 4 11.5a8.4 8.4 0 0 1 8.5-8.4h.5a8.4 8.4 0 0 1 8 8z"/>' },
-    { id: "db", ly: "④", nm: "バイヤーネットワーク・拠点", grp: "外とつながる",
+    { id: "db", ly: "④", nm: "AIバイヤー開拓・拠点", grp: "外とつながる",
         ic: '<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>' },
 ];
 let PID = null, cur = "up", D = null, upFile = null, shipStep = 0, opsTab = "reg", SHIPQA = [];
@@ -16982,7 +16982,7 @@ function openBaseEdit(i) {
         dwChrome();
     $("#nbPick").onclick = () => {
         if (cur !== "db") {
-            toast("バイヤーネットワーク・拠点の画面で地図が表示されている状態でご利用ください");
+            toast("AIバイヤー開拓・拠点の画面で地図が表示されている状態でご利用ください");
             return;
         }
         closeDW();
@@ -19707,7 +19707,7 @@ function todayStepsOf(x) {
         }
         catch (e) { }
         add("deck", "外国語営業資料を納品レベルに仕上げる", { auto: 1, ok: deckOK, go: "deck", goNm: "外国語 営業資料" });
-        add("db", "バイヤー候補を絞り込む", { go: "db", goNm: "バイヤーネットワーク・拠点" });
+        add("db", "バイヤー候補を絞り込む", { go: "db", goNm: "AIバイヤー開拓・拠点" });
         add("prop", "提案メッセージを作成・送信する", { go: "msg", goNm: "やりとり" });
     }
     else if (M(/同一性|照合|一致|表記|品番/)) {
@@ -19744,7 +19744,7 @@ function todayGoOf(x) {
     const T = (x.t || "") + "｜" + (x.d || "");
     const map = [[/規制|HS|INCI|事前教示/, "ops", "貿易実務・書類・出荷", "reg"],
         [/英語|外国語|営業資料/, "deck", "外国語 営業資料", ""],
-        [/バイヤー|提案|候補/, "db", "バイヤーネットワーク・拠点", ""],
+        [/バイヤー|提案|候補/, "db", "AIバイヤー開拓・拠点", ""],
         [/仕様|価格|MOQ|収集|未登録|充足/, "up", "商品情報を登録", ""],
         [/出荷|見積|輸送|運賃/, "ship", "出荷を進める", ""],
         [/照会|問い合わせ|連絡/, "msg", "やりとり", ""],
@@ -21484,7 +21484,7 @@ const AKEY = "bc20_trial_v1", SKEY = "bc20_ses_v1", DAY = 864e5;
 const NOW = () => Date.now();
 let ADB = null, SES = null, __lastScr = null, admIssued = null;
 const SCN = { up: "商品情報を登録", dash: "ダッシュボード", item: "商品情報", deal: "商談・バイヤー",
-    task: "タスク・進行", ops: "貿易実務・書類・出荷", ai: "AI商社マン", ship: "出荷を進める", msg: "やりとり", db: "バイヤーネットワーク・拠点" };
+    task: "タスク・進行", ops: "貿易実務・書類・出荷", ai: "AI商社マン", ship: "出荷を進める", msg: "やりとり", db: "AIバイヤー開拓・拠点" };
 function emptyU() { return { logins: 0, uploads: 0, aiQ: 0, webQ: 0, fills: 0, screens: {}, lastActive: 0, first: 0, events: [] }; }
 function aSeed() {
     const t = NOW();
@@ -31824,7 +31824,7 @@ function v16CasesAnswer(cty) {
     if (!C.total) {
         const ctys = [...new Set((dd.fb || []).map(f => f.c).filter(Boolean))];
         const regs = Object.keys(dd.regs || {});
-        return { a: `貴社のデータに<b>「${esc(cty)}」向けの記録はまだありません</b>（商談・受注・出荷・規制調査・やりとり・会議メモ・タスク・資料を横断して確認）。<br><br>いまある記録：商談記録 ${(dd.fb || []).length}件${ctys.length ? "（" + esc(ctys.slice(0, 6).join("・")) + "）" : ""}／規制調査 ${regs.length}か国${regs.length ? "（" + esc(regs.slice(0, 6).join("・")) + "）" : ""}／会議メモ ${kbMemoList().length}件。<br><br>${esc(cty)}向けに進めるなら：「商談・バイヤー」で商談記録を残す、「販売先国の選定」で${esc(cty)}を確定して「貿易実務・書類・出荷」の「1 規制を調べる」で関税率・必要書類を確かめる、「バイヤーネットワーク・拠点」で「${esc(cty)}のバイヤーは？」と照会する、が次の一手です。${v16Offline() ? "<br><span style='color:var(--ink-3)'>AIエンジンに接続した端末（PCの管理コンソールで接続、または「AI接続の共有」）では、Web検索と一般的な貿易知識で補足して答えます。</span>" : ""}${(typeof v51CtyBtn === "function") ? v51CtyBtn(cty) : ""}`,
+        return { a: `貴社のデータに<b>「${esc(cty)}」向けの記録はまだありません</b>（商談・受注・出荷・規制調査・やりとり・会議メモ・タスク・資料を横断して確認）。<br><br>いまある記録：商談記録 ${(dd.fb || []).length}件${ctys.length ? "（" + esc(ctys.slice(0, 6).join("・")) + "）" : ""}／規制調査 ${regs.length}か国${regs.length ? "（" + esc(regs.slice(0, 6).join("・")) + "）" : ""}／会議メモ ${kbMemoList().length}件。<br><br>${esc(cty)}向けに進めるなら：「商談・バイヤー」で商談記録を残す、「販売先国の選定」で${esc(cty)}を確定して「貿易実務・書類・出荷」の「1 規制を調べる」で関税率・必要書類を確かめる、「AIバイヤー開拓・拠点」で「${esc(cty)}のバイヤーは？」と照会する、が次の一手です。${v16Offline() ? "<br><span style='color:var(--ink-3)'>AIエンジンに接続した端末（PCの管理コンソールで接続、または「AI接続の共有」）では、Web検索と一般的な貿易知識で補足して答えます。</span>" : ""}${(typeof v51CtyBtn === "function") ? v51CtyBtn(cty) : ""}`,
             c: `根拠：蓄積データを「${cty}」で横断検索（該当0件）` + v16WebNote() };
     }
     const L = [];
@@ -33791,7 +33791,7 @@ const I18N_ROWS = [
     ["ダッシュボード", "Dashboard", "仪表盘", "Panel"], ["商品情報を登録", "Register product", "登记商品信息", "Registrar producto"], ["今日やること", "Today's tasks", "今日待办", "Tareas de hoy"],
     ["商品情報", "Product", "商品信息", "Producto"], ["取り込んだ情報一覧", "Imported sources", "已导入的信息", "Fuentes importadas"], ["商談・バイヤー", "Deals & buyers", "商谈・买家", "Negociaciones y compradores"],
     ["外国語 営業資料", "Sales deck (multilingual)", "外语销售资料", "Material de ventas"], ["タスク・進行", "Tasks & progress", "任务・进度", "Tareas y avance"], ["貿易実務・書類・出荷", "Trade ops · Docs · Shipping", "贸易实务・单证・出货", "Operaciones · Documentos · Envío"],
-    ["契約書関連", "Contracts", "合同相关", "Contratos"], ["AI商社マン", "AI Trade Agent", "AI商社专员", "Agente comercial IA"], ["やりとり", "Messages", "往来沟通", "Mensajes"], ["バイヤーネットワーク・拠点", "Buyer Network & bases", "买家网络・据点", "Red de compradores y bases"],
+    ["契約書関連", "Contracts", "合同相关", "Contratos"], ["AI商社マン", "AI Trade Agent", "AI商社专员", "Agente comercial IA"], ["やりとり", "Messages", "往来沟通", "Mensajes"], ["AIバイヤー開拓・拠点", "Buyer Network & bases", "买家网络・据点", "Red de compradores y bases"],
     ["旧版からの改善", "Improvements from v1", "相对旧版的改进", "Mejoras desde v1"], ["まず見る", "Start here", "先看这里", "Empezar aquí"], ["はじめに", "Getting started", "开始", "Primeros pasos"], ["毎日つかう", "Daily use", "每日使用", "Uso diario"],
     ["データを貯める", "Build your data", "积累数据", "Acumular datos"], ["業務を回す", "Run operations", "推进业务", "Operar"], ["自走する", "Self-driving", "自主运行", "Autónomo"], ["外とつながる", "Connect outside", "对外连接", "Conectar"], ["この版について", "About this version", "关于本版本", "Sobre esta versión"],
     ["出荷を進める", "Proceed to shipping", "推进出货", "Avanzar envío"], ["トライアル管理", "Trial management", "试用管理", "Gestión de pruebas"], ["STANDAGE管理", "STANDAGE admin", "STANDAGE管理", "Admin STANDAGE"], ["物流会社メニュー", "Forwarder menu", "物流公司菜单", "Menú transitario"],
@@ -34163,7 +34163,7 @@ I18N_EL_ROWS.push(["<b>この画面でわかること：</b>アップロード�
     "💡 生成后可在PowerPoint中自由编辑。数值・认证等依据直接来自贸易云的登记数据，<b>资料与实际数据不会不一致</b>。",
     "💡 Tras generarlo puedes editarlo libremente en PowerPoint. Cifras y certificaciones salen de los datos de Trade Cloud, así que <b>el material nunca se desvía de los datos reales</b>."]);
 I18N_PAT2.push({ re: /^📄 (.+) から自動抽出$/, en: "📄 Auto-extracted from $1", zh: "📄 从 $1 自动提取", es: "📄 Extraído automáticamente de $1" }, { re: /^(.+) から取り込み$/, en: "Imported from $1", zh: "从 $1 导入", es: "Importado de $1" }, { re: /^強み(\d+)・価格(\d+)・寸法(\d+)・成分(\d+)$/, en: "Strengths $1 · Prices $2 · Dimensions $3 · Ingredients $4", zh: "优势$1・价格$2・尺寸$3・成分$4", es: "Fortalezas $1 · Precios $2 · Medidas $3 · Ingredientes $4" }, { re: /^(\d+)\/(\d+) 件をAIが参照中$/, en: "AI is using $1/$2", zh: "AI正在参考 $1/$2 项", es: "La IA usa $1/$2" }, { re: /^(\d+)件中 (\d+)件を表示$/, en: "Showing $2 of $1", zh: "显示 $1 件中的 $2 件", es: "Mostrando $2 de $1" }, { re: /^納品可能なレベルに必要な情報が、あと(\d+)項目足りません。$/, en: "$1 more item(s) are needed to reach delivery level.", zh: "距交付级别还缺$1项信息。", es: "Faltan $1 elementos para el nivel de entrega." }, { re: /^🤖 AI商社マンと埋める（必須 残り(\d+)件）$/, en: "🤖 Fill in with the AI (required: $1 left)", zh: "🤖 与AI商社专员补齐（必填 剩余$1项）", es: "🤖 Completar con la IA (obligatorios: quedan $1)" }, { re: /^商品写真(\d+)$/, en: "Product photo $1", zh: "商品照片$1", es: "Foto de producto $1" }, { re: /^資料に入る内容（(.+)）$/, en: I18N_T("What goes into the deck ($1)", [1]), zh: I18N_T("资料包含的内容（$1）", [1]), es: I18N_T("Contenido del material ($1)", [1]) }, { re: /^強み(\d+)件・価格表(\d+)行・(.+?)(\d+)項目・規制(\d+)か国ぶんを自動レイアウトします。写真枠はプレースホルダー（PowerPoint上で貴社の製品写真に差し替え）です。$/, en: I18N_T("Auto-lays out $1 strengths, $2 price rows, $4 spec items ($3) and regulations for $5 countries. Photo frames are placeholders (replace with your photos in PowerPoint).", [3]), zh: I18N_T("自动排版优势$1项・价格表$2行・$3$4项・法规$5国。照片框为占位符（请在PowerPoint中替换为贵公司产品照片）。", [3]), es: I18N_T("Maqueta automáticamente $1 fortalezas, $2 filas de precios, $4 datos ($3) y normativa de $5 países. Los marcos de foto son marcadores (sustitúyelos en PowerPoint).", [3]) });
-I18N_ROWS2.push(["ガントチャート を隠す", "Hide Gantt chart", "隐藏甘特图", "Ocultar Gantt"], ["ガントチャート を表示", "Show Gantt chart", "显示甘特图", "Mostrar Gantt"], ["AIにタスクを作らせる", "Let the AI create tasks", "让AI创建任务", "Que la IA cree tareas"], ["期限切れのタスク", "Overdue tasks", "已逾期的任务", "Tareas vencidas"], ["問題ありません", "All good", "没有问题", "Sin problemas"], ["開始が遅れているタスク", "Tasks started late", "开始延迟的任务", "Tareas con inicio retrasado"], ["1週間以内が期限のタスク", "Tasks due within a week", "一周内到期的任务", "Tareas que vencen en una semana"], ["作業期間中のタスク", "Tasks in work period", "工作期间中的任务", "Tareas en periodo de trabajo"], ["終了済みタスクを非表示", "Hide finished tasks", "隐藏已结束任务", "Ocultar tareas terminadas"], ["タスク名", "Task", "任务名", "Tarea"], ["優先度", "Priority", "优先级", "Prioridad"], ["開始日", "Start", "开始日", "Inicio"], ["終了日", "End", "结束日", "Fin"], ["ステータス", "Status", "状态", "Estado"], ["この案件で起きたこと", "What happened in this case", "本案件的动态", "Qué ha pasado en este caso"], ["誰が・いつ・何をしたかが自動で残ります。担当が代わっても経緯を追えます。", "Who did what, and when, is recorded automatically. The history stays even if the person in charge changes.", "自动记录谁・何时・做了什么。即使负责人更换也能追溯经过。", "Quién hizo qué y cuándo queda registrado automáticamente. El historial se conserva aunque cambie el responsable."], ["商品情報をアップロードしました", "Product information uploaded", "已上传商品信息", "Información del producto subida"], ["タスクはどこから生まれたか", "Where tasks come from", "任务从何而来", "De dónde salen las tareas"], ["現行版は空のタスクを手で作る形でした。この版では、たまったデータからAIが作ります。", "In the current version you created empty tasks by hand. In this version the AI creates them from the data collected.", "现行版需要手动创建空任务。本版中由AI根据积累的数据创建。", "En la versión actual creabas tareas vacías a mano. En esta, la IA las crea a partir de los datos."], ["断られた理由から", "From rejection reasons", "来自被拒绝的理由", "De los motivos de rechazo"], ["失注の原因を解消するタスクを自動生成", "Auto-generates tasks to remove the causes of lost deals", "自动生成消除失单原因的任务", "Genera tareas para eliminar las causas de pérdida"], ["規制調査の警告から", "From regulatory warnings", "来自法规调查的警告", "De las alertas regulatorias"], ["未対応の認証・届出をタスク化", "Turns pending certifications and filings into tasks", "将未处理的认证・申报转为任务", "Convierte certificaciones y trámites pendientes en tareas"], ["受注の確定から", "From confirmed orders", "来自确定的订单", "De los pedidos confirmados"], ["出荷手続きの子タスクを一括生成", "Generates shipping subtasks in bulk", "批量生成出货手续的子任务", "Genera en bloque las subtareas de envío"], ["定例会の日程から", "From regular meeting dates", "来自例会日程", "De las reuniones periódicas"], ["資料準備のタスクを前倒しで生成", "Creates preparation tasks ahead of time", "提前生成资料准备任务", "Crea tareas de preparación con antelación"], ["毎月", "Monthly", "每月", "Mensual"], ["案件数は無制限（タブ表示は4件・外した案件は🔍から再開）", "Unlimited cases (4 shown as tabs; reopen removed ones via 🔍)", "案件数量不限（标签显示4个・移除的案件可从🔍重新打开）", "Casos ilimitados (4 en pestañas; los quitados se reabren con 🔍)"], ["いまどこ？", "Where am I?", "当前位置？", "¿Dónde estoy?"], ["受注の内容を確認", "Confirm order details", "确认订单内容", "Confirmar el pedido"], ["運送会社に見積を頼む", "Request freight quotes", "向货运公司询价", "Pedir cotizaciones de flete"], ["見積を比べる", "Compare quotes", "比较报价", "Comparar cotizaciones"], ["船積書類をつくる", "Prepare shipping documents", "制作装运单证", "Preparar documentos de embarque"], ["データを連携する", "Sync data", "联动数据", "Sincronizar datos"], ["予定を登録する", "Register the schedule", "登记日程", "Registrar el calendario"], ["依頼した見積はここに残ります（パネルを閉じても消えません）。「開く」で交渉記録・国ごとの仮押さえ・再見積へ進めます。複数社の回答がある国は、AI物流マンの推奨と相見積もり一覧から自分で選べます。", "Requested quotes stay here (even after closing the panel). “Open” takes you to negotiation notes, per-country holds and re-quotes. Where several forwarders replied, choose yourself from the AI Logistics pick and the comparison list.", "已发出的询价保留在这里（关闭面板也不会消失）。点“打开”可进入谈判记录・各国暂订・重新询价。有多家回复的国家，可根据AI物流专员推荐和比价列表自行选择。", "Las cotizaciones pedidas se conservan aquí (aunque cierres el panel). “Abrir” lleva a notas de negociación, reservas por país y recotización. Si respondieron varias empresas, elige entre la recomendación IA y la lista comparativa."], ["まだ依頼がありません。「＋ 新しくAI見積を依頼」で、貿易クラウド内の物流会社（AI物流マン）へ見積を出せます。", "No requests yet. Use “＋ New AI quote request” to ask the forwarders inside Trade Cloud (AI Logistics) for quotes.", "尚无询价。通过“＋ 新建AI询价”可向贸易云内的物流公司（AI物流专员）询价。", "Aún no hay solicitudes. Con “＋ Nueva cotización IA” pides presupuesto a los transitarios de Trade Cloud (IA logística)."], ["**太字**・*斜体*・「- 」箇条書き・改行OK", "**bold** · *italic* · “- ” bullets · line breaks OK", "**粗体**・*斜体*・“- ”项目符号・可换行", "**negrita** · *cursiva* · viñetas “- ” · saltos de línea"], ["この物流会社で大丈夫？", "Is this forwarder OK?", "这家物流公司可以吗？", "¿Este transitario está bien?"], ["書類は何が必要？", "Which documents are needed?", "需要哪些单证？", "¿Qué documentos hacen falta?"], ["いつ届きますか？", "When will it arrive?", "什么时候到？", "¿Cuándo llegará?"], ["入金はいつ？", "When is payment due?", "什么时候收款？", "¿Cuándo se cobra?"], ["✎ 受注内容を編集・追加", "✎ Edit / add order details", "✎ 编辑・补充订单内容", "✎ Editar / añadir datos del pedido"], ["✎ このステップを編集", "✎ Edit this step", "✎ 编辑此步骤", "✎ Editar este paso"], ["案件番号", "Case no.", "案件编号", "N.º de caso"], ["お相手", "Buyer", "对方", "Comprador"], ["単価", "Unit price", "单价", "Precio unitario"], ["支払", "Payment", "付款", "Pago"], ["希望着荷", "Requested arrival", "希望到货", "Llegada deseada"], ["手入力がゼロになるのは、すでに情報がたまっているからです。", "Zero manual entry, because the information is already there.", "之所以无需手动输入，是因为信息已经积累完毕。", "Cero entrada manual, porque la información ya está acumulada."], ["（記録はこれから）", "(to be recorded)", "（待记录）", "(por registrar)"], ["商品マスタ（シート②）", "Product master (sheet ②)", "商品主数据（表②）", "Maestro de productos (hoja ②)"], ["重量・箱サイズ・単価", "Weight, carton size, unit price", "重量・箱尺寸・单价", "Peso, caja y precio"], ["車両情報表（シート③）", "Vehicle spec sheet (sheet ③)", "车辆信息表（表③）", "Ficha del vehículo (hoja ③)"], ["成分・アレルゲン", "Ingredients & allergens", "成分・过敏原", "Ingredientes y alérgenos"], ["必要書類・関税率", "Required documents & tariff rate", "所需单证・关税率", "Documentos y arancel"], ["会社情報", "Company info", "公司信息", "Datos de la empresa"], ["住所・輸出者登録番号", "Address & exporter registration no.", "地址・出口商登记号", "Dirección y n.º de exportador"], ["① AI法務に相談する", "① Ask AI Legal", "① 咨询AI法务", "① Consultar a IA Legal"], ["📎 ファイル添付", "📎 Attach file", "📎 添加附件", "📎 Adjuntar archivo"], ["② ひな型が来ない → AI法務が起草", "② No draft from the buyer → AI Legal drafts one", "② 对方不提供模板 → AI法务起草", "② Sin borrador del comprador → IA Legal lo redacta"], ["まだ直接メッセージでやり取り中のBuyerがいません。", "No buyers in direct message conversation yet.", "尚无正在直接通讯的买家。", "Aún no hay compradores con mensajes directos."], ["まずは「バイヤーネットワーク・拠点」から気になるバイヤーに直接連絡し、返信のやり取りを始めてください。", "Start by contacting a buyer directly from “Buyer Network & bases” and get a conversation going.", "请先从“买家网络・据点”直接联系感兴趣的买家，开始往来沟通。", "Empieza contactando a un comprador desde “Red de compradores y bases” y mantén la conversación."], ["バイヤーネットワーク・拠点を開く", "Open Buyer Network & bases", "打开买家网络・据点", "Abrir Red de compradores y bases"], ["③ 契約書をチェックに出す", "③ Submit a contract for review", "③ 提交合同审查", "③ Enviar un contrato a revisión"], ["ここに契約書ファイルをドラッグ＆ドロップ", "Drag & drop contract files here", "将合同文件拖放到这里", "Arrastra aquí los archivos del contrato"], ["またはクリックしてファイルを選択（複数可）", "or click to choose files (multiple OK)", "或点击选择文件（可多个）", "o haz clic para elegir archivos (varios)"], ["Google ドキュメント／スライドのURLから取り込む", "Import from a Google Docs / Slides URL", "从Google文档／幻灯片URL导入", "Importar desde URL de Google Docs / Slides"], ["※ AIレビューは法的助言（弁護士業務）ではなく、社内検討のための参考情報です。重要な契約は締結前に弁護士のリーガルチェックを受けてください。", "※ The AI review is not legal advice (attorney services) but reference information for internal review. Have important contracts checked by a lawyer before signing.", "※ AI审查并非法律意见（律师业务），仅为内部讨论的参考信息。重要合同签署前请由律师进行法律审查。", "※ La revisión IA no es asesoría legal, sino información de referencia interna. Haz revisar los contratos importantes por un abogado antes de firmar."]);
+I18N_ROWS2.push(["ガントチャート を隠す", "Hide Gantt chart", "隐藏甘特图", "Ocultar Gantt"], ["ガントチャート を表示", "Show Gantt chart", "显示甘特图", "Mostrar Gantt"], ["AIにタスクを作らせる", "Let the AI create tasks", "让AI创建任务", "Que la IA cree tareas"], ["期限切れのタスク", "Overdue tasks", "已逾期的任务", "Tareas vencidas"], ["問題ありません", "All good", "没有问题", "Sin problemas"], ["開始が遅れているタスク", "Tasks started late", "开始延迟的任务", "Tareas con inicio retrasado"], ["1週間以内が期限のタスク", "Tasks due within a week", "一周内到期的任务", "Tareas que vencen en una semana"], ["作業期間中のタスク", "Tasks in work period", "工作期间中的任务", "Tareas en periodo de trabajo"], ["終了済みタスクを非表示", "Hide finished tasks", "隐藏已结束任务", "Ocultar tareas terminadas"], ["タスク名", "Task", "任务名", "Tarea"], ["優先度", "Priority", "优先级", "Prioridad"], ["開始日", "Start", "开始日", "Inicio"], ["終了日", "End", "结束日", "Fin"], ["ステータス", "Status", "状态", "Estado"], ["この案件で起きたこと", "What happened in this case", "本案件的动态", "Qué ha pasado en este caso"], ["誰が・いつ・何をしたかが自動で残ります。担当が代わっても経緯を追えます。", "Who did what, and when, is recorded automatically. The history stays even if the person in charge changes.", "自动记录谁・何时・做了什么。即使负责人更换也能追溯经过。", "Quién hizo qué y cuándo queda registrado automáticamente. El historial se conserva aunque cambie el responsable."], ["商品情報をアップロードしました", "Product information uploaded", "已上传商品信息", "Información del producto subida"], ["タスクはどこから生まれたか", "Where tasks come from", "任务从何而来", "De dónde salen las tareas"], ["現行版は空のタスクを手で作る形でした。この版では、たまったデータからAIが作ります。", "In the current version you created empty tasks by hand. In this version the AI creates them from the data collected.", "现行版需要手动创建空任务。本版中由AI根据积累的数据创建。", "En la versión actual creabas tareas vacías a mano. En esta, la IA las crea a partir de los datos."], ["断られた理由から", "From rejection reasons", "来自被拒绝的理由", "De los motivos de rechazo"], ["失注の原因を解消するタスクを自動生成", "Auto-generates tasks to remove the causes of lost deals", "自动生成消除失单原因的任务", "Genera tareas para eliminar las causas de pérdida"], ["規制調査の警告から", "From regulatory warnings", "来自法规调查的警告", "De las alertas regulatorias"], ["未対応の認証・届出をタスク化", "Turns pending certifications and filings into tasks", "将未处理的认证・申报转为任务", "Convierte certificaciones y trámites pendientes en tareas"], ["受注の確定から", "From confirmed orders", "来自确定的订单", "De los pedidos confirmados"], ["出荷手続きの子タスクを一括生成", "Generates shipping subtasks in bulk", "批量生成出货手续的子任务", "Genera en bloque las subtareas de envío"], ["定例会の日程から", "From regular meeting dates", "来自例会日程", "De las reuniones periódicas"], ["資料準備のタスクを前倒しで生成", "Creates preparation tasks ahead of time", "提前生成资料准备任务", "Crea tareas de preparación con antelación"], ["毎月", "Monthly", "每月", "Mensual"], ["案件数は無制限（タブ表示は4件・外した案件は🔍から再開）", "Unlimited cases (4 shown as tabs; reopen removed ones via 🔍)", "案件数量不限（标签显示4个・移除的案件可从🔍重新打开）", "Casos ilimitados (4 en pestañas; los quitados se reabren con 🔍)"], ["いまどこ？", "Where am I?", "当前位置？", "¿Dónde estoy?"], ["受注の内容を確認", "Confirm order details", "确认订单内容", "Confirmar el pedido"], ["運送会社に見積を頼む", "Request freight quotes", "向货运公司询价", "Pedir cotizaciones de flete"], ["見積を比べる", "Compare quotes", "比较报价", "Comparar cotizaciones"], ["船積書類をつくる", "Prepare shipping documents", "制作装运单证", "Preparar documentos de embarque"], ["データを連携する", "Sync data", "联动数据", "Sincronizar datos"], ["予定を登録する", "Register the schedule", "登记日程", "Registrar el calendario"], ["依頼した見積はここに残ります（パネルを閉じても消えません）。「開く」で交渉記録・国ごとの仮押さえ・再見積へ進めます。複数社の回答がある国は、AI物流マンの推奨と相見積もり一覧から自分で選べます。", "Requested quotes stay here (even after closing the panel). “Open” takes you to negotiation notes, per-country holds and re-quotes. Where several forwarders replied, choose yourself from the AI Logistics pick and the comparison list.", "已发出的询价保留在这里（关闭面板也不会消失）。点“打开”可进入谈判记录・各国暂订・重新询价。有多家回复的国家，可根据AI物流专员推荐和比价列表自行选择。", "Las cotizaciones pedidas se conservan aquí (aunque cierres el panel). “Abrir” lleva a notas de negociación, reservas por país y recotización. Si respondieron varias empresas, elige entre la recomendación IA y la lista comparativa."], ["まだ依頼がありません。「＋ 新しくAI見積を依頼」で、貿易クラウド内の物流会社（AI物流マン）へ見積を出せます。", "No requests yet. Use “＋ New AI quote request” to ask the forwarders inside Trade Cloud (AI Logistics) for quotes.", "尚无询价。通过“＋ 新建AI询价”可向贸易云内的物流公司（AI物流专员）询价。", "Aún no hay solicitudes. Con “＋ Nueva cotización IA” pides presupuesto a los transitarios de Trade Cloud (IA logística)."], ["**太字**・*斜体*・「- 」箇条書き・改行OK", "**bold** · *italic* · “- ” bullets · line breaks OK", "**粗体**・*斜体*・“- ”项目符号・可换行", "**negrita** · *cursiva* · viñetas “- ” · saltos de línea"], ["この物流会社で大丈夫？", "Is this forwarder OK?", "这家物流公司可以吗？", "¿Este transitario está bien?"], ["書類は何が必要？", "Which documents are needed?", "需要哪些单证？", "¿Qué documentos hacen falta?"], ["いつ届きますか？", "When will it arrive?", "什么时候到？", "¿Cuándo llegará?"], ["入金はいつ？", "When is payment due?", "什么时候收款？", "¿Cuándo se cobra?"], ["✎ 受注内容を編集・追加", "✎ Edit / add order details", "✎ 编辑・补充订单内容", "✎ Editar / añadir datos del pedido"], ["✎ このステップを編集", "✎ Edit this step", "✎ 编辑此步骤", "✎ Editar este paso"], ["案件番号", "Case no.", "案件编号", "N.º de caso"], ["お相手", "Buyer", "对方", "Comprador"], ["単価", "Unit price", "单价", "Precio unitario"], ["支払", "Payment", "付款", "Pago"], ["希望着荷", "Requested arrival", "希望到货", "Llegada deseada"], ["手入力がゼロになるのは、すでに情報がたまっているからです。", "Zero manual entry, because the information is already there.", "之所以无需手动输入，是因为信息已经积累完毕。", "Cero entrada manual, porque la información ya está acumulada."], ["（記録はこれから）", "(to be recorded)", "（待记录）", "(por registrar)"], ["商品マスタ（シート②）", "Product master (sheet ②)", "商品主数据（表②）", "Maestro de productos (hoja ②)"], ["重量・箱サイズ・単価", "Weight, carton size, unit price", "重量・箱尺寸・单价", "Peso, caja y precio"], ["車両情報表（シート③）", "Vehicle spec sheet (sheet ③)", "车辆信息表（表③）", "Ficha del vehículo (hoja ③)"], ["成分・アレルゲン", "Ingredients & allergens", "成分・过敏原", "Ingredientes y alérgenos"], ["必要書類・関税率", "Required documents & tariff rate", "所需单证・关税率", "Documentos y arancel"], ["会社情報", "Company info", "公司信息", "Datos de la empresa"], ["住所・輸出者登録番号", "Address & exporter registration no.", "地址・出口商登记号", "Dirección y n.º de exportador"], ["① AI法務に相談する", "① Ask AI Legal", "① 咨询AI法务", "① Consultar a IA Legal"], ["📎 ファイル添付", "📎 Attach file", "📎 添加附件", "📎 Adjuntar archivo"], ["② ひな型が来ない → AI法務が起草", "② No draft from the buyer → AI Legal drafts one", "② 对方不提供模板 → AI法务起草", "② Sin borrador del comprador → IA Legal lo redacta"], ["まだ直接メッセージでやり取り中のBuyerがいません。", "No buyers in direct message conversation yet.", "尚无正在直接通讯的买家。", "Aún no hay compradores con mensajes directos."], ["まずは「AIバイヤー開拓・拠点」から気になるバイヤーに直接連絡し、返信のやり取りを始めてください。", "Start by contacting a buyer directly from “Buyer Network & bases” and get a conversation going.", "请先从“买家网络・据点”直接联系感兴趣的买家，开始往来沟通。", "Empieza contactando a un comprador desde “Red de compradores y bases” y mantén la conversación."], ["AIバイヤー開拓・拠点を開く", "Open Buyer Network & bases", "打开买家网络・据点", "Abrir Red de compradores y bases"], ["③ 契約書をチェックに出す", "③ Submit a contract for review", "③ 提交合同审查", "③ Enviar un contrato a revisión"], ["ここに契約書ファイルをドラッグ＆ドロップ", "Drag & drop contract files here", "将合同文件拖放到这里", "Arrastra aquí los archivos del contrato"], ["またはクリックしてファイルを選択（複数可）", "or click to choose files (multiple OK)", "或点击选择文件（可多个）", "o haz clic para elegir archivos (varios)"], ["Google ドキュメント／スライドのURLから取り込む", "Import from a Google Docs / Slides URL", "从Google文档／幻灯片URL导入", "Importar desde URL de Google Docs / Slides"], ["※ AIレビューは法的助言（弁護士業務）ではなく、社内検討のための参考情報です。重要な契約は締結前に弁護士のリーガルチェックを受けてください。", "※ The AI review is not legal advice (attorney services) but reference information for internal review. Have important contracts checked by a lawyer before signing.", "※ AI审查并非法律意见（律师业务），仅为内部讨论的参考信息。重要合同签署前请由律师进行法律审查。", "※ La revisión IA no es asesoría legal, sino información de referencia interna. Haz revisar los contratos importantes por un abogado antes de firmar."]);
 I18N_EL_ROWS.push(["<b>この画面でわかること：</b>いま何が終わっていて、何が遅れているか。棒グラフ（ガントチャート）で、いつまでに何をするかが一目で分かります。",
     "<b>What this page shows:</b> What is done and what is behind. The bar chart (Gantt) shows at a glance what to do by when.",
     "<b>本页可见：</b>目前哪些已完成、哪些延迟。通过条形图（甘特图）一眼看出何时该做什么。",
@@ -34339,7 +34339,7 @@ I18N_ROWS2.push(["宛先メールアドレス（バイヤー）", "Buyer email a
 I18N_ROWS2.push(["ドラッグで高さを変更／ダブルクリックで元の高さに戻す", "Drag to change height / double-click to reset", "拖动调整高度／双击恢复原高度", "Arrastra para cambiar la altura / doble clic para restablecer"]);
 I18N_ROWS2.push(["コンタクト中（一方的なアプローチ）", "Contacting (one-way outreach)", "联系中（单方面接触）", "Contactando (acercamiento unilateral)"], ["コンタクト中", "Contacting", "联系中", "Contactando"], ["商談中", "Negotiating", "洽谈中", "En negociación"], ["サンプル出荷", "Sample shipped", "样品已发", "Muestra enviada"], ["見積提示", "Quotation sent", "已报价", "Cotización enviada"], ["契約交渉", "Contract negotiation", "合同谈判", "Negociación de contrato"], ["取引中", "Trading", "交易中", "En operación"], ["失注", "Lost", "失单", "Perdido"], ["📨 やり取り中のBuyer", "📨 Buyers in conversation", "📨 沟通中的买家", "📨 Compradores en conversación"], ["直接連絡でやり取りしているBuyerの一覧です。交渉ステータス（7段階）は<b>AI商社マンがやり取りから自動判定</b>し、手動でも変更できます。ID・国・業種・本文で検索できます。", "Buyers you are messaging directly. The 7-stage negotiation status is <b>judged automatically by the AI Trade Agent from the conversation</b> and can be changed manually. Search by ID, country, business or message text.", "通过直接联系沟通中的买家列表。7阶段谈判状态由<b>AI商社专员根据往来自动判定</b>，也可手动更改。可按ID、国家、业态、正文搜索。", "Compradores con los que conversa directamente. El estado de negociación (7 etapas) lo <b>determina automáticamente el Agente IA</b> y puede cambiarse a mano. Busque por ID, país, sector o texto."], ["🔍 ID・国・業種・本文で検索", "🔍 Search by ID, country, business, text", "🔍 按ID・国家・业态・正文搜索", "🔍 Buscar por ID, país, sector, texto"], ["🤖 全件を再判定", "🤖 Re-judge all", "🤖 全部重新判定", "🤖 Reevaluar todo"], ["🤖 再判定", "🤖 Re-judge", "🤖 重新判定", "🤖 Reevaluar"], ["交渉ステータス", "Negotiation status", "谈判状态", "Estado de negociación"], ["最終メッセージ", "Last message", "最后一条消息", "Último mensaje"], ["往復", "Messages", "往来", "Mensajes"], ["相手", "Buyer", "对方", "Comprador"], ["自社", "Us", "本公司", "Nosotros"], ["やり取り中のBuyer", "Buyers in conversation", "沟通中的买家", "Compradores en conversación"], ["やり取り中のBuyerは？", "Buyers in conversation?", "沟通中的买家？", "¿Compradores en conversación?"], ["まだやり取り中のBuyerはいません。下の「相手を探す」から<b>直接連絡</b>を送ると、ここに並びます。", "No buyers in conversation yet. Send a <b>direct contact</b> from “Find buyers” below and they will appear here.", "尚无沟通中的买家。在下方“寻找对象”发送<b>直接联系</b>后将显示于此。", "Aún no hay compradores en conversación. Envíe un <b>contacto directo</b> desde “Buscar compradores” y aparecerán aquí."], ["条件に合うBuyerはいません", "No buyers match", "没有符合条件的买家", "Ningún comprador coincide"], ["宛先 未開示", "Address undisclosed", "地址未公开", "Dirección no revelada"], ["手動で変更", "Changed manually", "手动更改", "Cambiado a mano"], ["AI（ルール）", "AI (rules)", "AI（规则）", "IA (reglas)"], ["AI商社マン", "AI Trade Agent", "AI商社专员", "Agente IA"]);
 I18N_ROWS2.push(["🤖 この言語で作り直す", "🤖 Rewrite in this language", "🤖 用此语言重写", "🤖 Reescribir en este idioma"], ["🤖 この言語でAIが作成", "🤖 Write with AI in this language", "🤖 用此语言由AI撰写", "🤖 Redactar con IA en este idioma"]);
-I18N_ROWS2.push(["🤖 AI商社マンが考え中…", "🤖 AI Trade Agent is thinking…", "🤖 AI商社专员思考中…", "🤖 El Agente IA está pensando…"], ["🤖 AI物流マンが考え中…", "🤖 AI Logistics Agent is thinking…", "🤖 AI物流专员思考中…", "🤖 El Agente logístico IA está pensando…"], ["✅ 完了しました", "✅ Done", "✅ 已完成", "✅ Listo"], ["結果を画面に反映しました", "The result is now on screen", "结果已显示在画面上", "El resultado ya está en pantalla"], ["⚠ 応答を得られませんでした", "⚠ No response received", "⚠ 未获得响应", "⚠ Sin respuesta"], ["登録データを読んで回答を考えています", "Reading your registered data to answer", "正在读取登记数据以作答", "Leyendo los datos registrados para responder"], ["Web検索を含めて回答を考えています", "Thinking with web search", "正在结合网络搜索作答", "Pensando con búsqueda web"], ["翻訳しています", "Translating", "翻译中", "Traduciendo"], ["返信案とアドバイスを作成しています", "Drafting a reply and advice", "正在撰写回复草稿和建议", "Redactando respuesta y consejos"], ["交渉ステータスを判定しています", "Judging the negotiation status", "正在判定谈判状态", "Evaluando el estado de negociación"], ["今日やることを調査しています", "Researching today's tasks", "正在调查今日待办", "Investigando las tareas de hoy"], ["商品の強みを提案しています", "Proposing product strengths", "正在提出产品优势", "Proponiendo fortalezas del producto"], ["営業資料を作成しています", "Creating the sales deck", "正在制作营销资料", "Creando el material de ventas"], ["文面を推敲しています", "Polishing the text", "正在润色文本", "Puliendo el texto"], ["添付資料を読んで回答を考えています", "Reading the attachment to answer", "正在阅读附件以作答", "Leyendo el adjunto para responder"], ["この表示を隠す", "Hide this", "隐藏此提示", "Ocultar"], ["⏳ AI商社マンが登録データから語り口（コンセプト・課題・独自性・ターゲット）を要約しています…", "⏳ The AI trader is summarising the narrative (concept, problem, uniqueness, target) from your registered data…", "⏳ AI商社人员正在根据登记数据整理叙述（理念・课题・独特性・目标）…", "⏳ El comercial IA está resumiendo el relato (concepto, problema, singularidad, objetivo) a partir de los datos registrados…"], ["🎯 商品名に一致する画像（商品ページ・alt 由来）", "🎯 Images matching the product name (from product pages / alt text)", "🎯 与产品名一致的图片（来自产品页・alt）", "🎯 Imágenes que coinciden con el producto (páginas de producto / alt)"], ["🏷 ロゴらしき画像（SVGはPNGに変換して取り込みます）", "🏷 Logo candidates (SVG is converted to PNG)", "🏷 疑似Logo的图片（SVG将转换为PNG）", "🏷 Candidatos a logotipo (SVG se convierte a PNG)"], ["公式サイト・Web検索の証拠から会社情報を整理しています", "Compiling company facts from the official site and web search evidence", "正在根据官网与网络检索的证据整理公司信息", "Organizando la información de la empresa a partir del sitio oficial y la búsqueda web"], ["会社リサーチの結果（根拠つき）", "Company research results (with sources)", "公司调研结果（附出处）", "Resultados de la investigación (con fuentes)"], ["資本金", "Capital", "注册资本", "Capital"], ["従業員数", "Employees", "员工人数", "Empleados"], ["法人番号", "Corporate number", "法人编号", "Número de empresa"], ["製造販売元", "Manufacturer / MAH", "生产销售商", "Fabricante"], ["区分・認証", "Category / certifications", "类别・认证", "Categoría / certificaciones"], ["主要製品", "Main products", "主要产品", "Productos principales"], ["所在地（英語）", "Address (English)", "地址（英文）", "Dirección (inglés)"], ["出典", "Source", "出处", "Fuente"], ["補足", "Notes", "补充", "Notas"], ["証拠として読んだページ", "Pages read as evidence", "作为证据读取的页面", "Páginas leídas como evidencia"], ["この結果はAI商社マンの参照データにも保存されました（会社情報の質問に根拠つきで答えます）", "Saved to the AI trader's reference data as well (company questions are answered with sources)", "该结果也已保存到AI商社人员的参考数据中（可附出处回答公司信息问题）", "Guardado también en los datos de referencia del comercial IA (responde con fuentes)"], ["✨ 画質補正", "✨ Enhance", "✨ 画质补正", "✨ Mejorar"], ["↩ 元に戻す", "↩ Restore", "↩ 恢复", "↩ Restaurar"], ["✓ ラインアップに採用", "✓ Added as line-up photo", "✓ 已作为产品阵容照片采用", "✓ Añadido como foto de gama"], ["✗ 不採用", "✗ Rejected", "✗ 未采用", "✗ Rechazado"], ["✓ ロゴに採用", "✓ Set as logo", "✓ 已设为Logo", "✓ Usado como logotipo"], ["✗ ロゴ画像", "✗ Logo image", "✗ Logo图片", "✗ Imagen de logotipo"], ["✗ 登録済みと同じ写真", "✗ Same photo already registered", "✗ 与已登记照片相同", "✗ Misma foto ya registrada"], ["補正中…", "Enhancing…", "补正中…", "Mejorando…"], ["🧩 ラインアップ（同社の別商品）", "🧩 Line-up (another product of the company)", "🧩 产品阵容（同公司其他产品）", "🧩 Gama (otro producto de la empresa)"], ["表紙には使いません", "Not used on the cover", "不用于封面", "No se usa en la portada"], ["🧠 全社版AI商社マン", "🧠 Company-wide AI Trade Agent", "🧠 全公司版AI商社专员", "🧠 Agente IA (versión global)"], ["🏠 個社版AI商社マン", "🏠 Single-company AI Trade Agent", "🏠 单公司版AI商社专员", "🏠 Agente IA (versión individual)"], ["🧠 AI商社マン", "🧠 AI Trade Agent", "🧠 AI商社专员", "🧠 Agente IA"], ["🏠 他社データ", "🏠 Other companies' data", "🏠 其他公司数据", "🏠 Datos de otras empresas"], ["参照しない（個社版）", "Not used (single-company)", "不参照（单公司版）", "No se usan (individual)"], ["🧠 全社の匿名知見（Ver2.0）", "🧠 Anonymised company-wide insights (Ver2.0)", "🧠 全公司匿名洞察（Ver2.0）", "🧠 Conocimiento anónimo global (Ver2.0)"], ["🧠 Ver1.0 本番DBの集計", "🧠 Ver1.0 production DB aggregates", "🧠 Ver1.0 生产库统计", "🧠 Agregados de la BD Ver1.0"], ["未取込", "Not imported", "未导入", "No importado"], ["物流会社（対象外）", "Forwarder (n/a)", "物流公司（不适用）", "Transportista (n/a)"], ["↻ 状態を確認", "↻ Check status", "↻ 查看状态", "↻ Ver estado"], ["▶ 今すぐ全社データを更新", "▶ Update company-wide data now", "▶ 立即更新全公司数据", "▶ Actualizar datos globales ahora"], ["⏰ 週次ジョブを設定", "⏰ Set up the weekly job", "⏰ 设置每周任务", "⏰ Configurar tarea semanal"], ["📥 Ver1.0 集計JSONを取り込む", "📥 Import Ver1.0 aggregates (JSON)", "📥 导入Ver1.0统计JSON", "📥 Importar agregados Ver1.0 (JSON)"], ["匿名化のルールと週次更新のしくみ", "Anonymisation rules and the weekly update", "匿名化规则与每周更新机制", "Reglas de anonimización y actualización semanal"], ["AI商社マンと登録 →", "Register with the AI Trade Agent →", "与AI商社专员一起登记 →", "Registrar con el Agente IA →"], ["AI商社マンと確認 →", "Check with the AI Trade Agent →", "与AI商社专员一起确认 →", "Revisar con el Agente IA →"], ["商品情報で確認 →", "Check in Product info →", "在商品信息中确认 →", "Ver en Información del producto →"], ["このままでOK", "Keep as is", "保持不变", "Dejar como está"], ["✅ 内容をAI商社マンに反映", "✅ Apply to the AI Trade Agent", "✅ 反映到AI商社专员", "✅ Aplicar al Agente IA"], ["🔁 最新の内容で反映し直す", "🔁 Re-apply with the latest content", "🔁 用最新内容重新反映", "🔁 Volver a aplicar con lo último"], ["内容に問題がなければ、AI商社マンに反映", "If the content looks right, apply it to the AI Trade Agent", "内容无误的话，反映到AI商社专员", "Si el contenido es correcto, aplíquelo al Agente IA"], ["✅ この調査内容はAI商社マンに反映済みです", "✅ This research has been applied to the AI Trade Agent", "✅ 此调查内容已反映到AI商社专员", "✅ Esta investigación ya está aplicada al Agente IA"], ["💬 この規制についてAI商社マンに聞く・追加調査を依頼する", "💬 Ask the AI Trade Agent about this regulation or request further research", "💬 向AI商社专员询问此法规・委托补充调查", "💬 Pregunte al Agente IA sobre esta normativa o pida más investigación"], ["🌐 Web検索で追加調査", "🌐 Further research with web search", "🌐 用网络搜索补充调查", "🌐 Investigar más con búsqueda web"], ["まだやり取りはありません。上の候補を押すか、下の入力欄から質問・依頼してください。", "No conversation yet. Tap a suggestion above or type a question or request below.", "尚无对话。请点击上方候选或在下方输入问题・委托。", "Aún no hay conversación. Toque una sugerencia o escriba una pregunta abajo."], ["①の規制当局と制度を、初心者向けにやさしく説明して", "Explain the authority and system in ① in plain terms", "请通俗解释①的监管机构和制度", "Explique la autoridad y el sistema de ① en términos sencillos"], ["②の輸入登録・認証は、何をどの順番で進める？費用と期間も", "For ②, what steps in what order? Include cost and lead time", "②的进口登记・认证按什么顺序办？费用和时间", "Para ②, ¿qué pasos y en qué orden? Con coste y plazo"], ["③の必要書類の入手方法と所要期間を教えて", "How do I obtain the documents in ③ and how long does it take?", "③所需文件如何获取、需要多久", "¿Cómo obtengo los documentos de ③ y cuánto tarda?"], ["④のラベル表示の必須項目を追加調査して", "Research the mandatory label items in ④", "补充调查④标签的必填项目", "Investigue los elementos obligatorios de etiquetado de ④"], ["⑥直近1年の変更点を最新情報で確認して", "Check the latest information on changes in the past year (⑥)", "用最新信息确认⑥近一年的变更", "Verifique con información actual los cambios del último año (⑥)"], ["この商品の成分・仕様で引っかかりそうな点は？", "What in this product's ingredients or specs could be an issue?", "本产品的成分・规格有哪些可能踩坑的点？", "¿Qué de los ingredientes o especificaciones podría ser un problema?"], ["規制の詳細調査（AI・Web検索）", "Detailed regulation research (AI / web)", "法规详细调查（AI・网络搜索）", "Investigación normativa detallada (IA / web)"], ["同じアカウントの他の商品（全件要約＋名指しで詳細）", "Other products on this account (summary of all, details when named)", "同一账户的其他商品（全部摘要＋指名时详情）", "Otros productos de la cuenta (resumen de todos, detalle al nombrarlos)"], ["タスク実行の会話（今日やること）", "Task-run conversations (Today's tasks)", "任务执行的对话（今日待办）", "Conversaciones de ejecución de tareas (Tareas de hoy)"], ["この商品の項目はすべて登録済みです", "All items for this product are already registered", "此商品的项目已全部登记", "Todos los datos de este producto ya están registrados"], ["Web検索は、管理者がAIエンジンを接続すると使えるようになります", "Web search becomes available once the administrator connects an AI engine", "管理员连接AI引擎后即可使用网络搜索", "La búsqueda web estará disponible cuando el administrador conecte un motor de IA"], ["販売先国の選定", "Target market selection", "销售目标国选定", "Selección de países objetivo"], ["🤖 AI商社マンにおまかせ（1クリック）", "🤖 Let the AI Trade Agent decide (one click)", "🤖 交给AI商社专员（一键）", "🤖 Dejar que el Agente IA decida (un clic)"], ["🔎 この候補で分析（4つの観点）", "🔎 Analyse these candidates (4 criteria)", "🔎 按这些候选分析（4个维度）", "🔎 Analizar estos candidatos (4 criterios)"], ["＋ 追加", "＋ Add", "＋ 添加", "＋ Añadir"], ["📥 PPTXレポート", "📥 PPTX report", "📥 PPTX报告", "📥 Informe PPTX"], ["🔄 再分析", "🔄 Re-analyse", "🔄 重新分析", "🔄 Volver a analizar"], ["✅ この3か国で確定（進出希望国・価格・物流・出荷に反映）", "✅ Confirm these 3 countries (applies to target countries, pricing, logistics, shipping)", "✅ 确定这3个国家（反映到目标国・价格・物流・出货）", "✅ Confirmar estos 3 países (se aplica a países objetivo, precios, logística y envíos)"], ["🌏 AI商社マンと販売先国を選ぶ", "🌏 Choose target markets with the AI Trade Agent", "🌏 与AI商社专员选定销售目标国", "🌏 Elegir países objetivo con el Agente IA"], ["🤖 1クリックでおまかせ", "🤖 One-click auto-select", "🤖 一键自动选定", "🤖 Selección automática con un clic"], ["レポートを見る・変更", "View report / change", "查看报告・更改", "Ver informe / cambiar"], ["🌏 販売先国が未確定です", "🌏 Target markets are not yet confirmed", "🌏 销售目标国尚未确定", "🌏 Los países objetivo aún no están confirmados"], ["販売先国を選定・確定する（推奨3か国）", "Select and confirm target markets (3 recommended)", "选定并确定销售目标国（推荐3国）", "Seleccionar y confirmar países objetivo (3 recomendados)"], ["規制を調べる →", "Check regulations →", "查询法规 →", "Ver normativa →"], ["価格設定へ →", "Go to pricing →", "前往定价 →", "Ir a precios →"], ["出荷・物流見積へ →", "Shipping & logistics quotes →", "出货・物流报价 →", "Envíos y cotizaciones logísticas →"], ["バイヤーネットワーク・拠点へ →", "Buyer Network & bases →", "买家网络・据点 →", "Red de compradores y bases →"], ["候補国を決める（最大10か国）", "Decide candidate countries (up to 10)", "确定候选国（最多10国）", "Definir países candidatos (hasta 10)"], ["4つの観点で分析し、推奨3か国を見る", "Analyse on 4 criteria and see the 3 recommended", "按4个维度分析并查看推荐3国", "Analizar con 4 criterios y ver los 3 recomendados"], ["3か国を確定する（進出希望国・価格・物流・出荷に反映）", "Confirm 3 countries (applies to targets, pricing, logistics, shipping)", "确定3国（反映到目标国・价格・物流・出货）", "Confirmar 3 países (se aplica a objetivos, precios, logística y envíos)"], ["販売先国の選定（推奨3か国）", "Target market selection (3 recommended)", "销售目标国选定（推荐3国）", "Selección de países objetivo (3 recomendados)"], ["← 一覧へ戻る", "← Back to the list", "← 返回列表", "← Volver a la lista"], ["🤖 AIで詳しく調査（Web検索）", "🤖 Research in depth with AI (web search)", "🤖 用AI深入调查（网络搜索）", "🤖 Investigar a fondo con IA (búsqueda web)"], ["🔄 AIで再調査（Web検索）", "🔄 Re-research with AI (web search)", "🔄 用AI重新调查（网络搜索）", "🔄 Volver a investigar con IA (búsqueda web)"], ["📥 この国のPPTX", "📥 PPTX for this country", "📥 该国PPTX", "📥 PPTX de este país"], ["✅ 確定に含める", "✅ Include in the confirmed set", "✅ 加入确定", "✅ Incluir en la selección"], ["確定から外す", "Remove from the confirmed set", "从确定中移除", "Quitar de la selección"], ["📄 詳細レポートを見る（規制・市場・競合・チャネル・価格・ロードマップ）", "📄 View the detailed report (regulation, market, competitors, channels, pricing, roadmap)", "📄 查看详细报告（法规・市场・竞争・渠道・价格・路线图）", "📄 Ver el informe detallado (normativa, mercado, competencia, canales, precios, hoja de ruta)"], ["詳細 →", "Details →", "详情 →", "Detalles →"], ["言える表現（OK）", "Allowed claims (OK)", "可用表述（OK）", "Afirmaciones permitidas (OK)"], ["言えない表現（NG）", "Prohibited claims (NG)", "不可用表述（NG）", "Afirmaciones prohibidas (NG)"], ["📋 規制・表示", "📋 Regulation & labelling", "📋 法规・标示", "📋 Normativa y etiquetado"], ["📈 市場性", "📈 Market potential", "📈 市场性", "📈 Potencial de mercado"], ["⚔ 競合TOP3とポジショニング", "⚔ Top-3 competitors & positioning", "⚔ 竞争TOP3与定位", "⚔ Top 3 competidores y posicionamiento"], ["🛒 チャネル", "🛒 Channels", "🛒 渠道", "🛒 Canales"], ["💰 価格根拠", "💰 Pricing rationale", "💰 定价依据", "💰 Fundamento de precios"], ["🗓 参入ロードマップ", "🗓 Entry roadmap", "🗓 进入路线图", "🗓 Hoja de ruta de entrada"], ["⚠ 想定リスクと対応", "⚠ Risks & mitigation", "⚠ 预期风险与应对", "⚠ Riesgos y mitigación"], ["📍 STANDAGE拠点と支援", "📍 STANDAGE bases & support", "📍 STANDAGE据点与支持", "📍 Bases y apoyo de STANDAGE"], ["📚 出典・根拠", "📚 Sources", "📚 出处・依据", "📚 Fuentes"], ["🤖 AI物流マンに質問", "🤖 Ask the AI Logistics Agent", "🤖 向AI物流专员提问", "🤖 Preguntar a la IA logística"], ["🤖 管理者AIに質問", "🤖 Ask the admin AI", "🤖 向管理员AI提问", "🤖 Preguntar a la IA de administración"], ["画面はこのまま、右側で完結します。レート表・見積依頼・履歴を根拠に答えます。やり取りは「AI物流マンに相談」の画面と共通です。", "Stay on this screen; everything happens in the side panel. Answers are based on your rate table, quote requests and history. The conversation is shared with the \"Ask AI Logistics\" screen.", "停留在本页面，在右侧完成。以费率表・报价请求・历史为依据回答。对话与「咨询AI物流专员」页面共享。", "Sin salir de la pantalla: todo ocurre en el panel lateral. Responde según su tabla de tarifas, solicitudes de cotización e historial. La conversación se comparte con la pantalla \"Consultar IA logística\"."], ["画面はこのまま、右側で完結します。台帳・利用状況・端末・AIエンジン設定とコスト・物流会社・通関統計の版を根拠に答えます。やり取りは管理コンソールのカードと共通です。", "Stay on this screen; everything happens in the side panel. Answers are based on the account ledger, usage, devices, AI engine settings and costs, forwarders and the customs-statistics edition. The conversation is shared with the admin console card.", "停留在本页面，在右侧完成。以账户台账・使用情况・设备・AI引擎设置与成本・物流公司・海关统计版本为依据回答。对话与管理控制台的卡片共享。", "Sin salir de la pantalla: todo ocurre en el panel lateral. Responde según el registro de cuentas, uso, dispositivos, ajustes y costes de IA, transitarios y la edición de estadísticas aduaneras. La conversación se comparte con la tarjeta de la consola."], ["AI物流マンの画面へ →", "Go to the AI Logistics screen →", "前往AI物流专员页面 →", "Ir a la pantalla de la IA logística →"], ["AIパネルを開けませんでした", "Could not open the AI panel", "无法打开AI面板", "No se pudo abrir el panel de IA"], ["つづき", "Continued", "继续", "Continuación"], ["🧠 Ver1.0 の内容学習（全社版AI商社マン）", "🧠 Ver1.0 content learning (company-wide AI agent)", "🧠 Ver1.0 内容学习（全公司版AI商社专员）", "🧠 Aprendizaje de contenido Ver1.0 (IA de toda la empresa)"], ["🔑 取込キーを登録", "🔑 Register the ingestion key", "🔑 登记导入密钥", "🔑 Registrar la clave de ingesta"], ["👁 学習内容のプレビュー", "👁 Preview the learned knowledge", "👁 预览学习内容", "👁 Vista previa del conocimiento"], ["週次ジョブのしくみと手順", "How the weekly job works", "每周任务的机制与步骤", "Cómo funciona el trabajo semanal"], ["取込キー（16文字以上・週次ジョブと同じもの）", "Ingestion key (16+ characters, same as the weekly job)", "导入密钥（16字符以上，与每周任务相同）", "Clave de ingesta (16+ caracteres, la misma del trabajo semanal)"], ["👍 役に立った", "👍 Helpful", "👍 有帮助", "👍 Útil"], ["👎 ちがう・直したい", "👎 Not right — correct it", "👎 不对，需要更正", "👎 No es correcto — corregir"], ["覚えさせる", "Teach it", "让它记住", "Enseñar"], ["やめる", "Cancel", "取消", "Cancelar"], ["✓ ありがとうございます。この答え方を参考にします", "✓ Thank you. The AI will use this kind of answer as a reference", "✓ 谢谢。今后会参考这种回答方式", "✓ Gracias. La IA tomará esta respuesta como referencia"], ["✓ 教えていただいた内容を覚えました（次の回答から優先します）", "✓ Learned what you taught (it takes priority from the next answer)", "✓ 已记住您教的内容（下次回答起优先使用）", "✓ Aprendido (tendrá prioridad desde la próxima respuesta)"], ["覚えました。次の回答から反映します", "Learned. It will be reflected from the next answer", "已记住。下次回答起生效", "Aprendido. Se aplicará desde la próxima respuesta"], ["ありがとうございます。この答え方を参考にします", "Thank you. The AI will use this answer as a reference", "谢谢。今后会参考这种回答方式", "Gracias. La IA tomará esta respuesta como referencia"], ["正しい内容を入力してください", "Please enter the correct information", "请输入正确的内容", "Introduzca la información correcta"], ["記憶を見る・直す", "View / edit memory", "查看・修改记忆", "Ver / editar memoria"], ["すべての記憶を見る・直す", "View / edit all memory", "查看・修改全部记忆", "Ver / editar toda la memoria"], ["＋ 新しく教える", "+ Teach something new", "+ 教新的内容", "+ Enseñar algo nuevo"], ["会話の記憶をすべて消す", "Clear all conversation memory", "清除全部对话记忆", "Borrar toda la memoria de conversación"], ["記憶から消しました", "Removed from memory", "已从记忆中删除", "Eliminado de la memoria"], ["会話の記憶を消しました", "Conversation memory cleared", "已清除对话记忆", "Memoria de conversación borrada"], ["教える内容を入力してください", "Please enter what to teach", "请输入要教的内容", "Introduzca lo que desea enseñar"], ["消す", "Delete", "删除", "Eliminar"], ["今日やることを開く", "Open today's tasks", "打开今日待办", "Abrir tareas de hoy"], ["おはようございます", "Good morning", "早上好", "Buenos días"], ["こんにちは", "Hello", "您好", "Hola"], ["こんばんは", "Good evening", "晚上好", "Buenas tardes"], ["自社バイヤー・直接連絡", "Your buyers / direct contacts", "自有买家・直接联系", "Sus compradores / contactos directos"], ["AIの記憶（会話・教えたこと）", "AI memory (conversations / taught facts)", "AI的记忆（对话・教过的内容）", "Memoria de la IA (conversaciones / enseñanzas)"], ["商品データは、サーバーに預ける前にこの端末で暗号化します。", "Product data is encrypted on this device before it is sent to the server.", "商品数据在发送到服务器之前，会先在本设备上加密。", "Los datos del producto se cifran en este dispositivo antes de enviarse al servidor."], ["作業中の控えはこの端末のブラウザに置き、ログアウトすると消えます。", "A working copy is kept in this browser and is deleted when you log out.", "工作副本保存在本浏览器中，退出登录时会被删除。", "Se guarda una copia de trabajo en este navegador, que se elimina al cerrar sesión."], ["AIに質問すると、回答に必要な範囲だけを接続中のAIに送ります。", "When you ask the AI, only what is needed for the answer is sent to the connected AI.", "向AI提问时，只会把回答所需的部分发送给已连接的AI。", "Al preguntar a la IA, solo se envía a la IA conectada lo necesario para responder."], ["レート表と見積依頼は、クラウドを通じて荷主と共有します（各荷主に届くのは、その荷主自身の依頼だけです）。AI物流マンとの相談と操作履歴は、物流会社のアカウントだけが見られます。", "Rate tables and quote requests are shared with shippers through the cloud (each shipper only receives its own requests). Chats with the AI Logistics agent and the operation history are visible only to forwarder accounts.", "运价表和询价请求通过云端与货主共享（每个货主只会收到自己的请求）。与AI物流专员的对话和操作记录只有物流公司账号可以查看。", "Las tarifas y solicitudes se comparten con los cargadores por la nube (cada cargador solo recibe sus propias solicitudes). Las conversaciones con la IA logística y el historial solo son visibles para las cuentas de transitarios."], ["その他の操作", "More actions", "更多操作", "Más acciones"], ["今日やることは", "Today's tasks:", "今日待办：", "Tareas de hoy:"], ["対象の商品：", "Product:", "对象商品：", "Producto:"], ["物流会社への見積依頼は、依頼先の物流会社と共有されます。AIに質問すると、回答に必要な範囲だけを接続中のAIに送ります。", "Quote requests to forwarders are shared with those forwarders. When you ask the AI, only what is needed for the answer is sent to the connected AI.", "发给物流公司的询价会与该物流公司共享。向AI提问时，只会把回答所需的部分发送给已连接的AI。", "Las solicitudes de cotización se comparten con los transitarios destinatarios. Al preguntar a la IA, solo se envía lo necesario para responder."]);
+I18N_ROWS2.push(["🤖 AI商社マンが考え中…", "🤖 AI Trade Agent is thinking…", "🤖 AI商社专员思考中…", "🤖 El Agente IA está pensando…"], ["🤖 AI物流マンが考え中…", "🤖 AI Logistics Agent is thinking…", "🤖 AI物流专员思考中…", "🤖 El Agente logístico IA está pensando…"], ["✅ 完了しました", "✅ Done", "✅ 已完成", "✅ Listo"], ["結果を画面に反映しました", "The result is now on screen", "结果已显示在画面上", "El resultado ya está en pantalla"], ["⚠ 応答を得られませんでした", "⚠ No response received", "⚠ 未获得响应", "⚠ Sin respuesta"], ["登録データを読んで回答を考えています", "Reading your registered data to answer", "正在读取登记数据以作答", "Leyendo los datos registrados para responder"], ["Web検索を含めて回答を考えています", "Thinking with web search", "正在结合网络搜索作答", "Pensando con búsqueda web"], ["翻訳しています", "Translating", "翻译中", "Traduciendo"], ["返信案とアドバイスを作成しています", "Drafting a reply and advice", "正在撰写回复草稿和建议", "Redactando respuesta y consejos"], ["交渉ステータスを判定しています", "Judging the negotiation status", "正在判定谈判状态", "Evaluando el estado de negociación"], ["今日やることを調査しています", "Researching today's tasks", "正在调查今日待办", "Investigando las tareas de hoy"], ["商品の強みを提案しています", "Proposing product strengths", "正在提出产品优势", "Proponiendo fortalezas del producto"], ["営業資料を作成しています", "Creating the sales deck", "正在制作营销资料", "Creando el material de ventas"], ["文面を推敲しています", "Polishing the text", "正在润色文本", "Puliendo el texto"], ["添付資料を読んで回答を考えています", "Reading the attachment to answer", "正在阅读附件以作答", "Leyendo el adjunto para responder"], ["この表示を隠す", "Hide this", "隐藏此提示", "Ocultar"], ["⏳ AI商社マンが登録データから語り口（コンセプト・課題・独自性・ターゲット）を要約しています…", "⏳ The AI trader is summarising the narrative (concept, problem, uniqueness, target) from your registered data…", "⏳ AI商社人员正在根据登记数据整理叙述（理念・课题・独特性・目标）…", "⏳ El comercial IA está resumiendo el relato (concepto, problema, singularidad, objetivo) a partir de los datos registrados…"], ["🎯 商品名に一致する画像（商品ページ・alt 由来）", "🎯 Images matching the product name (from product pages / alt text)", "🎯 与产品名一致的图片（来自产品页・alt）", "🎯 Imágenes que coinciden con el producto (páginas de producto / alt)"], ["🏷 ロゴらしき画像（SVGはPNGに変換して取り込みます）", "🏷 Logo candidates (SVG is converted to PNG)", "🏷 疑似Logo的图片（SVG将转换为PNG）", "🏷 Candidatos a logotipo (SVG se convierte a PNG)"], ["公式サイト・Web検索の証拠から会社情報を整理しています", "Compiling company facts from the official site and web search evidence", "正在根据官网与网络检索的证据整理公司信息", "Organizando la información de la empresa a partir del sitio oficial y la búsqueda web"], ["会社リサーチの結果（根拠つき）", "Company research results (with sources)", "公司调研结果（附出处）", "Resultados de la investigación (con fuentes)"], ["資本金", "Capital", "注册资本", "Capital"], ["従業員数", "Employees", "员工人数", "Empleados"], ["法人番号", "Corporate number", "法人编号", "Número de empresa"], ["製造販売元", "Manufacturer / MAH", "生产销售商", "Fabricante"], ["区分・認証", "Category / certifications", "类别・认证", "Categoría / certificaciones"], ["主要製品", "Main products", "主要产品", "Productos principales"], ["所在地（英語）", "Address (English)", "地址（英文）", "Dirección (inglés)"], ["出典", "Source", "出处", "Fuente"], ["補足", "Notes", "补充", "Notas"], ["証拠として読んだページ", "Pages read as evidence", "作为证据读取的页面", "Páginas leídas como evidencia"], ["この結果はAI商社マンの参照データにも保存されました（会社情報の質問に根拠つきで答えます）", "Saved to the AI trader's reference data as well (company questions are answered with sources)", "该结果也已保存到AI商社人员的参考数据中（可附出处回答公司信息问题）", "Guardado también en los datos de referencia del comercial IA (responde con fuentes)"], ["✨ 画質補正", "✨ Enhance", "✨ 画质补正", "✨ Mejorar"], ["↩ 元に戻す", "↩ Restore", "↩ 恢复", "↩ Restaurar"], ["✓ ラインアップに採用", "✓ Added as line-up photo", "✓ 已作为产品阵容照片采用", "✓ Añadido como foto de gama"], ["✗ 不採用", "✗ Rejected", "✗ 未采用", "✗ Rechazado"], ["✓ ロゴに採用", "✓ Set as logo", "✓ 已设为Logo", "✓ Usado como logotipo"], ["✗ ロゴ画像", "✗ Logo image", "✗ Logo图片", "✗ Imagen de logotipo"], ["✗ 登録済みと同じ写真", "✗ Same photo already registered", "✗ 与已登记照片相同", "✗ Misma foto ya registrada"], ["補正中…", "Enhancing…", "补正中…", "Mejorando…"], ["🧩 ラインアップ（同社の別商品）", "🧩 Line-up (another product of the company)", "🧩 产品阵容（同公司其他产品）", "🧩 Gama (otro producto de la empresa)"], ["表紙には使いません", "Not used on the cover", "不用于封面", "No se usa en la portada"], ["🧠 全社版AI商社マン", "🧠 Company-wide AI Trade Agent", "🧠 全公司版AI商社专员", "🧠 Agente IA (versión global)"], ["🏠 個社版AI商社マン", "🏠 Single-company AI Trade Agent", "🏠 单公司版AI商社专员", "🏠 Agente IA (versión individual)"], ["🧠 AI商社マン", "🧠 AI Trade Agent", "🧠 AI商社专员", "🧠 Agente IA"], ["🏠 他社データ", "🏠 Other companies' data", "🏠 其他公司数据", "🏠 Datos de otras empresas"], ["参照しない（個社版）", "Not used (single-company)", "不参照（单公司版）", "No se usan (individual)"], ["🧠 全社の匿名知見（Ver2.0）", "🧠 Anonymised company-wide insights (Ver2.0)", "🧠 全公司匿名洞察（Ver2.0）", "🧠 Conocimiento anónimo global (Ver2.0)"], ["🧠 Ver1.0 本番DBの集計", "🧠 Ver1.0 production DB aggregates", "🧠 Ver1.0 生产库统计", "🧠 Agregados de la BD Ver1.0"], ["未取込", "Not imported", "未导入", "No importado"], ["物流会社（対象外）", "Forwarder (n/a)", "物流公司（不适用）", "Transportista (n/a)"], ["↻ 状態を確認", "↻ Check status", "↻ 查看状态", "↻ Ver estado"], ["▶ 今すぐ全社データを更新", "▶ Update company-wide data now", "▶ 立即更新全公司数据", "▶ Actualizar datos globales ahora"], ["⏰ 週次ジョブを設定", "⏰ Set up the weekly job", "⏰ 设置每周任务", "⏰ Configurar tarea semanal"], ["📥 Ver1.0 集計JSONを取り込む", "📥 Import Ver1.0 aggregates (JSON)", "📥 导入Ver1.0统计JSON", "📥 Importar agregados Ver1.0 (JSON)"], ["匿名化のルールと週次更新のしくみ", "Anonymisation rules and the weekly update", "匿名化规则与每周更新机制", "Reglas de anonimización y actualización semanal"], ["AI商社マンと登録 →", "Register with the AI Trade Agent →", "与AI商社专员一起登记 →", "Registrar con el Agente IA →"], ["AI商社マンと確認 →", "Check with the AI Trade Agent →", "与AI商社专员一起确认 →", "Revisar con el Agente IA →"], ["商品情報で確認 →", "Check in Product info →", "在商品信息中确认 →", "Ver en Información del producto →"], ["このままでOK", "Keep as is", "保持不变", "Dejar como está"], ["✅ 内容をAI商社マンに反映", "✅ Apply to the AI Trade Agent", "✅ 反映到AI商社专员", "✅ Aplicar al Agente IA"], ["🔁 最新の内容で反映し直す", "🔁 Re-apply with the latest content", "🔁 用最新内容重新反映", "🔁 Volver a aplicar con lo último"], ["内容に問題がなければ、AI商社マンに反映", "If the content looks right, apply it to the AI Trade Agent", "内容无误的话，反映到AI商社专员", "Si el contenido es correcto, aplíquelo al Agente IA"], ["✅ この調査内容はAI商社マンに反映済みです", "✅ This research has been applied to the AI Trade Agent", "✅ 此调查内容已反映到AI商社专员", "✅ Esta investigación ya está aplicada al Agente IA"], ["💬 この規制についてAI商社マンに聞く・追加調査を依頼する", "💬 Ask the AI Trade Agent about this regulation or request further research", "💬 向AI商社专员询问此法规・委托补充调查", "💬 Pregunte al Agente IA sobre esta normativa o pida más investigación"], ["🌐 Web検索で追加調査", "🌐 Further research with web search", "🌐 用网络搜索补充调查", "🌐 Investigar más con búsqueda web"], ["まだやり取りはありません。上の候補を押すか、下の入力欄から質問・依頼してください。", "No conversation yet. Tap a suggestion above or type a question or request below.", "尚无对话。请点击上方候选或在下方输入问题・委托。", "Aún no hay conversación. Toque una sugerencia o escriba una pregunta abajo."], ["①の規制当局と制度を、初心者向けにやさしく説明して", "Explain the authority and system in ① in plain terms", "请通俗解释①的监管机构和制度", "Explique la autoridad y el sistema de ① en términos sencillos"], ["②の輸入登録・認証は、何をどの順番で進める？費用と期間も", "For ②, what steps in what order? Include cost and lead time", "②的进口登记・认证按什么顺序办？费用和时间", "Para ②, ¿qué pasos y en qué orden? Con coste y plazo"], ["③の必要書類の入手方法と所要期間を教えて", "How do I obtain the documents in ③ and how long does it take?", "③所需文件如何获取、需要多久", "¿Cómo obtengo los documentos de ③ y cuánto tarda?"], ["④のラベル表示の必須項目を追加調査して", "Research the mandatory label items in ④", "补充调查④标签的必填项目", "Investigue los elementos obligatorios de etiquetado de ④"], ["⑥直近1年の変更点を最新情報で確認して", "Check the latest information on changes in the past year (⑥)", "用最新信息确认⑥近一年的变更", "Verifique con información actual los cambios del último año (⑥)"], ["この商品の成分・仕様で引っかかりそうな点は？", "What in this product's ingredients or specs could be an issue?", "本产品的成分・规格有哪些可能踩坑的点？", "¿Qué de los ingredientes o especificaciones podría ser un problema?"], ["規制の詳細調査（AI・Web検索）", "Detailed regulation research (AI / web)", "法规详细调查（AI・网络搜索）", "Investigación normativa detallada (IA / web)"], ["同じアカウントの他の商品（全件要約＋名指しで詳細）", "Other products on this account (summary of all, details when named)", "同一账户的其他商品（全部摘要＋指名时详情）", "Otros productos de la cuenta (resumen de todos, detalle al nombrarlos)"], ["タスク実行の会話（今日やること）", "Task-run conversations (Today's tasks)", "任务执行的对话（今日待办）", "Conversaciones de ejecución de tareas (Tareas de hoy)"], ["この商品の項目はすべて登録済みです", "All items for this product are already registered", "此商品的项目已全部登记", "Todos los datos de este producto ya están registrados"], ["Web検索は、管理者がAIエンジンを接続すると使えるようになります", "Web search becomes available once the administrator connects an AI engine", "管理员连接AI引擎后即可使用网络搜索", "La búsqueda web estará disponible cuando el administrador conecte un motor de IA"], ["販売先国の選定", "Target market selection", "销售目标国选定", "Selección de países objetivo"], ["🤖 AI商社マンにおまかせ（1クリック）", "🤖 Let the AI Trade Agent decide (one click)", "🤖 交给AI商社专员（一键）", "🤖 Dejar que el Agente IA decida (un clic)"], ["🔎 この候補で分析（4つの観点）", "🔎 Analyse these candidates (4 criteria)", "🔎 按这些候选分析（4个维度）", "🔎 Analizar estos candidatos (4 criterios)"], ["＋ 追加", "＋ Add", "＋ 添加", "＋ Añadir"], ["📥 PPTXレポート", "📥 PPTX report", "📥 PPTX报告", "📥 Informe PPTX"], ["🔄 再分析", "🔄 Re-analyse", "🔄 重新分析", "🔄 Volver a analizar"], ["✅ この3か国で確定（進出希望国・価格・物流・出荷に反映）", "✅ Confirm these 3 countries (applies to target countries, pricing, logistics, shipping)", "✅ 确定这3个国家（反映到目标国・价格・物流・出货）", "✅ Confirmar estos 3 países (se aplica a países objetivo, precios, logística y envíos)"], ["🌏 AI商社マンと販売先国を選ぶ", "🌏 Choose target markets with the AI Trade Agent", "🌏 与AI商社专员选定销售目标国", "🌏 Elegir países objetivo con el Agente IA"], ["🤖 1クリックでおまかせ", "🤖 One-click auto-select", "🤖 一键自动选定", "🤖 Selección automática con un clic"], ["レポートを見る・変更", "View report / change", "查看报告・更改", "Ver informe / cambiar"], ["🌏 販売先国が未確定です", "🌏 Target markets are not yet confirmed", "🌏 销售目标国尚未确定", "🌏 Los países objetivo aún no están confirmados"], ["販売先国を選定・確定する（推奨3か国）", "Select and confirm target markets (3 recommended)", "选定并确定销售目标国（推荐3国）", "Seleccionar y confirmar países objetivo (3 recomendados)"], ["規制を調べる →", "Check regulations →", "查询法规 →", "Ver normativa →"], ["価格設定へ →", "Go to pricing →", "前往定价 →", "Ir a precios →"], ["出荷・物流見積へ →", "Shipping & logistics quotes →", "出货・物流报价 →", "Envíos y cotizaciones logísticas →"], ["AIバイヤー開拓・拠点へ →", "Buyer Network & bases →", "买家网络・据点 →", "Red de compradores y bases →"], ["候補国を決める（最大10か国）", "Decide candidate countries (up to 10)", "确定候选国（最多10国）", "Definir países candidatos (hasta 10)"], ["4つの観点で分析し、推奨3か国を見る", "Analyse on 4 criteria and see the 3 recommended", "按4个维度分析并查看推荐3国", "Analizar con 4 criterios y ver los 3 recomendados"], ["3か国を確定する（進出希望国・価格・物流・出荷に反映）", "Confirm 3 countries (applies to targets, pricing, logistics, shipping)", "确定3国（反映到目标国・价格・物流・出货）", "Confirmar 3 países (se aplica a objetivos, precios, logística y envíos)"], ["販売先国の選定（推奨3か国）", "Target market selection (3 recommended)", "销售目标国选定（推荐3国）", "Selección de países objetivo (3 recomendados)"], ["← 一覧へ戻る", "← Back to the list", "← 返回列表", "← Volver a la lista"], ["🤖 AIで詳しく調査（Web検索）", "🤖 Research in depth with AI (web search)", "🤖 用AI深入调查（网络搜索）", "🤖 Investigar a fondo con IA (búsqueda web)"], ["🔄 AIで再調査（Web検索）", "🔄 Re-research with AI (web search)", "🔄 用AI重新调查（网络搜索）", "🔄 Volver a investigar con IA (búsqueda web)"], ["📥 この国のPPTX", "📥 PPTX for this country", "📥 该国PPTX", "📥 PPTX de este país"], ["✅ 確定に含める", "✅ Include in the confirmed set", "✅ 加入确定", "✅ Incluir en la selección"], ["確定から外す", "Remove from the confirmed set", "从确定中移除", "Quitar de la selección"], ["📄 詳細レポートを見る（規制・市場・競合・チャネル・価格・ロードマップ）", "📄 View the detailed report (regulation, market, competitors, channels, pricing, roadmap)", "📄 查看详细报告（法规・市场・竞争・渠道・价格・路线图）", "📄 Ver el informe detallado (normativa, mercado, competencia, canales, precios, hoja de ruta)"], ["詳細 →", "Details →", "详情 →", "Detalles →"], ["言える表現（OK）", "Allowed claims (OK)", "可用表述（OK）", "Afirmaciones permitidas (OK)"], ["言えない表現（NG）", "Prohibited claims (NG)", "不可用表述（NG）", "Afirmaciones prohibidas (NG)"], ["📋 規制・表示", "📋 Regulation & labelling", "📋 法规・标示", "📋 Normativa y etiquetado"], ["📈 市場性", "📈 Market potential", "📈 市场性", "📈 Potencial de mercado"], ["⚔ 競合TOP3とポジショニング", "⚔ Top-3 competitors & positioning", "⚔ 竞争TOP3与定位", "⚔ Top 3 competidores y posicionamiento"], ["🛒 チャネル", "🛒 Channels", "🛒 渠道", "🛒 Canales"], ["💰 価格根拠", "💰 Pricing rationale", "💰 定价依据", "💰 Fundamento de precios"], ["🗓 参入ロードマップ", "🗓 Entry roadmap", "🗓 进入路线图", "🗓 Hoja de ruta de entrada"], ["⚠ 想定リスクと対応", "⚠ Risks & mitigation", "⚠ 预期风险与应对", "⚠ Riesgos y mitigación"], ["📍 STANDAGE拠点と支援", "📍 STANDAGE bases & support", "📍 STANDAGE据点与支持", "📍 Bases y apoyo de STANDAGE"], ["📚 出典・根拠", "📚 Sources", "📚 出处・依据", "📚 Fuentes"], ["🤖 AI物流マンに質問", "🤖 Ask the AI Logistics Agent", "🤖 向AI物流专员提问", "🤖 Preguntar a la IA logística"], ["🤖 管理者AIに質問", "🤖 Ask the admin AI", "🤖 向管理员AI提问", "🤖 Preguntar a la IA de administración"], ["画面はこのまま、右側で完結します。レート表・見積依頼・履歴を根拠に答えます。やり取りは「AI物流マンに相談」の画面と共通です。", "Stay on this screen; everything happens in the side panel. Answers are based on your rate table, quote requests and history. The conversation is shared with the \"Ask AI Logistics\" screen.", "停留在本页面，在右侧完成。以费率表・报价请求・历史为依据回答。对话与「咨询AI物流专员」页面共享。", "Sin salir de la pantalla: todo ocurre en el panel lateral. Responde según su tabla de tarifas, solicitudes de cotización e historial. La conversación se comparte con la pantalla \"Consultar IA logística\"."], ["画面はこのまま、右側で完結します。台帳・利用状況・端末・AIエンジン設定とコスト・物流会社・通関統計の版を根拠に答えます。やり取りは管理コンソールのカードと共通です。", "Stay on this screen; everything happens in the side panel. Answers are based on the account ledger, usage, devices, AI engine settings and costs, forwarders and the customs-statistics edition. The conversation is shared with the admin console card.", "停留在本页面，在右侧完成。以账户台账・使用情况・设备・AI引擎设置与成本・物流公司・海关统计版本为依据回答。对话与管理控制台的卡片共享。", "Sin salir de la pantalla: todo ocurre en el panel lateral. Responde según el registro de cuentas, uso, dispositivos, ajustes y costes de IA, transitarios y la edición de estadísticas aduaneras. La conversación se comparte con la tarjeta de la consola."], ["AI物流マンの画面へ →", "Go to the AI Logistics screen →", "前往AI物流专员页面 →", "Ir a la pantalla de la IA logística →"], ["AIパネルを開けませんでした", "Could not open the AI panel", "无法打开AI面板", "No se pudo abrir el panel de IA"], ["つづき", "Continued", "继续", "Continuación"], ["🧠 Ver1.0 の内容学習（全社版AI商社マン）", "🧠 Ver1.0 content learning (company-wide AI agent)", "🧠 Ver1.0 内容学习（全公司版AI商社专员）", "🧠 Aprendizaje de contenido Ver1.0 (IA de toda la empresa)"], ["🔑 取込キーを登録", "🔑 Register the ingestion key", "🔑 登记导入密钥", "🔑 Registrar la clave de ingesta"], ["👁 学習内容のプレビュー", "👁 Preview the learned knowledge", "👁 预览学习内容", "👁 Vista previa del conocimiento"], ["週次ジョブのしくみと手順", "How the weekly job works", "每周任务的机制与步骤", "Cómo funciona el trabajo semanal"], ["取込キー（16文字以上・週次ジョブと同じもの）", "Ingestion key (16+ characters, same as the weekly job)", "导入密钥（16字符以上，与每周任务相同）", "Clave de ingesta (16+ caracteres, la misma del trabajo semanal)"], ["👍 役に立った", "👍 Helpful", "👍 有帮助", "👍 Útil"], ["👎 ちがう・直したい", "👎 Not right — correct it", "👎 不对，需要更正", "👎 No es correcto — corregir"], ["覚えさせる", "Teach it", "让它记住", "Enseñar"], ["やめる", "Cancel", "取消", "Cancelar"], ["✓ ありがとうございます。この答え方を参考にします", "✓ Thank you. The AI will use this kind of answer as a reference", "✓ 谢谢。今后会参考这种回答方式", "✓ Gracias. La IA tomará esta respuesta como referencia"], ["✓ 教えていただいた内容を覚えました（次の回答から優先します）", "✓ Learned what you taught (it takes priority from the next answer)", "✓ 已记住您教的内容（下次回答起优先使用）", "✓ Aprendido (tendrá prioridad desde la próxima respuesta)"], ["覚えました。次の回答から反映します", "Learned. It will be reflected from the next answer", "已记住。下次回答起生效", "Aprendido. Se aplicará desde la próxima respuesta"], ["ありがとうございます。この答え方を参考にします", "Thank you. The AI will use this answer as a reference", "谢谢。今后会参考这种回答方式", "Gracias. La IA tomará esta respuesta como referencia"], ["正しい内容を入力してください", "Please enter the correct information", "请输入正确的内容", "Introduzca la información correcta"], ["記憶を見る・直す", "View / edit memory", "查看・修改记忆", "Ver / editar memoria"], ["すべての記憶を見る・直す", "View / edit all memory", "查看・修改全部记忆", "Ver / editar toda la memoria"], ["＋ 新しく教える", "+ Teach something new", "+ 教新的内容", "+ Enseñar algo nuevo"], ["会話の記憶をすべて消す", "Clear all conversation memory", "清除全部对话记忆", "Borrar toda la memoria de conversación"], ["記憶から消しました", "Removed from memory", "已从记忆中删除", "Eliminado de la memoria"], ["会話の記憶を消しました", "Conversation memory cleared", "已清除对话记忆", "Memoria de conversación borrada"], ["教える内容を入力してください", "Please enter what to teach", "请输入要教的内容", "Introduzca lo que desea enseñar"], ["消す", "Delete", "删除", "Eliminar"], ["今日やることを開く", "Open today's tasks", "打开今日待办", "Abrir tareas de hoy"], ["おはようございます", "Good morning", "早上好", "Buenos días"], ["こんにちは", "Hello", "您好", "Hola"], ["こんばんは", "Good evening", "晚上好", "Buenas tardes"], ["自社バイヤー・直接連絡", "Your buyers / direct contacts", "自有买家・直接联系", "Sus compradores / contactos directos"], ["AIの記憶（会話・教えたこと）", "AI memory (conversations / taught facts)", "AI的记忆（对话・教过的内容）", "Memoria de la IA (conversaciones / enseñanzas)"], ["商品データは、サーバーに預ける前にこの端末で暗号化します。", "Product data is encrypted on this device before it is sent to the server.", "商品数据在发送到服务器之前，会先在本设备上加密。", "Los datos del producto se cifran en este dispositivo antes de enviarse al servidor."], ["作業中の控えはこの端末のブラウザに置き、ログアウトすると消えます。", "A working copy is kept in this browser and is deleted when you log out.", "工作副本保存在本浏览器中，退出登录时会被删除。", "Se guarda una copia de trabajo en este navegador, que se elimina al cerrar sesión."], ["AIに質問すると、回答に必要な範囲だけを接続中のAIに送ります。", "When you ask the AI, only what is needed for the answer is sent to the connected AI.", "向AI提问时，只会把回答所需的部分发送给已连接的AI。", "Al preguntar a la IA, solo se envía a la IA conectada lo necesario para responder."], ["レート表と見積依頼は、クラウドを通じて荷主と共有します（各荷主に届くのは、その荷主自身の依頼だけです）。AI物流マンとの相談と操作履歴は、物流会社のアカウントだけが見られます。", "Rate tables and quote requests are shared with shippers through the cloud (each shipper only receives its own requests). Chats with the AI Logistics agent and the operation history are visible only to forwarder accounts.", "运价表和询价请求通过云端与货主共享（每个货主只会收到自己的请求）。与AI物流专员的对话和操作记录只有物流公司账号可以查看。", "Las tarifas y solicitudes se comparten con los cargadores por la nube (cada cargador solo recibe sus propias solicitudes). Las conversaciones con la IA logística y el historial solo son visibles para las cuentas de transitarios."], ["その他の操作", "More actions", "更多操作", "Más acciones"], ["今日やることは", "Today's tasks:", "今日待办：", "Tareas de hoy:"], ["対象の商品：", "Product:", "对象商品：", "Producto:"], ["物流会社への見積依頼は、依頼先の物流会社と共有されます。AIに質問すると、回答に必要な範囲だけを接続中のAIに送ります。", "Quote requests to forwarders are shared with those forwarders. When you ask the AI, only what is needed for the answer is sent to the connected AI.", "发给物流公司的询价会与该物流公司共享。向AI提问时，只会把回答所需的部分发送给已连接的AI。", "Las solicitudes de cotización se comparten con los transitarios destinatarios. Al preguntar a la IA, solo se envía lo necesario para responder."]);
 I18N_ROWS2.push(["成長レベル", "Growth level", "成长等级", "Nivel de crecimiento"], ["6つの分野", "6 areas", "6个领域", "6 áreas"], ["点数の合計が成長レベルです（100点満点）", "The sum of these scores is the growth level (out of 100)", "各领域得分之和即为成长等级（满分100分）", "La suma de estas puntuaciones es el nivel de crecimiento (sobre 100)"], ["いちばん伸びる次の一手", "The next move that helps most", "提升最大的下一步", "El siguiente paso que más ayuda"], ["いまここ", "You are here", "当前位置", "Estás aquí"], ["🎉 一人前に到達しました", "🎉 Full-fledged level reached", "🎉 已达到独当一面", "🎉 Nivel completo alcanzado"], ["最上位の段階です", "This is the top stage", "已是最高阶段", "Es la etapa más alta"]);
 I18N_PAT2.push({ re: /^一人前まで あと (\d+)点$/, en: "$1 pts to full-fledged", zh: "距独当一面还差 $1 分", es: "$1 pts para el nivel completo" }, { re: /^次の段階「(.+?)」まで あと (\d+)点$/, en: (m, d) => m[2] + " pts to the next stage “" + (d[m[1]] || m[1]) + "”", zh: (m, d) => "距下一阶段“" + (d[m[1]] || m[1]) + "”还差 " + m[2] + " 分", es: (m, d) => m[2] + " pts para la siguiente etapa “" + (d[m[1]] || m[1]) + "”" }, { re: /^(\d+)点満点中 (\d+)点$/, en: "$2 of $1 pts", zh: "满分$1分中得$2分", es: "$2 de $1 pts" }, { re: /^グラフの黒い印が一人前ライン（(\d+)%）です$/, en: "The black mark on the chart is the full-fledged line ($1%)", zh: "图中的黑色标记是独当一面线（$1%）", es: "La marca negra del gráfico es la línea de nivel completo ($1%)" }, { re: /^一人前ライン（(\d+)%）を超えました$/, en: "Passed the full-fledged line ($1%)", zh: "已超过独当一面线（$1%）", es: "Superó la línea de nivel completo ($1%)" }, { re: /^「(.+?)」が最大 (\d+)点 伸びます$/, en: (m, d) => "“" + (d[m[1]] || m[1]) + "” can gain up to " + m[2] + " pts", zh: (m, d) => "“" + (d[m[1]] || m[1]) + "”最多可提升 " + m[2] + " 分", es: (m, d) => "“" + (d[m[1]] || m[1]) + "” puede subir hasta " + m[2] + " pts" });
 I18N_ROWS2.push(["ベテラン​候補", "Senior candidate", "资深候选", "Senior"], ["お手元のExcelをドラッグするだけ。中身は暗号化してからクラウドに預けます。", "Just drag in your Excel file. Its contents are encrypted before they are stored in the cloud.", "只需拖入您的Excel文件。内容会先加密，再存入云端。", "Solo arrastre su archivo de Excel. El contenido se cifra antes de guardarse en la nube."], ["お手元のExcelをドラッグするだけ。", "Just drag in your Excel file.", "只需拖入您的Excel文件。", "Solo arrastre su archivo de Excel."]);
@@ -37863,7 +37863,7 @@ function bmNormId(s) { return String(s || "").replace(/\b([A-Za-z]{2})\s*[:：\-
 function bmCtx() {
     const L = bmThreadsAll().sort((a, b) => bmLastAt(b) - bmLastAt(a));
     if (!L.length)
-        return "\n=== バイヤーとの直接メッセージ（やり取り中のBuyer） ===\n（まだありません。自社のバイヤーへの直接連絡か、バイヤーネットワーク・拠点の「つなぐ依頼」で相手が承諾すると開始できる）";
+        return "\n=== バイヤーとの直接メッセージ（やり取り中のBuyer） ===\n（まだありません。自社のバイヤーへの直接連絡か、AIバイヤー開拓・拠点の「つなぐ依頼」で相手が承諾すると開始できる）";
     return "\n=== バイヤーとの直接メッセージ（やり取り中のBuyer：" + L.length + "件・交渉ステータスは7段階） ===\n" + L.map(th => { const last = (th.msgs || [])[th.msgs.length - 1] || {}; return `・ID ${th.id}｜${th.cty}の${th.biz}｜ステータス：${bmStOf(th)}（${th.statusBy || "未判定"}${th.statusWhy ? "・" + th.statusWhy : ""}）｜往復 ${(th.msgs || []).length}通（相手からの返信 ${(th.msgs || []).filter(m => m.w === "by").length}・未読 ${th.unread || 0}）｜宛先 ${th.to || "未開示"}${th.real ? "｜実メール" : ""}${(th.msgs || []).some(m => m.sim) ? "｜体験用の模擬返信を含む" : ""}｜最終 ${last.t || ""} ${last.w === "by" ? "相手" : "自社"}：「${bmTxt(last).replace(/\s+/g, " ").trim().slice(0, 80)}」`; }).join("\n") + "\n※「やり取りページを開いて」等の依頼は、貿易クラウド側でIDを指定して該当スレッドを開ける（AIが案内する場合はIDを示す）";
 }
 if (typeof ppContext === "function") {
@@ -37885,7 +37885,7 @@ function bmAsk(q) {
     if (!ids.length && !topic && !missing.length)
         return null;
     const stKey = BM_ST.find(st => s.includes(BM_STS[st])) || "";
-    const missNote = missing.length ? `<p class="nn" style="margin-bottom:6px">⚠ <b>ID ${missing.map(esc).join("・")}</b> の直接メッセージ（やり取り）は登録されていません。そのIDの相手には「バイヤーネットワーク・拠点」の「つなぐ依頼」を出し、相手が承諾するとやり取りを始められます。</p>` : "";
+    const missNote = missing.length ? `<p class="nn" style="margin-bottom:6px">⚠ <b>ID ${missing.map(esc).join("・")}</b> の直接メッセージ（やり取り）は登録されていません。そのIDの相手には「AIバイヤー開拓・拠点」の「つなぐ依頼」を出し、相手が承諾するとやり取りを始められます。</p>` : "";
     const row = th => { const last = (th.msgs || [])[th.msgs.length - 1] || {}; return `<tr><td><b>${esc(th.cty)}の${esc(th.biz)}</b><br><span class="nn">ID ${esc(th.id)}${th.unread ? `・<span class="p no">📨 返信${th.unread}件</span>` : ""}</span></td><td>${bmStChip(th)}</td><td class="num">${(th.msgs || []).length}通</td><td><span class="nn">${esc(last.t || "")}</span><br>${esc(bmTxt(last).replace(/\s+/g, " ").trim().slice(0, 56))}</td><td><button class="q" data-bmopen="${esc(th.id)}">開く</button></td></tr>`; };
     const tbl = rows => `<div class="tw" style="margin-top:8px;max-height:300px"><table><thead><tr><th>相手</th><th>ステータス</th><th class="num">往復</th><th>最終</th><th></th></tr></thead><tbody>${rows.map(row).join("")}</tbody></table></div>`;
     if (ids.length) {
@@ -37896,13 +37896,13 @@ function bmAsk(q) {
                 openDMThread(th.id);
             }
             catch (e) { } }, 400);
-            return { a: `<b>${esc(th.cty)}の${esc(th.biz)}（ID ${esc(th.id)}）</b>のやり取りページを開きます。交渉ステータスは ${bmStChip(th)}（${esc(th.statusBy || "")}${th.statusWhy ? "・根拠：" + esc(th.statusWhy) : ""}）、往復 ${(th.msgs || []).length}通${th.unread ? "・未読 " + th.unread + "件" : ""}です。`, c: "根拠：直接メッセージのスレッド（バイヤーネットワーク・拠点 › やり取り中のBuyer）" };
+            return { a: `<b>${esc(th.cty)}の${esc(th.biz)}（ID ${esc(th.id)}）</b>のやり取りページを開きます。交渉ステータスは ${bmStChip(th)}（${esc(th.statusBy || "")}${th.statusWhy ? "・根拠：" + esc(th.statusWhy) : ""}）、往復 ${(th.msgs || []).length}通${th.unread ? "・未読 " + th.unread + "件" : ""}です。`, c: "根拠：直接メッセージのスレッド（AIバイヤー開拓・拠点 › やり取り中のBuyer）" };
         }
-        return { a: `該当するやり取り中のBuyerは <b>${ids.length}件</b>です。「開く」でやり取りページに移動できます。` + tbl(ths), c: "根拠：直接メッセージのスレッド（バイヤーネットワーク・拠点 › やり取り中のBuyer）" };
+        return { a: `該当するやり取り中のBuyerは <b>${ids.length}件</b>です。「開く」でやり取りページに移動できます。` + tbl(ths), c: "根拠：直接メッセージのスレッド（AIバイヤー開拓・拠点 › やり取り中のBuyer）" };
     }
     const rows = (stKey ? L.filter(th => bmStOf(th) === stKey) : L).sort((a, b) => bmLastAt(b) - bmLastAt(a));
     if (!L.length)
-        return { a: missNote + `現在、<b>やり取り中のBuyerはまだありません</b>。自社のバイヤーに<b>直接連絡</b>を送るか、「バイヤーネットワーク・拠点」の<b>つなぐ依頼</b>で相手が承諾すると、返信を含めたやり取りがスレッドとして残り、ここから開けるようになります。`, c: "根拠：直接メッセージのスレッド 0件" };
+        return { a: missNote + `現在、<b>やり取り中のBuyerはまだありません</b>。自社のバイヤーに<b>直接連絡</b>を送るか、「AIバイヤー開拓・拠点」の<b>つなぐ依頼</b>で相手が承諾すると、返信を含めたやり取りがスレッドとして残り、ここから開けるようになります。`, c: "根拠：直接メッセージのスレッド 0件" };
     if (!rows.length)
         return { a: `「${esc(BM_STS[stKey] || stKey)}」のBuyerは現在ありません（やり取り中は全体で ${L.length}件）。` + tbl(L.slice(0, 10)), c: "根拠：直接メッセージのスレッド（交渉ステータス）" };
     if (rows.length === 1 && open) {
@@ -37915,7 +37915,7 @@ function bmAsk(q) {
     }
     const cnt = {};
     L.forEach(th => { const k = bmStOf(th); cnt[k] = (cnt[k] || 0) + 1; });
-    return { a: missNote + `やり取り中のBuyerは <b>${L.length}件</b>${stKey ? `（うち「${esc(BM_STS[stKey])}」${rows.length}件）` : ""}です。内訳：${BM_ST.filter(k => cnt[k]).map(k => `${esc(BM_STS[k])} ${cnt[k]}`).join("／") || "—"}。${open ? "複数あるため一覧から「開く」を押してください。" : "「開く」でやり取りページに移動できます。"}` + tbl(rows.slice(0, 15)) + `<p class="nn" style="margin-top:6px">交渉ステータスはAI商社マンがやり取りから自動判定しています（各スレッドで手動変更・再判定が可能）。</p>`, c: "根拠：直接メッセージのスレッド（バイヤーネットワーク・拠点 › やり取り中のBuyer）" };
+    return { a: missNote + `やり取り中のBuyerは <b>${L.length}件</b>${stKey ? `（うち「${esc(BM_STS[stKey])}」${rows.length}件）` : ""}です。内訳：${BM_ST.filter(k => cnt[k]).map(k => `${esc(BM_STS[k])} ${cnt[k]}`).join("／") || "—"}。${open ? "複数あるため一覧から「開く」を押してください。" : "「開く」でやり取りページに移動できます。"}` + tbl(rows.slice(0, 15)) + `<p class="nn" style="margin-top:6px">交渉ステータスはAI商社マンがやり取りから自動判定しています（各スレッドで手動変更・再判定が可能）。</p>`, c: "根拠：直接メッセージのスレッド（AIバイヤー開拓・拠点 › やり取り中のBuyer）" };
 }
 if (typeof brain === "function") {
     const __brain194 = brain;
@@ -41905,7 +41905,7 @@ function vCty(p) {
       <button class="btn g" id="ctyadd">＋ 追加</button>
       <button class="btn" onclick="ctyRun(false)" ${busy || !s.cands.length ? "disabled" : ""} style="margin-left:auto">🔎 この候補で分析（4つの観点）</button></div>
     <p class="nn" style="margin-top:7px">評価の配点：市場性 ${CTY_W.mkt}／規制 ${CTY_W.reg}／競合 ${CTY_W.comp}／STANDAGE拠点 ${CTY_W.base}（100点満点。データの無い観点は「未評価」として配点から外し、残りの観点で100点満点に割り戻します）。根拠：規制DB・通関統計（${S ? "HS " + esc(S.hs) + "・" + esc(String(S.latest && S.latest.y || "")) + "年・日本からの輸出" : "HS未一致のため統計なし"}）・バイヤーネットワーク（自社カテゴリに関心のある社数）・STANDAGE拠点。${online ? "接続AIが商品特性に照らして最終判断します" : "⚠ AI未接続：内蔵ロジックの採点だけで並べます（接続すると商品特性に合わせた判断と理由が付きます）"}</p>
-    ${busy ? `<p class="nn" style="margin-top:8px"><span class="spin"></span> AI商社マンが分析しています…（規制DB・通関統計・バイヤーネットワーク・拠点 → 接続AIの判断。30秒〜2分半）</p>` : ""}</div>`;
+    ${busy ? `<p class="nn" style="margin-top:8px"><span class="spin"></span> AI商社マンが分析しています…（規制DB・通関統計・AIバイヤー開拓・拠点 → 接続AIの判断。30秒〜2分半）</p>` : ""}</div>`;
     if (!s.rec)
         return head + cands + `<div class="c"><h3>② 分析結果と推奨3か国</h3><p class="nn">候補を決めて「分析」を押すと、ここに国ごとの評価（4つの観点）・推奨3か国・理由・リスク・最初の一歩が出ます。PPTXレポートも出力できます。</p></div>`;
     const rec = s.rec;
@@ -41933,8 +41933,8 @@ function vCty(p) {
     <div class="rw" style="margin-top:10px;gap:8px;flex-wrap:wrap;align-items:center">
       ${ch.length ? `<span class="p hi" style="font-size:12px;padding:6px 10px">✅ 確定：${ch.map(esc).join("・")}（進出希望国に反映済み）</span><button class="btn g" onclick="ctyUnconfirm()">選び直す</button>` : `<button class="btn" onclick="ctyConfirm()">✅ この3か国で確定（進出希望国・価格・物流・出荷に反映）</button><span class="nn">チェックで入れ替えできます（最大3か国）</span>`}</div></div>
     <div class="g2" style="align-items:start;gap:11px;margin-bottom:11px">${detail}</div>
-    <div class="c"><h3>③ 確定後の連動</h3><p class="nn" style="margin-top:4px">確定した3か国は「進出希望国」になり、<b>貿易実務（規制・関税・必要書類）</b>、<b>商品情報の価格設定（推奨FOB・DDP）</b>、<b>出荷を進める（物流AI見積の送り先）</b>、<b>バイヤーネットワーク・拠点（相手を探す・つなぐ依頼）</b>、<b>外国語営業資料</b>に反映されます。AI商社マンは、この3か国を前提に戦略・伴走・アドバイスを行います。</p>
-      <div class="rw" style="margin-top:8px;gap:6px;flex-wrap:wrap"><button class="btn g" onclick="opsTab='reg';go('ops')">規制を調べる →</button><button class="btn g" onclick="go('item')">価格設定へ →</button><button class="btn g" onclick="go('ship')">出荷・物流見積へ →</button><button class="btn g" onclick="go('db')">バイヤーネットワーク・拠点へ →</button></div></div>`;
+    <div class="c"><h3>③ 確定後の連動</h3><p class="nn" style="margin-top:4px">確定した3か国は「進出希望国」になり、<b>貿易実務（規制・関税・必要書類）</b>、<b>商品情報の価格設定（推奨FOB・DDP）</b>、<b>出荷を進める（物流AI見積の送り先）</b>、<b>AIバイヤー開拓・拠点（相手を探す・つなぐ依頼）</b>、<b>外国語営業資料</b>に反映されます。AI商社マンは、この3か国を前提に戦略・伴走・アドバイスを行います。</p>
+      <div class="rw" style="margin-top:8px;gap:6px;flex-wrap:wrap"><button class="btn g" onclick="opsTab='reg';go('ops')">規制を調べる →</button><button class="btn g" onclick="go('item')">価格設定へ →</button><button class="btn g" onclick="go('ship')">出荷・物流見積へ →</button><button class="btn g" onclick="go('db')">AIバイヤー開拓・拠点へ →</button></div></div>`;
     return head + cands + result;
 }
 function ctyBind() {
@@ -42011,7 +42011,7 @@ function ctySlides() {
             + shpText(556, 392, 340, 18, [{ t: "最初の一歩", sz: 11, b: 1, c: GOOD }], { ea }) + shpText(556, 412, 340, 50, [{ t: next, sz: fit(next, 340, [10.5, 9.5, 8.5], 3), c: INK }], { ea });
         S.push(bg(i + 4) + head(`RECOMMENDATION ${i + 1}`, `${r.c}　総合 ${r.sc.total}点${ch.includes(r.c) ? "（確定）" : ""}`) + left + right + foot());
     });
-    const links = [["貿易実務・書類・出荷", "規制・関税・必要書類は確定した国で表示。AIの規制詳細調査から着手"], ["商品情報（価格設定）", "推奨FOB・国別DDP価格を確定した国で算出"], ["出荷を進める", "物流AI見積の送り先＝確定した国。相見積からAI物流マンが推奨"], ["バイヤーネットワーク・拠点", "相手を探す・つなぐ依頼の対象を確定した国に絞る"], ["外国語 営業資料", "進出希望国として営業資料に反映"], ["AI商社マン", "この3か国を前提に戦略・伴走・アドバイス"]];
+    const links = [["貿易実務・書類・出荷", "規制・関税・必要書類は確定した国で表示。AIの規制詳細調査から着手"], ["商品情報（価格設定）", "推奨FOB・国別DDP価格を確定した国で算出"], ["出荷を進める", "物流AI見積の送り先＝確定した国。相見積からAI物流マンが推奨"], ["AIバイヤー開拓・拠点", "相手を探す・つなぐ依頼の対象を確定した国に絞る"], ["外国語 営業資料", "進出希望国として営業資料に反映"], ["AI商社マン", "この3か国を前提に戦略・伴走・アドバイス"]];
     S.push(bg(1) + head("NEXT STEPS", "確定後の連動と次の一歩") + links.map(([n, d], k) => { const x = 48 + (k % 2) * 440, y = 118 + Math.floor(k / 2) * 100; return dk2Card(x, y, 424, 88, "FFFFFF", { line: TN2, shadow: true }) + dk2Circle(x + 14, y + 22, 40, AC, String(k + 1), 13, "FFFFFF", ea) + shpText(x + 66, y + 14, 344, 66, [{ t: n, sz: 13, b: 1, c: INK }, { t: d, sz: 10, c: SUB }], { ea }); }).join("")
         + shpText(48, 428, 864, 60, [{ t: "免責：本レポートの統計・規制・バイヤー数は貿易クラウドのデータベースと通関統計に基づく概算です。最終判断の前に、規制の詳細調査（AI）・税関の事前教示・現地拠点への確認をお勧めします。", sz: 9.5, c: MUT }], { ea }) + foot());
     return S;
@@ -42452,7 +42452,7 @@ function ctyDeepView(c) {
         ${DP ? `<p class="nn" style="margin-top:6px">${DP.local ? "内蔵データの骨組み（AI未接続／未調査）" : `${esc(DP.eng)} が調査（${DP.web ? "🌐 Web検索あり・出典" + (DP.d.sources || []).length + "件" : "Web検索なし・エンジンの知識"}・信頼度 ${DP.conf === "high" ? "高" : DP.conf === "mid" ? "中" : "低"}）`}・${esc(DP.at || "")}${DP.err ? `・⚠ ${esc(DP.err)}` : ""}</p>` : ""}</div>
       <div class="rw" style="gap:6px;flex-wrap:wrap"><button class="btn" onclick="ctyDeepRun('${jsa(c)}',true)" ${busy ? "disabled" : ""}>${DP && !DP.local ? "🔄 AIで再調査（Web検索）" : "🤖 AIで詳しく調査（Web検索）"}</button><button class="btn g" onclick="ctyPptxCountry('${jsa(c)}')" ${DP ? "" : "disabled"}>📥 この国のPPTX</button><button class="btn g" onclick="ctyDeepToggle('${jsa(c)}')">${ch.includes(c) ? "確定から外す" : "✅ 確定に含める"}</button></div></div>
       ${busy ? `<p class="nn" style="margin-top:8px"><span class="spin"></span> AI商社マンが ${esc(c)} を調査しています…（当局・統計・競合・チャネル・価格をWeb検索で確認。1〜3分）</p>` : ""}
-      ${!online && !busy ? `<p class="nn" style="margin-top:8px">⚠ AI未接続のため、規制DB・通関統計・バイヤーネットワーク・拠点・一般表の骨組みだけを表示しています。管理者がAIエンジンを接続すると、Web検索で戦略提案資料の粒度に埋まります。</p>` : ""}</div>`;
+      ${!online && !busy ? `<p class="nn" style="margin-top:8px">⚠ AI未接続のため、規制DB・通関統計・AIバイヤー開拓・拠点・一般表の骨組みだけを表示しています。管理者がAIエンジンを接続すると、Web検索で戦略提案資料の粒度に埋まります。</p>` : ""}</div>`;
     if (!DP)
         return head + `<div class="c"><p class="nn">調査結果がまだありません。「🤖 AIで詳しく調査」を押してください。</p></div>`;
     const d = DP.d, o = d.overview, r = d.regulation, m = d.market, cp = d.competition, chn = d.channels, pr = d.pricing;
@@ -45352,7 +45352,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.70";
+const BC20_VER = "21.71";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -64532,7 +64532,7 @@ try {
         S30_NEWS.unshift(["2026-10", "v21.31", "見やすさと使いやすさの改善",
             ["バイヤーのアクティビティログ・商談記録へのコメント・タスクのやりとりで、見出し（種類・日付・書いた人）が読めるように",
                 "「メンバー・担当」の「商品ごとの担当」で、サブ担当者を決められるように",
-                "バイヤーネットワーク・拠点の一覧で、画面の幅が狭くても「直接連絡」「拠点に依頼」が切れずに見えるように",
+                "AIバイヤー開拓・拠点の一覧で、画面の幅が狭くても「直接連絡」「拠点に依頼」が切れずに見えるように",
                 "ドキュメントの種類の自動判定で、「有機」を含むだけのファイル名を「証明書・認証」にしないように"]]);
 }
 catch (e) { }
@@ -64544,7 +64544,7 @@ v30I18n([
     ["見やすさと使いやすさの改善", "Readability and usability improvements", "易读性与易用性改进", "Mejoras de legibilidad y usabilidad"],
     ["バイヤーのアクティビティログ・商談記録へのコメント・タスクのやりとりで、見出し（種類・日付・書いた人）が読めるように", "Headings (type, date, author) are now readable in buyer activity logs, comments on meeting records and task conversations", "买家活动记录、商谈记录评论和任务往来的标题（类型・日期・作者）现在可以正常阅读", "Los encabezados (tipo, fecha, autor) ya se leen en el registro de actividad del comprador, los comentarios de las reuniones y las conversaciones de tareas"],
     ["「メンバー・担当」の「商品ごとの担当」で、サブ担当者を決められるように", "Sub owners can now be set in “Members & assignments” › “Assignments by product”", "可在“成员・负责人”的“按商品的负责人”中设定副负责人", "Ahora se puede asignar el responsable secundario en «Miembros y asignaciones» › «Asignaciones por producto»"],
-    ["バイヤーネットワーク・拠点の一覧で、画面の幅が狭くても「直接連絡」「拠点に依頼」が切れずに見えるように", "In the Buyer Network & bases list, “Contact directly” and “Ask a base” are no longer cut off on narrower screens", "在买家网络・据点列表中，屏幕较窄时“直接联系”“委托据点”也不会被截断", "En la lista de la Red de compradores y bases, «Contactar directamente» y «Solicitar a una base» ya no se cortan en pantallas estrechas"],
+    ["AIバイヤー開拓・拠点の一覧で、画面の幅が狭くても「直接連絡」「拠点に依頼」が切れずに見えるように", "In the Buyer Network & bases list, “Contact directly” and “Ask a base” are no longer cut off on narrower screens", "在买家网络・据点列表中，屏幕较窄时“直接联系”“委托据点”也不会被截断", "En la lista de la Red de compradores y bases, «Contactar directamente» y «Solicitar a una base» ya no se cortan en pantallas estrechas"],
     ["ドキュメントの種類の自動判定で、「有機」を含むだけのファイル名を「証明書・認証」にしないように", "Automatic document typing no longer marks a file as “Certificate” just because its name contains “organic”", "文档类型自动判断不再仅因文件名含“有机”就归为“证书・认证”", "La clasificación automática de documentos ya no marca un archivo como «Certificado» solo porque su nombre contiene «orgánico»"]
 ]);
 const UX32 = { dens: null, menu: null };
@@ -75323,7 +75323,7 @@ if (typeof bnCtxDb === "function")
             const my = v41MyCat(), myN = my ? P.filter(b => b.cat === my).length : 0;
             const R = v41Reqs();
             const own = (typeof myBuyers === "function" ? myBuyers().length : 0);
-            return `## バイヤーネットワーク・拠点（見える範囲の決まりつき）
+            return `## AIバイヤー開拓・拠点（見える範囲の決まりつき）
 見える範囲は3つ：①公開情報（会社名・URL・国・業種など公開されている会社の情報。担当者個人の情報は含めない）②STANDAGEネットワーク（STANDAGEを通じて日本のメーカー・商社から紹介を受けることに同意したバイヤー。国・業態・関心＝本人の申告・規模・参加時期まで）③貴社専用（貴社が登録・開拓したバイヤー。貴社だけが見られる）
 ネットワーク（トライアルの見本・架空）：${P.length.toLocaleString()}社・${Object.keys(by).length}か国。多い国：${Object.entries(by).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([c, n]) => c + " " + n + "社").join("、")}${my ? `／自社カテゴリ（${v41CatNm(my)}）に関心 ${myN}社` : ""}
 貴社専用のバイヤー：${own}社／つなぐ依頼：${R.length}件（承諾 ${R.filter(r => v41StOf(r) === "ok").length}件）
@@ -75332,7 +75332,7 @@ STANDAGEの実績（貿易クラウド Ver.1 の集計・基準日 ${tr.asof}）
 ・ネットワークの相手の会社名・担当者名・メール・電話・SNSは答えない。「つなぐ依頼」を出し、相手が承諾すると、依頼した会社にだけ開示される
 ・ほかの会社やSTANDAGEの商談から分かったこと（商談の有無・取引実績・脈あり度・価格・仕入額・商談メモ）は、ネットワークの相手について答えない
 ・答えてよいのは、条件ごとの件数と、匿名の属性（ID・国・業態・関心・規模・参加時期）まで。一覧は1回に10件まで。一覧の書き出しはできない
-・連絡したいと言われたら「バイヤーネットワーク・拠点 › 相手を探す › つなぐ依頼」を案内する。現地の担当に商談まで任せる場合は、つなぐ依頼の中で選べる（別途費用）。貴社専用のバイヤーには直接連絡できる`;
+・連絡したいと言われたら「AIバイヤー開拓・拠点 › 相手を探す › つなぐ依頼」を案内する。現地の担当に商談まで任せる場合は、つなぐ依頼の中で選べる（別途費用）。貴社専用のバイヤーには直接連絡できる`;
         }
         catch (e) {
             return "";
@@ -75424,7 +75424,7 @@ if (typeof bnAsk === "function")
             const rows = v41Sort(all, my).slice(0, 10);
             a = `<b>${esc(c)}のバイヤーネットワーク：${all.length}社</b>（トライアルの見本）。カテゴリ別：${esc(v41CatBreak(all))}。<br>
 匿名の見本 ${rows.length}件${my ? `（${esc(v41CatNm(my))}に関心のある相手を優先）` : ""}です。名前・連絡先と、ほかの会社との商談の状況はお伝えしていません。` + tbl(rows) +
-                `<p class="nn" style="margin-top:6px">連絡したい相手がいれば、「バイヤーネットワーク・拠点」の<b>相手を探す</b>で同じIDの行から<b>つなぐ依頼</b>を出してください。STANDAGEが相手に貴社をご紹介し、相手が承諾すると、連絡先が貴社にだけ開示されます。</p>`;
+                `<p class="nn" style="margin-top:6px">連絡したい相手がいれば、「AIバイヤー開拓・拠点」の<b>相手を探す</b>で同じIDの行から<b>つなぐ依頼</b>を出してください。STANDAGEが相手に貴社をご紹介し、相手が承諾すると、連絡先が貴社にだけ開示されます。</p>`;
         }
         else {
             const by = {};
@@ -75572,7 +75572,7 @@ catch (e) { }
         ["STANDAGEが自ら出会ったバイヤー（海外拠点の開拓・国際展示会・紹介・引き合い）に、STANDAGEを通じて複数の日本の会社（貴社のようなメーカー・商社）から紹介を受けることへの同意をいただいて登録します。各社のプロジェクトで開拓したバイヤーは、その会社専用で、ネットワークには入りません。", "Buyers STANDAGE meets directly (overseas bases, trade shows, referrals, inquiries) are registered after they agree to receive introductions through STANDAGE from multiple Japanese companies (manufacturers and trading companies like yours). Buyers developed in a client’s project belong to that client only and never enter the network.", "STANDAGE亲自接触的买家（海外据点开拓・国际展会・介绍・询盘），在其同意通过STANDAGE接受多家日本公司（像贵公司这样的制造商・贸易公司）引荐后登记。各公司项目中开拓的买家归该公司专用，不进入网络。", "Los compradores que STANDAGE conoce directamente (bases, ferias, referencias, consultas) se registran tras aceptar recibir presentaciones, a través de STANDAGE, de varias empresas japonesas (fabricantes y empresas comerciales como la suya). Los compradores captados en el proyecto de un cliente son solo de ese cliente y nunca entran en la red."],
         ["年商 $1M未満", "Revenue < $1M", "年营业额 $1M以下", "Facturación < 1 M$"], ["年商 $1〜5M", "Revenue $1–5M", "年营业额 $1〜5M", "Facturación 1–5 M$"], ["年商 $5〜20M", "Revenue $5–20M", "年营业额 $5〜20M", "Facturación 5–20 M$"], ["年商 $20M超", "Revenue > $20M", "年营业额 $20M以上", "Facturación > 20 M$"],
         ["バイヤーネットワークで「つなぐ依頼」、または自社のバイヤーを追加", "Request an introduction in the Buyer Network, or add your own buyers", "在买家网络中“请求引荐”，或添加自有买家", "Solicite una presentación en la Red de compradores o añada sus compradores"],
-        ["まずは「バイヤーネットワーク・拠点」で「つなぐ依頼」を出すか、自社のバイヤーに直接連絡して、やり取りを始めてください。", "Start by sending a “Request introduction” in “Buyer Network & bases”, or contact one of your own buyers directly.", "请先在“买家网络・据点”中“请求引荐”，或直接联系自有买家，开始往来沟通。", "Empiece enviando una «Solicitud de presentación» en «Red de compradores y bases» o contacte directamente a uno de sus compradores."],
+        ["まずは「AIバイヤー開拓・拠点」で「つなぐ依頼」を出すか、自社のバイヤーに直接連絡して、やり取りを始めてください。", "Start by sending a “Request introduction” in “Buyer Network & bases”, or contact one of your own buyers directly.", "请先在“买家网络・据点”中“请求引荐”，或直接联系自有买家，开始往来沟通。", "Empiece enviando una «Solicitud de presentación» en «Red de compradores y bases» o contacte directamente a uno de sus compradores."],
         ["バイヤーネットワークの相手は、つなぐ依頼で相手が承諾すると、名称・連絡先が貴社にだけ開示されます。開示された情報や、独自に分かったことをここに残せます。", "For Buyer Network contacts, the name and contact details are disclosed only to you once the buyer accepts your introduction request. Record the disclosed information and anything you learn yourself here.", "买家网络中的对象，在其接受引荐请求后，名称・联系方式仅向贵公司公开。可以在这里记录已公开的信息和自己了解到的情况。", "En los contactos de la Red de compradores, el nombre y los datos se le revelan solo a usted cuando el comprador acepta la presentación. Anote aquí lo revelado y lo que averigüe."],
         ["見出しの横の「使い方を見る」で、その画面の説明をその場で", "“How to use” next to each heading opens that screen’s guide on the spot", "在标题旁“使用方法”即可当场查看该页面说明", "«Cómo usar» junto al título abre la guía de esa pantalla al instante"],
         ["どの画面も、見出しの下の「この画面でわかること」をやめ、見出しの横に「▶ 使い方を見る」を置きました", "Every screen now has “▶ How to use” next to its heading instead of the “What this page shows” line", "各页面取消了标题下方的“本页可见”，改为在标题旁放置“▶ 使用方法”", "Cada pantalla tiene ahora «▶ Cómo usar» junto al título en lugar de la línea «Qué muestra esta página»"],
@@ -78954,7 +78954,7 @@ if (typeof vSrcs === "function") {
 })();
 var V49 = { q: "", ops: 0 };
 const V49G_PG = { inbox: "受信箱", dash: "ダッシュボード", today: "今日やること", up: "商品情報を登録", item: "商品情報", srcs: "取り込んだ情報一覧", cty: "販売先国の選定", deck: "外国語 営業資料",
-    gloss: "用語集", db: "バイヤーネットワーク・拠点", deal: "商談・バイヤー", msg: "やりとり", rqp: "依頼ページ", memo: "会議メモ・議事録", ops: "貿易実務・書類・出荷", docs: "ドキュメント",
+    gloss: "用語集", db: "AIバイヤー開拓・拠点", deal: "商談・バイヤー", msg: "やりとり", rqp: "依頼ページ", memo: "会議メモ・議事録", ops: "貿易実務・書類・出荷", docs: "ドキュメント",
     legal: "契約書関連", task: "タスク・進行", team: "メンバー・担当", trash: "ゴミ箱", ai: "AI商社マン" };
 const V49G_TOP = { "#lang": "画面の上のバー（言語）", "#psw": "画面の上のバー（商品の切り替え）" };
 const V49_OPV = /登録|追加|入れ|入力|作成|作る|作り|つくる|つくり|載せ|取り?込|インポート|読み?込|アップ|足す|足し|加え/;
@@ -79075,20 +79075,20 @@ const V49G = [
             "自分で選ぶときは「① 候補国（最大10か国）」で国を選んで「＋ 追加」（一覧に無い国は名前を入力）→「この候補で分析（4つの観点）」。市場性・規制・競合・拠点の100点満点で採点され、上位3か国に「推奨」が付きます。",
             "「✅ この3か国で確定」を押すと、進出希望国として規制・価格・物流・出荷・営業資料・AI商社マンの答えに反映されます（チェックで入れ替えもできます）。"],
         tips: [], acts: [{ t: "販売先国の選定を開く", pg: "cty", f: "#ctysel", cty: 1 }] },
-    { id: "network", g: "売り先・バイヤー", nm: "新しいバイヤーを探す・つないでもらう", pg: "db", ex: "新しいバイヤーを探すには？",
+    { id: "network", g: "売り先・バイヤー", nm: "新しいバイヤーを探す（AIバイヤー開拓）", pg: "db", ex: "新しいバイヤーを探すには？",
         kw: [[/バイヤー|取引先|顧客|輸入者|輸入業者|買い手|販路|ディストリビューター|代理店|卸先/, 1], [/探|見つけ|開拓|紹介|つな|ネットワーク|新規|増や|候補/, 2]], need: /探|見つけ|開拓|紹介|つな|ネットワーク|新規|増や|候補/,
-        steps: ["「バイヤーネットワーク・拠点」の「相手を探す」で、国・カテゴリ・業態を選んで絞り込みます。",
-            "一覧は匿名です（名前・連絡先・ほかの会社との商談の状況は出ません）。気になる相手の「つなぐ依頼」を押し、目的とひと言を入れて送ります。",
-            "STANDAGE が確認して相手に紹介し、相手が承諾すると、連絡先が貴社にだけ開示されます。「やりとりを始める」で直接メールを送れます。"],
-        tips: ["つなぐ依頼は1か月20件までです。現地の STANDAGE の担当に商談まで任せることもできます（別途費用）。"],
-        acts: [{ t: "相手を探す", pg: "db", f: "#v41find" }] },
+        steps: ["「AIバイヤー開拓・拠点」の「AIバイヤー開拓」で、国と業態（輸入商社・小売チェーン・EC など）と件数を選び、「AI商社マンにリストを作らせる」を押します。",
+            "AI商社マンが、STANDAGE の一次情報（おまかせ貿易の現場の記録）と公開情報から、商談になりやすい順（見込み A／B／C）のリストを作ります。社名・URL・窓口は、送る前に公式サイトで確かめます。",
+            "相手を選んで「文面を作る」→ 手法・言語・タイミング・3通の流れ（初回・フォロー1・フォロー2）と文面が出ます。直して「送る」と、送った相手は自社のバイヤーに入り、フォローの予定がタスクに入ります。「エージェントの次の一手」で、返信の無い相手へのフォローや返信への対応を案内します。"],
+        tips: ["STANDAGE のバイヤーへの社名つきのおつなぎは、おまかせ貿易をご契約のお客様向けです。現地の STANDAGE の担当に商談まで任せることもできます（別途費用）。"],
+        acts: [{ t: "AIバイヤー開拓を開く", pg: "db", f: "#v71ob" }] },
     { id: "buyer", g: "売り先・バイヤー", nm: "バイヤーを登録する（自社で見つけた相手）", pg: "deal", ex: "バイヤーを登録するには？",
         kw: [[/バイヤー|取引先|顧客|輸入者|輸入業者|買い手|相手先|ディストリビューター|代理店|卸先|得意先|名刺/, 3]], need: V49_OPV,
         steps: ["「商談・バイヤー」を開き、上の「👥 バイヤー一覧」を選びます。",
             "「＋ バイヤーを追加」を押し、会社名（必須）と、分かる項目（担当者名・メールアドレス・国・業種など）を入れて「追加する」を押します。会社名だけでも登録できます。",
             "会社のサイトの URL や名刺・資料のファイルから読み取らせるときは、同じ窓の「URL・ファイルから追加（AI）」。手元の Excel・CSV は「一覧を取り込む」でまとめて登録できます。",
             "登録したバイヤーは貴社専用で、ほかの会社には見えません。行を押すと詳細（商談記録・アクティビティログ・直接連絡）が開きます。"],
-        tips: ["まだ相手がいないときは、「バイヤーネットワーク・拠点」で探して「つなぐ依頼」を出せます（相手が承諾すると連絡先が開示されます）。"],
+        tips: ["まだ相手がいないときは、「AIバイヤー開拓・拠点」の「AIバイヤー開拓」で、AI商社マンが商談になりやすい相手をリストにし、文面の提案から送信まで進めます。"],
         acts: [{ t: "バイヤーを追加する", pg: "deal", pre: "deal:bx", f: "text:＋ バイヤーを追加" }, { t: "一覧を取り込む", pg: "deal", pre: "deal:bx", f: "text:一覧を取り込む" }] },
     { id: "fb", g: "売り先・バイヤー", nm: "商談を記録する", pg: "deal", ex: "商談記録をつけるには？",
         kw: [[/商談/, 3], [/面談|打ち?合わせ|先方の反応|失注|断られた理由/, 1]], need: /記録|つけ|付け|残|登録|入れ|入力|書|メモ|追加/,
@@ -88233,7 +88233,7 @@ function v54ctyLegend(s) {
     const ai = !!(s && s.ai);
     return `<p class="v54leg" id="v54ctyleg">${v54ctyE(v54ctyT("点数はすべて0〜100点で、高いほど有利です。「競合」は日本からの競合の少なさで、高いほど競争がゆるく、参入しやすい国です。表は総合点（目安）の高い順です。"))}
     ${v54ctyE(v54ctyT(ai ? "推奨（色の付いた行）は、AI商社マンが総合点に加えて商品の特性も見て決めています。" : "推奨（色の付いた行）は、総合点の上位3か国です（内蔵ロジック）。"))}</p>
-    <p class="nn" id="v54ctybuy">${v54ctyE(v54ctyT("バイヤー数は、AI商社マンの答えや「バイヤーネットワーク・拠点」と同じ数え方です（STANDAGEを通じて紹介を受けることに同意したバイヤーのうち、貴社のカテゴリに関心のある社数。トライアルでは見本の数です）。"))}</p>`;
+    <p class="nn" id="v54ctybuy">${v54ctyE(v54ctyT("バイヤー数は、AI商社マンの答えや「AIバイヤー開拓・拠点」と同じ数え方です（STANDAGEを通じて紹介を受けることに同意したバイヤーのうち、貴社のカテゴリに関心のある社数。トライアルでは見本の数です）。"))}</p>`;
 }
 function v54ctyDecorate(h, s) {
     const rec = s.rec || [];
@@ -88247,7 +88247,7 @@ function v54ctyDecorate(h, s) {
     if (O)
         add += v54ctyOrderBox(s, O);
     if (typeof v41Pool === "function" && rec.length && rec.some(r => r && r.facts && r.facts.bdef !== "net"))
-        add += `<p class="v54old" id="v54ctyold">${v54ctyE(v54ctyT("この分析のバイヤー数は、以前の数え方（STANDAGEの実績からの換算）です。「🔄 再分析」を押すと、AI商社マンや「バイヤーネットワーク・拠点」と同じ数え方（バイヤーネットワークの社数）にそろいます。"))}</p>`;
+        add += `<p class="v54old" id="v54ctyold">${v54ctyE(v54ctyT("この分析のバイヤー数は、以前の数え方（STANDAGEの実績からの換算）です。「🔄 再分析」を押すと、AI商社マンや「AIバイヤー開拓・拠点」と同じ数え方（バイヤーネットワークの社数）にそろいます。"))}</p>`;
     if (add) {
         const e = '</tbody></table></div>';
         const j = h.indexOf(e, i);
@@ -88495,11 +88495,11 @@ try {
                 "Todas las puntuaciones son de 0 a 100 y más alto es mejor. \"Competencia\" mide cuán pocos competidores japoneses hay: cuanto más alta, menos competencia y más fácil entrar. La tabla está ordenada por puntuación total (referencia)."],
             ["推奨（色の付いた行）は、AI商社マンが総合点に加えて商品の特性も見て決めています。", "The recommended rows (highlighted) are chosen by the AI Trade Agent from the total score plus your product's characteristics.", "推荐（带颜色的行）由AI商社专员在总分基础上结合商品特点决定。", "Las filas recomendadas (resaltadas) las elige el agente IA con la puntuación total y las características del producto."],
             ["推奨（色の付いた行）は、総合点の上位3か国です（内蔵ロジック）。", "The recommended rows (highlighted) are the top 3 by total score (built-in logic).", "推荐（带颜色的行）为总分前3的国家（内置逻辑）。", "Las filas recomendadas (resaltadas) son las 3 primeras por puntuación total (lógica integrada)."],
-            ["バイヤー数は、AI商社マンの答えや「バイヤーネットワーク・拠点」と同じ数え方です（STANDAGEを通じて紹介を受けることに同意したバイヤーのうち、貴社のカテゴリに関心のある社数。トライアルでは見本の数です）。",
+            ["バイヤー数は、AI商社マンの答えや「AIバイヤー開拓・拠点」と同じ数え方です（STANDAGEを通じて紹介を受けることに同意したバイヤーのうち、貴社のカテゴリに関心のある社数。トライアルでは見本の数です）。",
                 "Buyer counts use the same definition as the AI Trade Agent and \"Buyer Network & bases\" (buyers who agreed to be introduced through STANDAGE and are interested in your category; sample figures in the trial).",
                 "买家数与AI商社专员的回答及“买家网络・据点”的口径相同（同意经由STANDAGE接受介绍、且关注贵司品类的买家数。试用版为样本数）。",
                 "Los compradores se cuentan igual que en las respuestas del agente IA y en \"Red de compradores y bases\" (compradores que aceptaron ser presentados por STANDAGE e interesados en su categoría; cifras de muestra en la prueba)."],
-            ["この分析のバイヤー数は、以前の数え方（STANDAGEの実績からの換算）です。「🔄 再分析」を押すと、AI商社マンや「バイヤーネットワーク・拠点」と同じ数え方（バイヤーネットワークの社数）にそろいます。",
+            ["この分析のバイヤー数は、以前の数え方（STANDAGEの実績からの換算）です。「🔄 再分析」を押すと、AI商社マンや「AIバイヤー開拓・拠点」と同じ数え方（バイヤーネットワークの社数）にそろいます。",
                 "Buyer counts in this analysis use the old definition (converted from STANDAGE's track record). Press \"🔄 Re-analyse\" to align them with the AI Trade Agent and \"Buyer Network & bases\" (Buyer Network counts).",
                 "本次分析的买家数为以前的口径（由STANDAGE实绩换算）。点击“🔄 重新分析”后，将与AI商社专员及“买家网络・据点”的口径（买家网络家数）一致。",
                 "Los compradores de este análisis usan la definición anterior (convertida del historial de STANDAGE). Pulse \"🔄 Volver a analizar\" para alinearlos con el agente IA y \"Red de compradores y bases\"."],
@@ -130360,7 +130360,7 @@ function v68SetupWhy(k, t, D0) {
             return v68X("外国語の営業資料をまだ作っていません（1つ作ると済みます）", "No foreign-language sales material yet (create one to finish)", "尚未制作外语营销资料（制作1份即可完成）", "Aún no hay material de ventas en otro idioma (cree uno para terminar)");
         if (k === "buyer") {
             const fb = n(D0 && D0.fb) || n(t && t.fbx);
-            let h = v68X("バイヤーネットワーク・拠点の「つなぐ依頼」、バイヤーとの直接メッセージ、自社のバイヤーの登録のどれかで済みます", "Done by any of: a “Connect me” request in the Buyer Network, a direct message with a buyer, or adding your own buyer", "通过买家网络的“请求对接”、与买家的直接消息、或登记自有买家中的任一项即可完成", "Se completa con una solicitud «Conectar» en la red de compradores, un mensaje directo o al añadir un comprador propio");
+            let h = v68X("AIバイヤー開拓・拠点の「AIバイヤー開拓」、バイヤーとの直接メッセージ、自社のバイヤーの登録のどれかで済みます", "Done by any of: a “Connect me” request in the Buyer Network, a direct message with a buyer, or adding your own buyer", "通过买家网络的“请求对接”、与买家的直接消息、或登记自有买家中的任一项即可完成", "Se completa con una solicitud «Conectar» en la red de compradores, un mensaje directo o al añadir un comprador propio");
             if (fb)
                 h += v68X(`（商談の記録 ${fb}件はありますが、記録だけではこの手順は済みません。記録した相手を「自社のバイヤー」に足すと済みます）`, ` (you have ${fb} meeting record(s), but records alone do not complete this step; add that buyer as your own buyer to finish)`, `（已有${fb}条商谈记录，但仅有记录不能完成此步骤。将该对象添加为“自有买家”即可完成）`, ` (tiene ${fb} registro(s) de reuniones, pero no completan este paso; añada ese comprador como comprador propio)`);
             return h;
@@ -137913,7 +137913,7 @@ async function v70mktPart(part, inner) {
                 L.push(n.catNm ? `${c}：${n.catNm}に関心のあるバイヤー ${n.cat}社（この国の参加 計${n.all}社）` : `${c}：バイヤー ${n.all}社（この国の参加）`);
                 K.push(String(n.catNm ? n.cat : n.all) + "社");
             });
-            const t = L.join("／") + "。数は「バイヤーネットワーク・拠点」と同じ数え方です（STANDAGEを通じて紹介を受けることに同意したバイヤー。トライアルでは見本の数）。";
+            const t = L.join("／") + "。数は「AIバイヤー開拓・拠点」と同じ数え方です（STANDAGEを通じて紹介を受けることに同意したバイヤー。トライアルでは見本の数）。";
             return { h: v70mktE(t), t, unk, keys: K };
         }
     }
@@ -138939,8 +138939,8 @@ function v70dealDmHtml() {
     }).join("");
     return `<div class="c" id="v70dealdm" style="margin-bottom:10px"><h3>🤝 ${E(M("商談相手とのやり取り（直接連絡）", "Conversations with buyers (direct messages)", "与商谈对象的沟通（直接联系）", "Conversaciones con compradores (mensajes directos)"))} <span class="p on">${L.length}${E(M("件", "", "件", ""))}</span></h3>
     <p class="nn">${E(M("バイヤーネットワーク・バイヤー一覧の「直接連絡」で送ったメールと返信です。押すと、その相手のスレッドが開きます。下は、この案件の社内・STANDAGE・LINE/WhatsApp のやりとりです。", "Emails and replies sent with “Direct message” from the buyer network and buyer list. Click to open the thread. Below: this project's internal, STANDAGE and LINE/WhatsApp messages.", "这是在买家网络・买家列表中用“直接联系”发送的邮件和回复。点击可打开该对象的话题。下方为本案件的内部・STANDAGE・LINE/WhatsApp 沟通。", "Correos y respuestas enviados con «Mensaje directo». Pulse para abrir el hilo. Abajo: mensajes internos, de STANDAGE y LINE/WhatsApp."))}</p>
-    ${L.length ? `<div class="th-rowlist" style="margin-top:8px">${rows}</div>${L.length > 8 ? `<p class="nn" style="margin-top:6px"><a href="#" style="color:var(--bl)" onclick="event.preventDefault();go('db')">${E(M("すべて見る（バイヤーネットワーク・拠点）→", "See all (buyer network) →", "查看全部（买家网络）→", "Ver todo →"))}</a></p>` : ""}`
-        : `<p class="nn" style="margin-top:6px">${E(M("まだ商談相手との直接連絡はありません。バイヤーネットワーク・拠点の「相手を探す」やバイヤー一覧から連絡すると、ここに並びます。", "No direct messages with buyers yet. Contact a buyer from the buyer network or buyer list and it will appear here.", "还没有与商谈对象的直接联系。从买家网络或买家列表联系后会显示在这里。", "Aún no hay mensajes directos con compradores."))}</p>`}</div>`;
+    ${L.length ? `<div class="th-rowlist" style="margin-top:8px">${rows}</div>${L.length > 8 ? `<p class="nn" style="margin-top:6px"><a href="#" style="color:var(--bl)" onclick="event.preventDefault();go('db')">${E(M("すべて見る（AIバイヤー開拓・拠点）→", "See all (buyer network) →", "查看全部（买家网络）→", "Ver todo →"))}</a></p>` : ""}`
+        : `<p class="nn" style="margin-top:6px">${E(M("まだ商談相手との直接連絡はありません。AIバイヤー開拓・拠点の「AIバイヤー開拓」やバイヤー一覧から連絡すると、ここに並びます。", "No direct messages with buyers yet. Contact a buyer from the buyer network or buyer list and it will appear here.", "还没有与商谈对象的直接联系。从买家网络或买家列表联系后会显示在这里。", "Aún no hay mensajes directos con compradores."))}</p>`}</div>`;
 }
 function v70dealMsgPaint() {
     try {
@@ -140681,6 +140681,1198 @@ try {
             "営業資料は作っている間も保存済みの資料を開ける・商品を切り替えても作り続けて元の商品に保存",
             "管理コンソール：有効化・無効化の前に確認・確認コードの送り直し・AI のキーは「表示」を押したときだけ見せる・残り日数の数え方をそろえる",
             "物流会社：完了の後も担当の名前を残す・相場の質問に相見積と同じ幅で答える・見積を出せるようになった依頼を知らせる"]);
+    }
+}
+catch (e) { }
+var V71OB = { busy: 0, sel: {}, f: null, msg: "", open: {} };
+const V71OB_BIZ = [["imp", "輸入商社・卸"], ["chain", "小売チェーン・量販"], ["ec", "EC・オンライン小売"], ["horeca", "飲食・ホテル（HoReCa）"], ["dist", "代理店・ディストリビューター"], ["spec", "専門店・セレクトショップ"]];
+const V71OB_N = [10, 20];
+const V71OB_SEQ = [0, 4, 10];
+function v71obT(s) { try {
+    return typeof v30T === "function" ? v30T(s) : s;
+}
+catch (e) {
+    return s;
+} }
+function v71obF(s, o) { let t = v71obT(s); Object.keys(o || {}).forEach(k => { t = t.split("{" + k + "}").join(String(o[k])); }); return t; }
+function v71obE(s) { try {
+    return esc(s);
+}
+catch (e) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+} }
+function v71obN(s) { return v71obE(v71obT(s)); }
+function v71obToast(s) { try {
+    toast(v71obT(s));
+}
+catch (e) { } }
+function v71obNow() { return Date.now(); }
+function v71obDay(ms) { try {
+    const d = new Date(ms);
+    return (d.getMonth() + 1) + "/" + d.getDate() + " " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+}
+catch (e) {
+    return "";
+} }
+function v71obSt() {
+    let t = null;
+    try {
+        if (typeof TEN !== "undefined" && TEN)
+            t = TEN;
+    }
+    catch (e) { }
+    if (!t) {
+        try {
+            if (typeof D !== "undefined" && D)
+                t = D;
+        }
+        catch (e) { }
+    }
+    if (!t)
+        t = (window.__v71s = window.__v71s || {});
+    if (!t.v71ob || typeof t.v71ob !== "object")
+        t.v71ob = { runs: [], cur: -1 };
+    if (!Array.isArray(t.v71ob.runs))
+        t.v71ob.runs = [];
+    return t.v71ob;
+}
+function v71obSave() { try {
+    if (typeof saveTen === "function")
+        saveTen();
+}
+catch (e) { } }
+function v71obRun() { const S = v71obSt(); const i = (S.cur >= 0 && S.cur < S.runs.length) ? S.cur : S.runs.length - 1; return i >= 0 ? S.runs[i] : null; }
+function v71obLead(id) { const S = v71obSt(); for (const r of S.runs) {
+    const l = (r.leads || []).find(x => x.id === id);
+    if (l)
+        return { r, l };
+} return null; }
+function v71obCtys() {
+    const out = [];
+    const add = c => { c = String(c && c.c || c || "").trim(); if (c && !out.includes(c))
+        out.push(c); };
+    try {
+        if (typeof ctyChosen === "function")
+            ctyChosen().forEach(x => add(x && x.c || x && x.n || x));
+    }
+    catch (e) { }
+    try {
+        const T = (typeof TEN !== "undefined" && TEN && TEN.targets) || (typeof D !== "undefined" && D && D.targets) || [];
+        (Array.isArray(T) ? T : String(T).split(/[、,，\/]/)).forEach(add);
+    }
+    catch (e) { }
+    const first = out.length;
+    try {
+        (typeof BN_CTY !== "undefined" ? BN_CTY : []).slice(0, 30).forEach(([c]) => add(c));
+    }
+    catch (e) { }
+    try {
+        Object.keys(typeof DM_LANG !== "undefined" ? DM_LANG : {}).forEach(add);
+    }
+    catch (e) { }
+    return { list: out.filter(c => c !== "日本"), first };
+}
+function v71obLang(cty) { try {
+    const l = (typeof DM_LANG !== "undefined" && DM_LANG[cty]) || "English";
+    return l;
+}
+catch (e) {
+    return "English";
+} }
+function v71obV1(cty) { try {
+    return typeof bnCtyBase === "function" ? bnCtyBase(cty) : 0;
+}
+catch (e) {
+    return 0;
+} }
+function v71obBrief() {
+    const d = (typeof D !== "undefined" && D) || {};
+    const st = (d.strengths || []).map(x => Array.isArray(x) ? x[0] : (x && x.t) || x).filter(Boolean).map(String).slice(0, 3);
+    let price = "";
+    try {
+        (d.priceRows || []).some(r => (r || []).some(v => { const m = String(v || "").match(/(US\$|\$|USD|€|EUR)\s?[\d,.]+/); if (m) {
+            price = m[0];
+            return true;
+        } return false; }));
+    }
+    catch (e) { }
+    return { co: d.coEn || d.co || "", coJa: d.co || "", item: d.itemEn || d.item || "", itemJa: d.item || "", cat: d.cat || "", st, price, moq: String(d.moq || "").replace(/^—$/, ""), cert: String(d.cert || "").replace(/^—$/, ""),
+        term: d.term || "", lead: String(d.lead || "").replace(/^—$/, ""), shelf: String(d.shelf || "").replace(/^—$/, ""), origin: d.origin || "" };
+}
+function v71obReady(cty) {
+    const d = (typeof D !== "undefined" && D) || {};
+    const t = (typeof TEN !== "undefined" && TEN) || {};
+    const b = v71obBrief();
+    const reg = !!(d.regs && cty && d.regs[cty]);
+    const deck = !!((t.deckMeta && Object.keys(t.deckMeta).length) || t.deck || (t.deckRich && Object.keys(t.deckRich).length));
+    const price = !!b.price, moq = !!b.moq;
+    const pts = (reg ? 8 : 0) + (deck ? 7 : 0) + (price ? 5 : 0) + (moq ? 5 : 0);
+    const miss = [];
+    if (!reg)
+        miss.push(["規制調査", "ops"]);
+    if (!deck)
+        miss.push(["外国語営業資料", "deck"]);
+    if (!price)
+        miss.push(["FOB 価格", "up"]);
+    if (!moq)
+        miss.push(["MOQ（最小ロット）", "up"]);
+    return { reg, deck, price, moq, pts, miss };
+}
+function v71obRank(p) { return p >= 75 ? "A" : p >= 55 ? "B" : "C"; }
+async function v71obKb(cty, bizNm) {
+    try {
+        if (typeof v66kbSearch !== "function")
+            return null;
+        const b = v71obBrief();
+        return await v66kbSearch([cty, b.cat, b.itemJa, bizNm, "バイヤー 反応 返信 商談 サンプル 価格 条件 見送り"].filter(Boolean).join(" "), [cty]);
+    }
+    catch (e) {
+        return null;
+    }
+}
+function v71obKbLines(S) { return (S && S.items || []).slice(0, 8).map((c, i) => "[S" + (i + 1) + "] " + [c.cn || "", [c.g, c.s].filter(Boolean).join("・"), c.m || "", (c.ch || "商談") + "の記録" + (c.o === "FS" ? "（現地）" : "")].filter(Boolean).join("｜") + "：" + String(c.x || "").slice(0, 220)).join("\n"); }
+function v71obJson(t) { t = String(t || "").replace(/```json|```/g, "").trim(); const a = t.indexOf("{"), b = t.lastIndexOf("}"); if (a < 0 || b <= a)
+    throw new Error("JSON なし"); return JSON.parse(t.slice(a, b + 1)); }
+function v71obAi() { try {
+    return typeof ppReady === "function" && ppReady();
+}
+catch (e) {
+    return false;
+} }
+function v71obCtx() { try {
+    return typeof ppContext === "function" ? String(ppContext()).slice(0, 6000) : "";
+}
+catch (e) {
+    return "";
+} }
+function v71obClampN(v, max) { v = Math.round(+v || 0); return Math.max(0, Math.min(max, v)); }
+function v71obUrl(u) { u = String(u || "").trim(); return /^https?:\/\/[^\s/]+\.[^\s]+$/i.test(u) ? u : ""; }
+function v71obId() { return "OB-" + Date.now().toString(36).toUpperCase().slice(-5) + Math.floor(Math.random() * 36 * 36).toString(36).toUpperCase().padStart(2, "0"); }
+const V71OB_SMP = [["Harbor Fine Foods Trading", "imp"], ["Sakura Select Distribution", "dist"], ["Green Leaf Retail Group", "chain"], ["Umami Online Market", "ec"], ["Blue Bay Hospitality Supply", "horeca"], ["Kaze Specialty Store", "spec"], ["Pacific Gourmet Importers", "imp"], ["Lotus Lifestyle Mart", "chain"], ["NextShelf E-commerce", "ec"], ["Tokyo Taste Partners", "dist"]];
+function v71obSample(f, ready, kb) {
+    const cty = f.cty, n = f.n || 10, bz = f.biz && f.biz.length ? f.biz : V71OB_BIZ.map(x => x[0]);
+    const out = [];
+    let k = 0;
+    for (const [nm, biz] of V71OB_SMP) {
+        if (out.length >= n)
+            break;
+        if (!bz.includes(biz))
+            continue;
+        const fit = 34 - (k * 3) % 14, kbp = (kb && kb.items && kb.items.length) ? Math.max(6, 22 - k * 2) : 8;
+        const slug = nm.toLowerCase().replace(/[^a-z]+/g, "-");
+        out.push({ id: v71obId(), smp: 1, name: "[見本] " + nm, city: "", url: "https://" + slug + ".example.com/", biz: (V71OB_BIZ.find(x => x[0] === biz) || ["", ""])[1],
+            fit, kb: kbp, why: v71obF("見本の例：{biz}で、日本の{cat}を扱う想定の会社", { biz: v71obT((V71OB_BIZ.find(x => x[0] === biz) || ["", ""])[1]), cat: v71obBrief().cat || v71obT("商品") }),
+            basis: kb && kb.items && kb.items.length ? "[S1]" : "公開情報（見本）", contact: "info@" + slug + ".example.com", size: "", note: v71obT("見本（架空）の会社です") });
+        k++;
+    }
+    return out;
+}
+async function v71obBuild() {
+    if (V71OB.busy)
+        return;
+    const f = v71obReadForm();
+    if (!f.cty) {
+        v71obToast("国を選んでください");
+        return;
+    }
+    V71OB.busy = 1;
+    V71OB.msg = v71obT("AI商社マンが、STANDAGE の一次情報と公開情報から相手を選んでいます…（1〜2分）");
+    v71obPaint();
+    const bizNm = (f.biz.length ? f.biz : V71OB_BIZ.map(x => x[0])).map(k => (V71OB_BIZ.find(x => x[0] === k) || ["", k])[1]).join("・");
+    const ready = v71obReady(f.cty);
+    const kb = await v71obKb(f.cty, bizNm);
+    const v1 = v71obV1(f.cty);
+    const b = v71obBrief();
+    let leads = [], insight = "", types = [], how = "ai", err = "";
+    if (v71obAi()) {
+        const sys = `あなたは STANDAGE の「AI商社マン」のアウトバウンド担当です。日本のメーカーの商品を、指定の国のバイヤーに初めて提案するための「アプローチ先リスト」を作ります。答えは日本語。JSON だけを返す。
+{"insight":"この国・この商品で、どの業態から攻めると商談になりやすいか（STANDAGE 一次情報を使ったら [S1] のように番号を付ける・120字以内）",
+ "types":[{"biz":"業態","why":"40字以内"}],
+ "leads":[{"name":"会社名（公式の表記）","city":"都市","url":"公式サイトの URL（https://…）。確かめられなければ空","biz":"業態","fit":0,"kb":0,"why":"商品と合う理由（60字以内）","basis":"根拠（[S1] などか『公開情報』）","contact":"会社の公開の問い合わせ先（info@… などの会社の窓口のメールか、問い合わせフォームの URL）。分からなければ空","size":"規模の目安","note":"送る前に確かめること（30字以内）"}]}
+決まり：
+・実在する会社だけを挙げる。公式サイトの URL を確かめられない会社は url を空にし、note に「実在と URL を要確認」と書く。作り話の会社・URL・メールを書かない
+・担当者個人の名前・個人のメール・電話・SNS は書かない（会社の公開の窓口だけ）
+・「STANDAGE 一次情報」は匿名の記録。そこから社名を推測して書かない。どの業態・どんな条件で反応したかの分析にだけ使う
+・fit（0〜40）は商品との合い方（業態・取扱品目・価格帯・規模）。kb（0〜35）は STANDAGE 一次情報の傾向と合う度合い（関係する記録が無ければ 0〜10）
+・件数は最大 ${f.n} 社。商談になりやすい順に並べる`;
+        const q = `## 条件\n国：${f.cty}\n業態：${bizNm}\n件数：${f.n}\n\n## 商品と会社（貴社のデータ）\n${v71obCtx()}\n\n## STANDAGE 一次情報（おまかせ貿易の現場の記録・匿名）\n${v71obKbLines(kb) || "（関係する記録なし）"}\n\n## STANDAGE の実績（貿易クラウド Ver.1 の集計）\n${f.cty} で開拓・やりとりしたバイヤー：${v1 ? v1.toLocaleString() + "名" : "記録なし"}（社名は出さない）\n\n## 貴社の準備\n規制調査：${ready.reg ? "済み" : "まだ"}／外国語営業資料：${ready.deck ? "あり" : "まだ"}／FOB 価格：${b.price || "未登録"}／MOQ：${b.moq || "未登録"}`;
+        try {
+            let wp = true;
+            try {
+                wp = typeof webPerm !== "function" || !!webPerm();
+            }
+            catch (e) { }
+            const r = await llmAsk(q, f.n > 10 ? 8000 : 5000, Object.assign({ sys, timeout: 180000, task: "ob" }, wp ? { forceWeb: 1 } : { noWeb: 1 }));
+            const j = v71obJson(r && r.txt);
+            insight = String(j.insight || "").slice(0, 400);
+            types = (Array.isArray(j.types) ? j.types : []).slice(0, 4).map(x => ({ biz: String(x.biz || "").slice(0, 30), why: String(x.why || "").slice(0, 80) }));
+            leads = (Array.isArray(j.leads) ? j.leads : []).slice(0, f.n).map(x => ({ id: v71obId(), name: String(x.name || "").slice(0, 90), city: String(x.city || "").slice(0, 40), url: v71obUrl(x.url), biz: String(x.biz || "").slice(0, 40),
+                fit: v71obClampN(x.fit, 40), kb: v71obClampN(x.kb, 35), why: String(x.why || "").slice(0, 140), basis: String(x.basis || "").slice(0, 60), contact: String(x.contact || "").slice(0, 160), size: String(x.size || "").slice(0, 40), note: String(x.note || "").slice(0, 80) })).filter(x => x.name);
+            if (!leads.length)
+                throw new Error(v71obT("候補が返ってきませんでした"));
+        }
+        catch (e) {
+            err = String(e && e.message || e).slice(0, 120);
+            how = "smp";
+        }
+    }
+    else
+        how = "smp";
+    if (how === "smp") {
+        leads = v71obSample(f, ready, kb);
+        if (!insight)
+            insight = v71obT("AIエンジンにつながっていないため、見本（架空）のリストです。AIエンジンにつなぐと、公開情報から実在の会社を挙げ、STANDAGE の一次情報で並べ替えます。");
+    }
+    leads.forEach(l => { l.ready = ready.pts; l.pts = l.fit + l.kb + ready.pts; l.rank = v71obRank(l.pts); l.st = "new"; l.verify = !l.url || !!l.smp; });
+    leads.sort((a, b) => b.pts - a.pts);
+    const S = v71obSt();
+    S.runs.push({ at: v71obNow(), cty: f.cty, biz: f.biz, bizNm, n: f.n, how, err, insight, types, kb: kb && kb.items ? kb.items.slice(0, 8) : [], kbAsof: kb && kb.asof || "", v1, ready, leads, lang: v71obLang(f.cty) });
+    if (S.runs.length > 12)
+        S.runs.splice(0, S.runs.length - 12);
+    S.cur = S.runs.length - 1;
+    V71OB.sel = {};
+    V71OB.busy = 0;
+    V71OB.msg = "";
+    v71obSave();
+    try {
+        if (typeof logU === "function")
+            logU("ai", "AIバイヤー開拓:リスト:" + f.cty + ":" + leads.length + "社");
+    }
+    catch (e) { }
+    v71obPaint();
+    v71obToast(how === "ai" ? v71obF("{n}社のリストができました", { n: leads.length }) : "見本（架空）のリストを出しました");
+}
+function v71obReadForm() {
+    const g = id => document.getElementById(id);
+    const f = V71OB.f || {};
+    const c = g("v71obC");
+    if (c)
+        f.cty = c.value;
+    const n = g("v71obNn");
+    if (n)
+        f.n = +n.value || 10;
+    f.biz = [...document.querySelectorAll("#v71ob [data-v71bz].on")].map(x => x.dataset.v71bz);
+    V71OB.f = f;
+    return f;
+}
+function v71obTpl(L, run) {
+    const b = v71obBrief();
+    const lang = run.lang || "English";
+    const en = !/中文|한국|Español|Français|Deutsch|Português|العربية|ไทย|Tiếng|Bahasa|日本語/.test(lang);
+    const st = b.st.length ? b.st.join(", ") : "high quality made in Japan";
+    const nm = String(L.name || "").replace(/^\[見本\]\s*/, "");
+    const s1 = `${b.item || b.itemJa} from Japan – proposal for ${nm}`;
+    const body1 = `Dear ${nm} team,\n\nI am writing from ${b.co || "our company"} in Japan. We make ${b.item || b.itemJa}${b.origin ? " in " + b.origin : ""}, and I believe it could fit your ${L.biz || "business"} in ${run.cty}.\n\nWhy it may interest you:\n- ${st.split(", ").join("\n- ")}\n${b.price ? "- Indicative price: " + b.price + (b.term ? " (" + b.term + ")" : "") + "\n" : ""}${b.moq ? "- MOQ: " + b.moq + "\n" : ""}${b.cert ? "- Certifications: " + b.cert + "\n" : ""}\nWe would be happy to send samples and our catalogue. Could you tell us who handles new Japanese products at your company?\n\nBest regards,\n[Your Name]\n${b.co}`;
+    const s2 = `Re: ${s1}`;
+    const body2 = `Dear ${nm} team,\n\nI wanted to follow up on my previous email about ${b.item || b.itemJa}. If useful, we can share price lists by volume and shipping options to ${run.cty}.\n\nWould a short online call next week work for you?\n\nBest regards,\n[Your Name]\n${b.co}`;
+    const s3 = `Last note: ${b.item || b.itemJa} samples`;
+    const body3 = `Dear ${nm} team,\n\nI will not take more of your time after this message. If Japanese ${b.cat || "products"} are not a priority now, I fully understand. If they are, simply reply "samples" and we will arrange them.\n\nBest regards,\n[Your Name]\n${b.co}`;
+    return { channel: L.contact && !/@/.test(L.contact) ? "form" : "email", lang: en ? lang : "English", timing: v71obT("現地の火〜木曜の午前"), tpl: 1,
+        why: v71obT("見本の文面です（AIエンジンにつなぐと、相手と一次情報に合わせて書き分けます）。初回に強み・価格の目安・MOQ・サンプルの提案を入れ、返信しやすい質問で締めています。"),
+        seq: [{ day: 0, subj: s1, body: body1 }, { day: 4, subj: s2, body: body2 }, { day: 10, subj: s3, body: body3 }] };
+}
+async function v71obApproach(id, quiet) {
+    const o = v71obLead(id);
+    if (!o)
+        return null;
+    const { r: run, l: L } = o;
+    if (L.ap && L.ap.seq && L.ap.seq.length)
+        return L.ap;
+    if (!v71obAi() || L.smp) {
+        L.ap = v71obTpl(L, run);
+        v71obSave();
+        return L.ap;
+    }
+    const b = v71obBrief();
+    const sys = `あなたは STANDAGE の AI商社マン。日本のメーカーが海外のバイヤーに初めて送るアプローチを設計する。JSON だけを返す。
+{"channel":"email か form","lang":"本文の言語","timing":"送るタイミング（現地の曜日・時間帯・30字以内・日本語）","why":"この手法・文面にした理由（STANDAGE 一次情報を使ったら [S1] などの番号・100字以内・日本語）",
+ "seq":[{"day":0,"subj":"件名","body":"本文"},{"day":4,"subj":"件名","body":"本文"},{"day":10,"subj":"件名","body":"本文"}]}
+決まり：件名と本文は ${run.lang || "English"} で書く。初回は相手の業態に合わせた一文・商品の強み3つ・価格の目安（あれば・取引条件つき）・MOQ・サンプルの提案・返信しやすい質問1つ。根拠の無い誇張（best・No.1・世界初など）をしない。
+2通目（4営業日後）は短く別の切り口（価格表・物流・認証のどれか）。3通目（10営業日後）は区切りの短い一通。署名は「[Your Name]」と会社名 ${b.co}。STANDAGE の名前は出さない。担当者個人の名前は書かない（宛名は「${L.name} team」など）。`;
+    const q = `## 相手\n会社：${L.name}\n国：${run.cty}${L.city ? "・" + L.city : ""}\n業態：${L.biz}\n合う理由：${L.why}\n公開の窓口：${L.contact || "不明"}\n\n## 商品と会社（貴社のデータ）\n${v71obCtx()}\n\n## STANDAGE 一次情報（匿名の現場の記録）\n${v71obKbLines({ items: run.kb }) || "（関係する記録なし）"}`;
+    try {
+        const r = await llmAsk(q, 3500, { sys, noWeb: 1, timeout: 150000, task: "ob" });
+        const j = v71obJson(r && r.txt);
+        const seq = (Array.isArray(j.seq) ? j.seq : []).slice(0, 3).map((x, i) => ({ day: V71OB_SEQ[i], subj: String(x.subj || "").slice(0, 200), body: String(x.body || "").slice(0, 4000) })).filter(x => x.body);
+        if (!seq.length)
+            throw new Error("no seq");
+        L.ap = { channel: /form/i.test(j.channel) ? "form" : "email", lang: String(j.lang || run.lang || "English").slice(0, 30), timing: String(j.timing || "").slice(0, 60), why: String(j.why || "").slice(0, 300), seq };
+    }
+    catch (e) {
+        L.ap = v71obTpl(L, run);
+        L.ap.err = 1;
+        if (!quiet)
+            v71obToast("AI の文面を作れなかったので、見本の文面を入れました（直して使えます）");
+    }
+    v71obSave();
+    return L.ap;
+}
+function v71obToMy(L, run) {
+    if (L.myId && typeof myBuyers === "function" && myBuyers().some(x => x.id === L.myId))
+        return L.myId;
+    if (typeof myBuyers !== "function" || typeof mybNew !== "function")
+        return "";
+    const b = mybNew();
+    let g = 0;
+    while (myBuyers().some(x => x.id === b.id) && g++ < 50)
+        b.id = "MY-" + (Date.now() + g * 7919).toString(36).toUpperCase().slice(-5) + g.toString(36).toUpperCase();
+    Object.assign(b, { co: L.name.replace(/^\[見本\]\s*/, "") + (L.smp ? "（見本）" : ""), cty: run.cty, biz: L.biz || "", ints: v71obBrief().cat || "", size: L.size || "", url: L.url || "", contact: L.contact || "",
+        memo: v71obF("AIバイヤー開拓（{d}）：見込み {r}（{p}点）・{w}", { d: v71obDay(run.at), r: L.rank, p: L.pts, w: L.why }) });
+    b.v71ob = 1;
+    myBuyers().push(b);
+    L.myId = b.id;
+    try {
+        if (typeof mybSave === "function")
+            mybSave();
+    }
+    catch (e) { }
+    return b.id;
+}
+function v71obRelay() { try {
+    return typeof bmOn === "function" && bmOn() && typeof BM !== "undefined" && BM && BM.st && BM.st.configured;
+}
+catch (e) {
+    return false;
+} }
+function v71obMail(s) { try {
+    return typeof bmMailOf === "function" ? bmMailOf(s) : ((String(s || "").match(/[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}/) || [""])[0]);
+}
+catch (e) {
+    return "";
+} }
+async function v71obSend(id, i, opt) {
+    opt = opt || {};
+    const o = v71obLead(id);
+    if (!o)
+        return false;
+    const { r: run, l: L } = o;
+    const ap = L.ap || await v71obApproach(id, 1);
+    if (!ap)
+        return false;
+    const m = ap.seq[i];
+    if (!m)
+        return false;
+    const ed = document.getElementById("v71obBody"), es = document.getElementById("v71obSubj");
+    if (!opt.batch && ed && es && ed.dataset.lead === id && +ed.dataset.i === i) {
+        m.body = ed.value;
+        m.subj = es.value;
+    }
+    const myId = v71obToMy(L, run);
+    const to = v71obMail(L.contact);
+    const relay = v71obRelay() && !!to && !L.smp;
+    let how = "log";
+    if (to) {
+        if (typeof bmSend === "function")
+            bmSend(myId, run.cty, L.biz, m.subj, m.body, ap.lang || run.lang, to, relay ? {} : { noRelay: 1, mailto: !L.smp });
+        how = relay ? "relay" : (L.smp ? "log" : "mailto");
+        if (how === "mailto" && !opt.batch) {
+            try {
+                window.open("mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(m.subj) + "&body=" + encodeURIComponent(m.body), "_blank");
+            }
+            catch (e) { }
+        }
+    }
+    else {
+        if (typeof bmSend === "function")
+            bmSend(myId, run.cty, L.biz, m.subj, m.body, ap.lang || run.lang, "", { noRelay: 1 });
+        how = "form";
+        if (!opt.batch) {
+            try {
+                navigator.clipboard && navigator.clipboard.writeText(m.subj + "\n\n" + m.body);
+            }
+            catch (e) { }
+            const u = v71obUrl(L.contact) || L.url;
+            if (u) {
+                try {
+                    window.open(u, "_blank", "noopener");
+                }
+                catch (e) { }
+            }
+        }
+    }
+    L.sent = Array.isArray(L.sent) ? L.sent : [];
+    L.sent.push({ i, at: v71obNow(), how });
+    L.st = "sent";
+    if (i === 0)
+        v71obTasks(L, run);
+    try {
+        if (typeof logU === "function")
+            logU("ai", "AIバイヤー開拓:送信:" + (i === 0 ? "初回" : "フォロー" + i) + ":" + L.name);
+    }
+    catch (e) { }
+    v71obSave();
+    return how;
+}
+function v71obTasks(L, run) {
+    try {
+        const today = (typeof TODAYS !== "undefined" && TODAYS) || new Date().toISOString().slice(0, 10);
+        const ad = (n) => { try {
+            return typeof addDays === "function" ? addDays(today, n) : today;
+        }
+        catch (e) {
+            return today;
+        } };
+        const who = (typeof D !== "undefined" && D && D.co) || "貴社";
+        const mk = (k, n) => ({ n: v71obF("AIバイヤー開拓：{co} にフォロー{k}（返信が無ければ）", { co: L.name.replace(/^\[見本\]\s*/, ""), k }), pri: "中", s: ad(n), e: ad(n), st: "未着手", who, ref: "AIバイヤー開拓（" + run.cty + "）", kids: [], ai: 1, v71ob: L.id });
+        const made = [mk(1, 6), mk(2, 14)];
+        if (typeof TEN !== "undefined" && TEN) {
+            TEN.xtasks = (TEN.xtasks || []).concat(made);
+            try {
+                if (typeof syncTenant === "function")
+                    syncTenant();
+            }
+            catch (e) { }
+        }
+        else if (typeof D !== "undefined" && D && Array.isArray(D.tasks))
+            made.forEach(t => D.tasks.push(t));
+    }
+    catch (e) { }
+}
+function v71obNext(L) {
+    if (!L || !Array.isArray(L.sent) || !L.sent.length)
+        return null;
+    let th = null;
+    try {
+        th = (typeof dmThreads === "function" ? dmThreads() : {})[L.myId];
+    }
+    catch (e) { }
+    const replied = !!(th && Array.isArray(th.msgs) && th.msgs.some(m => m.w && m.w !== "me"));
+    if (replied)
+        return { k: "reply", t: v71obT("返信あり：やり取りを開いて、AI の返信アドバイスで返す") };
+    const last = L.sent[L.sent.length - 1];
+    const done = Math.max(...L.sent.map(s => s.i));
+    const days = Math.floor((v71obNow() - last.at) / 864e5);
+    if (done >= 2)
+        return { k: "end", t: v71obT("3通送って返信なし：別の業態・別の国のリストも試す") };
+    const ni = done + 1, wait = V71OB_SEQ[ni] - V71OB_SEQ[done] + Math.ceil((V71OB_SEQ[ni] - V71OB_SEQ[done]) * 0.4);
+    if (days >= wait)
+        return { k: "follow", i: ni, t: v71obF("返信が{d}日ありません：フォロー{n}を送る", { d: days, n: ni }) };
+    return { k: "wait", i: ni, t: v71obF("返信待ち（あと{d}日でフォロー{n}）", { d: Math.max(1, wait - days), n: ni }) };
+}
+function v71obTier() {
+    return `<div class="c v41t v41on v71tier"><span class="v41k">${v71obN("AI商社マンが開拓")}</span><b class="v41h">${v71obN("商談になりやすい相手を探して、アプローチまで")}</b>
+      <p>${v71obN("STANDAGE の一次情報（おまかせ貿易の現場の記録）をもとに、公開情報から相手をリストにし、文面を提案して送信まで進めます。")}</p>
+      <span class="v41chip">${v71obN("下の「AIバイヤー開拓」")}</span></div>`;
+}
+function v71obSteps(run) {
+    const L = run ? run.leads || [] : [];
+    const ap = L.some(x => x.ap), sent = L.some(x => x.sent && x.sent.length);
+    const at = !run ? 0 : sent ? 3 : ap ? 2 : 1;
+    return `<ol class="v71steps">${["条件を決める", "AI がリストを作る", "アプローチを提案", "実行・フォロー"].map((t, i) => `<li class="${i < at ? "dn" : i === at ? "on" : ""}"><i>${i + 1}</i>${v71obN(t)}</li>`).join("")}</ol>`;
+}
+function v71obForm() {
+    const f = V71OB.f || (V71OB.f = { cty: "", biz: [], n: 10 });
+    const C = v71obCtys();
+    if (!f.cty)
+        f.cty = C.list[0] || "アメリカ";
+    const opts = C.list.map((c, i) => (i === C.first && C.first > 0 ? `<option disabled>──────</option>` : "") + `<option value="${v71obE(c)}" ${f.cty === c ? "selected" : ""}>${v71obN(c)}${i < C.first ? " ★" : ""}</option>`).join("");
+    return `<div class="v71form">
+    <label class="v71fl"><span>${v71obN("国")}</span><select class="sel" id="v71obC">${opts}</select></label>
+    <div class="v71fl v71bzw"><span>${v71obN("業態（複数可・選ばなければ全部）")}</span><div class="v71bz">${V71OB_BIZ.map(([k, n]) => `<button type="button" class="v71chip ${f.biz && f.biz.includes(k) ? "on" : ""}" data-v71bz="${k}" aria-pressed="${!!(f.biz && f.biz.includes(k))}">${v71obN(n)}</button>`).join("")}</div></div>
+    <label class="v71fl"><span>${v71obN("件数")}</span><select class="sel" id="v71obNn">${V71OB_N.map(n => `<option value="${n}" ${+f.n === n ? "selected" : ""}>${v71obF("{n}社", { n })}</option>`).join("")}</select></label>
+    <button class="btn" id="v71obGo" ${V71OB.busy ? "disabled" : ""}>🤖 ${v71obN("AI商社マンにリストを作らせる")}</button></div>
+    <p class="nn v71note">${v71obN("★＝確定した販売先国・進出希望国。リストは公開情報（会社の公式サイトなど）から作ります。担当者個人の情報は扱いません。")}</p>`;
+}
+function v71obReadyHtml(run) {
+    const R = run.ready || v71obReady(run.cty);
+    const it = [["規制調査", R.reg], ["外国語営業資料", R.deck], ["FOB 価格", R.price], ["MOQ", R.moq]];
+    return `<div class="v71ready"><b>${v71obN("貴社の準備")}</b>${it.map(([n, ok]) => `<span class="v71rd ${ok ? "ok" : ""}">${ok ? "✓" : "・"} ${v71obN(n)}</span>`).join("")}
+    ${R.miss && R.miss.length ? `<span class="v71rdh">${v71obN("準備がそろうほど、商談になりやすさの点数が上がります")}：${R.miss.map(([n, g]) => `<button class="v71lk" data-v71go="${g}">${v71obN(n)} →</button>`).join(" ")}</span>` : ""}</div>`;
+}
+function v71obInsight(run) {
+    const kbn = (run.kb || []).length;
+    const kbHtml = kbn ? (typeof v66kbList === "function" ? v66kbList({ items: run.kb }, 8, v71obT("AI商社マンが参照した STANDAGE の一次情報")) : `<p class="nn">${v71obF("STANDAGE の一次情報 {n}件を参照", { n: kbn })}</p>`) : "";
+    return `<div class="v71ins"><div class="v71insh">🧭 ${v71obN("AI商社マンの見立て")}${run.how === "smp" ? `<span class="v71smp">${v71obN("見本（架空）")}</span>` : ""}</div>
+    <p>${v71obE(run.insight || "")}</p>
+    ${(run.types || []).length ? `<p class="v71ty">${run.types.map(t => `<span><b>${v71obE(t.biz)}</b>${t.why ? "：" + v71obE(t.why) : ""}</span>`).join("")}</p>` : ""}
+    <p class="v71src">${kbn ? v71obF("根拠：STANDAGE の一次情報 {k}件（匿名の現場の記録）・貿易クラウド Ver.1 の {c} のバイヤーの実績 {v}名（社名は出しません）・公開情報", { k: kbn, c: v71obT(run.cty), v: (run.v1 || 0).toLocaleString() })
+        : v71obF("根拠：貿易クラウド Ver.1 の {c} のバイヤーの実績 {v}名（社名は出しません）・公開情報。この国・業態の STANDAGE の一次情報（現場の記録）は、この条件では見つかりませんでした", { c: v71obT(run.cty), v: (run.v1 || 0).toLocaleString() })}</p>
+    ${kbHtml}</div>`;
+}
+function v71obStTxt(L) {
+    if (!L.sent || !L.sent.length)
+        return L.ap ? v71obT("文面あり") : L.myId ? v71obT("自社のバイヤーに追加") : v71obT("未送信");
+    const n = L.sent.length;
+    const h = L.sent[L.sent.length - 1].how;
+    return v71obF("送信 {n}通", { n }) + (h === "mailto" ? v71obT("（メールソフト）") : h === "form" ? v71obT("（フォーム）") : h === "log" ? v71obT("（記録のみ）") : "");
+}
+function v71obTable(run) {
+    const L = run.leads || [];
+    const sel = V71OB.sel || {};
+    const nSel = L.filter(x => sel[x.id]).length;
+    return `<div class="v71bar"><span>${v71obF("{c}・{b}：{n}社（{d} 作成）", { c: v71obT(run.cty), b: run.bizNm ? v71obT(run.bizNm) : "", n: L.length, d: v71obDay(run.at) })}</span>
+     <span class="v71acts"><button class="btn g" data-v71act="all">${v71obN(nSel === L.length && L.length ? "選択を外す" : "すべて選ぶ")}</button>
+       <button class="btn g" data-v71act="ap" ${nSel ? "" : "disabled"}>✍ ${v71obF("選んだ{n}社の文面を作る", { n: nSel })}</button>
+       <button class="btn g" data-v71act="my" ${nSel ? "" : "disabled"}>＋ ${v71obN("自社のバイヤーに入れる")}</button>
+       <button class="btn" data-v71act="send" ${nSel ? "" : "disabled"}>✉ ${v71obF("選んだ{n}社に初回を送る", { n: nSel })}</button></span></div>
+   <div class="tw"><table class="v71tb"><thead><tr><th></th><th>${v71obN("見込み")}</th><th>${v71obN("相手")}</th><th>${v71obN("合う理由・根拠")}</th><th>${v71obN("公開の窓口")}</th><th>${v71obN("状態・次の一手")}</th><th></th></tr></thead><tbody>
+   ${L.map(l => {
+        const nx = v71obNext(l);
+        return `<tr data-v71row="${v71obE(l.id)}"><td><input type="checkbox" data-v71sel="${v71obE(l.id)}" ${sel[l.id] ? "checked" : ""} aria-label="${v71obN("選ぶ")}"></td>
+     <td><span class="v71rk v71rk-${l.rank}">${l.rank}</span><span class="v71pt" title="${v71obE(v71obF("合い方 {a}／一次情報 {b}／準備 {c}", { a: l.fit, b: l.kb, c: l.ready }))}">${l.pts}${v71obN("点")}</span></td>
+     <td><b data-noi18n>${v71obE(l.name)}</b>${l.verify ? `<span class="v71vf">${v71obN(l.smp ? "見本" : "要確認")}</span>` : ""}<span class="v71sub">${v71obE([l.biz, l.city, l.size].filter(Boolean).join("・"))}</span>${l.url ? `<a class="v71u" href="${v71obE(l.url)}" target="_blank" rel="noopener" data-noi18n>${v71obE(l.url.replace(/^https?:\/\//, "").replace(/\/$/, ""))}</a>` : ""}</td>
+     <td class="v71why"><span data-noi18n>${v71obE(l.why)}</span>${l.basis ? `<span class="v71bs">${v71obE(l.basis)}</span>` : ""}${l.note ? `<span class="v71nt">${v71obE(l.note)}</span>` : ""}</td>
+     <td class="v71ct" data-noi18n>${v71obE(l.contact || "—")}</td>
+     <td class="v71st"><span>${v71obE(v71obStTxt(l))}</span>${nx ? `<span class="v71nx v71nx-${nx.k}">${v71obE(nx.t)}</span>` : ""}</td>
+     <td class="v71op"><button class="btn g" data-v71ap="${v71obE(l.id)}">${v71obN(l.sent && l.sent.length ? "開く" : "文面を見る")}</button></td></tr>`;
+    }).join("")}
+   </tbody></table></div>`;
+}
+function v71obAgent() {
+    const S = v71obSt();
+    const rows = [];
+    S.runs.forEach(r => (r.leads || []).forEach(l => { const nx = v71obNext(l); if (nx)
+        rows.push({ r, l, nx }); }));
+    if (!rows.length)
+        return "";
+    rows.sort((a, b) => ({ reply: 0, follow: 1, wait: 2, end: 3 }[a.nx.k] - { reply: 0, follow: 1, wait: 2, end: 3 }[b.nx.k]));
+    return `<div class="v71agent"><div class="v71insh">🤖 ${v71obN("エージェントの次の一手")}<span class="v71cnt">${v71obF("送った相手 {n}社", { n: rows.length })}</span></div>
+    <ul>${rows.slice(0, 12).map(({ r, l, nx }) => `<li class="v71nx-${nx.k}"><b data-noi18n>${v71obE(l.name)}</b><span>${v71obE(v71obT(r.cty))}</span><em>${v71obE(nx.t)}</em>
+      ${nx.k === "reply" ? `<button class="btn g" data-v71dm="${v71obE(l.id)}">${v71obN("やり取りを開く")}</button>` : nx.k === "follow" ? `<button class="btn" data-v71fu="${v71obE(l.id)}" data-i="${nx.i}">${v71obF("フォロー{n}を開く", { n: nx.i })}</button>` : ""}</li>`).join("")}</ul></div>`;
+}
+function v71obInner() {
+    const S = v71obSt();
+    const run = v71obRun();
+    const hist = S.runs.length > 1 ? `<select class="sel v71hist" id="v71obH" aria-label="${v71obN("前のリスト")}">${S.runs.map((r, i) => `<option value="${i}" ${r === run ? "selected" : ""}>${v71obE(v71obDay(r.at) + " " + v71obT(r.cty) + "（" + (r.leads || []).length + "）")}</option>`).join("")}</select>` : "";
+    return `${v71obSteps(run)}${v71obForm()}
+    ${V71OB.busy ? `<div class="v71busy"><span class="v71spin"></span>${v71obE(V71OB.msg)}</div>` : ""}
+    ${v71obAgent()}
+    ${run ? `<div class="v71runhd"><h4>${v71obN("AI がつくったリスト")}</h4>${hist}</div>${run.err ? `<p class="nn v71err">${v71obF("AI の答えを読めなかったので、見本を出しています（{e}）", { e: run.err })}</p>` : ""}${v71obInsight(run)}${v71obReadyHtml(run)}${v71obTable(run)}
+      <p class="nn v71foot">${v71obN("見込み＝商品との合い方（40点）＋STANDAGE の一次情報との合い方（35点）＋貴社の準備（25点）の目安です。商談になることを約束するものではありません。社名・URL・窓口は、送る前に公式サイトで確かめてください。")}</p>`
+        : `<div class="v71empty">${v71obN("国と業態を選んで「AI商社マンにリストを作らせる」を押すと、商談になりやすい順のリストができます。")}</div>`}`;
+}
+function v71obHtml() {
+    return `<div class="c" id="v71ob"><div class="v41hd v71hd"><h3>🤖 ${v71obN("AIバイヤー開拓")}<span class="nt">NEW</span></h3><span class="v71sub2">${v71obN("AI商社マンのアウトバウンド・エージェント")}</span></div>
+    <p class="nn">${v71obN("STANDAGE がおまかせ貿易の現場で集めた一次情報（どの国のどの業態が日本の商品に反応したか・返信が来た文面）をもとに、商談になりやすい相手をリストにし、アプローチの文面を提案して、送信とフォローまで進めます。")}</p>
+    <div id="v71obIn">${v71obInner()}</div>
+    <p class="v71omk">${v71obN("STANDAGE のバイヤーへの社名つきのおつなぎは、おまかせ貿易をご契約のお客様向けです（担当の STANDAGE にご相談ください）。")}</p></div>`;
+}
+function v71obPaint() { const el = document.getElementById("v71obIn"); if (!el)
+    return; el.innerHTML = v71obInner(); try {
+    if (typeof I18N !== "undefined" && typeof i18nApply === "function")
+        i18nApply(el);
+}
+catch (e) { } }
+async function v71obOpen(id, i) {
+    const o = v71obLead(id);
+    if (!o)
+        return;
+    const { r: run, l: L } = o;
+    if (!L.ap) {
+        openDW(`<h3>✍ ${v71obN("アプローチを考えています…")}</h3><p class="nn">${v71obE(L.name)}</p><div class="v71busy"><span class="v71spin"></span>${v71obN("AI商社マンが、相手と STANDAGE の一次情報に合わせて文面を書いています（〜1分）")}</div>`);
+        await v71obApproach(id);
+    }
+    const ap = L.ap;
+    if (!ap)
+        return;
+    const done = (L.sent || []).map(s => s.i);
+    if (i == null) {
+        i = 0;
+        for (let k = 0; k < ap.seq.length; k++) {
+            if (!done.includes(k)) {
+                i = k;
+                break;
+            }
+            if (k === ap.seq.length - 1)
+                i = k;
+        }
+    }
+    const m = ap.seq[i] || ap.seq[0];
+    const to = v71obMail(L.contact);
+    const relay = v71obRelay() && !!to && !L.smp;
+    const how = to ? (relay ? v71obT("貿易クラウドのメール中継で送ります（相手の返信は「やり取り中のBuyer」に戻ります）") : L.smp ? v71obT("見本の宛先なので、実際には送らず記録だけ残します") : v71obT("メールソフトが開きます（送ったら記録に残ります）")) : v71obT("問い合わせフォームに貼ってください（文面をコピーして、相手のサイトを開きます）");
+    openDW(`<h3>✍ ${v71obN("アプローチ")}：<span data-noi18n>${v71obE(L.name)}</span></h3>
+    <div class="v71plan"><span><b>${v71obN("手法")}</b>${v71obN(ap.channel === "form" ? "問い合わせフォーム" : "メール")}</span><span><b>${v71obN("言語")}</b>${v71obE(ap.lang)}</span><span><b>${v71obN("タイミング")}</b>${v71obE(ap.timing || "")}</span><span><b>${v71obN("宛先")}</b><span data-noi18n>${v71obE(L.contact || "—")}</span></span></div>
+    <p class="v71why2">💡 ${v71obE(ap.why || "")}</p>
+    <ol class="v71seq">${ap.seq.map((s, k) => `<li class="${k === i ? "on" : ""} ${done.includes(k) ? "dn" : ""}"><button data-v71seq="${k}">${v71obN(k === 0 ? "初回" : k === 1 ? "フォロー1" : "フォロー2")}<small>${v71obF(k === 0 ? "送信日" : "{d}営業日後", { d: s.day })}${done.includes(k) ? " ✓" : ""}</small></button></li>`).join("")}</ol>
+    <p class="lbl">${v71obN("件名")}</p><input class="sel v71in" id="v71obSubj" value="${v71obE(m.subj)}" data-noi18n>
+    <p class="lbl" style="margin-top:8px">${v71obN("本文（直せます）")}</p><textarea class="sel v71ta" id="v71obBody" rows="12" data-lead="${v71obE(id)}" data-i="${i}" data-noi18n>${v71obE(m.body)}</textarea>
+    <p class="nn" style="margin-top:4px">${v71obE(how)}</p>
+    ${L.verify ? `<p class="v71warn">⚠ ${v71obN(L.smp ? "見本（架空）の会社です。実際の送り先ではありません。" : "AI が挙げた会社です。送る前に、公式サイトで社名・窓口を確かめてください。")}</p>` : ""}
+    <div class="rw" style="gap:6px;margin-top:10px;flex-wrap:wrap">
+      <button class="btn" id="v71obSend">${done.includes(i) ? v71obN("もう一度送る") : to ? v71obN("✉ この文面で送る") : v71obN("📋 コピーしてフォームを開く")}</button>
+      <button class="btn g" id="v71obCopy">${v71obN("文面をコピー")}</button>
+      ${L.myId ? `<button class="btn g" data-v71dm="${v71obE(id)}">${v71obN("やり取りを開く")}</button>` : ""}</div>`);
+    const dw = document.getElementById("dw");
+    if (!dw)
+        return;
+    dw.querySelectorAll("[data-v71seq]").forEach(b => b.onclick = () => v71obOpen(id, +b.dataset.v71seq));
+    const sb = document.getElementById("v71obSend");
+    if (sb)
+        sb.onclick = async () => {
+            sb.disabled = true;
+            const h = await v71obSend(id, i);
+            try {
+                closeDW();
+            }
+            catch (e) { }
+            v71obPaint();
+            v71obToast(h === "relay" ? "送信しました（返信はやり取りに戻ります）" : h === "mailto" ? "メールソフトで開きました（記録に残しました）" : h === "form" ? "文面をコピーしました。フォームに貼って送ってください（記録に残しました）" : "記録に残しました（見本の宛先なので送っていません）");
+        };
+    const cb = document.getElementById("v71obCopy");
+    if (cb)
+        cb.onclick = () => { try {
+            navigator.clipboard.writeText(document.getElementById("v71obSubj").value + "\n\n" + document.getElementById("v71obBody").value);
+            v71obToast("コピーしました");
+        }
+        catch (e) { } };
+    const dm = dw.querySelector("[data-v71dm]");
+    if (dm)
+        dm.onclick = () => v71obDm(id);
+}
+function v71obDm(id) { const o = v71obLead(id); if (!o)
+    return; const { r: run, l: L } = o; try {
+    closeDW();
+}
+catch (e) { } try {
+    if (L.myId && typeof openDM === "function")
+        openDM(L.myId, run.cty, L.name);
+}
+catch (e) { } }
+async function v71obBulk(act) {
+    const run = v71obRun();
+    if (!run)
+        return;
+    const L = (run.leads || []).filter(x => V71OB.sel[x.id]);
+    if (!L.length)
+        return;
+    if (act === "my") {
+        L.forEach(l => v71obToMy(l, run));
+        v71obSave();
+        v71obPaint();
+        v71obToast(v71obF("{n}社を自社のバイヤーに入れました（商談・バイヤーの一覧に出ます）", { n: L.length }));
+        return;
+    }
+    if (act === "ap") {
+        V71OB.busy = 1;
+        let k = 0;
+        for (const l of L) {
+            k++;
+            V71OB.msg = v71obF("文面を作っています（{k}/{n}）…", { k, n: L.length });
+            v71obPaint();
+            await v71obApproach(l.id, 1);
+        }
+        V71OB.busy = 0;
+        V71OB.msg = "";
+        v71obPaint();
+        v71obToast(v71obF("{n}社の文面ができました（各行の「文面を見る」で確かめて直せます）", { n: L.length }));
+        return;
+    }
+    if (act === "send") {
+        const relay = v71obRelay();
+        const withMail = L.filter(l => v71obMail(l.contact)), noMail = L.filter(l => !v71obMail(l.contact));
+        openDW(`<h3>✉ ${v71obF("{n}社に初回を送る", { n: L.length })}</h3>
+      <p class="nn">${v71obN("相手ごとの文面（まだ無ければ AI が作ります）で、初回のメールを送ります。送った相手は自社のバイヤー（コンタクト中）に入り、フォローの予定がタスクに入ります。")}</p>
+      <ul class="v71cf">${L.map(l => `<li><b data-noi18n>${v71obE(l.name)}</b><span data-noi18n>${v71obE(v71obMail(l.contact) || v71obT("フォーム（あとでコピーして貼る）"))}</span>${l.verify ? `<em>${v71obN(l.smp ? "見本" : "要確認")}</em>` : ""}</li>`).join("")}</ul>
+      <p class="nn">${relay ? v71obF("メールの宛先がある {m}社は、貿易クラウドのメール中継で送ります。", { m: withMail.length }) : v71obF("メールの中継が使えないため、{m}社は送信の記録だけを残します（各行の「開く」からメールソフトで送れます）。", { m: withMail.length })}${noMail.length ? " " + v71obF("フォームの {f}社は、記録だけ残します（各行の「開く」で文面をコピーして貼ってください）。", { f: noMail.length }) : ""}</p>
+      <label class="v71ck"><input type="checkbox" id="v71obOk"> ${v71obN("宛先と文面を確かめました（AI が挙げた会社は公式サイトで確認済み）")}</label>
+      <div class="rw" style="gap:6px;margin-top:10px"><button class="btn" id="v71obBulkGo" disabled>${v71obF("{n}社に送る", { n: L.length })}</button><button class="btn g" onclick="closeDW()">${v71obN("やめる")}</button></div>`);
+        const ok = document.getElementById("v71obOk"), go = document.getElementById("v71obBulkGo");
+        if (ok && go) {
+            ok.onchange = () => { go.disabled = !ok.checked; };
+            go.onclick = async () => {
+                go.disabled = true;
+                try {
+                    closeDW();
+                }
+                catch (e) { }
+                V71OB.busy = 1;
+                let k = 0, c = { relay: 0, mailto: 0, form: 0, log: 0 };
+                for (const l of L) {
+                    k++;
+                    V71OB.msg = v71obF("送っています（{k}/{n}）…", { k, n: L.length });
+                    v71obPaint();
+                    if (!l.ap)
+                        await v71obApproach(l.id, 1);
+                    if (!(l.sent || []).some(s => s.i === 0)) {
+                        const h = await v71obSend(l.id, 0, { batch: 1 });
+                        if (h)
+                            c[h] = (c[h] || 0) + 1;
+                    }
+                }
+                V71OB.busy = 0;
+                V71OB.msg = "";
+                V71OB.sel = {};
+                v71obSave();
+                v71obPaint();
+                v71obToast(v71obF("{n}社に初回を送りました（中継 {a}・記録のみ {b}・フォーム {f}）", { n: L.length, a: c.relay, b: (c.log || 0) + (c.mailto || 0), f: c.form }));
+            };
+        }
+    }
+}
+function v71obBind() {
+    const box = document.getElementById("v71ob");
+    if (!box || box.dataset.b71)
+        return;
+    box.dataset.b71 = "1";
+    box.addEventListener("click", ev => {
+        const t = ev.target.closest("button,[data-v71sel],a");
+        if (!t || !box.contains(t))
+            return;
+        if (t.id === "v71obGo") {
+            v71obBuild();
+            return;
+        }
+        if (t.dataset.v71bz) {
+            t.classList.toggle("on");
+            t.setAttribute("aria-pressed", t.classList.contains("on"));
+            v71obReadForm();
+            return;
+        }
+        if (t.dataset.v71ap) {
+            v71obOpen(t.dataset.v71ap);
+            return;
+        }
+        if (t.dataset.v71fu) {
+            v71obOpen(t.dataset.v71fu, +t.dataset.i);
+            return;
+        }
+        if (t.dataset.v71dm) {
+            v71obDm(t.dataset.v71dm);
+            return;
+        }
+        if (t.dataset.v71go) {
+            try {
+                go(t.dataset.v71go);
+            }
+            catch (e) { }
+            return;
+        }
+        if (t.dataset.v71act === "all") {
+            const run = v71obRun();
+            if (!run)
+                return;
+            const L = run.leads || [];
+            const all = L.every(x => V71OB.sel[x.id]);
+            V71OB.sel = {};
+            if (!all)
+                L.forEach(x => V71OB.sel[x.id] = 1);
+            v71obPaint();
+            return;
+        }
+        if (t.dataset.v71act) {
+            v71obBulk(t.dataset.v71act);
+            return;
+        }
+    });
+    box.addEventListener("change", ev => {
+        const t = ev.target;
+        if (t.dataset && t.dataset.v71sel) {
+            V71OB.sel[t.dataset.v71sel] = t.checked ? 1 : 0;
+            if (!t.checked)
+                delete V71OB.sel[t.dataset.v71sel];
+            v71obPaint();
+            return;
+        }
+        if (t.id === "v71obH") {
+            const S = v71obSt();
+            S.cur = +t.value;
+            V71OB.sel = {};
+            v71obSave();
+            v71obPaint();
+            return;
+        }
+        if (t.id === "v71obC" || t.id === "v71obNn")
+            v71obReadForm();
+    });
+}
+function v71obTransform(h) {
+    h = String(h);
+    const a = h.indexOf('<div class="c v41t v41on">');
+    if (a >= 0) {
+        const b = h.indexOf('</div>', h.indexOf('<span class="v41chip">', a));
+        if (b > a)
+            h = h.slice(0, a) + v71obTier() + h.slice(b + 6);
+    }
+    h = h.replace("ご契約後に閲覧（一括ダウンロードなし）", v71obT("AIバイヤー開拓で使います")).replace(v71obT("ご契約後に閲覧（一括ダウンロードなし）"), v71obT("AIバイヤー開拓で使います"));
+    const s = h.indexOf('<div class="c" id="v41find">'), e = h.indexOf('<div id="v41reqs">');
+    if (s >= 0 && e > s)
+        h = h.slice(0, s) + v71obHtml() + `<div id="v41find" hidden><p id="v41sum"></p><table><tbody id="v41b"></tbody></table></div>` + h.slice(e);
+    h = h.replace("費用をかけずに始めるなら、上の「相手を探す」から「つなぐ依頼」をどうぞ。", "費用をかけずに始めるなら、上の「AIバイヤー開拓」をどうぞ。");
+    return h;
+}
+if (typeof vDB === "function") {
+    const __vdb71 = vDB;
+    vDB = function () { let h = __vdb71.apply(this, arguments); try {
+        h = v71obTransform(h);
+    }
+    catch (e) {
+        try {
+            console.warn("v71ob", e);
+        }
+        catch (x) { }
+    } return h; };
+}
+{
+    const __r71ob = render;
+    render = function () { const r = __r71ob.apply(this, arguments); try {
+        if (typeof cur !== "undefined" && cur === "db")
+            v71obBind();
+    }
+    catch (e) { } return r; };
+}
+if (typeof v41OpenConnect === "function") {
+    const __v41oc71 = v41OpenConnect;
+    v41OpenConnect = function (id) {
+        try {
+            if (typeof v41ReqOf === "function" && v41ReqOf(id))
+                return __v41oc71.apply(this, arguments);
+        }
+        catch (e) { }
+        try {
+            openDW(`<h3>🤝 ${v71obN("STANDAGE のバイヤーへのおつなぎ")}</h3>
+    <p class="nn" style="margin-top:6px">${v71obN("STANDAGE のバイヤーへの社名つきのおつなぎは、おまかせ貿易をご契約のお客様向けです（担当の STANDAGE にご相談ください）。")}</p>
+    <p class="nn" style="margin-top:6px">${v71obN("貿易クラウドでは「AIバイヤー開拓」で、AI商社マンが STANDAGE の一次情報をもとに商談になりやすい相手を探し、文面の提案から送信まで進めます。")}</p>
+    <div class="rw" style="margin-top:10px"><button class="btn" onclick="closeDW();go('db');setTimeout(()=>{const e=document.getElementById('v71ob');if(e)e.scrollIntoView({behavior:'smooth'});},300)">🤖 ${v71obN("AIバイヤー開拓を開く")}</button></div>`);
+        }
+        catch (e) { }
+    };
+}
+try {
+    if (typeof PAGES !== "undefined" && Array.isArray(PAGES)) {
+        const p = PAGES.find(x => x && x.id === "db");
+        if (p && /バイヤーネットワーク/.test(p.t || ""))
+            p.t = "AIバイヤー開拓・拠点";
+    }
+}
+catch (e) { }
+if (typeof bnCtxDb === "function") {
+    const __bcd71 = bnCtxDb;
+    bnCtxDb = function () {
+        let s = "";
+        try {
+            s = String(__bcd71.apply(this, arguments) || "");
+        }
+        catch (e) { }
+        return s + `\n## AIバイヤー開拓（21.71〜）\n・バイヤーを探したい・アプローチしたいという相談には、画面「AIバイヤー開拓・拠点」の「AIバイヤー開拓」を案内する（国・業態を選ぶと、AI商社マンが STANDAGE の一次情報と公開情報から商談になりやすい相手をリストにし、文面を提案して、送信とフォローまで進める）\n・STANDAGE のバイヤーネットワークへの「つなぐ依頼」は受け付けていない。社名つきのおつなぎは、おまかせ貿易をご契約のお客様向け\n・STANDAGE の一次情報を持っているバイヤーの社名は答えない（分析にだけ使う）\n`;
+    };
+}
+(function () {
+    try {
+        const st = document.createElement("style");
+        st.id = "v71obcss";
+        st.textContent = `
+#v71ob .v71hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}#v71ob .v71sub2{font-size:11px;color:var(--ink-3)}
+.v71steps{display:flex;gap:6px;list-style:none;margin:10px 0 8px;padding:0;flex-wrap:wrap}.v71steps li{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-3);padding:5px 10px;border:1px solid var(--line);border-radius:999px;background:#fff}
+.v71steps li i{font-style:normal;display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--line);color:#fff;font-size:10.5px;font-weight:800}
+.v71steps li.on{color:var(--ink);border-color:var(--or);font-weight:700}.v71steps li.on i{background:var(--or)}.v71steps li.dn i{background:var(--good,#2e7d32)}
+.v71form{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-top:6px}.v71fl{display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--ink-2)}.v71bzw{flex:1 1 320px}
+.v71bz{display:flex;gap:5px;flex-wrap:wrap}.v71chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 10px;font-size:11.5px;cursor:pointer;color:var(--ink-2)}.v71chip.on{background:var(--navy,#0E1F4B);border-color:var(--navy,#0E1F4B);color:#fff}
+.v71note{margin-top:5px}.v71busy{display:flex;align-items:center;gap:8px;margin:10px 0;padding:9px 12px;border-radius:var(--r2,8px);background:#fff8ef;border:1px solid #f6d6ad;font-size:12px}
+.v71spin{width:14px;height:14px;border:2px solid #f6d6ad;border-top-color:var(--or);border-radius:50%;animation:v71sp 0.9s linear infinite}@keyframes v71sp{to{transform:rotate(360deg)}}
+.v71runhd{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:14px}.v71runhd h4{margin:0;font-size:13px}.v71hist{max-width:260px}
+.v71ins,.v71agent{margin-top:8px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r2,8px);background:#f7f9fc}.v71insh{font-weight:800;font-size:12.5px;display:flex;align-items:center;gap:8px}
+.v71ins p{margin:6px 0 0;font-size:12px;line-height:1.7}.v71ty{display:flex;gap:6px;flex-wrap:wrap}.v71ty span{background:#fff;border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-size:11px}
+.v71src{color:var(--ink-3);font-size:10.5px!important}.v71smp{font-size:10px;background:#fff1e0;color:#a14f00;border-radius:4px;padding:1px 6px;font-weight:700}
+.v71ready{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:11.5px}.v71rd{border:1px dashed var(--line);border-radius:999px;padding:2px 9px;color:var(--ink-3)}.v71rd.ok{border-style:solid;border-color:#a5d6a7;color:#2e7d32;background:#f1f8f1}
+.v71rdh{color:var(--ink-3);font-size:11px}.v71lk{border:0;background:none;color:var(--navy,#0E1F4B);text-decoration:underline;cursor:pointer;font-size:11px;padding:0 2px}
+.v71bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0 6px;font-size:12px;font-weight:700}.v71acts{display:flex;gap:5px;flex-wrap:wrap}
+.v71tb td{vertical-align:top;font-size:11.5px}.v71tb td b{display:block}.v71sub{display:block;color:var(--ink-3);font-size:10.5px}.v71u{display:block;font-size:10.5px;word-break:break-all}
+.v71rk{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;font-weight:900;color:#fff;margin-right:4px}.v71rk-A{background:#2e7d32}.v71rk-B{background:var(--or)}.v71rk-C{background:#9aa3b2}.v71pt{font-size:10.5px;color:var(--ink-3);white-space:nowrap}.v71tb td:nth-child(2){white-space:nowrap;min-width:64px}
+.v71vf{display:inline-block;font-size:9.5px;background:#fff1e0;color:#a14f00;border-radius:4px;padding:0 5px;margin-left:4px;font-weight:700}
+.v71why span{display:block}.v71bs{color:var(--navy,#0E1F4B);font-size:10.5px;font-weight:700}.v71nt{color:#a14f00;font-size:10.5px}.v71ct{font-size:10.5px;word-break:break-all;max-width:180px}
+.v71st span{display:block}.v71nx{font-size:10.5px;margin-top:2px}.v71nx-reply{color:#2e7d32;font-weight:700}.v71nx-follow{color:#a14f00;font-weight:700}.v71nx-wait,.v71nx-end{color:var(--ink-3)}
+.v71agent ul{list-style:none;margin:6px 0 0;padding:0}.v71agent li{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:5px 0;border-top:1px solid var(--line);font-size:11.5px}.v71agent li em{font-style:normal;color:var(--ink-2)}.v71cnt{font-weight:400;font-size:11px;color:var(--ink-3)}
+.v71empty{margin-top:12px;padding:14px;border:1px dashed var(--line);border-radius:var(--r2,8px);color:var(--ink-3);font-size:12px;text-align:center}.v71foot{margin-top:6px}.v71err{color:#a14f00}
+.v71omk{margin:10px 0 0;font-size:11px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:8px}
+.v71plan{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.v71plan>span{border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-size:11px;background:#f7f9fc}.v71plan b{margin-right:6px;color:var(--ink-3);font-weight:700}
+.v71why2{font-size:11.5px;line-height:1.7;background:#fff8ef;border-radius:6px;padding:7px 9px;margin:4px 0 8px}
+.v71seq{display:flex;gap:6px;list-style:none;padding:0;margin:0 0 8px}.v71seq button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:4px 10px;font-size:11.5px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start}
+.v71seq small{font-size:9.5px;color:var(--ink-3)}.v71seq li.on button{border-color:var(--or);font-weight:700}.v71seq li.dn button{background:#f1f8f1}
+.v71in{width:100%;box-sizing:border-box}.v71ta{width:100%;box-sizing:border-box;resize:vertical;font-size:12px;line-height:1.6}
+.v71warn{font-size:11px;color:#a14f00;margin-top:6px}.v71cf{list-style:none;padding:0;margin:8px 0;max-height:240px;overflow:auto}.v71cf li{display:flex;gap:8px;flex-wrap:wrap;font-size:11.5px;padding:4px 0;border-bottom:1px solid var(--line)}.v71cf em{font-style:normal;color:#a14f00;font-size:10.5px}
+.v71ck{display:flex;gap:6px;align-items:center;font-size:12px;margin-top:6px}
+@media (max-width:760px){.v71form{flex-direction:column;align-items:stretch}.v71tb th:nth-child(5),.v71tb td:nth-child(5){display:none}}
+`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N || !I18N.dict)
+            return;
+        const R = [
+            ["AIバイヤー開拓・拠点", "AI Buyer Prospecting & Bases", "AI买家开拓・据点", "Prospección IA y bases"],
+            ["AIバイヤー開拓", "AI Buyer Prospecting", "AI买家开拓", "Prospección de compradores con IA"],
+            ["AI商社マンのアウトバウンド・エージェント", "AI Trade Agent for outbound sales", "AI商社员的主动开发代理", "Agente de ventas salientes de AI Trade"],
+            ["AI商社マンが開拓", "Prospected by AI Trade Agent", "由AI商社员开拓", "Prospectado por el agente IA"],
+            ["商談になりやすい相手を探して、アプローチまで", "Find buyers likely to talk business, and reach out", "寻找容易进入商谈的对象并开展接触", "Encuentre compradores con más probabilidad de negociar y contáctelos"],
+            ["条件を決める", "Set criteria", "设定条件", "Definir criterios"], ["AI がリストを作る", "AI builds the list", "AI生成名单", "La IA crea la lista"], ["アプローチを提案", "Propose the approach", "提出接触方案", "Proponer el enfoque"], ["実行・フォロー", "Send & follow up", "发送・跟进", "Enviar y seguir"],
+            ["AI商社マンにリストを作らせる", "Have the AI Trade Agent build a list", "让AI商社员生成名单", "Que el agente IA cree la lista"],
+            ["見込み", "Likelihood", "可能性", "Probabilidad"], ["相手", "Buyer", "对象", "Comprador"], ["合う理由・根拠", "Why it fits · basis", "匹配理由・依据", "Por qué encaja · base"], ["公開の窓口", "Public contact", "公开联系窗口", "Contacto público"], ["状態・次の一手", "Status · next step", "状态・下一步", "Estado · siguiente paso"],
+            ["文面を見る", "View message", "查看文案", "Ver mensaje"], ["自社のバイヤーに入れる", "Add to your buyers", "加入自有买家", "Añadir a sus compradores"], ["エージェントの次の一手", "Agent's next steps", "代理的下一步", "Próximos pasos del agente"], ["AI商社マンの見立て", "AI Trade Agent's view", "AI商社员的判断", "Análisis del agente IA"],
+            ["貴社の準備", "Your readiness", "贵公司的准备", "Su preparación"], ["要確認", "Check", "需确认", "Verificar"], ["見本（架空）", "Sample (fictional)", "示例（虚构）", "Muestra (ficticia)"], ["初回", "First", "首次", "Primero"], ["フォロー1", "Follow-up 1", "跟进1", "Seguimiento 1"], ["フォロー2", "Follow-up 2", "跟进2", "Seguimiento 2"],
+            ["STANDAGE のバイヤーへの社名つきのおつなぎは、おまかせ貿易をご契約のお客様向けです（担当の STANDAGE にご相談ください）。", "Named introductions to STANDAGE buyers are for Omakase Boueki clients (please ask your STANDAGE contact).", "向STANDAGE买家的具名引荐仅面向“全托贸易”签约客户（请咨询STANDAGE负责人）。", "Las presentaciones nominales a compradores de STANDAGE son para clientes de Omakase Boueki (consulte a su contacto de STANDAGE)."]
+        ];
+        R.forEach(r => { ["en", "zh", "es"].forEach((l, i) => { if (r[i + 1] && I18N.dict[l])
+            I18N.dict[l][r[0]] = r[i + 1]; }); });
+    }
+    catch (e) { }
+})();
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N || !I18N.dict)
+            return;
+        const R = [
+            ["STANDAGE がおまかせ貿易の現場で集めた一次情報（どの国のどの業態が日本の商品に反応したか・返信が来た文面）をもとに、商談になりやすい相手をリストにし、アプローチの文面を提案して、送信とフォローまで進めます。",
+                "Using STANDAGE’s first-hand records from Omakase Boueki projects (which business types in which countries responded to Japanese products, and which messages got replies), the AI lists buyers most likely to talk business, proposes the message, and handles sending and follow-ups.",
+                "基于STANDAGE在“全托贸易”现场积累的一手信息（哪个国家的哪种业态对日本商品有反应、哪些文案获得了回复），列出容易进入商谈的对象，提出接触文案，并推进到发送和跟进。",
+                "Con los registros de primera mano de STANDAGE en proyectos Omakase Boueki (qué tipos de negocio de qué países respondieron a productos japoneses y qué mensajes obtuvieron respuesta), la IA lista los compradores con más probabilidad de negociar, propone el mensaje y gestiona el envío y el seguimiento."],
+            ["STANDAGE の一次情報（おまかせ貿易の現場の記録）をもとに、公開情報から相手をリストにし、文面を提案して送信まで進めます。",
+                "Based on STANDAGE’s first-hand records, the AI lists buyers from public information, proposes the message and sends it.",
+                "基于STANDAGE的一手信息，从公开信息中列出对象，提出文案并推进到发送。",
+                "Con los registros de primera mano de STANDAGE, la IA lista compradores a partir de información pública, propone el mensaje y lo envía."],
+            ["下の「AIバイヤー開拓」", "See “AI Buyer Prospecting” below", "见下方“AI买家开拓”", "Vea «Prospección de compradores con IA» abajo"],
+            ["AIバイヤー開拓で使います", "Used by AI Buyer Prospecting", "用于AI买家开拓", "Lo usa la prospección con IA"],
+            ["国", "Country", "国家", "País"], ["業態（複数可・選ばなければ全部）", "Business type (multiple; none = all)", "业态（可多选・不选则全部）", "Tipo de negocio (varios; ninguno = todos)"], ["件数", "Number", "数量", "Cantidad"],
+            ["{n}社", "{n} companies", "{n}家", "{n} empresas"],
+            ["輸入商社・卸", "Importers & wholesalers", "进口商・批发", "Importadores y mayoristas"], ["小売チェーン・量販", "Retail chains", "零售连锁・量贩", "Cadenas minoristas"], ["EC・オンライン小売", "E-commerce", "电商・线上零售", "Comercio electrónico"],
+            ["飲食・ホテル（HoReCa）", "Restaurants & hotels (HoReCa)", "餐饮・酒店（HoReCa）", "Restaurantes y hoteles (HoReCa)"], ["代理店・ディストリビューター", "Agents & distributors", "代理商・分销商", "Agentes y distribuidores"], ["専門店・セレクトショップ", "Specialty stores", "专卖店・精品店", "Tiendas especializadas"],
+            ["★＝確定した販売先国・進出希望国。リストは公開情報（会社の公式サイトなど）から作ります。担当者個人の情報は扱いません。", "★ = confirmed target countries. The list is built from public information (such as official company websites). No personal data of individual staff is handled.", "★＝已确定的目标国家。名单基于公开信息（公司官网等）生成，不涉及负责人个人信息。", "★ = países objetivo confirmados. La lista se crea con información pública (como sitios web oficiales). No se tratan datos personales de empleados."],
+            ["国と業態を選んで「AI商社マンにリストを作らせる」を押すと、商談になりやすい順のリストができます。", "Choose a country and business types, then press “Have the AI Trade Agent build a list” to get buyers ranked by likelihood of a deal.", "选择国家和业态后点击“让AI商社员生成名单”，即可按商谈可能性排序生成名单。", "Elija país y tipos de negocio y pulse «Que el agente IA cree la lista» para obtener compradores ordenados por probabilidad."],
+            ["AI がつくったリスト", "List built by the AI", "AI生成的名单", "Lista creada por la IA"],
+            ["見込み＝商品との合い方（40点）＋STANDAGE の一次情報との合い方（35点）＋貴社の準備（25点）の目安です。商談になることを約束するものではありません。社名・URL・窓口は、送る前に公式サイトで確かめてください。",
+                "Likelihood = product fit (40) + match with STANDAGE first-hand records (35) + your readiness (25), as a guide only. It does not promise a deal. Check company names, URLs and contacts on the official website before sending.",
+                "可能性＝与商品的匹配（40分）＋与STANDAGE一手信息的匹配（35分）＋贵公司的准备（25分），仅供参考，不保证一定进入商谈。发送前请在官网确认公司名・网址・联系窗口。",
+                "Probabilidad = ajuste al producto (40) + coincidencia con los registros de STANDAGE (35) + su preparación (25), solo como guía. No garantiza una negociación. Verifique nombre, URL y contacto en el sitio oficial antes de enviar."],
+            ["未送信", "Not sent", "未发送", "No enviado"], ["文面あり", "Message ready", "已有文案", "Mensaje listo"], ["自社のバイヤーに追加", "Added to your buyers", "已加入自有买家", "Añadido a sus compradores"], ["送信 {n}通", "Sent {n}", "已发送 {n}封", "Enviados {n}"],
+            ["（メールソフト）", " (mail app)", "（邮件软件）", " (app de correo)"], ["（フォーム）", " (form)", "（表单）", " (formulario)"], ["（記録のみ）", " (logged only)", "（仅记录）", " (solo registro)"],
+            ["すべて選ぶ", "Select all", "全选", "Seleccionar todo"], ["選択を外す", "Clear selection", "取消选择", "Quitar selección"], ["選んだ{n}社の文面を作る", "Write messages for {n} selected", "为所选{n}家生成文案", "Redactar mensajes para {n}"], ["選んだ{n}社に初回を送る", "Send first message to {n} selected", "向所选{n}家发送首封", "Enviar primer mensaje a {n}"],
+            ["開く", "Open", "打开", "Abrir"], ["点", " pts", "分", " pts"], ["選ぶ", "Select", "选择", "Seleccionar"], ["前のリスト", "Previous lists", "以前的名单", "Listas anteriores"],
+            ["規制調査", "Regulation check", "法规调查", "Revisión normativa"], ["外国語営業資料", "Sales deck in foreign language", "外语营业资料", "Presentación en idioma extranjero"], ["FOB 価格", "FOB price", "FOB价格", "Precio FOB"],
+            ["準備がそろうほど、商談になりやすさの点数が上がります", "The more you prepare, the higher the likelihood score", "准备越充分，商谈可能性得分越高", "Cuanto más preparado, mayor la puntuación"],
+            ["根拠：STANDAGE の一次情報 {k}件（匿名の現場の記録）・貿易クラウド Ver.1 の {c} のバイヤーの実績 {v}名（社名は出しません）・公開情報", "Basis: {k} STANDAGE first-hand records (anonymised) · {v} buyers in {c} in Boueki Cloud Ver.1 (names not shown) · public information", "依据：STANDAGE一手信息{k}条（匿名现场记录）・贸易云Ver.1中{c}的买家实绩{v}名（不公开公司名）・公开信息", "Base: {k} registros de STANDAGE (anónimos) · {v} compradores en {c} en Boueki Cloud Ver.1 (sin nombres) · información pública"],
+            ["根拠：貿易クラウド Ver.1 の {c} のバイヤーの実績 {v}名（社名は出しません）・公開情報。この国・業態の STANDAGE の一次情報（現場の記録）は、この条件では見つかりませんでした", "Basis: {v} buyers in {c} in Boueki Cloud Ver.1 (names not shown) · public information. No STANDAGE first-hand records matched this country and business type.", "依据：贸易云Ver.1中{c}的买家实绩{v}名（不公开公司名）・公开信息。在此条件下未找到该国家・业态的STANDAGE一手信息。", "Base: {v} compradores en {c} en Boueki Cloud Ver.1 (sin nombres) · información pública. No hay registros de STANDAGE para este país y tipo de negocio."],
+            ["AI商社マンが、STANDAGE の一次情報と公開情報から相手を選んでいます…（1〜2分）", "The AI Trade Agent is selecting buyers from STANDAGE first-hand records and public information… (1–2 min)", "AI商社员正在根据STANDAGE一手信息和公开信息挑选对象…（1〜2分钟）", "El agente IA está seleccionando compradores… (1–2 min)"],
+            ["AIエンジンにつながっていないため、見本（架空）のリストです。AIエンジンにつなぐと、公開情報から実在の会社を挙げ、STANDAGE の一次情報で並べ替えます。", "The AI engine is not connected, so this is a sample (fictional) list. When connected, the AI lists real companies from public information and ranks them with STANDAGE first-hand records.", "AI引擎未连接，因此为示例（虚构）名单。连接后，AI会从公开信息中列出真实公司，并用STANDAGE一手信息排序。", "El motor de IA no está conectado: es una lista de muestra (ficticia). Al conectarlo, la IA lista empresas reales y las ordena con los registros de STANDAGE."],
+            ["{n}社のリストができました", "List of {n} companies is ready", "已生成{n}家的名单", "Lista de {n} empresas lista"], ["見本（架空）のリストを出しました", "Showing a sample (fictional) list", "已显示示例（虚构）名单", "Se muestra una lista de muestra (ficticia)"],
+            ["AI の答えを読めなかったので、見本を出しています（{e}）", "Could not read the AI answer, so a sample is shown ({e})", "无法读取AI回答，显示示例（{e}）", "No se pudo leer la respuesta de la IA; se muestra una muestra ({e})"],
+            ["アプローチ", "Approach", "接触方案", "Enfoque"], ["手法", "Channel", "方式", "Canal"], ["言語", "Language", "语言", "Idioma"], ["タイミング", "Timing", "时机", "Momento"], ["宛先", "To", "收件人", "Para"], ["メール", "E-mail", "邮件", "Correo"], ["問い合わせフォーム", "Contact form", "咨询表单", "Formulario de contacto"],
+            ["件名", "Subject", "主题", "Asunto"], ["本文（直せます）", "Message (editable)", "正文（可修改）", "Mensaje (editable)"], ["✉ この文面で送る", "✉ Send this message", "✉ 用此文案发送", "✉ Enviar este mensaje"], ["📋 コピーしてフォームを開く", "📋 Copy and open the form", "📋 复制并打开表单", "📋 Copiar y abrir el formulario"],
+            ["文面をコピー", "Copy message", "复制文案", "Copiar mensaje"], ["やり取りを開く", "Open conversation", "打开往来记录", "Abrir conversación"], ["もう一度送る", "Send again", "再次发送", "Enviar de nuevo"], ["送信日", "Day 0", "发送日", "Día 0"], ["{d}営業日後", "+{d} business days", "{d}个工作日后", "+{d} días hábiles"],
+            ["貿易クラウドのメール中継で送ります（相手の返信は「やり取り中のBuyer」に戻ります）", "Sent via Boueki Cloud mail relay (replies come back to “Buyers in conversation”)", "通过贸易云邮件中继发送（对方回复会返回“往来中的买家”）", "Se envía por el relé de correo de Boueki Cloud (las respuestas vuelven a «Compradores en conversación»)"],
+            ["見本の宛先なので、実際には送らず記録だけ残します", "Sample address: not actually sent, only logged", "示例地址：不会实际发送，仅记录", "Dirección de muestra: no se envía, solo se registra"],
+            ["メールソフトが開きます（送ったら記録に残ります）", "Your mail app opens (the send is logged)", "将打开邮件软件（发送后会记录）", "Se abre su app de correo (el envío se registra)"],
+            ["問い合わせフォームに貼ってください（文面をコピーして、相手のサイトを開きます）", "Paste into the contact form (the message is copied and the site opens)", "请粘贴到咨询表单（复制文案并打开对方网站）", "Péguelo en el formulario (se copia el mensaje y se abre el sitio)"],
+            ["見本（架空）の会社です。実際の送り先ではありません。", "This is a sample (fictional) company, not a real recipient.", "这是示例（虚构）公司，不是真实收件人。", "Es una empresa de muestra (ficticia), no un destinatario real."],
+            ["AI が挙げた会社です。送る前に、公式サイトで社名・窓口を確かめてください。", "Company suggested by the AI. Check the name and contact on the official website before sending.", "这是AI列出的公司。发送前请在官网确认公司名和联系窗口。", "Empresa sugerida por la IA. Verifique nombre y contacto en el sitio oficial antes de enviar."],
+            ["アプローチを考えています…", "Preparing the approach…", "正在设计接触方案…", "Preparando el enfoque…"], ["AI商社マンが、相手と STANDAGE の一次情報に合わせて文面を書いています（〜1分）", "The AI Trade Agent is writing the message for this buyer using STANDAGE first-hand records (~1 min)", "AI商社员正在根据对象和STANDAGE一手信息撰写文案（约1分钟）", "El agente IA está redactando el mensaje (~1 min)"],
+            ["送信しました（返信はやり取りに戻ります）", "Sent (replies come back to the conversation)", "已发送（回复会返回往来记录）", "Enviado (las respuestas vuelven a la conversación)"], ["メールソフトで開きました（記録に残しました）", "Opened in your mail app (logged)", "已在邮件软件中打开（已记录）", "Abierto en su app de correo (registrado)"],
+            ["文面をコピーしました。フォームに貼って送ってください（記録に残しました）", "Message copied. Paste it into the form and send (logged)", "已复制文案。请粘贴到表单发送（已记录）", "Mensaje copiado. Péguelo en el formulario y envíe (registrado)"], ["記録に残しました（見本の宛先なので送っていません）", "Logged (sample address, not sent)", "已记录（示例地址，未发送）", "Registrado (dirección de muestra, no enviado)"],
+            ["{n}社に初回を送る", "Send the first message to {n}", "向{n}家发送首封", "Enviar el primer mensaje a {n}"], ["{n}社に送る", "Send to {n}", "发送给{n}家", "Enviar a {n}"], ["やめる", "Cancel", "取消", "Cancelar"],
+            ["宛先と文面を確かめました（AI が挙げた会社は公式サイトで確認済み）", "I checked the recipients and messages (AI-suggested companies verified on their websites)", "已确认收件人和文案（AI列出的公司已在官网确认）", "He revisado destinatarios y mensajes (empresas sugeridas verificadas en su sitio web)"],
+            ["エージェントの次の一手", "Agent’s next steps", "代理的下一步", "Próximos pasos del agente"], ["送った相手 {n}社", "{n} contacted", "已联系 {n}家", "{n} contactados"], ["フォロー{n}を開く", "Open follow-up {n}", "打开跟进{n}", "Abrir seguimiento {n}"],
+            ["返信あり：やり取りを開いて、AI の返信アドバイスで返す", "Replied: open the conversation and answer with the AI reply advice", "已回复：打开往来记录，用AI回复建议回复", "Respondió: abra la conversación y responda con el consejo de la IA"],
+            ["3通送って返信なし：別の業態・別の国のリストも試す", "3 sent, no reply: try another business type or country", "已发3封无回复：尝试其他业态或国家", "3 enviados sin respuesta: pruebe otro tipo de negocio o país"],
+            ["AI商社マンにリストを作らせる", "Have the AI Trade Agent build a list", "让AI商社员生成名单", "Que el agente IA cree la lista"],
+            ["STANDAGE のバイヤーへのおつなぎ", "Introductions to STANDAGE buyers", "向STANDAGE买家引荐", "Presentaciones a compradores de STANDAGE"], ["AIバイヤー開拓を開く", "Open AI Buyer Prospecting", "打开AI买家开拓", "Abrir prospección con IA"],
+            ["貿易クラウドでは「AIバイヤー開拓」で、AI商社マンが STANDAGE の一次情報をもとに商談になりやすい相手を探し、文面の提案から送信まで進めます。", "In Boueki Cloud, “AI Buyer Prospecting” lets the AI Trade Agent find buyers likely to talk business using STANDAGE first-hand records, propose the message and send it.", "在贸易云中，“AI买家开拓”由AI商社员基于STANDAGE一手信息寻找容易进入商谈的对象，并推进从文案到发送。", "En Boueki Cloud, la «Prospección con IA» encuentra compradores probables con los registros de STANDAGE, propone el mensaje y lo envía."],
+            ["出荷・入金は、ただいま開発中です", "Shipping and payment are under development", "出货・收款功能正在开发中", "Envíos y cobros están en desarrollo"],
+            ["「{nm}」は、今後のバージョンアップで順次リリースします。リリースまでは、規制の確認・契約書・AI商社マンへの相談で、出荷の準備を進められます。", "“{nm}” will be released in upcoming updates. Until then, prepare shipments with the regulation check, contracts and the AI Trade Agent.", "“{nm}”将在今后的版本升级中陆续发布。在此之前，可通过法规确认・合同・咨询AI商社员推进出货准备。", "«{nm}» se lanzará en próximas actualizaciones. Mientras tanto, prepare los envíos con la revisión normativa, los contratos y el agente IA."],
+            ["発注書の取り込みから、PI（見積書）・CI（請求書）・PL（梱包明細）・S/I の下書きを、登録した商品情報から AI が作ります。", "From purchase orders, the AI drafts the PI, CI, PL and S/I from your product data.", "从导入采购单开始，AI根据已登记的商品信息起草PI・CI・PL・S/I。", "A partir de las órdenes de compra, la IA redacta PI, CI, PL y S/I con sus datos de producto."],
+            ["物流会社への AI 見積・相見積・仮押さえから、出荷の7ステップ（受注の確認 → 見積 → 比較 → 船積書類 → 送付 → 予定 → 完了）を、AI商社マンと AI物流マンが進めます。", "From AI quotes, comparisons and holds with forwarders, the AI Trade Agent and AI Logistics Agent run the 7 shipping steps (order → quote → compare → documents → send → schedule → done).", "从向物流公司AI询价・比价・暂定预订开始，AI商社员与AI物流员推进出货7步骤（确认订单→报价→比较→装船单证→发送→日程→完成）。", "Desde cotizaciones IA, comparación y reservas con transitarios, los agentes IA ejecutan los 7 pasos del envío."],
+            ["受注書・請求書・入金の予定と消し込みを1か所で。承認の流れ（稟議）にも対応します。", "Order confirmations, invoices and payment schedules and matching in one place, with approval flows.", "在一处管理订单确认书・发票・收款计划与核销，并支持审批流程。", "Confirmaciones, facturas y cobros en un solo lugar, con flujos de aprobación."],
+            ["いま使えるもの", "Available now", "现在可用", "Disponible ahora"], ["規制を調べる（送り先の決まりごと・関税・必要書類）", "Check regulations (rules, duties, documents)", "查法规（目的地规则・关税・所需单证）", "Ver regulaciones (normas, aranceles, documentos)"],
+            ["契約書関連（STEP 06）", "Contracts (STEP 06)", "合同相关（STEP 06）", "Contratos (PASO 06)"], ["AI商社マンに出荷の段取りを相談", "Ask the AI Trade Agent about shipping plans", "向AI商社员咨询出货安排", "Consultar al agente IA sobre el envío"],
+            ["先行プレビューを見る（開発中の画面・見本）", "See the early preview (in development · sample)", "查看抢先预览（开发中・示例）", "Ver la vista previa (en desarrollo · muestra)"],
+            ["開発中の画面を見本で触れます。実際の出荷・入金の手続きには使えません。", "Try the in-development screens with sample data. Not for real shipping or payments.", "可用示例体验开发中的画面。不能用于实际出货・收款手续。", "Pruebe las pantallas en desarrollo con datos de muestra. No sirve para envíos ni cobros reales."],
+            ["開発中の先行プレビューです。画面と動きは変わることがあります。実際の出荷・入金の手続きには使えません。", "Early preview in development. Screens may change. Not for real shipping or payments.", "这是开发中的抢先预览，画面和功能可能变化，不能用于实际出货・收款手续。", "Vista previa en desarrollo. Las pantallas pueden cambiar. No sirve para envíos ni cobros reales."],
+            ["プレビューを閉じる", "Close preview", "关闭预览", "Cerrar vista previa"],
+            ["「AIバイヤー開拓」で、商談になりやすい相手探しから進められます。", "Continue with “AI Buyer Prospecting” to find buyers likely to talk business.", "可通过“AI买家开拓”从寻找容易进入商谈的对象开始推进。", "Continúe con la «Prospección con IA» para encontrar compradores probables."],
+            ["AI商社マンに何でも聞けます。「AIバイヤー開拓」で、商談になりやすい相手探しから進められます。", "Ask the AI Trade Agent anything. Continue with “AI Buyer Prospecting” to find buyers likely to talk business.", "可以向AI商社员咨询任何问题。可通过“AI买家开拓”从寻找容易进入商谈的对象开始推进。", "Pregunte lo que quiera al agente IA. Continúe con la «Prospección con IA» para encontrar compradores probables."],
+            ["サンプルで体験中です。AI商社マンへの質問・AIバイヤー開拓のほか、自社の資料でも試せます。", "You are trying a sample. Besides questions to the AI Trade Agent and AI Buyer Prospecting, you can try your own materials.", "正在体验示例。除了向AI商社员提问和AI买家开拓外，也可以用自己的资料试用。", "Está probando una muestra. Además de preguntar al agente IA y la prospección con IA, puede probar con sus propios materiales."],
+            ["🤖 AIバイヤー開拓", "🤖 AI Buyer Prospecting", "🤖 AI买家开拓", "🤖 Prospección con IA"]
+        ];
+        R.forEach(r => { ["en", "zh", "es"].forEach((l, i) => { if (r[i + 1] && I18N.dict[l] && !I18N.dict[l][r[0]])
+            I18N.dict[l][r[0]] = r[i + 1]; }); });
+    }
+    catch (e) { }
+})();
+var V71CS = { prev: 0 };
+try {
+    V71CS.prev = sessionStorage.getItem("bc20_v71cs_prev") === "1" ? 1 : 0;
+}
+catch (e) { }
+const V71CS_TABS = {
+    doc: ["書類をつくる", "発注書の取り込みから、PI（見積書）・CI（請求書）・PL（梱包明細）・S/I の下書きを、登録した商品情報から AI が作ります。"],
+    ship: ["出荷を進める", "物流会社への AI 見積・相見積・仮押さえから、出荷の7ステップ（受注の確認 → 見積 → 比較 → 船積書類 → 送付 → 予定 → 完了）を、AI商社マンと AI物流マンが進めます。"],
+    ord: ["受注・請求・入金", "受注書・請求書・入金の予定と消し込みを1か所で。承認の流れ（稟議）にも対応します。"]
+};
+function v71csT(s) { try {
+    return typeof v30T === "function" ? v30T(s) : s;
+}
+catch (e) {
+    return s;
+} }
+function v71csE(s) { try {
+    return esc(s);
+}
+catch (e) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+} }
+function v71csN(s) { return v71csE(v71csT(s)); }
+function v71csF(s, o) { let t = v71csT(s); Object.keys(o || {}).forEach(k => { t = t.split("{" + k + "}").join(String(o[k])); }); return t; }
+function v71csPrev(on) {
+    V71CS.prev = on ? 1 : 0;
+    try {
+        if (on)
+            sessionStorage.setItem("bc20_v71cs_prev", "1");
+        else
+            sessionStorage.removeItem("bc20_v71cs_prev");
+    }
+    catch (e) { }
+    try {
+        if (typeof logU === "function")
+            logU("screen", "出荷・入金の先行プレビュー" + (on ? "" : "（閉じる）"));
+    }
+    catch (e) { }
+    try {
+        render();
+    }
+    catch (e) { }
+}
+function v71csPanel(k) {
+    const cur = V71CS_TABS[k] || V71CS_TABS.ship;
+    return `<div class="c v71cs" id="v71cs">
+    <div class="v71csh"><span class="v71csb">COMING SOON</span><span class="v71csst">STEP 07</span></div>
+    <h3>${v71csN("出荷・入金は、ただいま開発中です")}</h3>
+    <p class="v71csl">${v71csE(v71csF("「{nm}」は、今後のバージョンアップで順次リリースします。リリースまでは、規制の確認・契約書・AI商社マンへの相談で、出荷の準備を進められます。", { nm: v71csT(cur[0]) }))}</p>
+    <div class="v71csg">${Object.keys(V71CS_TABS).map(t => `<div class="v71csc ${t === k ? "on" : ""}"><span class="v71csn">${t === "doc" ? "②" : t === "ship" ? "③" : "④"}</span><b>${v71csN(V71CS_TABS[t][0])}</b><p>${v71csN(V71CS_TABS[t][1])}</p><em>Coming Soon</em></div>`).join("")}</div>
+    <div class="v71csnow"><b>${v71csN("いま使えるもの")}</b>
+      <button class="btn g" onclick="opsTab='reg';render()">① ${v71csN("規制を調べる（送り先の決まりごと・関税・必要書類）")}</button>
+      <button class="btn g" onclick="go('legal')">${v71csN("契約書関連（STEP 06）")}</button>
+      <button class="btn g" onclick="go('ai')">${v71csN("AI商社マンに出荷の段取りを相談")}</button></div>
+    <div class="v71csp"><button class="btn" onclick="v71csPrev(1)">🔭 ${v71csN("先行プレビューを見る（開発中の画面・見本）")}</button>
+      <span>${v71csN("開発中の画面を見本で触れます。実際の出荷・入金の手続きには使えません。")}</span></div></div>`;
+}
+function v71csBanner() {
+    return `<div class="v71csbar"><span class="v71csb">COMING SOON</span><span>${v71csN("開発中の先行プレビューです。画面と動きは変わることがあります。実際の出荷・入金の手続きには使えません。")}</span>
+    <button class="btn g" onclick="v71csPrev(0)">${v71csN("プレビューを閉じる")}</button></div>`;
+}
+function v71csTabs(h) {
+    Object.keys(V71CS_TABS).forEach(k => {
+        const nm = V71CS_TABS[k][0];
+        h = h.split(`<b>${nm}</b>`).join(`<b>${nm}</b><em class="v71csx">Coming Soon</em>`);
+        const tn = v71csT(nm);
+        if (tn !== nm)
+            h = h.split(`<b>${tn}</b>`).join(`<b>${tn}</b><em class="v71csx">Coming Soon</em>`);
+    });
+    return h;
+}
+if (typeof vOps === "function") {
+    const __vops71 = vOps;
+    vOps = function (p) {
+        let h = String(__vops71.apply(this, arguments));
+        try {
+            const tab = (typeof opsTab !== "undefined") ? opsTab : "reg";
+            h = v71csTabs(h);
+            const i = h.indexOf('<div class="optabs"'), j = i >= 0 ? h.indexOf('</div>', i) : -1;
+            if (V71CS_TABS[tab] && j > 0) {
+                if (!V71CS.prev)
+                    h = h.slice(0, j + 6) + v71csPanel(tab);
+                else
+                    h = h.slice(0, j + 6) + v71csBanner() + h.slice(j + 6);
+            }
+        }
+        catch (e) {
+            try {
+                console.warn("v71cs", e);
+            }
+            catch (x) { }
+        }
+        return h;
+    };
+}
+function v71csGated() { try {
+    return !V71CS.prev && typeof cur !== "undefined" && cur === "ops" && typeof opsTab !== "undefined" && !!V71CS_TABS[opsTab] && !document.querySelector(".optabs~.v71csbar");
+}
+catch (e) {
+    return false;
+} }
+["shipRender", "shipBind", "docRender", "ordRender"].forEach(fn => { try {
+    if (typeof window[fn] === "function") {
+        const f0 = window[fn];
+        window[fn] = function () { if (v71csGated() && document.getElementById("v71cs"))
+            return; return f0.apply(this, arguments); };
+    }
+}
+catch (e) { } });
+if (typeof guideState === "function") {
+    const __gs71 = guideState;
+    guideState = function () {
+        const r = __gs71.apply(this, arguments);
+        try {
+            if (r && r.cta === "出荷を進める" && !V71CS.prev)
+                return Object.assign({}, r, { msg: String(r.msg || "").replace("出荷の手続きもそのまま進められます。", "「AIバイヤー開拓」で、商談になりやすい相手探しから進められます。").replace("AI商社マンへの質問・出荷の手続きのほか", "AI商社マンへの質問・AIバイヤー開拓のほか"),
+                    cta: "🤖 AIバイヤー開拓", go: () => { try {
+                        go("db");
+                        setTimeout(() => { const e = document.getElementById("v71ob"); if (e)
+                            e.scrollIntoView({ behavior: "smooth", block: "start" }); }, 350);
+                    }
+                    catch (e) { } } });
+        }
+        catch (e) { }
+        return r;
+    };
+}
+function v71csMark() { if (V71CS.prev)
+    return; try {
+    [...document.querySelectorAll("#well button[onclick]")].filter(b => String(b.getAttribute("onclick") || "").indexOf("go('ship')") >= 0).forEach(b => { if (b.querySelector(".v71csx"))
+        return; const em = document.createElement("em"); em.className = "v71csx"; em.textContent = "Coming Soon"; b.appendChild(em); });
+}
+catch (e) { } }
+{
+    const __r71cs = render;
+    render = function () { const r = __r71cs.apply(this, arguments); try {
+        v71csMark();
+    }
+    catch (e) { } return r; };
+}
+(function () {
+    try {
+        const st = document.createElement("style");
+        st.id = "v71cscss";
+        st.textContent = `
+.v71csx{display:inline-block;margin-left:6px;font-style:normal;font-size:9px;font-weight:800;letter-spacing:.04em;color:#a14f00;background:#fff1e0;border:1px solid #f6d6ad;border-radius:999px;padding:0 6px;vertical-align:middle}
+.v71cs{margin-top:10px;border:1px solid #f6d6ad;background:linear-gradient(135deg,#fffaf3 0%,#ffffff 60%)}
+.v71csh{display:flex;gap:8px;align-items:center}.v71csb{display:inline-block;font-size:10.5px;font-weight:900;letter-spacing:.08em;color:#fff;background:var(--or);border-radius:999px;padding:2px 10px}
+.v71csst{font-size:10.5px;font-weight:800;color:var(--navy,#0E1F4B);border:1px solid var(--navy,#0E1F4B);border-radius:999px;padding:1px 8px}
+.v71cs h3{margin:10px 0 4px}.v71csl{font-size:12px;line-height:1.75;color:var(--ink-2);margin:0}
+.v71csg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}.v71csc{position:relative;border:1px solid var(--line);border-radius:var(--r2,8px);padding:10px 12px;background:#fff}
+.v71csc.on{border-color:var(--or);box-shadow:0 0 0 2px #fde3c3}.v71csc b{display:block;font-size:12.5px;margin:2px 0 4px}.v71csc p{font-size:11px;line-height:1.65;color:var(--ink-2);margin:0}
+.v71csn{font-weight:900;color:var(--or)}.v71csc em{position:absolute;top:8px;right:8px;font-style:normal;font-size:9px;font-weight:800;color:#a14f00;background:#fff1e0;border-radius:999px;padding:0 6px}
+.v71csnow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:12px;font-size:11.5px}.v71csnow b{margin-right:4px}
+.v71csp{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px dashed #f6d6ad;font-size:11px;color:var(--ink-3)}
+.v71csbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0;padding:8px 12px;border-radius:var(--r2,8px);background:#fff8ef;border:1px solid #f6d6ad;font-size:11.5px}.v71csbar>span:nth-child(2){flex:1 1 260px}
+@media (max-width:760px){.v71csg{grid-template-columns:1fr}}
+`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N || !I18N.dict)
+            return;
+        const R = [
+            ["出荷・入金は、ただいま開発中です", "Shipping and payment are under development", "出货・收款功能正在开发中", "Envíos y cobros están en desarrollo"],
+            ["いま使えるもの", "Available now", "现在可用", "Disponible ahora"], ["先行プレビューを見る（開発中の画面・見本）", "See the early preview (in development · sample)", "查看抢先预览（开发中・示例）", "Ver la vista previa (en desarrollo · muestra)"],
+            ["プレビューを閉じる", "Close preview", "关闭预览", "Cerrar vista previa"], ["契約書関連（STEP 06）", "Contracts (STEP 06)", "合同相关（STEP 06）", "Contratos (PASO 06)"], ["AI商社マンに出荷の段取りを相談", "Ask the AI Trade Agent about shipping plans", "向AI商社员咨询出货安排", "Consultar al agente IA sobre el envío"]
+        ];
+        R.forEach(r => { ["en", "zh", "es"].forEach((l, i) => { if (r[i + 1] && I18N.dict[l])
+            I18N.dict[l][r[0]] = r[i + 1]; }); });
+    }
+    catch (e) { }
+})();
+try {
+    if (typeof S30_NEWS !== "undefined" && Array.isArray(S30_NEWS)) {
+        if (!S30_NEWS.some(x => x && x[1] === "v21.71"))
+            S30_NEWS.unshift(["2026-10", "v21.71", "AIバイヤー開拓（AI商社マンのアウトバウンド）",
+                ["「AIバイヤー開拓・拠点」：国と業態を選ぶと、AI商社マンが STANDAGE の一次情報と公開情報から、商談になりやすい順（見込み A／B／C）の相手のリストを作る",
+                    "相手ごとに、手法・言語・タイミング・3通の流れ（初回・フォロー1・フォロー2）と文面を提案。送った相手は自社のバイヤーに入り、フォローの予定がタスクに入る",
+                    "「エージェントの次の一手」：返信の無い相手へのフォロー、返信が来た相手とのやり取りを案内",
+                    "出荷・入金（書類をつくる・出荷を進める・受注・請求・入金）は開発中（Coming Soon）。先行プレビューで開発中の画面を見本で見られる"]]);
     }
 }
 catch (e) { }
