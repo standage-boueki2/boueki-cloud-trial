@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="eb09e74f418c";
+const BC20_BUILD="b9635a1bce1b";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -45352,7 +45352,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.71.1";
+const BC20_VER = "21.71.2";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -141510,6 +141510,12 @@ function v71obTransform(h) {
     if (s >= 0 && e > s)
         h = h.slice(0, s) + v71obHtml() + `<div id="v41find" hidden><p id="v41sum"></p><table><tbody id="v41b"></tbody></table></div>` + h.slice(e);
     h = h.replace("費用をかけずに始めるなら、上の「相手を探す」から「つなぐ依頼」をどうぞ。", "費用をかけずに始めるなら、上の「AIバイヤー開拓」をどうぞ。");
+    const hi = h.indexOf('<div class="v41how">');
+    if (hi >= 0) {
+        const he = h.indexOf('</div>', hi);
+        if (he > hi)
+            h = h.slice(0, hi) + `<div class="v41how"><b>${v71obN("STANDAGE のネットワークと AIバイヤー開拓")}</b><br>${v71obN("STANDAGE が海外拠点の開拓・国際展示会・紹介で出会ったバイヤーへのおつなぎは、おまかせ貿易をご契約のお客様向けです。AIバイヤー開拓では、その現場の記録の傾向（どの業態が反応したか）だけを分析に使い、社名は出しません。各社のプロジェクトで開拓したバイヤーは、その会社専用です。")}</div>` + h.slice(he + 6);
+    }
     return h;
 }
 if (typeof vDB === "function") {
@@ -141704,6 +141710,8 @@ if (typeof bnCtxDb === "function") {
             ["AI商社マンに何でも聞けます。「AIバイヤー開拓」で、商談になりやすい相手探しから進められます。", "Ask the AI Trade Agent anything. Continue with “AI Buyer Prospecting” to find buyers likely to talk business.", "可以向AI商社员咨询任何问题。可通过“AI买家开拓”从寻找容易进入商谈的对象开始推进。", "Pregunte lo que quiera al agente IA. Continúe con la «Prospección con IA» para encontrar compradores probables."],
             ["サンプルで体験中です。AI商社マンへの質問・AIバイヤー開拓のほか、自社の資料でも試せます。", "You are trying a sample. Besides questions to the AI Trade Agent and AI Buyer Prospecting, you can try your own materials.", "正在体验示例。除了向AI商社员提问和AI买家开拓外，也可以用自己的资料试用。", "Está probando una muestra. Además de preguntar al agente IA y la prospección con IA, puede probar con sus propios materiales."],
             ["🤖 AIバイヤー開拓", "🤖 AI Buyer Prospecting", "🤖 AI买家开拓", "🤖 Prospección con IA"],
+            ["STANDAGE のネットワークと AIバイヤー開拓", "STANDAGE’s network and AI Buyer Prospecting", "STANDAGE网络与AI买家开拓", "La red de STANDAGE y la prospección con IA"],
+            ["STANDAGE が海外拠点の開拓・国際展示会・紹介で出会ったバイヤーへのおつなぎは、おまかせ貿易をご契約のお客様向けです。AIバイヤー開拓では、その現場の記録の傾向（どの業態が反応したか）だけを分析に使い、社名は出しません。各社のプロジェクトで開拓したバイヤーは、その会社専用です。", "Introductions to buyers STANDAGE met through its overseas bases, trade fairs and referrals are for Omakase Boueki clients. AI Buyer Prospecting only uses the trends in those field records (which business types responded) for analysis and never shows company names. Buyers developed in a client’s project belong to that client only.", "STANDAGE通过海外据点开拓・国际展会・介绍结识的买家的引荐，仅面向“全托贸易”签约客户。AI买家开拓仅将这些现场记录的倾向（哪种业态有反应）用于分析，不显示公司名。各公司项目中开拓的买家归该公司专用。", "Las presentaciones a compradores que STANDAGE conoció en sus bases, ferias y referencias son para clientes de Omakase Boueki. La prospección con IA solo usa las tendencias de esos registros para el análisis y nunca muestra nombres. Los compradores captados en el proyecto de un cliente son solo de ese cliente."],
             ["文面を作っています（{k}/{n}・3社ずつ・1社1〜3分）…", "Writing messages ({k}/{n} · 3 at a time · 1–3 min each)…", "正在撰写文案（{k}/{n}・每次3家・每家1〜3分钟）…", "Redactando mensajes ({k}/{n} · de 3 en 3 · 1–3 min cada uno)…"],
             ["送っています（{k}/{n}）…", "Sending ({k}/{n})…", "正在发送（{k}/{n}）…", "Enviando ({k}/{n})…"], ["{n}社の文面ができました（各行の「文面を見る」で確かめて直せます）", "Messages ready for {n} companies (check and edit with “View message”)", "已完成{n}家的文案（可在各行“查看文案”中确认修改）", "Mensajes listos para {n} empresas (revíselos con «Ver mensaje»)"]
         ];
