@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="9b18ce898a5a";
+const BC20_BUILD="eb09e74f418c";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -45352,7 +45352,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.71";
+const BC20_VER = "21.71.1";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -140894,6 +140894,7 @@ async function v71obBuild() {
 ・担当者個人の名前・個人のメール・電話・SNS は書かない（会社の公開の窓口だけ）
 ・「STANDAGE 一次情報」は匿名の記録。そこから社名を推測して書かない。どの業態・どんな条件で反応したかの分析にだけ使う
 ・fit（0〜40）は商品との合い方（業態・取扱品目・価格帯・規模）。kb（0〜35）は STANDAGE 一次情報の傾向と合う度合い（関係する記録が無ければ 0〜10）
+・点数は候補どうしの相対で付け、差をはっきりさせる（全員に高い点を付けない）。fit は取扱品目・価格帯・規模がはっきり合う会社だけ 32 以上。kb は、その会社の業態・販路が STANDAGE 一次情報で反応の良かった業態・条件と一致するときだけ 20 以上、一般論しか当てはまらなければ 10 以下
 ・件数は最大 ${f.n} 社。商談になりやすい順に並べる`;
         const q = `## 条件\n国：${f.cty}\n業態：${bizNm}\n件数：${f.n}\n\n## 商品と会社（貴社のデータ）\n${v71obCtx()}\n\n## STANDAGE 一次情報（おまかせ貿易の現場の記録・匿名）\n${v71obKbLines(kb) || "（関係する記録なし）"}\n\n## STANDAGE の実績（貿易クラウド Ver.1 の集計）\n${f.cty} で開拓・やりとりしたバイヤー：${v1 ? v1.toLocaleString() + "名" : "記録なし"}（社名は出さない）\n\n## 貴社の準備\n規制調査：${ready.reg ? "済み" : "まだ"}／外国語営業資料：${ready.deck ? "あり" : "まだ"}／FOB 価格：${b.price || "未登録"}／MOQ：${b.moq || "未登録"}`;
         try {
@@ -141181,7 +141182,7 @@ function v71obReadyHtml(run) {
 }
 function v71obInsight(run) {
     const kbn = (run.kb || []).length;
-    const kbHtml = kbn ? (typeof v66kbList === "function" ? v66kbList({ items: run.kb }, 8, v71obT("AI商社マンが参照した STANDAGE の一次情報")) : `<p class="nn">${v71obF("STANDAGE の一次情報 {n}件を参照", { n: kbn })}</p>`) : "";
+    const kbHtml = kbn ? (typeof v66kbList === "function" ? String(v66kbList({ items: run.kb }, 8, v71obT("AI商社マンが参照した STANDAGE の一次情報"))).replace('<details class="v66kb" open>', '<details class="v66kb">') : `<p class="nn">${v71obF("STANDAGE の一次情報 {n}件を参照", { n: kbn })}</p>`) : "";
     return `<div class="v71ins"><div class="v71insh">🧭 ${v71obN("AI商社マンの見立て")}${run.how === "smp" ? `<span class="v71smp">${v71obN("見本（架空）")}</span>` : ""}</div>
     <p>${v71obE(run.insight || "")}</p>
     ${(run.types || []).length ? `<p class="v71ty">${run.types.map(t => `<span><b>${v71obE(t.biz)}</b>${t.why ? "：" + v71obE(t.why) : ""}</span>`).join("")}</p>` : ""}
@@ -141259,7 +141260,7 @@ async function v71obOpen(id, i) {
         return;
     const { r: run, l: L } = o;
     if (!L.ap) {
-        openDW(`<h3>✍ ${v71obN("アプローチを考えています…")}</h3><p class="nn">${v71obE(L.name)}</p><div class="v71busy"><span class="v71spin"></span>${v71obN("AI商社マンが、相手と STANDAGE の一次情報に合わせて文面を書いています（〜1分）")}</div>`);
+        openDW(`<h3>✍ ${v71obN("アプローチを考えています…")}</h3><p class="nn">${v71obE(L.name)}</p><div class="v71busy"><span class="v71spin"></span>${v71obN("AI商社マンが、相手と STANDAGE の一次情報に合わせて文面を書いています（1〜3分）")}</div>`);
         await v71obApproach(id);
     }
     const ap = L.ap;
@@ -141346,12 +141347,17 @@ async function v71obBulk(act) {
     if (act === "ap") {
         V71OB.busy = 1;
         let k = 0;
-        for (const l of L) {
-            k++;
-            V71OB.msg = v71obF("文面を作っています（{k}/{n}）…", { k, n: L.length });
-            v71obPaint();
+        const todo = L.filter(l => !l.ap);
+        const show = () => { V71OB.msg = v71obF("文面を作っています（{k}/{n}・3社ずつ・1社1〜3分）…", { k, n: todo.length }); v71obPaint(); };
+        show();
+        const q = todo.slice();
+        const one = async () => { while (q.length) {
+            const l = q.shift();
             await v71obApproach(l.id, 1);
-        }
+            k++;
+            show();
+        } };
+        await Promise.all([one(), one(), one()]);
         V71OB.busy = 0;
         V71OB.msg = "";
         v71obPaint();
@@ -141378,6 +141384,21 @@ async function v71obBulk(act) {
                 catch (e) { }
                 V71OB.busy = 1;
                 let k = 0, c = { relay: 0, mailto: 0, form: 0, log: 0 };
+                const need = L.filter(l => !l.ap);
+                if (need.length) {
+                    let m = 0;
+                    const q = need.slice();
+                    const one = async () => { while (q.length) {
+                        const l = q.shift();
+                        await v71obApproach(l.id, 1);
+                        m++;
+                        V71OB.msg = v71obF("文面を作っています（{k}/{n}・3社ずつ・1社1〜3分）…", { k: m, n: need.length });
+                        v71obPaint();
+                    } };
+                    V71OB.msg = v71obF("文面を作っています（{k}/{n}・3社ずつ・1社1〜3分）…", { k: 0, n: need.length });
+                    v71obPaint();
+                    await Promise.all([one(), one(), one()]);
+                }
                 for (const l of L) {
                     k++;
                     V71OB.msg = v71obF("送っています（{k}/{n}）…", { k, n: L.length });
@@ -141657,7 +141678,7 @@ if (typeof bnCtxDb === "function") {
             ["問い合わせフォームに貼ってください（文面をコピーして、相手のサイトを開きます）", "Paste into the contact form (the message is copied and the site opens)", "请粘贴到咨询表单（复制文案并打开对方网站）", "Péguelo en el formulario (se copia el mensaje y se abre el sitio)"],
             ["見本（架空）の会社です。実際の送り先ではありません。", "This is a sample (fictional) company, not a real recipient.", "这是示例（虚构）公司，不是真实收件人。", "Es una empresa de muestra (ficticia), no un destinatario real."],
             ["AI が挙げた会社です。送る前に、公式サイトで社名・窓口を確かめてください。", "Company suggested by the AI. Check the name and contact on the official website before sending.", "这是AI列出的公司。发送前请在官网确认公司名和联系窗口。", "Empresa sugerida por la IA. Verifique nombre y contacto en el sitio oficial antes de enviar."],
-            ["アプローチを考えています…", "Preparing the approach…", "正在设计接触方案…", "Preparando el enfoque…"], ["AI商社マンが、相手と STANDAGE の一次情報に合わせて文面を書いています（〜1分）", "The AI Trade Agent is writing the message for this buyer using STANDAGE first-hand records (~1 min)", "AI商社员正在根据对象和STANDAGE一手信息撰写文案（约1分钟）", "El agente IA está redactando el mensaje (~1 min)"],
+            ["アプローチを考えています…", "Preparing the approach…", "正在设计接触方案…", "Preparando el enfoque…"], ["AI商社マンが、相手と STANDAGE の一次情報に合わせて文面を書いています（1〜3分）", "The AI Trade Agent is writing the message for this buyer using STANDAGE first-hand records (1–3 min)", "AI商社员正在根据对象和STANDAGE一手信息撰写文案（1〜3分钟）", "El agente IA está redactando el mensaje (1–3 min)"],
             ["送信しました（返信はやり取りに戻ります）", "Sent (replies come back to the conversation)", "已发送（回复会返回往来记录）", "Enviado (las respuestas vuelven a la conversación)"], ["メールソフトで開きました（記録に残しました）", "Opened in your mail app (logged)", "已在邮件软件中打开（已记录）", "Abierto en su app de correo (registrado)"],
             ["文面をコピーしました。フォームに貼って送ってください（記録に残しました）", "Message copied. Paste it into the form and send (logged)", "已复制文案。请粘贴到表单发送（已记录）", "Mensaje copiado. Péguelo en el formulario y envíe (registrado)"], ["記録に残しました（見本の宛先なので送っていません）", "Logged (sample address, not sent)", "已记录（示例地址，未发送）", "Registrado (dirección de muestra, no enviado)"],
             ["{n}社に初回を送る", "Send the first message to {n}", "向{n}家发送首封", "Enviar el primer mensaje a {n}"], ["{n}社に送る", "Send to {n}", "发送给{n}家", "Enviar a {n}"], ["やめる", "Cancel", "取消", "Cancelar"],
@@ -141682,7 +141703,9 @@ if (typeof bnCtxDb === "function") {
             ["「AIバイヤー開拓」で、商談になりやすい相手探しから進められます。", "Continue with “AI Buyer Prospecting” to find buyers likely to talk business.", "可通过“AI买家开拓”从寻找容易进入商谈的对象开始推进。", "Continúe con la «Prospección con IA» para encontrar compradores probables."],
             ["AI商社マンに何でも聞けます。「AIバイヤー開拓」で、商談になりやすい相手探しから進められます。", "Ask the AI Trade Agent anything. Continue with “AI Buyer Prospecting” to find buyers likely to talk business.", "可以向AI商社员咨询任何问题。可通过“AI买家开拓”从寻找容易进入商谈的对象开始推进。", "Pregunte lo que quiera al agente IA. Continúe con la «Prospección con IA» para encontrar compradores probables."],
             ["サンプルで体験中です。AI商社マンへの質問・AIバイヤー開拓のほか、自社の資料でも試せます。", "You are trying a sample. Besides questions to the AI Trade Agent and AI Buyer Prospecting, you can try your own materials.", "正在体验示例。除了向AI商社员提问和AI买家开拓外，也可以用自己的资料试用。", "Está probando una muestra. Además de preguntar al agente IA y la prospección con IA, puede probar con sus propios materiales."],
-            ["🤖 AIバイヤー開拓", "🤖 AI Buyer Prospecting", "🤖 AI买家开拓", "🤖 Prospección con IA"]
+            ["🤖 AIバイヤー開拓", "🤖 AI Buyer Prospecting", "🤖 AI买家开拓", "🤖 Prospección con IA"],
+            ["文面を作っています（{k}/{n}・3社ずつ・1社1〜3分）…", "Writing messages ({k}/{n} · 3 at a time · 1–3 min each)…", "正在撰写文案（{k}/{n}・每次3家・每家1〜3分钟）…", "Redactando mensajes ({k}/{n} · de 3 en 3 · 1–3 min cada uno)…"],
+            ["送っています（{k}/{n}）…", "Sending ({k}/{n})…", "正在发送（{k}/{n}）…", "Enviando ({k}/{n})…"], ["{n}社の文面ができました（各行の「文面を見る」で確かめて直せます）", "Messages ready for {n} companies (check and edit with “View message”)", "已完成{n}家的文案（可在各行“查看文案”中确认修改）", "Mensajes listos para {n} empresas (revíselos con «Ver mensaje»)"]
         ];
         R.forEach(r => { ["en", "zh", "es"].forEach((l, i) => { if (r[i + 1] && I18N.dict[l] && !I18N.dict[l][r[0]])
             I18N.dict[l][r[0]] = r[i + 1]; }); });
