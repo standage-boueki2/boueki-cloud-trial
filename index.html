@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="1f8c6f85aa83";
+const BC20_BUILD="aa0550e96380";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -45352,7 +45352,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.72";
+const BC20_VER = "21.72.1";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -142171,7 +142171,18 @@ function v72UnitEn(u) {
 function v72BandEn(s) { s = String(s || "").replace(/[^\x20-\x7E〜~～]/g, "").replace(/[〜~～]/g, "-").trim(); if (/^-/.test(s))
     return "up to " + s.replace(/^-\s*/, ""); if (/-$/.test(s))
     return s.replace(/\s*-$/, "") + "+"; return s || "price"; }
-function v72LeadEn(s) { s = String(s || "").replace(/[〜~～]/g, "-").replace(/\s*営業日/g, " business days").replace(/\s*日/g, " days").replace(/\s*週間?/g, " weeks").replace(/\s*(ヶ|か|カ|ケ)月/g, " months").trim(); return v72Ascii(s) ? s : ""; }
+function v72LeadEn(s) {
+    s = String(s || "").trim();
+    if (!s)
+        return "";
+    if (v72Ascii(s))
+        return s;
+    const m = s.match(/(\d+(?:\s*[〜~～\-–]\s*\d+)?)\s*(営業日|日|週間|週|ヶ月|か月|カ月|ケ月)/);
+    if (!m)
+        return "";
+    const n = m[1].replace(/\s*[〜~～\-–]\s*/, "-"), u = { "営業日": "business days", "日": "days", "週間": "weeks", "週": "weeks" }[m[2]] || "months";
+    return n + " " + u + (/受注後|ご注文後|発注後|注文後/.test(s) ? " after order" : "");
+}
 function v72QuoteText(Q) {
     if (!Q || Q.none || !Q.lines.length)
         return "";
@@ -142437,7 +142448,7 @@ async function v72Prep(id) {
         const P = { sig: v72Sig(last), at: Date.now(), how, err, kind, lang: th.lang || "English",
             summary: String(R.summary || "").slice(0, 300) || v72F("相手の返事を「{k}」と読みました（定型の読み取り）", { k: v72T(V72RP_KIND[kind]) }),
             asks: v72Uniq((Array.isArray(R.asks) ? R.asks : base.asks).map(String)).slice(0, 6), facts: v72Uniq(Array.isArray(R.facts) ? R.facts.map(String) : []).slice(0, 6),
-            unknown: v72Uniq(unknown.concat(Q ? Q.unknown : [])).slice(0, 8), next: v72Uniq(Array.isArray(R.next) && R.next.length ? R.next.map(String) : V72RP_NEXT[kind].map(v72T)).slice(0, 4),
+            unknown: v72Uniq(unknown.concat((Q ? Q.unknown : []).filter(u => !(Q.reqTerm && u.indexOf(Q.reqTerm) === 0 && unknown.some(x => String(x).includes(Q.reqTerm)))))).slice(0, 8), next: v72Uniq(Array.isArray(R.next) && R.next.length ? R.next.map(String) : V72RP_NEXT[kind].map(v72T)).slice(0, 4),
             warn: Q ? Q.warn.slice() : [], quote: Q && !Q.none ? Q : null, qnone: !!(Q && Q.none), draft, cits: cits.slice(0, 3) };
         P.leak = v72Leak(draft, P.quote);
         th.v72 = P;
@@ -142617,7 +142628,7 @@ function v72Bind(id) {
         }
         P.draft = ta.value;
         v72Save();
-        V72RP.pend = { id: String(id), body, at: Date.now(), allow: v72Allow(P.quote) };
+        V72RP.pend = { id: String(id), body, at: Date.now(), allow: v72Allow(P.quote), moqs: ((P.quote && P.quote.lines) || []).map(l => +l.moq).filter(v => v > 0) };
         const r = document.getElementById("dmR");
         if (!r)
             return;
@@ -142764,6 +142775,24 @@ if (typeof v33CkPriceNums === "function") {
             if (pd && Date.now() - pd.at < 30 * 60000 && Array.isArray(pd.allow) && Array.isArray(r))
                 pd.allow.forEach(v => { if (v > 0)
                     r.push(v); });
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof v33CkText === "function") {
+    const __ct72 = v33CkText;
+    v33CkText = function (F, txt) {
+        const n0 = Array.isArray(F) ? F.length : 0;
+        const r = __ct72.apply(this, arguments);
+        try {
+            const pd = V72RP.pend;
+            if (pd && Date.now() - pd.at < 30 * 60000 && Array.isArray(pd.moqs) && pd.moqs.length && Array.isArray(F) && /--- Quotation/.test(String(txt || "")))
+                for (let i = F.length - 1; i >= n0; i--) {
+                    const m = String((F[i] && F[i].t) || "").match(/^MOQ が登録.*?：([\d,]+)/);
+                    if (m && pd.moqs.includes(parseFloat(m[1].replace(/,/g, ""))))
+                        F.splice(i, 1);
+                }
         }
         catch (e) { }
         return r;
