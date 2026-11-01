@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="0744ead94d20";
+const BC20_BUILD="00c8f0641982";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -45352,7 +45352,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.73";
+const BC20_VER = "21.73.1";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -143660,7 +143660,7 @@ function v73AiHtml(P, st, dd, tt) {
     const on = v73AiOn();
     const A = st.ai;
     const head = `<div class="v73ai"><div class="v73aih"><b>🤖 ${v73M("AI商社マンの考え（この商品に合わせた育て方）", "The AI's own plan for this product")}</b>
-    <button class="btn ${A ? "g" : ""}" id="v73think" ${on && !V73.busy ? "" : "disabled"} onclick="v73Think()">${V73.busy ? v73M("考えています…（30秒ほど）", "Thinking… (about 30 s)") : A ? v73M("考え直させる", "Rethink") : v73M("AIに考えさせる", "Let the AI think")}</button></div>`;
+    <button class="btn ${A ? "g" : ""}" id="v73think" ${on && !V73.busy ? "" : "disabled"} onclick="v73Think()">${V73.busy ? v73M("考えています…（1〜3分ほど。ほかの画面に移っても続きます）", "Thinking… (1–3 min)") : A ? v73M("考え直させる", "Rethink") : v73M("AIに考えさせる", "Let the AI think")}</button></div>`;
     if (!on && !A)
         return head + `<p class="nn">${v73M("AIエンジンにつなぐと、AI商社マンが商品情報と規制の調査を読んで、この商品だけの「吸収すべき情報」・配点・一人前までの期間を考えて提案します。いまは、STANDAGE の事例から作った内蔵の物差しで判定しています。", "Connect an AI engine and the AI will read your product information and propose its own plan. For now the built-in yardstick from STANDAGE's cases is used.")}</p></div>`;
     if (V73.err)
