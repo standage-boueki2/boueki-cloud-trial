@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="aa0550e96380";
+const BC20_BUILD="0744ead94d20";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -45352,7 +45352,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.72.1";
+const BC20_VER = "21.73";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -142940,6 +142940,1227 @@ try {
                     "見積依頼には、数量・品目・条件を読み取り、登録した価格表から単価と金額を計算して本文に表で入れる（有効期限30日・AI は値段を書かない）",
                     "登録に無いことは「確かめて2営業日以内にご連絡」と書き、社内で確かめることとして出す。送るのは「承認して送る」を押してから（送る前の点検あり）",
                     "送ったら、見積の返事の確認・確かめることの回答などをタスクに入れる。AIバイヤー開拓の「次の一手」にも、返信案・見積の状態が出る"]]);
+    }
+}
+catch (e) { }
+var V73 = { mem: {}, busy: 0, open: {}, err: "" };
+function v73L() { try {
+    return (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v73M(ja, en) { return v73L() === "ja" ? ja : (en || ja); }
+function v73T(a) { return Array.isArray(a) ? (v73L() === "ja" ? a[0] : (a[1] || a[0])) : String(a == null ? "" : a); }
+function v73E(s) { try {
+    return esc(String(s == null ? "" : s));
+}
+catch (e) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+} }
+function v73N(s) { s = String(s == null ? "" : s); try {
+    s = s.normalize("NFKC");
+}
+catch (e) { } return s; }
+function v73Has(v) { return Array.isArray(v) ? v.length > 0 : !!(v && String(v).trim() && !/^[\s—\-ー－]+$/.test(String(v))); }
+function v73Day(ts) { const d = new Date(ts || Date.now()); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function v73MD(ts) { const d = new Date(ts || Date.now()); return (d.getMonth() + 1) + "/" + d.getDate(); }
+const V73_AREAS = ["fb", "product", "market", "dialog", "practice", "data"];
+const V73_AREA_NM = { fb: ["商談フィードバック", "Deal feedback"], product: ["商品の理解", "Product knowledge"], market: ["市場・規制", "Markets & regulations"], dialog: ["対話", "Dialogue"], practice: ["実務", "Practice"], data: ["資料", "Documents"] };
+const V73_BASEW = { fb: 25, product: 20, market: 15, dialog: 15, practice: 15, data: 10 };
+const V73_GOAL = { f: ["⚡", "早く", "Faster"], s: ["🛡", "安全に", "Safely"], r: ["⚠", "リスクを抑える", "Lower risk"], p: ["💰", "利益", "Profit"] };
+const V73_STAGE = { 1: ["① スタートライン（事前準備）", "① Starting line (preparation)"], 2: ["② 見込み顧客の発見・商談化", "② Finding prospects & winning meetings"], 3: ["③ 売上の構築", "③ Building sales"] };
+const V73_PRI = { m: ["必須", "Must", 3], k: ["重要", "Key", 2], n: ["あると良い", "Nice", 1] };
+const V73_BLEND = 0.4;
+const V73_PROF = {
+    food: { ic: "🍱", nm: ["食品・飲料", "Food & beverages"], w: { fb: 25, product: 20, market: 17, dialog: 10, practice: 19, data: 9 }, fb: 42, mo: [14, 28],
+        why: ["バイヤーが一番聞くのは仕様・味・使い方（32%）で、止まる理由は用途に合わない（40%）・価格（35%）。規制は登録・認証・成分が3本柱、物流（海上か航空か・温度帯）の話が多いため、商談と実務を重く", "Buyers ask most about specs, taste and use (32%); deals stop on fit (40%) and price (35%). Registration, certification and ingredients are the main rules, and logistics comes up often"],
+        ev: ["STANDAGE の記録（Ver.1）：食品 126プロジェクト・商談記録 1,367件・知識カード 4,927枚。日本の価格から現地の店頭は約3倍（中央値）", "STANDAGE records (Ver.1): 126 food projects, 1,367 meeting records, 4,927 knowledge cards"] },
+    alcohol: { ic: "🍶", nm: ["酒類", "Alcoholic beverages"], w: { fb: 24, product: 19, market: 18, dialog: 10, practice: 21, data: 8 }, fb: 42, mo: [13, 25],
+        why: ["規制の1位は関税・酒税（37%）、次にラベル（33%）・登録（31%）・免許を持つ輸入者（28%）。日本の卸から現地の末端は約4倍で、温度管理の話も多いため、市場・規制と実務を重く", "Duties and liquor tax (37%), labels (33%), registration (31%) and licensed importers (28%) lead; shelf price is about 4× and temperature control matters"],
+        ev: ["STANDAGE の記録（Ver.1）：酒類 19プロジェクト・商談記録 213件・知識カード 875枚（件数が少なく参考）", "STANDAGE records (Ver.1): 19 liquor projects (small sample)"] },
+    supp: { ic: "💊", nm: ["健康食品・サプリメント", "Health foods & supplements"], w: { fb: 26, product: 18, market: 24, dialog: 10, practice: 12, data: 10 }, fb: 42, mo: [11, 19],
+        why: ["規制の論点が 23%（全体は 15%）で、その4割が登録・届出。配合量で医薬品になる国があり、処方の現地仕様を求める声も最も多い（11%）ため、市場・規制を重く", "Regulation is 23% of the record (15% overall), 40% of it registration; dose can make it a medicine, and buyers often ask for local formulations"],
+        ev: ["STANDAGE の記録（Ver.1）：健康食品 17プロジェクト・商談記録 152件（件数が少なく参考）。社内の事例：香港ではビタミンD の1日量が 1,000 IU を超えると医薬品", "STANDAGE records (Ver.1): 17 supplement projects (small sample); internal case: Hong Kong vitamin D limit"] },
+    cosme: { ic: "🧴", nm: ["化粧品・美容", "Cosmetics & beauty"], w: { fb: 25, product: 19, market: 21, dialog: 10, practice: 13, data: 12 }, fb: 42, mo: [10, 19],
+        why: ["規制の論点の 49% が登録・届出（EU の責任者・台湾の PIF など）、28% が成分。止まる理由の1位は既存の取引先（32%）で、韓国・欧米ブランドとの比べ方と販促の支援も聞かれるため、市場・規制と資料を重く", "49% of regulatory topics are registration/notification and 28% ingredients; the top reason deals stop is existing suppliers (32%)"],
+        ev: ["STANDAGE の記録（Ver.1）：化粧品 46プロジェクト・商談記録 584件・知識カード 2,287枚。1年の商談記録のペースが最も速い（中央値 24.6件）", "STANDAGE records (Ver.1): 46 cosmetics projects, 584 meeting records; the fastest deal pace"] },
+    fresh: { ic: "🐟", nm: ["農林水産物・生鮮・植物", "Fresh produce, seafood & plants"], w: { fb: 25, product: 20, market: 16, dialog: 10, practice: 20, data: 9 }, fb: 42, mo: [11, 22],
+        why: ["物流の論点の 43% が海上か航空か、41% が温度管理。バイヤーは鮮度と供給力を食品より多く聞き、規制は検疫・衛生証明と認証が中心のため、実務を重く", "43% of logistics topics are air vs sea and 41% temperature control; buyers ask about freshness and supply"],
+        ev: ["STANDAGE の記録（Ver.1）：農林水産・生鮮 20プロジェクト・商談記録 268件（件数が少なく参考）", "STANDAGE records (Ver.1): 20 fresh-produce projects (small sample)"] },
+    med: { ic: "🩺", nm: ["医療機器・医薬品・介護", "Medical devices, drugs & care"], w: { fb: 21, product: 21, market: 26, dialog: 10, practice: 10, data: 12 }, fb: 30, mo: [12, 22],
+        why: ["規制の論点が 27% で最も多く、登録 46%・認証 31%・医療機器かどうかの分類 22%。資料（臨床データ・カタログ）を求める話も最も多いため、市場・規制と資料を重く。登録を経るので商談は少なく深い", "Regulation is the largest share (27%): registration, certification and classification; documents are asked for most; fewer but deeper deals"],
+        ev: ["STANDAGE の記録（Ver.1）：医療・介護 14プロジェクト・商談記録 151件（件数が少なく参考）。社内の事例：台湾 TFDA・ブラジル ANVISA の登録", "STANDAGE records (Ver.1): 14 medical projects (small sample); internal cases in Taiwan and Brazil"] },
+    ind: { ic: "⚙️", nm: ["工業製品・部品・素材", "Industrial products, parts & materials"], w: { fb: 28, product: 24, market: 11, dialog: 10, practice: 13, data: 14 }, fb: 30, mo: [10, 21],
+        why: ["競合の話が最も多く（中国製 32%・欧米 24%）、規制は認証・適合証明が 45%。図面・技術資料を求められ、最初の対面まで 46日と時間がかかるため、商品の理解と資料を重く。評価を経るので商談は少なく深い", "Competition (China 32%, Western brands 24%) and certification (45%) dominate; drawings are requested and the first meeting takes 46 days"],
+        ev: ["STANDAGE の記録（Ver.1）：工業 59プロジェクト・商談記録 855件・知識カード 2,798枚", "STANDAGE records (Ver.1): 59 industrial projects, 855 meeting records"] },
+    elec: { ic: "🔌", nm: ["電気・電子機器", "Electrical & electronic products"], w: { fb: 27, product: 23, market: 16, dialog: 10, practice: 12, data: 12 }, fb: 30, mo: [12, 22],
+        why: ["規制の論点の 52% が電気安全・無線の認証（UL・FCC・CE など）。電圧・プラグと電池の危険物の扱いで止まりやすく、中国製・欧米ブランドとの比べ方も聞かれるため、商品の理解を重く", "52% of regulatory topics are safety/radio certification; voltage, plugs and batteries are where it stops"],
+        ev: ["STANDAGE の記録（Ver.1）：電気・電子 7プロジェクト（件数が少なく、期間は参考）。社内の事例：リチウム電池入りの機器で UN38.3 の確認", "STANDAGE records (Ver.1): 7 electrical projects (small sample, time is indicative)"] },
+    goods: { ic: "🧺", nm: ["日用品・雑貨・アパレル・工芸", "Daily goods, apparel & crafts"], w: { fb: 30, product: 22, market: 11, dialog: 10, practice: 15, data: 12 }, fb: 42, mo: [11, 23],
+        why: ["規制の論点は 9% で最も少なく、価格の論点の 46% が現地の小売価格（日本の価格から店頭は約4.5倍）、競合は中国製が 46%。バイヤーの反応とストーリーで決まるため、商談フィードバックを最も重く", "Regulation is the smallest share (9%); 46% of price topics are local retail prices (about 4.5×) and Chinese competition is 46%"],
+        ev: ["STANDAGE の記録（Ver.1）：日用品・雑貨 73プロジェクト・商談記録 1,003件・知識カード 3,569枚", "STANDAGE records (Ver.1): 73 daily-goods projects, 1,003 meeting records"] },
+    car: { ic: "🚗", nm: ["中古車・車両", "Used vehicles"], w: { fb: 22, product: 20, market: 21, dialog: 10, practice: 18, data: 9 }, fb: 42, mo: [15, 30],
+        why: ["規制の論点の 48% が年式・排ガス・型式、33% が検査・認証。バイヤーは車種・年式の需要と供給力を聞き、やりとりは WhatsApp・オンラインが中心のため、市場・規制と実務を重く", "48% of regulatory topics are vehicle age, emissions and type; buyers ask about models and supply"],
+        ev: ["STANDAGE の記録（Ver.1）：中古車・車両 10プロジェクト（件数が少なく参考）", "STANDAGE records (Ver.1): 10 used-vehicle projects (small sample)"] },
+    other: { ic: "📦", nm: ["その他（共通の物差し）", "Other (common yardstick)"], w: { fb: 25, product: 20, market: 15, dialog: 15, practice: 15, data: 10 }, fb: 42, mo: [12, 25],
+        why: ["商材の種類が決まらないときは共通の配点（21.72 までと同じ）。商品名やカテゴリが決まると、その商材の物差しに切り替わる", "Common weights until the product type is known"],
+        ev: ["STANDAGE の記録（Ver.1）：全体 404プロジェクト。1年の商談記録は中央値 18件", "STANDAGE records (Ver.1): 404 projects; median 18 meeting records a year"] }
+};
+const V73_ORDER = ["food", "alcohol", "supp", "cosme", "fresh", "med", "ind", "elec", "goods", "car", "other"];
+const V73_UNIT = { food: ["サンプル→テスト発注", "Sample → test order"], alcohol: ["試飲・サンプル→テスト発注", "Tasting/sample → test order"], supp: ["サンプル→テスト発注（分類の確認の後）", "Sample → test order (after classification)"],
+    cosme: ["バイヤーがサンプルを受け取る", "Buyer accepts a sample"], fresh: ["サンプル→テスト発注（供給量の確認）", "Sample → test order (supply confirmed)"], med: ["分類の判定と、名義人（代理店）の決定", "Classification and the registration holder"],
+    ind: ["バイヤーから図面・引合いをもらう", "Receiving a drawing / RFQ"], elec: ["認証の確認→サンプル評価", "Certification check → sample evaluation"], goods: ["初回の最低金額（MOA）・口座の開設", "Minimum order amount / account opening"],
+    car: ["在庫リストの提示→見積→前払い", "Stock list → quote → prepayment"], other: ["商談の記録", "Meeting records"] };
+const V73_WAIT = { food: ["国の製品登録は最長1年（例：ナイジェリア）・栄養分析 約5週間", "Product registration up to 1 year (e.g. Nigeria); nutrition analysis ~5 weeks"],
+    alcohol: ["登録・ラベルの承認 6週間〜12か月（国による）", "Registration/label approval 6 weeks–12 months"], supp: ["規制の調査 1か国 6〜8週間・登録は数か月〜", "Regulation check 6–8 weeks per country; registration months+"],
+    cosme: ["届出 約2〜3か月（国による）・危険物の結論まで 約6か月の例", "Notification ~2–3 months; one DG case took ~6 months"], fresh: ["施設の認定は数か月・CITES の初回 2〜3週間", "Facility approval months; first CITES 2–3 weeks"],
+    med: ["分類の判定 約3か月・GMP 証明 約4か月・登録 約1年", "Classification ~3 months, GMP certificate ~4 months, registration ~1 year"], ind: ["NDA 2〜6週・サプライヤーの審査 2〜6か月", "NDA 2–6 weeks; supplier qualification 2–6 months"],
+    elec: ["航空の可否 約2週間・CB 試験 約9週間", "Air approval ~2 weeks; CB test ~9 weeks"], goods: ["化学物質の調査 数週間〜2か月半", "Chemical checks weeks to 2.5 months"], car: ["国の規制の確認（古い情報に注意）", "Check current rules (beware of outdated info)"], other: ["国・商材による", "Depends on country and product"] };
+const V73_COMMON = [
+    { id: "tgt", a: "market", p: "m", g: "f", s: 1, nm: ["進出希望国（優先の順）", "Target countries (in priority order)"], why: ["国が決まらないと、規制・価格・バイヤーの調べが始まらない", "Nothing else can start until target countries are set"], t: { f: "targets" }, go: ["up"] },
+    { id: "hs", a: "market", p: "m", g: "fr", s: 1, nm: ["HSコードの確定", "Confirmed HS code"], why: ["関税・必要書類・規制の範囲が決まる。間違えると関税と通関で損をする", "Decides duties, documents and which rules apply"], t: { fn: "hs" }, go: ["up"] },
+    { id: "price", a: "product", p: "m", g: "pf", s: 1, nm: ["卸の価格表（数量帯ごと）", "Wholesale price list by volume"], why: ["バイヤーが最初に求めるのは、最新の価格表（円と USD）・MOQ・着地価格・サンプルの条件・英文の仕様書。見積の即答と、利益の出る売り先かの判断の元", "Buyers first ask for a current price list (JPY/USD), MOQ, landed price, sample terms and English specs"], t: { fn: "price" }, go: ["up"] },
+    { id: "moq", a: "product", p: "k", g: "f", s: 2, nm: ["MOQ とリードタイム", "MOQ and lead time"], why: ["分からないと商談が1往復増える", "Missing MOQ/lead time adds a round trip to every deal"], t: { fn: "moqlead" }, go: ["up"] },
+    { id: "dim", a: "practice", p: "k", g: "p", s: 1, nm: ["寸法・重量・入数", "Dimensions, weights, case pack"], why: ["運賃と現地の売価が計算できる。サンプルの発送で止まった原因の2位が梱包明細（実寸・重量・入数）", "Needed for freight; missing packing details were the 2nd cause of stuck samples"], t: { fn: "dim" }, go: ["up"] },
+    { id: "str", a: "product", p: "k", g: "f", s: 2, nm: ["数字で言える強み（3つ以上）", "At least 3 strengths with numbers"], why: ["見込み顧客への最初の文面と、比べられたときの答えの元", "The core of the first outreach and of answers when compared"], t: { fn: "str3" }, go: ["item"] },
+    { id: "reg", a: "market", p: "k", g: "s", s: 1, nm: ["進出希望国それぞれの規制の詳しい確認", "Detailed regulation check for every target country"], why: ["規制の調査そのものは中央値 7〜9日。全成分・温度帯・製造所などを後から出すと、差し戻しで1〜4週遅れる（STANDAGE の規制の確認の依頼 279件から）。先に材料をそろえて頼む", "The check itself takes a median 7–9 days; late information adds 1–4 weeks (279 internal requests)"], t: { fn: "regAll" }, go: ["ops", "reg"] },
+    { id: "imp", a: "market", p: "k", g: "sf", s: 1, nm: ["現地の名義人（輸入者・登録者）を誰にするか", "Who will be the local importer / registrant"], why: ["規制の可否より前に「誰の名義で輸入・登録するか」で止まる国が多い（台湾・タイ・韓国・UAE・マレーシア・サウジなど）", "In many countries deals stop on whose name imports and registrations are under"], t: { kw: /輸入者|名義|登録者|登録保有者|importer|registrant|licen[cs]e holder|importer of record/i }, ask: ["進出希望国で、この商品の輸入者・登録者（名義人）になれる相手の条件と探し方を教えてください", "Who can be the importer/registrant and how to find them?"] },
+    { id: "buyer", a: "fb", p: "k", g: "f", s: 2, nm: ["見込み顧客のリスト（業態・国）", "Prospect list (by channel and country)"], why: ["誰に当たるかが決まると、商談化が早い", "Knowing whom to approach speeds up meetings"], t: { fn: "buyer" }, ask: ["この商品に合う海外の見込み顧客（国・業態）を教えてください", "Which overseas prospects (country, channel) fit this product?"] },
+    { id: "deck", a: "data", p: "k", g: "f", s: 2, nm: ["外国語の営業資料", "Sales deck in the buyer's language"], why: ["最初の接触で中身が伝わる", "Gets the message across at first contact"], t: { fn: "deck" }, go: ["deck"] },
+    { id: "px", a: "market", p: "k", g: "p", s: 3, nm: ["現地の売価と推奨 FOB（利益の確認）", "Landed price and recommended FOB (profit check)"], why: ["関税・物流・中間の取り分を入れても利益が残るかを確かめる", "Checks profit after duty, freight and margins"], t: { fn: "px" }, go: ["item"] },
+    { id: "fwd", a: "practice", p: "k", g: "p", s: 3, nm: ["物流費の目安（航空・船便）と取引条件", "Freight cost (air/sea) and trade terms"], why: ["見積の条件（FOB/CIF）を決め、利益を守る", "Fixes trade terms and protects margin"], t: { fn: "fwd" }, ask: ["この商品を進出希望国へ送るときの物流費の目安（航空・船便）と、FOB・CIF のどちらで見積るとよいかを教えてください", "Typical freight cost (air/sea) to the target countries, and whether to quote FOB or CIF"] },
+    { id: "past", a: "fb", p: "n", g: "r", s: 1, nm: ["これまでの輸出の経験と、やめた国の理由", "Past export experience and why you stopped in some countries"], why: ["同じ理由で止まらないように、先に聞いておく（社内の事例：過去の撤退の理由を宿題にした商談）", "So the same reasons do not stop you again"], t: { kw: /撤退|過去に(出|輸出)|やめた理由|以前(は)?輸出|withdr/i }, q: ["これまでに輸出した国・やめた国があれば、その理由を教えてください", "Countries you exported to before, and why you stopped"] },
+    { id: "lost", a: "fb", p: "k", g: "rp", s: 3, nm: ["断られた理由の記録（3件以上）", "Reasons for rejection (3 or more)"], why: ["次の提案と売り先の当たりを良くする一番の材料", "The best material to improve the next proposal"], t: { fn: "lost3" }, go: ["deal"] }
+];
+const V73_SPEC = {
+    food: [
+        { id: "f_shelf", a: "product", p: "m", g: "sf", s: 1, nm: ["賞味期限（製造日から何か月）", "Shelf life (months from production)"], why: ["バイヤーの 11% が賞味期限・温度帯を聞く。海上の日数で残る期限が足りるかを先に見る", "11% of buyer questions are about shelf life and temperature"], t: { f: "shelf" }, go: ["up"] },
+        { id: "f_sheet", a: "data", p: "m", g: "f", s: 1, nm: ["英語の規格書（スペックシート）と条件表", "English spec sheet and terms sheet"], why: ["社内の事例：登録の待ちの次に止まった理由は、英語の規格書と条件表が無いことだった", "Internal cases: missing English spec and terms sheets stopped deals"], t: { kw: /規格書|スペックシート|spec\s*sheet|specification|条件表|product sheet/i }, go: ["srcs"] },
+        { id: "f_test", a: "fb", p: "k", g: "fp", s: 3, nm: ["サンプルからテスト発注（最初の小口の注文）へ", "From samples to a test order"], why: ["食品の商談の単位は「サンプル→テスト発注」。社内の事例では約5週間で40店に当たり、25店にサンプル、2社が成約", "The unit of a food deal is sample → test order"], t: { kw: /テスト発注|トライアル発注|初回(注文|発注|受注)|test order|trial order/i }, q: ["テスト発注（最初の小口の注文）の最小の数量と条件を教えてください", "Minimum quantity and terms for a test order"] },
+        { id: "f_ing", a: "product", p: "m", g: "s", s: 1, nm: ["原材料・添加物・アレルゲンの一覧", "Ingredients, additives and allergens"], why: ["複合原材料の中身（だし・エキスの中の添加物）と原料の産地まで要る。規格書に載らない複合原材料から添加物が入って止まった例がある", "Include sub-ingredients of compound ingredients and their origin"], t: { f: "compRows", kw: /アレルゲン|allergen|添加物|additive|原材料/i }, q: ["原材料（複合原材料の中身も）・食品添加物・アレルゲン・主な原料の産地を教えてください", "Ingredients (incl. sub-ingredients), additives, allergens and origin"] },
+        { id: "f_regist", a: "market", p: "m", g: "s", s: 1, nm: ["輸出先ごとの製品登録・施設登録（例：米国 FDA）", "Product/facility registration per country (e.g. US FDA)"], why: ["規制の論点の 33% が登録・届出。登録が無いと通関で止まる", "33% of food regulatory topics are registration"], t: { fn: "regAll", kw: /施設登録|製品登録|FDA\s*(登録|registration)|GACC|registration (number|no)/i }, go: ["ops", "reg"] },
+        { id: "f_rule", a: "market", p: "m", g: "s", s: 1, nm: ["添加物・着色料・残留農薬の可否（国ごと）", "Additives, colourings and residues allowed per country"], why: ["規制の論点の 27% が成分・残留基準。国ごとに使える添加物と基準値が違う", "27% of food regulatory topics are ingredients and limits"], t: { fn: "regAll", kw: /(添加物|着色料|残留農薬)[^。]{0,20}(適合|確認済|問題なし|クリア)/ }, go: ["ops", "reg"] },
+        { id: "f_haccp", a: "market", p: "m", g: "r", s: 1, nm: ["求められる認証（ハラール・HACCP・有機など）の有無と取り方", "Required certifications (halal, HACCP, organic) and how to get them"], why: ["規制の論点の 32% が認証。ハラールは 127枚・HACCP は 30枚のカードに出る", "32% of food regulatory topics are certifications"], t: { kw: /HACCP|FSSC|ISO\s*22000|SQF|BRC|JFS|ハラール|halal|有機|オーガニック|organic/i, f: "cert" } },
+        { id: "f_label", a: "market", p: "m", g: "s", s: 1, nm: ["現地語のラベル（原材料・アレルゲン・期限の表示）", "Local-language label (ingredients, allergens, dates)"], why: ["規制の論点の 17% がラベル。合わないと店頭に並ばない", "17% of food regulatory topics are labels"], t: { kw: /ラベル|label|表示/i }, q: ["相手国のラベル（言語・原材料・アレルゲン・期限）に対応できますか。シール貼りか、パッケージの作り直しか", "Can you adapt labels? Sticker or new packaging?"] },
+        { id: "f_cert", a: "practice", p: "m", g: "s", s: 1, nm: ["検疫・衛生証明・放射性物質の証明（畜産・水産・卵は特に）", "Quarantine, health and radiation certificates"], why: ["規制の論点の 12%。和牛では規制の話の 41% がこれ", "12% of food regulatory topics; 41% for wagyu"], t: { kw: /衛生証明|検疫|放射性|放射能|産地証明|health certificate|quarantine/i }, q: ["輸出に使う証明書（衛生証明書・産地の証明・放射性物質の検査）の用意はできますか", "Can you provide health certificates or radiation test reports?"] },
+        { id: "f_temp", a: "practice", p: "m", g: "rp", s: 2, nm: ["保存の温度帯と、輸送の日数で残る賞味期限", "Storage temperature and shelf life left after transit"], why: ["物流の論点の 23% が温度管理、19% が輸送日数と期限の関係", "23% of logistics topics are temperature, 19% transit vs shelf life"], t: { kw: /常温|冷蔵|冷凍|チルド|ambient|chilled|frozen|refrigerat/i }, q: ["保存の温度帯（常温・冷蔵・冷凍）と、温度が外れたときの品質への影響を教えてください", "Storage temperature and the effect of excursions"] },
+        { id: "f_spec", a: "product", p: "k", g: "f", s: 2, nm: ["仕様・味・使い方の説明（バイヤーが一番聞くこと）", "Specs, taste and how to use (what buyers ask most)"], why: ["バイヤーの質問の 32% がこれ。食べ方・使い方が伝わると、用途に合わないで止まらない", "32% of buyer questions"], t: { kw: /味|食べ方|使い方|レシピ|調理|用途|taste|recipe|how to use|serving/i }, q: ["味の特徴・食べ方・使い方（現地の料理での使い道）を教えてください", "Taste, how to eat/use it and local uses"] },
+        { id: "f_samp", a: "fb", p: "k", g: "f", s: 2, nm: ["サンプル・試食の出し方と、ケース単位の条件", "Samples/tastings and case-unit terms"], why: ["バイヤーの 10% がサンプル・試食を求める", "10% of buyers ask for samples"], t: { fn: "samp" }, q: ["サンプルの数量・費用（無償か有償か）・送り方の条件を教えてください", "Sample quantity, cost and shipping terms"] },
+        { id: "px", a: "market", p: "k", g: "p", s: 2, nm: ["現地の店頭価格と流通の取り分（利益の確認）", "Local shelf price and distributor margins"], why: ["STANDAGE の記録では、日本の価格から現地の店頭は約3倍・流通の取り分は約25%（中央値）。止まる理由の 35% が価格", "Shelf price is about 3× Japan's; margins about 25%"], t: { fn: "px" }, go: ["item"] },
+        { id: "f_lab", a: "data", p: "k", g: "sf", s: 2, nm: ["検査成績（残留農薬・重金属・微生物など）と、ロットごとの更新", "Lab results (residues, heavy metals, microbes) updated per lot"], why: ["社内の事例：商談の途中で検査成績を求められ、ロットごとに出し直した", "Internal cases: buyers asked for lab results per lot"], t: { kw: /検査成績|分析表|微生物|重金属|残留農薬|COA|certificate of analysis/i }, go: ["srcs"] },
+        { id: "f_story", a: "product", p: "n", g: "f", s: 2, nm: ["産地・作り手のストーリーと実績", "Origin, maker's story and track record"], why: ["バイヤーの 12% が実績・ストーリーを聞く", "12% of buyers ask about story and track record"], t: { kw: /産地|ストーリー|実績|受賞|創業|伝統|story|award/i } }
+    ],
+    alcohol: [
+        { id: "a_spec", a: "product", p: "m", g: "s", s: 1, nm: ["アルコール分・容量・原料", "Alcohol content, volume and ingredients"], why: ["関税・酒税・ラベルの計算の元", "Basis for duties, tax and labels"], t: { kw: /アルコール分|度数|ABV|alc|%\s*vol|\d+\s*度|\d+(?:\.\d+)?\s*%/i, f: "compRows" }, q: ["アルコール分・容量・原料を教えてください", "Alcohol content, volume and ingredients"] },
+        { id: "px", a: "market", p: "m", g: "p", s: 1, nm: ["酒税・関税と、税込みの現地の末端価格", "Liquor tax, duty and the tax-inclusive shelf price"], why: ["規制の論点の1位（37%）。日本の卸から現地の末端は約4倍・流通の取り分は約40%（中央値）", "The top regulatory topic (37%); about 4× and 40% margins"], t: { fn: "px", kw: /酒税|excise|alcohol tax/i }, go: ["item"] },
+        { id: "imp", a: "market", p: "m", g: "sf", s: 1, nm: ["酒類の輸入免許を持つ輸入者が要ること", "Licensed liquor importers are required"], why: ["規制の論点の 28%。免許を持つ輸入者（通関・酒税・保税を担う相手）しか買えない国が多い", "28% of regulatory topics"], t: { kw: /輸入(免許|ライセンス)|インポーター|importer|import licen[cs]e|酒類卸/i }, ask: ["この酒を扱える、酒類の輸入免許を持つ輸入者は、進出希望国でどう探しますか", "How do I find licensed importers in the target countries?"] },
+        { id: "a_label", a: "market", p: "m", g: "s", s: 1, nm: ["ラベル（原産地・度数・亜硫酸塩・現地語・文字の大きさ）", "Label (origin, ABV, sulphites, language, font size)"], why: ["規制の論点の 33%", "33% of regulatory topics"], t: { kw: /ラベル|label|表示/i }, q: ["相手国のラベル（注意書き・言語・アルコール分）に対応できますか", "Can you adapt labels?"] },
+        { id: "a_reg", a: "market", p: "m", g: "s", s: 1, nm: ["製品登録と成分の基準（検査で輸入できない例）", "Product registration and ingredient limits"], why: ["規制の論点の 31% が登録、27% が成分", "31% registration, 27% ingredients"], t: { fn: "regAll" }, go: ["ops", "reg"] },
+        { id: "a_docs", a: "practice", p: "m", g: "f", s: 1, nm: ["日本側の証明書（輸出証明書・自由販売証明・原産地証明）と輸出免許", "Japanese certificates (export, free sale, origin) and export licence"], why: ["社内の事例：自由販売証明は製造施設の事前登録が要り、原産地証明は2営業日かかった", "Internal cases: free-sale certificates need prior plant registration"], t: { kw: /輸出証明|自由販売証明|原産地証明|輸出免許|酒類輸出|free sale|certificate of origin/i }, q: ["輸出証明書・自由販売証明・原産地証明・輸出免許の用意の状況を教えてください", "Status of export certificates and licence"] },
+        { id: "a_temp", a: "practice", p: "k", g: "r", s: 2, nm: ["温度管理（生酒・要冷蔵）と現地の保管", "Temperature control (unpasteurised) and local storage"], why: ["物流の論点の 43% が温度管理", "43% of logistics topics"], t: { kw: /リーファー|reefer|冷蔵|定温|温度管理|生酒|保管/i }, q: ["要冷蔵かどうか、輸送と現地の保管の温度を教えてください", "Refrigeration needs in transit and storage"] },
+        { id: "a_story", a: "product", p: "k", g: "f", s: 2, nm: ["蔵・産地のストーリーと受賞歴", "Brewery story and awards"], why: ["バイヤーの 22% が実績・ストーリーを聞く", "22% of buyers ask about story"], t: { kw: /受賞|金賞|メダル|GI|地理的表示|award|medal|蔵元|杜氏|ストーリー/i }, q: ["受賞歴・地理的表示（GI）・造りのこだわりを教えてください", "Awards, GI and brewing story"] },
+        { id: "a_taste", a: "product", p: "k", g: "f", s: 2, nm: ["味・香り・合う料理の説明", "Taste, aroma and food pairing"], why: ["バイヤーの 26% が味・品質を聞く", "26% of buyers ask about taste"], t: { kw: /香り|味わい|辛口|甘口|合う料理|ペアリング|pairing|aroma/i }, q: ["味・香りの特徴と、合う料理を教えてください", "Taste, aroma and pairings"] },
+        { id: "a_name", a: "product", p: "m", g: "s", s: 1, nm: ["酒の種類を名乗れる条件（例：ウイスキーの熟成3年以上・原料）", "Conditions to use the category name (e.g. whisky aged 3+ years)"], why: ["社内の事例：国の定義に合わないと、その名前で売れない", "Internal case: products not meeting the legal definition cannot use the name"], t: { kw: /熟成|年熟成|定義|aged|maturation/i }, only: /ウイスキー|ウィスキー|whisk|ブランデー|brandy|スピリッツ|spirits|ジン\b|\bgin\b|ラム|rum|ウォッカ|vodka/i, ask: ["この酒は、進出希望国でその種類（例：ウイスキー）を名乗れる条件（熟成年数・原料）を満たしていますか", "Does it meet the legal definition to use the category name?"] },
+        { id: "a_route", a: "fb", p: "k", g: "f", s: 2, nm: ["輸入→卸→小売の流れと独占の扱い", "Import → wholesale → retail flow and exclusivity"], why: ["バイヤーの 13% が代理店・独占を聞く。1か国1社の代理店が多く、既にいる代理店で止まる", "13% of buyers ask about exclusivity; one distributor per country is common"], t: { kw: /独占|代理店|exclusive|distribut/i }, q: ["独占の販売権を出せるか、出すなら条件を教えてください", "Can you grant exclusivity and on what terms?"] }
+    ],
+    supp: [
+        { id: "s_dose", a: "product", p: "m", g: "s", s: 1, nm: ["全成分と、1日の摂取量あたりの配合量", "Full ingredients with amounts per daily dose"], why: ["国ごとの上限と比べる元。規制の論点の 23% が成分・配合量", "23% of regulatory topics are ingredients and doses"], t: { fn: "compNum" }, q: ["全成分と、1日の摂取量あたりの配合量（mg・μg・IU）を教えてください", "All ingredients with amounts per daily dose"] },
+        { id: "s_cls", a: "market", p: "m", g: "s", s: 1, nm: ["相手国での分類（食品か医薬品か）", "Classification in each country (food or medicine)"], why: ["配合量で医薬品になる国がある。医薬品なら食品として売れない", "Some doses make it a medicine"], t: { fn: "regAll", kw: /(食品|健康食品|food supplement)として[^。]{0,12}(販売|輸入)?(でき|可)|医薬品に(は)?(当たらない|該当しない)/ }, go: ["ops", "reg"], ask: ["進出希望国それぞれで、この商品は食品と医薬品のどちらに分類されますか", "Is this a food or a medicine in each target country?"] },
+        { id: "s_reg", a: "market", p: "m", g: "sf", s: 1, nm: ["国ごとの製品登録・届出（例：米国 FDA）と期間", "Product registration per country (e.g. US FDA) and time"], why: ["規制の論点の 42% が登録・届出。数か月かかる国がある", "42% of regulatory topics"], t: { fn: "regAll", kw: /(登録|届出|registration|notification)[^。]{0,20}(不要|必要|済|か月|ヶ月|週)/i }, go: ["ops", "reg"] },
+        { id: "s_lim", a: "market", p: "m", g: "s", s: 1, nm: ["ビタミン・ミネラル・機能性成分の上限との照合（国ごと）", "Check vitamins, minerals and actives against limits"], why: ["上限を超えると医薬品扱いや輸入の拒否になる", "Exceeding limits means medicine status or refusal"], t: { fn: "regAll" }, go: ["ops", "reg"] },
+        { id: "s_label", a: "market", p: "m", g: "s", s: 1, nm: ["ラベル・表示（現地語・摂取量・注意書き）", "Label (language, dose, warnings)"], why: ["規制の論点の 12%", "12% of regulatory topics"], t: { kw: /ラベル|label|表示/i }, q: ["相手国のラベル（言語・摂取量・注意書き）に対応できますか", "Can you adapt the label?"] },
+        { id: "s_claim", a: "market", p: "m", g: "r", s: 3, nm: ["言ってよい効能・機能の表現（広告の決まり）", "Allowed health claims (advertising rules)"], why: ["言い過ぎは回収・罰金になる。文面と資料に入る前に決める", "Overclaiming leads to recalls and fines"], t: { kw: /(効能|機能性|ヘルスクレーム|health claim|広告)[^。]{0,20}(確認|可|不可|NG|OK|言え)/i }, ask: ["この商品で、進出希望国で言ってよい効能・機能の表現と、言ってはいけない表現を教えてください", "Which health claims are allowed and not allowed?"] },
+        { id: "s_shelf", a: "product", p: "m", g: "sf", s: 1, nm: ["賞味期限（製造日から何か月）", "Shelf life (months from production)"], why: ["輸送・通関・店頭の日数が足りるか", "Must cover transit, customs and shelf time"], t: { f: "shelf" }, go: ["up"] },
+        { id: "s_gmp", a: "market", p: "k", g: "r", s: 1, nm: ["ハラール・GMP などの認証と、成分の分析の結果", "Halal, GMP and analysis certificates"], why: ["規制の論点の 26% が認証", "26% of regulatory topics are certifications"], t: { kw: /GMP|安定性試験|分析(結果|証明|表)|COA|certificate of analysis|ハラール|halal/i, f: "cert" } },
+        { id: "s_route", a: "market", p: "k", g: "s", s: 1, nm: ["売り方（越境 EC か、現地の倉庫・店頭か）で変わる法令", "Rules that change with the channel (cross-border e-commerce vs local stock)"], why: ["社内の事例：越境 EC と現地の在庫・店頭で、届出と表示の決まりが違った", "Internal case: rules differed between cross-border EC and local retail"], t: { kw: /越境\s*EC|越境|現地(の)?在庫|現地(の)?倉庫|店頭|cross-?border/i }, ask: ["この商品を越境 EC で売る場合と、現地の倉庫・店頭で売る場合で、要る届出と表示の違いを教えてください", "How do rules differ between cross-border EC and local retail?"] },
+        { id: "s_oem", a: "product", p: "k", g: "f", s: 2, nm: ["処方の現地仕様・OEM の可否", "Local formulation / OEM"], why: ["バイヤーの 11% が求める（10の商材で最も多い）", "11% of buyers ask (the most of any type)"], t: { kw: /OEM|ODM|処方|カスタム|現地仕様|private label/i }, q: ["処方の変更（現地仕様）や OEM に対応できますか。最小の数量と期間を教えてください", "Can you change the formulation or do OEM? Minimum and lead time"] },
+        { id: "s_ev", a: "data", p: "k", g: "f", s: 2, nm: ["効き目の根拠の資料（試験データ・論文）", "Evidence (test data, papers)"], why: ["バイヤーの 7% が根拠の資料を求める", "7% of buyers ask for evidence"], t: { kw: /試験データ|論文|エビデンス|臨床|clinical|study|evidence/i }, go: ["srcs"] },
+        { id: "s_src", a: "product", p: "k", g: "r", s: 2, nm: ["原料の由来（動物性・ハラールの可否）", "Origin of raw materials (animal-derived, halal)"], why: ["豚由来などで売れない国・相手がある", "Some countries and buyers cannot accept certain origins"], t: { kw: /由来|豚|牛|魚由来|植物性|ハラール|halal|bovine|porcine/i }, q: ["原料の由来（動物性か植物性か・豚や牛の由来の有無）を教えてください", "Origin of raw materials"] },
+        { id: "px", a: "market", p: "k", g: "p", s: 2, nm: ["店頭の価格帯（ドラッグストアなどの想定）と利益", "Shelf price range (e.g. drugstores) and margin"], why: ["止まる理由の 44% が価格（件数は少ない）", "44% of stalled deals cite price (small sample)"], t: { fn: "px" }, go: ["item"] }
+    ],
+    cosme: [
+        { id: "c_inci", a: "product", p: "m", g: "s", s: 1, nm: ["全成分（INCI 名）と配合量の多い順", "Full ingredient list (INCI)"], why: ["国ごとの禁止・配合制限成分と比べる元", "Needed to check banned and restricted ingredients"], t: { f: "compRows", kw: /INCI|Aqua|Glycerin|Butylene Glycol|全成分/i }, q: ["全成分（INCI 名）を教えてください", "Full ingredient list (INCI names)"] },
+        { id: "c_cls", a: "market", p: "m", g: "s", s: 1, nm: ["化粧品か、医薬部外品・医薬品か（薬用・育毛・成分の線）", "Cosmetic or quasi-drug/drug (medicated, hair growth, ingredient lines)"], why: ["社内の事例：薬用・育毛や一部の成分で、相手国では医薬品の側になった", "Internal cases: medicated or hair-growth products fell on the drug side"], t: { fn: "regAll", kw: /医薬部外品|化粧品として[^。]{0,10}(販売|輸入|届出)?(でき|可)|医薬品に(は)?(当たらない|該当しない)/ }, ask: ["この商品は、進出希望国で化粧品・医薬部外品・医薬品のどれに当たりますか", "Is this a cosmetic, quasi-drug or drug in each target country?"] },
+        { id: "c_ntf", a: "market", p: "m", g: "fs", s: 1, nm: ["国ごとの登録・届出と責任者（EU の CPNP、台湾の PIF など）", "Registration/notification and responsible person (EU CPNP, Taiwan PIF)"], why: ["規制の論点の 49% が登録・届出。済むまで売れず、期間と費用で国の順番が変わる", "49% of regulatory topics"], t: { kw: /CPNP|責任者|Responsible Person|NMPA|届出|notification|PIF|ASEAN/i }, go: ["ops", "reg"] },
+        { id: "c_ban", a: "market", p: "m", g: "s", s: 1, nm: ["禁止成分・配合の上限との照合（国ごと）", "Check banned/restricted ingredients per country"], why: ["規制の論点の 28%。一つでも当たると、その国では売れない", "28% of regulatory topics; one hit means no sale"], t: { fn: "regAll" }, go: ["ops", "reg"] },
+        { id: "imp", a: "market", p: "m", g: "s", s: 1, nm: ["現地の輸入者・責任者の要否", "Whether a local importer/responsible person is needed"], why: ["規制の論点の 11%。誰の名前で輸入・届出するかで止まる", "11% of regulatory topics"], t: { kw: /輸入者|輸入販売|責任者|importer|Responsible Person|代理店/i }, ask: ["この化粧品を進出希望国に入れるとき、誰が輸入者・責任者になる必要がありますか", "Who must be the importer or responsible person?"] },
+        { id: "c_label", a: "market", p: "m", g: "s", s: 1, nm: ["現地語の表示（全成分・使用方法）", "Local-language labelling (ingredients, directions)"], why: ["規制の論点の 13%", "13% of regulatory topics"], t: { kw: /ラベル|label|表示/i }, q: ["現地語の表示（全成分・使い方）に対応できますか", "Can you label in the local language?"] },
+        { id: "c_docs", a: "data", p: "k", g: "f", s: 2, nm: ["輸出・登録の書類（SDS・自由販売証明・成分分析）", "Export/registration documents (SDS, free sale certificate, analysis)"], why: ["SDS は 26枚・自由販売証明は 15枚のカードに出る。SDS には成分が1〜2つしか載っていないことが多く、輸出先は配合率入りの全成分で判定する。危険物の項目まで埋まった SDS を。社内の事例：OEM の工場がそれを出すかが関門だった", "Often requested; whether the OEM plant provides them is the hurdle"], t: { kw: /SDS|自由販売証明|Free Sale|CFS|成分分析|COA|安全性/i }, go: ["srcs"] },
+        { id: "c_shelf", a: "product", p: "k", g: "s", s: 1, nm: ["使用期限・開封後の期間（安定性の試験）", "Shelf life and period after opening"], why: ["表示と輸入者の在庫の持ち方に関わる", "Affects labelling and importer stock"], t: { f: "shelf" }, go: ["up"] },
+        { id: "c_comp", a: "market", p: "k", g: "p", s: 2, nm: ["韓国・欧米ブランドとの位置づけと価格差", "Positioning vs Korean and Western brands"], why: ["競合の論点の 31% が韓国・台湾、22% が欧米。止まる理由の1位は既存の取引先（32%）", "Korean/Taiwanese 31%, Western 22%; existing suppliers are the top reason deals stop"], t: { kw: /韓国|K-?beauty|欧米|競合|比較|差別化|competitor/i }, ask: ["この化粧品を、韓国・欧米のブランドと比べたときの位置づけと価格の言い方を考えてください", "How to position this against Korean and Western brands"] },
+        { id: "c_claim", a: "market", p: "k", g: "r", s: 3, nm: ["言ってよい効能の表現と販売方法の決まり", "Allowed claims and sales-channel rules"], why: ["言い過ぎると医薬品扱いや回収になる", "Overclaiming can make it a drug"], t: { kw: /(効能|効果|クレーム|claim)[^。]{0,20}(確認|可|不可|NG|OK|言え)/i }, ask: ["この化粧品で、進出希望国で言ってよい効能・効果の表現を教えてください", "Which cosmetic claims are allowed?"] },
+        { id: "c_samp", a: "fb", p: "k", g: "f", s: 2, nm: ["バイヤーにサンプルを受け取ってもらう（商談の単位）", "Get buyers to accept samples (the unit of a deal)"], why: ["化粧品の商談の単位は「サンプルの受け取り」。止まる理由の1位は既存の取引先（32%）", "For cosmetics, the unit of a deal is an accepted sample"], t: { fn: "samp" }, q: ["サンプルの数量・費用・送り方の条件を教えてください", "Sample quantity, cost and shipping"] },
+        { id: "c_promo", a: "fb", p: "k", g: "p", s: 3, nm: ["販促の支援（SNS・ライブ配信・サロン向けの研修）", "Promotion support (SNS, live commerce, salon training)"], why: ["バイヤーの 10% が求める（10の商材で最も多い）", "10% of buyers ask (the most of any type)"], t: { kw: /SNS|インフルエンサー|ライブ|研修|販促|promotion|marketing support/i }, q: ["販促の支援（SNS の素材・ライブ配信・サロンの研修）で出せるものを教えてください", "What promotion support can you offer?"] },
+        { id: "c_free", a: "product", p: "n", g: "f", s: 2, nm: ["動物実験をしていない証明・ヴィーガン・ハラール", "Cruelty-free, vegan or halal proof"], why: ["国と売り場によって求められる", "Some markets and retailers require it"], t: { kw: /動物実験|cruelty|ヴィーガン|vegan|ハラール|halal/i, f: "cert" } }
+    ],
+    fresh: [
+        { id: "r_qua", a: "market", p: "m", g: "s", s: 1, nm: ["検疫・衛生証明・輸出施設の登録、輸入できる品目か（解禁の有無）", "Quarantine, health certificates, plant registration and market access"], why: ["日本からの輸入を認めていない国・品目がある。規制の論点の 34% が登録、17% が検疫・衛生証明。植物検疫・衛生証明を「誰が取るか（生産者か輸出者か）」で止まった例が多い", "Some items are not accepted from Japan at all"], t: { fn: "regAll", kw: /検疫|燻蒸|輸入許可|解禁|衛生証明|phytosanitary|quarantine|import permit/i }, go: ["ops", "reg"] },
+        { id: "r_cert", a: "market", p: "m", g: "r", s: 1, nm: ["ハラール・HACCP などの認証", "Halal, HACCP and other certifications"], why: ["規制の論点の 44% が認証（ハラールは 30枚）", "44% of regulatory topics"], t: { kw: /HACCP|ハラール|halal|GAP|ASC|MSC|有機|organic/i, f: "cert" } },
+        { id: "r_cold", a: "practice", p: "m", g: "pr", s: 2, nm: ["温度管理と輸送の使い分け（鮮魚は航空、冷凍は海上）", "Temperature control and air vs sea"], why: ["物流の論点の 43% が海上か航空か、41% が温度管理", "43% air vs sea, 41% temperature"], t: { f: "shelf", kw: /鮮度|日持ち|冷蔵|冷凍|チルド|℃|航空|空輸|船便/i }, q: ["鮮度を保てる日数と温度帯、空輸か船便かを教えてください", "Freshness days, temperature and air or sea"] },
+        { id: "r_season", a: "product", p: "m", g: "f", s: 2, nm: ["鮮度・規格（サイズ・等級）と、出荷できる時期・量", "Freshness, grades, season and volume"], why: ["バイヤーの 19% が鮮度・期限を、15% が供給力を聞く", "19% ask about freshness, 15% about supply"], t: { kw: /等級|規格|サイズ|旬|季節|出荷時期|通年|供給量|grade|season/i }, q: ["規格（サイズ・等級）と、出荷できる時期・1回に出せる量を教えてください", "Grades, season and volume per shipment"] },
+        { id: "fwd", a: "practice", p: "k", g: "p", s: 3, nm: ["取引条件（FOB/CIF・空港渡し）と物流費", "Trade terms (FOB/CIF, airport) and freight"], why: ["価格の論点の 29% が取引条件", "29% of price topics are trade terms"], t: { fn: "fwd" }, ask: ["この商品を空輸と船便で送ったときの日数と費用の目安、鮮度が持つのはどちらかを教えてください", "Air vs sea: days, cost and freshness"] },
+        { id: "r_res", a: "market", p: "k", g: "s", s: 1, nm: ["残留農薬・動物用医薬品・放射性物質の証明", "Residues and radiation certificates"], why: ["基準を超えると廃棄・積み戻しになる", "Exceeding limits means destruction or return"], t: { fn: "regAll", kw: /残留農薬|動物用医薬品|MRL|residue|放射性/i }, go: ["ops", "reg"] },
+        { id: "px", a: "market", p: "k", g: "p", s: 2, nm: ["現地品・他の日本産との価格差", "Price gap vs local and other Japanese produce"], why: ["競合の論点の 43% が価格差。止まる理由の 46% が価格", "43% of competition topics are price gaps"], t: { fn: "px" }, go: ["item"] },
+        { id: "r_orig", a: "product", p: "k", g: "f", s: 2, nm: ["産地・生産者の証明（トレーサビリティ）", "Origin and producer proof (traceability)"], why: ["産地の証明を求める国・バイヤーが多い", "Often required"], t: { f: "origin", kw: /産地証明|トレーサビリティ|traceab|生産者/i } },
+        { id: "r_cites", a: "market", p: "n", g: "s", s: 1, nm: ["ワシントン条約（CITES）の対象かどうか", "Whether CITES applies"], why: ["対象なら輸出の許可が要り、日数がかかる", "If listed, an export permit is needed"], t: { kw: /CITES|ワシントン条約|非該当/i }, ask: ["この商品はワシントン条約（CITES）の対象になりますか。対象なら手続きと日数を教えてください", "Does CITES apply? Procedure and time"] }
+    ],
+    med: [
+        { id: "m_cls", a: "market", p: "m", g: "s", s: 1, nm: ["相手国での分類（医療機器か・クラス・ウェルネス扱いにできるか）", "Classification in each country (device class, wellness)"], why: ["規制の論点の 22% が分類で、10の商材で最も多い。分類は相手国の当局が決め、照会に2〜3か月かかる（日本の非該当の証明は使えない国がある）", "22% of regulatory topics — the most of any type"], t: { fn: "regAll", kw: /(クラス|class)\s*(I|II|III|1|2|3|Ⅰ|Ⅱ|Ⅲ)|510\(?k|CE\s*MDR|ANVISA|TFDA|非該当|ウェルネス/i }, go: ["ops", "reg"] },
+        { id: "m_reg", a: "market", p: "m", g: "sf", s: 1, nm: ["保健当局への登録・輸入許可（期間と費用）", "Registration/import permit with health authorities (time and cost)"], why: ["規制の論点の 46%。登録が済むまで売れず、期間と費用で国の順番が決まる", "46% of regulatory topics"], t: { kw: /(登録|承認|認証|輸入許可|registration)[^。]{0,20}(か月|ヶ月|年|費用|万円|USD|US\$|済|不要)/i }, go: ["ops", "reg"] },
+        { id: "imp", a: "market", p: "m", g: "sf", s: 1, nm: ["輸入ライセンスを持つ現地の代理店・認可の保有者", "Local licensed distributor / registration holder"], why: ["規制の論点の 10%。多くの国で登録は現地の会社の名前で行う", "Registration is usually in a local company's name"], t: { kw: /認可(の)?保有者|登録保有者|現地(の)?代理人|license holder|registration holder|authori[sz]ed representative|輸入販売業|輸入ライセンス/i }, ask: ["この製品の進出希望国での登録は、誰の名前で行いますか（現地の認可の保有者の探し方）", "Who holds the registration and how to find them?"] },
+        { id: "m_jp", a: "product", p: "m", g: "s", s: 1, nm: ["認証・規格（CE・FDA・ISO 13485 など）と日本の承認・届出の番号", "Certifications (CE, FDA, ISO 13485) and Japanese approval number"], why: ["規制の論点の 31% が認証。海外の登録で必ず聞かれる", "31% of regulatory topics"], t: { kw: /13485|承認番号|認証番号|届出番号|医療機器|クラス|\bCE\b|FDA/i, f: "cert" }, q: ["日本での承認・認証・届出の番号とクラス、取得している認証（CE・ISO 13485 など）を教えてください", "Japanese approval number, class and certifications"] },
+        { id: "m_data", a: "data", p: "k", g: "f", s: 2, nm: ["根拠の資料（臨床データ・カタログ・取扱説明）", "Evidence (clinical data, catalogue, manual)"], why: ["資料が要る話のカードが 7% で最も多い", "Documents are requested most often"], t: { kw: /臨床|性能試験|clinical|評価(試験|報告)|カタログ|取扱説明/i }, go: ["srcs"] },
+        { id: "m_use", a: "fb", p: "k", g: "f", s: 2, nm: ["使う施設（病院・クリニック・介護）と用途の需要", "Facilities that use it (hospitals, clinics, care) and demand"], why: ["バイヤーの 35% が需要・用途を聞く", "35% of buyers ask about demand and use"], t: { kw: /病院|クリニック|介護施設|施設|hospital|clinic|nursing/i }, ask: ["この製品を使う海外の施設（病院・クリニック・介護）と、需要の大きい国を教えてください", "Which facilities and countries have demand?"] },
+        { id: "m_docs", a: "practice", p: "m", g: "f", s: 1, nm: ["日本側の証明（GMP 証明・自由販売証明・CTD など）と発行までの期間", "Japanese certificates (GMP, free sale, CTD) and issue time"], why: ["社内の事例：GMP 証明の発行に約4か月かかり、登録の申請が待たされた", "Internal case: a GMP certificate took about 4 months"], t: { kw: /GMP\s*証明|自由販売証明|CTD|ACTD|free sale|certificate of pharmaceutical/i }, q: ["GMP 証明・自由販売証明・CTD などの日本側の書類の用意と、発行までの期間を教えてください", "Status and lead time of Japanese certificates"] },
+        { id: "m_claim", a: "market", p: "m", g: "r", s: 1, nm: ["効能・言い方と取扱説明の用語（言い方で分類が変わる）", "Claims and wording in manuals (wording changes the class)"], why: ["社内の事例：言い方ひとつで医療機器の側になった。未承認の効能を言うと違反", "Internal cases: wording alone moved products into the device class"], t: { kw: /(効能|性能|claim)[^。]{0,20}(確認|可|不可|NG|OK|言え)/i }, ask: ["この製品で、進出希望国で言ってよい効能・性能の表現を教えてください", "Which claims are allowed?"] },
+        { id: "m_tender", a: "practice", p: "k", g: "p", s: 3, nm: ["公的調達・入札（使用期限の残りなどの条件）", "Public procurement/tenders (e.g. remaining shelf life)"], why: ["病院・行政への販売は入札の条件で決まる", "Tender conditions decide public sales"], t: { kw: /入札|公的調達|tender|procurement/i }, q: ["公的調達・入札に出すときの条件（使用期限の残り・書類）に対応できますか", "Can you meet tender conditions?"] },
+        { id: "m_shelf", a: "product", p: "k", g: "s", s: 1, nm: ["使用期限・滅菌・保証期間", "Expiry, sterilisation and warranty"], why: ["登録と取引の条件に入る", "Part of registration and trade terms"], t: { f: "shelf" }, go: ["up"] },
+        { id: "m_svc", a: "practice", p: "n", g: "p", s: 3, nm: ["代理店の体制（保守・研修）", "Distributor support (maintenance, training)"], why: ["バイヤーの 14% が代理店の体制を聞く", "14% of buyers ask about distribution support"], t: { kw: /保守|研修|トレーニング|メンテナンス|training|maintenance/i } }
+    ],
+    ind: [
+        { id: "i_std", a: "market", p: "m", g: "s", s: 1, nm: ["認証・適合証明（ISO・CE・UL・現地の適合認証）", "Certification and conformity (ISO, CE, UL, local)"], why: ["規制の論点の 45% が認証・適合証明", "45% of regulatory topics"], t: { kw: /\bCE\b|UL|ISO|適合証明|SASO|SONCAP|BIS|CCC|GCC|conformity/i, f: "cert" }, go: ["ops", "reg"] },
+        { id: "i_tech", a: "market", p: "m", g: "s", s: 1, nm: ["現地の技術規格・建築基準・安全基準（JIS／ASTM／DIN など）", "Local technical, building and safety standards"], why: ["規制の論点の 15%。規格が合わないと使ってもらえない", "15% of regulatory topics"], t: { fn: "regAll", kw: /JIS|ASTM|DIN|EN\s?\d|ANSI|BS\s?\d|建築基準|安全基準|standard/i }, go: ["ops", "reg"] },
+        { id: "i_draw", a: "data", p: "m", g: "f", s: 2, nm: ["図面・仕様書・データシート（英語）", "Drawings, specifications and datasheets (in English)"], why: ["バイヤーの 7% が図面・技術資料を求める。最初の対面まで 46日かかるのは、資料で先に見極められるため", "Buyers ask for drawings; the first meeting takes 46 days"], t: { kw: /図面|仕様書|カタログ|drawing|specification|datasheet|CAD/i }, go: ["srcs"] },
+        { id: "i_mat", a: "product", p: "m", g: "s", s: 1, nm: ["材質・表面処理・公差", "Materials, surface treatment and tolerances"], why: ["要求に合うかの判定と、規制（RoHS など）の元", "Basis for fit and RoHS-type checks"], t: { f: "compRows" }, go: ["up"] },
+        { id: "i_comp", a: "market", p: "m", g: "p", s: 2, nm: ["中国製・欧米ブランドとの価格差と、差別化の言い方", "Price gap vs Chinese and Western brands, and how to differentiate"], why: ["競合の論点の 32% が中国製、24% が欧米。価格の論点でも競合との価格差が1位（31%）", "China 32%, Western brands 24%; price gap is the top price topic"], t: { kw: /中国製|競合|比較|差別化|competitor|vs\.?/i }, ask: ["この製品を中国製・欧米ブランドと比べたときの、価格差と差別化の言い方を考えてください", "How to differentiate against Chinese and Western products"] },
+        { id: "i_exp", a: "market", p: "m", g: "s", s: 1, nm: ["輸出管理の該非判定と RoHS・REACH などの化学物質の規制", "Export-control classification and RoHS/REACH"], why: ["該非判定が無いと出荷できない品目がある。EU は化学物質の規制を聞かれる", "Some items cannot ship without classification"], t: { kw: /RoHS|REACH|該非|非該当|輸出管理|export control|ECCN/i }, q: ["輸出管理の該非判定（非該当証明）と、RoHS・REACH への対応を教えてください", "Export-control classification and RoHS/REACH"] },
+        { id: "i_cap", a: "product", p: "m", g: "f", s: 2, nm: ["量産の能力と納期（月産・リードタイム）", "Production capacity and lead time"], why: ["量産に入れるかで、試作の後に止まる", "Deals stop after trials if capacity is unclear"], t: { f: "lead", kw: /月産|生産能力|capacity|台\/月|個\/月/i }, q: ["月産の能力と、量産の納期を教えてください", "Monthly capacity and production lead time"] },
+        { id: "i_use", a: "fb", p: "k", g: "f", s: 2, nm: ["用途と、現地の設備・業界の需要", "Applications and demand in local industries"], why: ["バイヤーの 33% が需要・用途を聞く", "33% of buyers ask about demand and use"], t: { kw: /用途|業界|向け|application|industry/i }, ask: ["この製品が使われる海外の業界・用途と、需要の大きい国を教えてください", "Which industries and countries need this?"] },
+        { id: "i_case", a: "data", p: "k", g: "f", s: 2, nm: ["導入実績・事例", "Track record and case studies"], why: ["バイヤーの 11% が実績を聞く", "11% of buyers ask about track record"], t: { kw: /実績|導入事例|納入|採用|case stud/i }, q: ["国内外の導入実績・事例（社名を出せる範囲）を教えてください", "Track record and cases"] },
+        { id: "i_rfq", a: "fb", p: "k", g: "f", s: 2, nm: ["バイヤーから図面・引合い（RFQ）をもらう（商談の単位）", "Receive drawings / RFQs from buyers (the unit of a deal)"], why: ["工業の商談の単位は「図面をもらう」。社内の事例では、ニーズの特定と図面の受け取りが同時だった", "For industrial products, the unit of a deal is a received drawing"], t: { kw: /図面[^。\n]{0,12}(受領|もらっ|入手|受け取|届い)|RFQ|引合い?|見積依頼/i }, go: ["deal"] },
+        { id: "i_qual", a: "practice", p: "k", g: "f", s: 2, nm: ["サプライヤー登録・NDA・品質審査への対応", "Supplier registration, NDA and quality audits"], why: ["社内の事例：NDA に 2〜6週、適格性の審査に 2〜6か月かかった", "Internal cases: NDA 2–6 weeks, qualification 2–6 months"], t: { kw: /NDA|秘密保持|サプライヤー登録|監査|審査|audit|vendor registration|qualification/i }, q: ["サプライヤー登録・NDA・品質審査（監査）に対応できますか。品質の書類（ISO・検査成績書）を教えてください", "Can you handle supplier registration, NDA and audits?"] },
+        { id: "i_trial", a: "fb", p: "m", g: "f", s: 2, nm: ["現物で語れるか（試作品・サンプルをすぐ出せるか・費用・期間）", "Can you show the real thing (prototypes/samples, cost, time)?"], why: ["工業製品の商談は評価で決まる。社内の事例ではサンプルを出して1〜1.5週で採用が決まった", "Industrial deals are decided by trials; one sample was adopted in 1–1.5 weeks"], t: { fn: "samp", kw: /試作|評価|トライアル|trial|prototype/i }, q: ["試作・評価の流れ（サンプルの費用・期間）を教えてください", "Trial flow (sample cost and time)"] },
+        { id: "fwd", a: "practice", p: "k", g: "p", s: 3, nm: ["物流（コンテナ・物流費・破損と梱包）", "Logistics (containers, cost, damage and packing)"], why: ["物流の論点はコンテナ・混載（17%）と物流費（15%）", "Containers (17%) and freight cost (15%)"], t: { fn: "fwd" }, ask: ["この製品を進出希望国へ送るときの物流費の目安と、梱包・破損の注意を教えてください", "Freight cost and packing cautions"] },
+        { id: "i_svc", a: "practice", p: "k", g: "r", s: 3, nm: ["保証・アフターサービス・現地での修理の体制", "Warranty, after-sales and local repair"], why: ["機械は売った後の体制で選ばれる", "Machines are chosen on after-sales support"], t: { f: "shelf", kw: /アフター|保守|修理|メンテナンス|service|maintenance/i }, q: ["保証・アフターサービス・現地での修理の体制を教えてください", "Warranty, after-sales and local repair"] },
+        { id: "i_sds", a: "practice", p: "m", g: "s", s: 1, nm: ["危険物・SDS（化学品・塗料・潤滑油など）", "Dangerous goods and SDS (chemicals, paints, lubricants)"], why: ["化学品は SDS と全成分（CAS 番号）が無いと運べない・通関で止まる。輸入者が登録する国もある", "Chemicals need an SDS to ship"], t: { kw: /SDS|MSDS|危険物|非危険物|UN\s?\d{4}/i }, only: /化学|塗料|潤滑|オイル|接着|樹脂|薬品|溶剤|洗剤|coating|chemical|lubricant|adhesive/i, q: ["SDS（安全データシート）と、危険物に当たるかを教えてください", "SDS and dangerous-goods status"] }
+    ],
+    elec: [
+        { id: "e_cert", a: "market", p: "m", g: "s", s: 1, nm: ["電気安全・無線の認証（UL・FCC・CE・PSE・KC など）", "Electrical safety and radio certifications (UL, FCC, CE, PSE, KC)"], why: ["規制の論点の 52% が認証。無いと輸入・販売できない", "52% of regulatory topics"], t: { kw: /\bCE\b|UL|FCC|KC|PSE|技適|BSMI|NCC|CCC|SIRIM|IMDA|RCM/i, f: "cert" }, go: ["ops", "reg"] },
+        { id: "e_pwr", a: "product", p: "m", g: "s", s: 1, nm: ["電圧・周波数・プラグの形", "Voltage, frequency and plug type"], why: ["国によって電源が違う。合わないと使えない", "Power standards differ by country"], t: { kw: /\d+\s*V\b|ボルト|電圧|周波数|Hz|プラグ|plug|USB|電池式|充電式/i }, q: ["電圧・周波数・プラグの形（または電池式か）を教えてください", "Voltage, frequency, plug type or battery-powered"] },
+        { id: "e_bat", a: "practice", p: "m", g: "s", s: 1, nm: ["電池の有無と種類・UN38.3 の試験（航空で運べるか）", "Battery type and UN38.3 test (can it fly?)"], why: ["リチウム電池は危険物。試験の要約や SDS の日付が古いと運べない（社内の事例：航空の可否まで約2週間・海上の非危険品の扱いまで約7週間）", "Lithium batteries are dangerous goods; outdated test summaries or SDS block shipping"], t: { kw: /UN\s?38\.3|電池なし|電池を含まない|no battery|乾電池|PI\s?96\d/i }, q: ["電池の有無と種類、UN38.3 の試験の要約があるかを教えてください", "Battery type and UN38.3 summary"] },
+        { id: "e_comp", a: "market", p: "k", g: "p", s: 2, nm: ["中国製・欧米ブランドとの価格差", "Price gap vs Chinese and Western brands"], why: ["競合の論点の 33% が中国製、29% が欧米", "China 33%, Western 29% of competition topics"], t: { kw: /中国製|競合|比較|差別化|competitor/i }, ask: ["この製品を中国製・欧米ブランドと比べたときの、価格と差別化の言い方を考えてください", "How to differentiate against Chinese and Western products"] },
+        { id: "e_use", a: "fb", p: "k", g: "f", s: 2, nm: ["用途・需要（誰が何に使うか）", "Use and demand (who uses it for what)"], why: ["バイヤーの 41% が需要・用途を聞く", "41% of buyers ask about demand"], t: { kw: /用途|向け|application|use case/i }, ask: ["この製品の海外での用途と、需要の大きい国・売り場を教えてください", "Uses and countries/channels with demand"] },
+        { id: "e_man", a: "data", p: "k", g: "s", s: 2, nm: ["取扱説明書・本体の表示の言語", "Manual and markings in the local language"], why: ["表示の言語を決めている国がある", "Some countries require local-language markings"], t: { kw: /取扱説明書|取説|マニュアル|manual|instruction/i }, go: ["srcs"] },
+        { id: "e_env", a: "market", p: "k", g: "r", s: 1, nm: ["RoHS・WEEE・電池の回収と、輸出管理の該非判定", "RoHS, WEEE, battery take-back and export control"], why: ["EU などで登録・回収の義務がある。通信・暗号・センサーは該非判定が要る", "EU duties; telecom and sensors may be controlled"], t: { kw: /RoHS|WEEE|回収|該非|非該当|輸出管理|export control/i } },
+        { id: "e_svc", a: "practice", p: "k", g: "r", s: 3, nm: ["保証と修理・部品の供給", "Warranty, repair and spare parts"], why: ["故障の対応が決まっていないと、取扱店がつかない", "Dealers need a repair plan"], t: { f: "shelf", kw: /修理|部品|保守|アフター|service/i }, q: ["保証期間と、修理・部品の供給の体制を教えてください", "Warranty, repair and spare parts"] },
+        { id: "e_pkg", a: "product", p: "n", g: "f", s: 2, nm: ["パッケージ・デザイン", "Packaging and design"], why: ["バイヤーの 12% がパッケージ・デザインを聞く", "12% of buyers ask about packaging"], t: { kw: /パッケージ|デザイン|package|design/i } }
+    ],
+    goods: [
+        { id: "px", a: "market", p: "m", g: "p", s: 2, nm: ["現地の小売価格・価格帯と、日本の価格との倍率・流通の取り分", "Local retail price, multiple vs Japan and margins"], why: ["価格の論点の 46% が現地の小売価格。日本の価格から店頭は約4.5倍・流通の取り分は約50%（中央値）", "46% of price topics; about 4.5× and 50% margins"], t: { fn: "px" }, go: ["item"] },
+        { id: "g_comp", a: "market", p: "m", g: "p", s: 2, nm: ["中国製との価格差と、差別化の言い方", "Price gap vs Chinese products and how to differentiate"], why: ["競合の論点の 46% が中国製、40% が価格差。止まる理由の 25% が価格", "China is 46% of competition topics"], t: { kw: /中国製|競合|比較|差別化|competitor/i }, ask: ["この商品を中国製と比べたときの、価格差と差別化の言い方を考えてください", "How to differentiate against Chinese products"] },
+        { id: "g_safe", a: "market", p: "m", g: "s", s: 1, nm: ["安全の認証・規格（玩具・食器の食品接触・繊維など）", "Safety certifications/standards (toys, food contact, textiles)"], why: ["規制の論点の 39% が認証、11% が技術規格・安全基準", "39% certification, 11% standards"], t: { kw: /認証|規格|試験|安全|CE|ASTM|EN\s?71|食品衛生法|OEKO|LFGB|FDA/i, f: "cert" } },
+        { id: "g_mat", a: "product", p: "m", g: "s", s: 1, nm: ["素材・混率（部材ごと）", "Materials and composition (per part)"], why: ["表示と規制（食品に触れる部材・繊維の表示）の元", "Basis for labelling and food-contact rules"], t: { f: "compRows" }, go: ["up"] },
+        { id: "g_chem", a: "market", p: "k", g: "r", s: 1, nm: ["化学物質の規制の範囲（EU の REACH など）を、相手の求める項目と突き合わせる", "Match chemical-substance checks (e.g. EU REACH) to the buyer's list"], why: ["社内の事例：調べる物質の範囲を相手の項目と突き合わせず、調べ直しと訂正に約2か月半かかった", "Internal case: a mismatch in scope cost about 2.5 months"], t: { kw: /REACH|化学物質|SVHC|フタル酸|ホルムアルデヒド|PFAS|鉛|カドミウム/i }, ask: ["この商品で、進出希望国の化学物質の規制（REACH など）で確かめる物質の範囲を教えてください", "Which chemical substances must be checked?"] },
+        { id: "g_moa", a: "fb", p: "k", g: "f", s: 2, nm: ["初回の最低金額（MOA）・口座の開設の条件（商談の単位）", "Minimum order amount and account opening (the unit of a deal)"], why: ["雑貨の商談の単位は「初回の最低金額・口座の開設」", "For daily goods, the unit of a deal is an opened account"], t: { kw: /MOA|最低(発注)?金額|口座(の)?開設|minimum order (amount|value)|opening order/i }, q: ["初回の注文の最低金額（MOA）と、取引口座を開くときの条件を教えてください", "Minimum order amount and account-opening terms"] },
+        { id: "g_cat", a: "data", p: "k", g: "f", s: 2, nm: ["商品リストとカタログ（外国語）", "Product list and catalogue (in English)"], why: ["社内の事例：商品リストとカタログが揃ってから見積が進んだ", "Internal case: quotes moved once a list and catalogue were ready"], t: { kw: /カタログ|商品リスト|catalog|line\s?sheet|price list/i }, go: ["srcs"] },
+        { id: "g_origin", a: "market", p: "k", g: "sp", s: 1, nm: ["原産国と原産地の証明（部材の原産国・日本製と言えるか）", "Country of origin and proof (parts' origin, 'Made in Japan')"], why: ["社内の事例：部材の原産国が分からず、日本製と言えるかで止まった", "Internal cases: unclear parts' origin stopped 'Made in Japan' claims"], t: { kw: /原産国|原産地証明|日本製|国産|made in japan|country of origin/i, f: "origin" } },
+        { id: "g_pl", a: "practice", p: "k", g: "r", s: 3, nm: ["保証と海外の PL 保険（国内の保証は海外では効かない）", "Warranty and overseas product-liability insurance"], why: ["社内の事例：国内の保証が海外では0年だった・海外の PL の加入を確かめ直した", "Internal cases: domestic warranties did not apply abroad"], t: { kw: /PL\s*保険|生産物賠償|product liability|海外\s*PL/i }, q: ["海外の PL 保険の加入と、海外での保証の条件を教えてください", "Overseas PL insurance and warranty terms"] },
+        { id: "g_label", a: "market", p: "k", g: "s", s: 1, nm: ["表示（素材・原産国・取扱い）", "Labelling (material, origin, care)"], why: ["規制の論点の 16%", "16% of regulatory topics"], t: { kw: /表示|ラベル|label|洗濯|原産国/i } },
+        { id: "g_story", a: "data", p: "k", g: "f", s: 2, nm: ["作り手・伝統のストーリーと実績（外国語で）", "Maker's story, tradition and track record (in English)"], why: ["バイヤーの 20% が実績・ストーリーを聞く", "20% of buyers ask about story"], t: { kw: /職人|伝統|産地|ストーリー|story|craft|歴史|創業|実績/i }, q: ["商品の背景（産地・職人・歴史）と実績を教えてください", "The product's background and track record"] },
+        { id: "g_pkg", a: "product", p: "k", g: "f", s: 2, nm: ["パッケージ・デザイン", "Packaging and design"], why: ["バイヤーの 11% がパッケージ・デザインを聞く", "11% of buyers ask about packaging"], t: { kw: /パッケージ|デザイン|package|design|ギフト/i } },
+        { id: "imp", a: "market", p: "k", g: "r", s: 2, nm: ["輸入者・正規代理店の要否", "Importer / authorised distributor requirements"], why: ["規制の論点の 13%", "13% of regulatory topics"], t: { kw: /輸入者|代理店|正規|importer|distributor/i } },
+        { id: "fwd", a: "practice", p: "k", g: "p", s: 3, nm: ["物流費・小口の発送・現地の在庫", "Freight, small-parcel shipping and local stock"], why: ["物流の論点は物流費（18%）と倉庫・現地の配送（16%）", "Freight cost 18%, warehousing 16%"], t: { fn: "fwd" }, ask: ["この商品を進出希望国へ小口と大口で送るときの物流費の目安と、現地に在庫を置く方法を教えてください", "Freight for small and large lots and local stock"] },
+        { id: "g_fcm", a: "market", p: "k", g: "s", s: 1, nm: ["食品や口に触れる部材の規制（食器・容器）", "Food-contact material rules (tableware, containers)"], why: ["食器・容器は国の基準の試験が要ることがある", "Tableware may need testing to local standards"], t: { kw: /食品(に)?触れ|食品衛生法|food contact|LFGB|溶出/i }, only: /食器|容器|弁当|ボトル|タンブラー|カップ|皿|箸|カトラリー|水筒|キッチン|急須|鍋|やかん|ケトル|茶碗|湯呑|グラス|まな板|食品(に)?触れる|tableware|bottle|cup|teapot|kettle|cookware/i, q: ["食品や口に触れる部材はありますか。ある場合、どの試験に通っていますか", "Any food-contact parts? Which tests passed?"] },
+        { id: "g_tm", a: "market", p: "n", g: "r", s: 1, nm: ["商標・キャラクターの使用許諾", "Trademarks and character licences"], why: ["先に取られると、自分の名前で売れなくなる", "If someone registers it first, you cannot sell under your name"], t: { kw: /商標|trademark|®|登録商標|ライセンス/i }, ask: ["この商品の名前・ロゴの商標は、進出希望国で登録が要りますか", "Do I need to register the trademark?"] },
+        { id: "g_wood", a: "market", p: "n", g: "s", s: 1, nm: ["木・竹・わらなど植物の素材の検疫（燻蒸）", "Quarantine for wood, bamboo, straw (fumigation)"], why: ["植物の素材は国によって燻蒸の証明が要る", "Plant materials may need fumigation"], t: { kw: /燻蒸|熱処理|ISPM|fumigat|検疫/i }, only: /木|竹|わら|藁|籐|ラタン|wood|bamboo|rattan|straw/i }
+    ],
+    car: [
+        { id: "v_rule", a: "market", p: "m", g: "s", s: 1, nm: ["車両の年式・排ガス・型式の規制（国ごとの年式の制限）", "Vehicle age, emissions and type rules per country"], why: ["規制の論点の 48%。年式や右ハンドルで輸入できない国がある", "48% of regulatory topics"], t: { fn: "regAll", kw: /年式|右ハンドル|RHD|排ガス|輸入規制|age limit/i }, go: ["ops", "reg"] },
+        { id: "v_insp", a: "practice", p: "m", g: "s", s: 1, nm: ["輸出前の検査・認証と書類（抹消登録など）", "Pre-export inspection, certification and documents"], why: ["規制の論点の 33% が検査・認証。書類が揃わないと船に積めない", "33% of regulatory topics"], t: { kw: /JEVIC|検査|抹消|輸出証明|inspection|deregistration/i }, q: ["輸出前の検査（JEVIC など）と、抹消登録などの書類の用意を教えてください", "Pre-export inspection and documents"] },
+        { id: "v_rec", a: "product", p: "m", g: "s", s: 1, nm: ["車台番号・年式・走行距離・状態の記録", "Chassis number, year, mileage and condition"], why: ["見積と検査・書類の元", "Basis for quotes, inspection and documents"], t: { f: "compRows", kw: /車台番号|走行距離|年式|chassis|mileage/i }, go: ["up"] },
+        { id: "v_demand", a: "fb", p: "k", g: "f", s: 2, nm: ["車種・年式の需要（国ごと）", "Demand by model and year per country"], why: ["バイヤーの 43% が需要（車種・年式）を聞く", "43% of buyers ask about models and years"], t: { kw: /需要|人気|車種|model/i }, ask: ["進出希望国で需要の大きい車種・年式を教えてください", "Which models and years are in demand?"] },
+        { id: "v_supply", a: "product", p: "k", g: "f", s: 2, nm: ["供給力・在庫の出し方", "Supply capacity and stock offering"], why: ["バイヤーの 24% が物流・供給力を聞く", "24% of buyers ask about supply"], t: { kw: /在庫|台数|供給|stock|supply/i }, q: ["毎月出せる台数と、在庫の見せ方（リスト・写真）を教えてください", "Monthly units and how stock is presented"] },
+        { id: "v_credit", a: "fb", p: "m", g: "r", s: 2, nm: ["相手の信用調査", "Credit check on the buyer"], why: ["社内の事例：決済の受け皿と相手の信用で取引が止まった", "Internal cases: payment channels and buyer credit stopped deals"], t: { kw: /信用調査|与信|credit check|credit report/i }, ask: ["この相手（または国）と中古車を取引するときの信用調査と支払いの守り方を教えてください", "How to check credit and protect payment"] },
+        { id: "fwd", a: "practice", p: "k", g: "p", s: 3, nm: ["船便（RoRo・コンテナ）の費用と日数", "Shipping (RoRo or container) cost and time"], why: ["物流の論点の 31% がコンテナ・混載", "31% of logistics topics are containers"], t: { fn: "fwd", kw: /RoRo|コンテナ|船便|freight/i }, ask: ["この車両を進出希望国へ RoRo とコンテナで送ったときの費用と日数の目安を教えてください", "RoRo vs container cost and days"] },
+        { id: "px", a: "market", p: "m", g: "p", s: 2, nm: ["現地の相場と関税・税", "Local market prices, duties and taxes"], why: ["バイヤーの 20% が価格を聞く。関税・税で売価が大きく変わる", "20% of buyers ask about price"], t: { fn: "px", kw: /相場|関税|税/i }, go: ["item"] },
+        { id: "v_pay", a: "practice", p: "m", g: "r", s: 1, nm: ["決済の受け皿と支払いの守り（前払い・L/C）", "Payment channel and protection (prepayment, L/C)"], why: ["社内の事例：決済の受け皿が最初の関門だった。中古車は代金の未回収が起きやすい", "Internal case: the payment channel was the first hurdle"], t: { f: "pay", kw: /前払|L\/C|信用状|prepay/i }, go: ["up"] }
+    ],
+    other: []
+};
+const V73_RULES = [
+    { id: "x_hkvd", prof: ["supp", "food"], cty: /香港|Hong\s*Kong/i, kw: /ビタミン\s*D|vitamin\s*D|VD3?\b|コレカルシフェロール|cholecalciferol/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["香港：ビタミンD の1日量（1,000 IU を超えると医薬品）", "Hong Kong: vitamin D per day (over 1,000 IU is a medicine)"], why: ["社内の事例：1日量が上限を超えていて、香港では食品として売れなかった", "Internal case: over the limit, it could not be sold as food in Hong Kong"], ask: ["この商品のビタミンD の1日量は、香港の上限（1,000 IU）を超えますか", "Does the daily vitamin D exceed Hong Kong's 1,000 IU limit?"] },
+    { id: "x_bat", prof: null, kw: /リチウム|lithium|Li-?ion|電池|バッテリー|battery/i, p: "m", a: "practice", g: "s", s: 1,
+        nm: ["電池：UN38.3 の試験の要約と、航空の危険物の扱い", "Batteries: UN38.3 test summary and air dangerous-goods rules"], why: ["社内の事例：電池入りの機器で、試験の要約と梱包の印の確認が要った", "Internal case: a battery device needed the test summary and DG marks"], ask: ["この商品の電池の UN38.3 の試験の要約はありますか。航空で送るときの扱いを教えてください", "Is there a UN38.3 test summary? How is it handled for air freight?"] },
+    { id: "x_cites", prof: null, kw: /蘭|ラン科|orchid|象牙|べっ甲|鼈甲|サンゴ|珊瑚|coral|ワニ|クロコ|crocodile|爬虫類|パイソン|python|うなぎ|鰻|ウナギ|eel|チョウザメ|キャビア|caviar/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["ワシントン条約（CITES）の対象かどうかと、輸出の許可", "Whether CITES applies, and the export permit"], why: ["社内の事例：植物や動物の素材で許可の確認に日数がかかり、「人工繁殖なら対象外」と誤って案内したこともある（人工繁殖でも許可が要る場合がある）", "Internal cases: permits took days, and artificial propagation does not always exempt"], ask: ["この商品はワシントン条約（CITES）の対象ですか。対象なら輸出の許可の手続きと日数を教えてください", "Is this covered by CITES? If so, the export permit procedure and time"] },
+    { id: "x_dg", prof: null, kw: /アルコール|エタノール|ethanol|引火|可燃|スプレー|エアゾール|aerosol|香水|perfume|オイル|精油|ガス/i, p: "k", a: "practice", g: "s", s: 1,
+        nm: ["危険物に当たるか（引火点・SDS）", "Dangerous goods check (flash point, SDS)"], why: ["社内の事例：エキスの引火点を確かめて、一般の貨物で送れると分かるまで止まった", "Internal case: shipping stopped until the flash point was confirmed"], ask: ["この商品は航空・船便で危険物に当たりますか（引火点・SDS）", "Is this dangerous goods for air or sea (flash point, SDS)?"] },
+    { id: "x_meat", prof: ["fresh", "food"], kw: /和牛|牛肉|豚肉|鶏肉|食肉|ハム|ソーセージ|beef|pork|chicken|meat/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["食肉：相手国が日本の食肉を受け入れているか・認定の処理場", "Meat: market access for Japanese meat and approved plants"], why: ["日本からの食肉を受け入れていない国、処理場の認定が要る国がある", "Some countries do not accept Japanese meat or need approved plants"], ask: ["進出希望国は日本の食肉（この品目）を受け入れていますか。認定の処理場は要りますか", "Do the target countries accept Japanese meat? Are approved plants needed?"] },
+    { id: "x_cnfood", prof: ["food", "fresh", "supp", "alcohol"], cty: /中国|China/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["中国：輸入停止の地域・品目と、海外の製造所の登録（GACC）", "China: import suspensions and overseas plant registration (GACC)"], why: ["日本の一部の地域・品目は中国への輸入が止まっている。製造所の登録も要る", "Some Japanese regions/items are suspended; plant registration is required"], ask: ["この商品（産地）は、中国の輸入停止の対象ですか。製造所の登録（GACC）の要否を教えてください", "Is this product/region suspended for China? Is GACC registration needed?"] },
+    { id: "x_eucos", prof: ["cosme"], cty: /フランス|ドイツ|イタリア|スペイン|オランダ|ベルギー|EU|欧州|France|Germany|Italy|Spain|Netherlands/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["EU：責任者（Responsible Person）と CPNP の届出・安全性の評価", "EU: Responsible Person, CPNP notification and safety assessment"], why: ["EU では責任者が決まらないと売れない", "Cannot sell in the EU without a Responsible Person"], ask: ["EU で化粧品を売るときの責任者と CPNP の届出・安全性の評価の進め方を教えてください", "How to set up the Responsible Person, CPNP and safety assessment"] },
+    { id: "x_ushalal", prof: ["food", "supp", "cosme"], cty: /UAE|アラブ首長国|サウジ|Saudi|マレーシア|Malaysia|インドネシア|Indonesia|カタール|Qatar|クウェート|Kuwait/i, p: "k", a: "market", g: "s", s: 2,
+        nm: ["ハラール（豚・アルコール由来の原料、認証の要否）", "Halal (porcine or alcohol-derived ingredients, certification)"], why: ["中東・東南アジアの一部では、ハラールで売り場と相手が決まる", "Halal decides channels in parts of the Middle East and Southeast Asia"], ask: ["この商品は、進出希望国でハラールの認証が要りますか。豚・アルコール由来の原料はありますか", "Is halal certification needed? Any porcine or alcohol-derived ingredients?"] },
+    { id: "x_usfda", prof: ["food", "supp", "alcohol", "cosme"], cty: /アメリカ|米国|USA|United\s*States/i, p: "k", a: "market", g: "s", s: 1,
+        nm: ["米国：FDA の施設登録・事前通知（食品）／酒類は TTB のラベル承認（COLA）／化粧品の施設登録と製品の届出（MoCRA）", "US: FDA registration and prior notice / TTB label approval (COLA) for liquor / cosmetics listing (MoCRA)"], why: ["米国は施設登録・事前通知が無いと通関で止まる。FDA の施設登録は工場ごと・2年ごとの更新で、登録だけでは輸出できない（STANDAGE の記録：登録済みの施設の入力の誤りが多かった）", "Registration is per plant and renewed every two years; registration alone does not clear the product"], ask: ["この商品を米国に出すとき、FDA の施設登録・事前通知などで要るものを教えてください", "What FDA registrations or notices are needed for the US?"] },
+    { id: "x_ng", prof: ["food", "supp", "cosme", "med"], cty: /ナイジェリア|Nigeria/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["ナイジェリア：NAFDAC の製品登録", "Nigeria: NAFDAC product registration"], why: ["社内の事例：登録が済むまで店頭に並べられなかった", "Internal case: could not be put on shelves until registered"], ask: ["ナイジェリアの NAFDAC の製品登録の流れと期間を教えてください", "NAFDAC registration steps and time"] },
+    { id: "x_br", prof: ["med", "cosme", "supp"], cty: /ブラジル|Brazil/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["ブラジル：ANVISA の登録（現地の登録保有者が要る）", "Brazil: ANVISA registration (local holder needed)"], why: ["社内の事例：登録の保有者と期間が、進出の時期を決めた", "Internal case: the registration holder and time decided the launch date"], ask: ["ブラジルの ANVISA の登録の流れ・期間と、現地の登録保有者の探し方を教えてください", "ANVISA steps, time and how to find a local holder"] },
+    { id: "x_twmed", prof: ["med"], cty: /台湾|Taiwan/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["台湾：TFDA の医療機器の登録（または対象外の確認）", "Taiwan: TFDA medical device registration (or exemption)"], why: ["社内の事例：医療機器に当たるかの確認と登録の費用・期間が要った", "Internal case: TFDA classification, cost and time had to be confirmed"], ask: ["この製品は台湾で医療機器に当たりますか。TFDA の登録の費用と期間を教えてください", "Is this a medical device in Taiwan? TFDA cost and time"] },
+    { id: "x_hk10", prof: ["food", "fresh", "supp", "alcohol"], cty: /香港|Hong\s*Kong|マカオ|Macau|Macao/i, kw: /魚|水産|鰹|かつお|節|昆布|こんぶ|海藻|わかめ|のり|海苔|塩|だし|出汁|エキス|ホタテ|帆立|カキ|牡蠣|うに|いくら|えび|海老|かに|蟹|DHA|EPA|フィッシュ|fish|seafood|seaweed|salt|dashi|kelp|bonito/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["香港・マカオ：日本の10都県産の水産物などの輸入停止（だしなど副原料の産地にも効く）", "Hong Kong/Macau: ban on seafood etc. from 10 Japanese prefectures (applies to sub-ingredients)"], why: ["STANDAGE の記録：鰹節・昆布などの副原料にも効き、漁獲地・加工地を公的に証明できないと全ロット廃棄・積み戻しになる", "Records: it applies to dashi ingredients; without official proof the whole lot is destroyed or returned"], ask: ["この商品の原料（副原料を含む）は、香港・マカオの日本の10都県産の輸入停止に当たりますか。産地の証明の取り方も教えてください", "Do any (sub-)ingredients fall under the 10-prefecture ban? How to prove origin?"] },
+    { id: "x_hkliq", prof: ["alcohol"], cty: /香港|Hong\s*Kong/i, p: "k", a: "market", g: "p", s: 1,
+        nm: ["香港：アルコール分 30% の線（30% 以下は関税0%・免許も不要。30% 超は課税）", "Hong Kong: the 30% ABV line (≤30% duty-free; above is taxed)"], why: ["30% を超えると、1本の価額の HK$200 までの部分に 100%（2024-10 から）。度数で売価と相手が変わる", "Above 30% ABV, 100% duty applies to the first HK$200 of value (from Oct 2024)"], ask: ["この酒のアルコール分で、香港の関税と免許はどうなりますか", "Duty and licensing in Hong Kong for this ABV"] },
+    { id: "x_twsupp", prof: ["supp"], cty: /台湾|Taiwan/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["台湾：錠剤・カプセルの食品の上限（例：ビタミンD 800 IU/日・ぶどう種子 150mg/日）と輸入の登録", "Taiwan: limits for tablet/capsule foods (e.g. vitamin D 800 IU/day) and import registration"], why: ["社内の事例：上限を超える成分があり、越境 EC では錠剤・粒状のサプリが出品できないモールもあった", "Internal cases: ingredients exceeded limits; some cross-border malls ban tablets"], ask: ["この商品は台湾の錠剤・カプセル状食品の上限と、輸入の登録の対象になりますか", "Taiwan limits and import registration for this product"] },
+    { id: "x_sgsupp", prof: ["supp"], cty: /シンガポール|Singapore/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["シンガポール：食品なら SFA・医薬品なら HSA のライセンスを輸入者が持つ（ビタミンD 上限 1,000 IU/日）", "Singapore: importer needs an SFA (food) or HSA (medicine) licence; vitamin D up to 1,000 IU/day"], why: ["区分で必要なライセンスと輸入者が変わる", "The classification decides the licence and the importer"], ask: ["この商品はシンガポールで食品と医薬品のどちらになり、輸入者に要るライセンスは何ですか", "Food or medicine in Singapore, and which licence?"] },
+    { id: "x_bsmi", prof: ["elec"], cty: /台湾|Taiwan/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["台湾：電気製品の認証（BSMI）は現地の代理店の名義で申請（他国の電池セルの報告書は使えない）", "Taiwan: BSMI must be applied for via a local agent (foreign cell reports not accepted)"], why: ["STANDAGE の記録：日本側だけでは申請できず、現地の名義人を決めるまで止まった", "Records: could not apply without a local applicant"], ask: ["この製品の台湾の BSMI の申請は、誰の名義でどう進めますか", "How to apply for BSMI and under whose name?"] },
+    { id: "x_krmed", prof: ["med"], cty: /韓国|Korea/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["韓国：医療機器は外国企業が直接申請できず、韓国の許可保有者（KLH）が必須", "Korea: foreign firms cannot apply directly; a Korean licence holder (KLH) is required"], why: ["STANDAGE の記録：MFDS への照会は提出資料だけで判断され、最長 57日かかった", "Records: MFDS decided on documents only and took up to 57 days"], ask: ["この製品を韓国に出すときの KLH の探し方と、MFDS の分類の照会に要る資料を教えてください", "How to find a KLH and what MFDS needs"] },
+    { id: "x_uae", prof: ["food", "cosme", "supp"], cty: /UAE|アラブ首長国|ドバイ|Dubai/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["UAE：製品登録は輸入者の資格のある会社の名義（名義貸しは不可）・化粧品はドバイの登録も別に", "UAE: registration under a qualified importer (no name-lending); Dubai cosmetics registration is separate"], why: ["STANDAGE の記録：登録者・輸入者が1社に限られることがあり、相手選びと一緒に決める必要があった", "Records: one registrant/importer may be allowed, so choose the partner first"], ask: ["この商品を UAE で登録するとき、誰の名義で、何の登録が要りますか", "Under whose name and which registrations in the UAE?"] },
+    { id: "x_saudi", prof: ["supp", "med", "elec", "cosme"], cty: /サウジ|Saudi/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["サウジ：まず SFDA の電子分類で区分を確定（SFDA か SABER かで期間・費用が大きく違う）", "Saudi Arabia: confirm the class in SFDA's e-classification first (SFDA vs SABER)"], why: ["STANDAGE の記録：区分で期間と費用が大きく変わり、登録が無いと展示会への出展も難しかった", "Records: the class changes time and cost; trade shows also need registration"], ask: ["この製品はサウジで SFDA と SABER のどちらの手続きになりますか", "SFDA or SABER for this product?"] },
+    { id: "x_ph", prof: ["food", "supp"], cty: /フィリピン|Philippines/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["フィリピン：FDA の製品登録（CPR）と、LTO を持つ輸入者", "Philippines: FDA product registration (CPR) and an importer with an LTO"], why: ["STANDAGE の記録：製品登録が無いと EC の出品がすぐ消され、越境の直送が成り立たなかった", "Records: listings without CPR were removed at once"], ask: ["この商品をフィリピンで売るときの製品登録（CPR）と輸入者の条件を教えてください", "CPR and importer requirements in the Philippines"] },
+    { id: "x_eufood", prof: ["food"], cty: /フランス|ドイツ|イタリア|スペイン|オランダ|ベルギー|EU|欧州|France|Germany|Italy|Spain|Netherlands/i, kw: /肉|エキス|だし|鰹|魚|乳|卵|ゼラチン|コラーゲン|蜂蜜|はちみつ|meat|fish|dairy|egg/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["EU：動物由来の成分を含む食品は、製造施設の認定が要る", "EU: foods with animal-derived ingredients need an approved plant"], why: ["STANDAGE の記録：植物由来 100% に変えると入りやすくなった例がある。水産加工品は EU 登録の工場・品目単位", "Records: switching to 100% plant-based made entry easier"], ask: ["この商品の動物由来の原料は、EU の製造施設の認定の対象になりますか", "Do the animal-derived ingredients need EU-approved plants?"] },
+    { id: "x_lic", prof: ["goods", "cosme", "food", "elec"], kw: /使用許諾|ライセンス(契約|ブランド|商品|生産)|ライセンシー|ブランド(の)?ライセンス|licensed brand|licensee|brand licen/i, p: "m", a: "market", g: "r", s: 1,
+        nm: ["ブランドの使用許諾：本社の許可の範囲（国・販路）と委任状", "Brand licence: the licensor's scope (countries, channels) and authorisation"], why: ["ライセンスのブランドは、本社の許可が無い国・販路では売れない（社内の事例：ブランドの本社と別の契約が要った）", "Licensed brands cannot be sold outside the licensor's approved scope"], ask: ["このブランドの使用許諾で、輸出してよい国・販路の範囲と、本社との別の契約の要否を確かめる手順を教えてください", "How to confirm the licence scope for export"] },
+    { id: "x_kids", prof: ["goods", "elec", "food", "cosme"], kw: /子ども|子供|こども|キッズ|ベビー|乳幼児|赤ちゃん|玩具|おもちゃ|ランドセル|kids|baby|infant|toy/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["子ども向けの規制（玩具・子ども用品の安全基準と化学物質）", "Rules for children's products (toy safety, chemicals)"], why: ["誰向けかで規制が変わり、「大人向け」の表示だけでは外せない（米国は第三者試験と CPC・タイは TISI を現地の輸入者が申請・台湾はぬいぐるみが年齢表示に関係なく玩具の例）。社内の事例：子ども用品の化学物質の範囲を調べ直した", "Children's rules cannot be avoided by an 'adults only' label (US CPC, Thai TISI, Taiwan plush toys)"], ask: ["この商品は進出希望国で子ども向けの規制（玩具の安全基準・化学物質）の対象になりますか", "Do children's product rules apply?"] },
+    { id: "x_beauty", prof: ["elec", "cosme", "med"], kw: /美容機器|美顔器|美容家電|EMS|脱毛|フェイシャル|ヘアアイロン|ドライヤー|beauty device/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["美容機器：医療機器に当たらないかの区分と、機器の認証（国ごと）", "Beauty devices: whether it is a medical device, and device certification"], why: ["STANDAGE の記録：美容機器の規制の話の 41% が機器の認証、14% が医療機器かどうかの区分", "Records: 41% device certification, 14% medical-device classification"], ask: ["この美容機器は、進出希望国で医療機器に当たりますか。要る機器の認証を教えてください", "Is this a medical device in the target countries? Which certifications are needed?"] },
+    { id: "x_ctl", prof: ["ind", "elec"], kw: /工作機械|マシニング|旋盤|ロボット|炭素繊維|カーボン|CNC|数値制御|ポンプ|バルブ|暗号|ドローン|センサー|レーザー|赤外線|machine tool|robot|drone|laser/i, p: "m", a: "market", g: "s", s: 1,
+        nm: ["輸出管理：リスト規制・キャッチオールの該非判定", "Export control: list and catch-all classification"], why: ["該当すると経済産業省の許可が要る。無いまま出すと違反", "If controlled, a METI licence is needed"], ask: ["この製品は輸出管理（リスト規制・キャッチオール）の対象になりますか", "Is this product subject to export control?"] }
+];
+const V73_KW = {
+    alcohol: /日本酒|清酒|純米|吟醸|焼酎|泡盛|ウイスキー|ウィスキー|whisk(?:e)?y|ワイン|wine|ビール|beer|リキュール|梅酒|ジン\b|\bgin\b|ブランデー|sake|shochu|酒類|地酒/i,
+    supp: /サプリ|健康食品|栄養補助|機能性表示|ビタミン|ミネラル剤|カプセル|ソフトカプセル|錠剤|タブレット|プロテイン|コラーゲン|酵素|乳酸菌|青汁|プラセンタ|supplement|vitamin|capsule|tablet|protein powder/i,
+    fresh: /鮮魚|生鮮|青果|野菜|果物|フルーツ|いちご|苺|りんご|リンゴ|みかん|柿|梨|ぶどう|メロン|桃|和牛|牛肉|豚肉|鶏肉|鶏卵|生卵|水産|鮮魚|ホタテ|帆立|牡蠣|カキ|うなぎ|鰻|ウナギ|ブリ|マグロ|鯛|花卉|切り花|苗木|種苗|種子|球根|植物|盆栽|胡蝶蘭|蘭|ラン科|seafood|fresh fruit|vegetable|wagyu|beef|orchid|bonsai/i,
+    elec: /電池|バッテリー|リチウム|充電|電源|家電|電子|基板|センサー|IoT|Bluetooth|Wi-?Fi|無線|LED|モーター|ドライヤー|ヘアアイロン|美顔器|美容機器|電動|スピーカー|イヤホン|カメラ|ディスプレイ|electronic|battery|charger|wireless/i
+};
+function v73Txt(d, t) { const p = t || d || {}; const s = [p.item, p.itemEn, p.cat, p.compTitle, (p.compRows || []).slice(0, 30).map(r => Array.isArray(r) ? r.join(" ") : String(r || "")).join(" ")].join(" "); return v73N(s).slice(0, 4000); }
+function v73AutoProf(d, t) {
+    const p = t || d || {};
+    let ind = "other", sub = "";
+    try {
+        if (typeof V68IND !== "undefined" && V68IND && typeof V68IND.of === "function") {
+            ind = V68IND.of(p) || "other";
+            sub = V68IND.sub(p) || "";
+        }
+        else {
+            const ck = String(p.catKey || p.key || "");
+            ind = ({ food: "food", liquor: "food", cosme: "cosmetics", parts: "industrial", car: "industrial", daily: "daily", apparel: "apparel", medical: "meddev" })[ck] || "other";
+            sub = ck === "liquor" ? "liquor" : ck === "car" ? "car" : "";
+        }
+    }
+    catch (e) { }
+    const nm = v73N([p.item, p.itemEn, p.cat].join(" ")), tx = v73Txt(d, t);
+    if (sub === "car")
+        return "car";
+    if (sub === "liquor" || (ind === "food" && V73_KW.alcohol.test(nm)))
+        return "alcohol";
+    if (ind === "pharma" || ind === "meddev" || sub === "hygiene")
+        return "med";
+    if (ind === "food") {
+        if (V73_KW.supp.test(nm))
+            return "supp";
+        if (V73_KW.fresh.test(nm))
+            return "fresh";
+        return "food";
+    }
+    if (ind === "cosmetics") {
+        if (/サプリ|健康食品|カプセル|錠剤|タブレット|supplement/i.test(nm))
+            return "supp";
+        if (/美顔器|美容機器|ドライヤー|ヘアアイロン|電動|device/i.test(nm))
+            return "elec";
+        return "cosme";
+    }
+    if (ind === "industrial")
+        return V73_KW.elec.test(nm) ? "elec" : "ind";
+    if (ind === "daily" || ind === "apparel" || ind === "furniture")
+        return /家電|電子|充電|電池|バッテリー|LED|電動|Bluetooth|USB|electronic|battery/i.test(nm) ? "elec" : "goods";
+    if (V73_KW.alcohol.test(nm))
+        return "alcohol";
+    if (V73_KW.supp.test(nm))
+        return "supp";
+    if (V73_KW.fresh.test(nm))
+        return "fresh";
+    if (V73_KW.elec.test(nm))
+        return "elec";
+    if (/化粧|美容液|化粧水|クリーム|シャンプー|cosmetic|skincare/i.test(tx))
+        return "cosme";
+    return "other";
+}
+function v73Cur(d, t) { const curD = (typeof D !== "undefined" && D) || null; const dd = d || curD || {}; const tt = (t === undefined) ? ((dd === curD && typeof TEN !== "undefined") ? TEN : null) : t; return { dd, tt, isCur: dd === curD }; }
+function v73Persist(tt) { return !!(tt && tt.src !== "sample" && typeof SES !== "undefined" && SES && SES.t === "trial"); }
+function v73St(dd, tt) {
+    if (tt && tt.src !== "sample") {
+        if (!tt.v73gp || typeof tt.v73gp !== "object")
+            tt.v73gp = {};
+        return tt.v73gp;
+    }
+    const k = String((typeof PID !== "undefined" && dd === ((typeof D !== "undefined") && D) ? PID : "") || "") + "|" + String(dd.co || "") + "|" + String(dd.item || "");
+    return V73.mem[k] || (V73.mem[k] = {});
+}
+function v73Save() { try {
+    if (typeof saveTen === "function")
+        saveTen();
+}
+catch (e) { } }
+function v73ProfKey(dd, tt, st) { st = st || v73St(dd, tt); if (st.prof && V73_PROF[st.prof])
+    return st.prof; return v73AutoProf(dd, tt); }
+function v73Prof(dd, tt, st) {
+    st = st || v73St(dd, tt);
+    const key = v73ProfKey(dd, tt, st);
+    const B = V73_PROF[key];
+    const P = { key, ic: B.ic, nm: B.nm, w: Object.assign({}, B.w), fb: B.fb, mo: B.mo.slice(), why: B.why, ev: B.ev, auto: !st.prof, ai: null, unit: V73_UNIT[key] || V73_UNIT.other, wait: V73_WAIT[key] || V73_WAIT.other, fb0: B.fb };
+    const A = st.ai;
+    if (st.use && A && A.prof === key) {
+        if (A.w)
+            P.w = Object.assign({}, A.w);
+        if (A.mo)
+            P.mo = A.mo.slice();
+        P.ai = A;
+    }
+    const own = Math.round(+st.fbOwn);
+    if (isFinite(own) && own >= 5 && own <= 200) {
+        P.fb = own;
+        P.fbOwn = 1;
+    }
+    P.ownNote = String(st.ownNote || "").slice(0, 200);
+    return P;
+}
+function v73Ctx(dd, tt) {
+    const cnt = a => Array.isArray(a) ? a.length : 0;
+    const t = tt || {};
+    const K = dd.kpi || {};
+    const tg = (cnt(t.targets) ? t.targets : Object.keys(dd.regs || {})).map(String).filter(Boolean);
+    const sample = !tt || tt.src === "sample";
+    const rk = t.regKB || {};
+    const regDone = sample ? tg.filter(c => (dd.regs || {})[c]).length : tg.filter(c => rk[c] && rk[c].appliedTxt).length;
+    const fbx = Array.isArray(t.fbx) ? t.fbx : (Array.isArray(dd.fb) ? dd.fb : []);
+    const fbN = (K.fbDone !== undefined && K.fbDone !== null) ? +K.fbDone : fbx.length;
+    const lostN = (tt && Array.isArray(t.fbx)) ? t.fbx.filter(f => f && (f.st === "失注" || f.why)).length : (Array.isArray(dd.lost) ? dd.lost.reduce((s, x) => s + (Array.isArray(x) ? (+x[1] || 1) : 1), 0) : 0);
+    let fwd = 0;
+    try {
+        if (typeof FWDB !== "undefined" && FWDB && Array.isArray(FWDB.reqs))
+            fwd = FWDB.reqs.filter(r => r && r.co === (t.co || dd.co || "")).length;
+    }
+    catch (e) { }
+    let decks = 0;
+    try {
+        if (tt && typeof l211DeckGen === "function")
+            decks = l211DeckGen(tt).length;
+    }
+    catch (e) { }
+    const ddp = Object.keys(t.ddpPx || {}).length, fob = t.fobIn ? 1 : 0;
+    const buyers = cnt(t.myBuyers) + cnt(t.outreach) + cnt((t.v71ob && t.v71ob.runs) || []) + ((K.buyers | 0) > 0 ? 1 : 0);
+    const samp = fbx.some(f => f && /サンプル/.test(String(f.st || "") + String(f.note || "")));
+    const L = [];
+    const add = v => { if (v == null)
+        return; if (Array.isArray(v))
+        v.forEach(add);
+    else if (typeof v === "object")
+        Object.values(v).forEach(add);
+    else
+        L.push(String(v)); };
+    [dd.item, dd.itemEn, dd.cat, dd.cert, dd.shelf, dd.origin, dd.moq, dd.lead, dd.term, dd.pay, dd.compTitle].forEach(add);
+    add((t.compRows || dd.compRows || []).slice(0, 40));
+    add((t.strengths || dd.strengths || []).slice(0, 20));
+    add(t.cert);
+    add(t.shelf);
+    (t.extraQA || []).slice(0, 40).forEach(x => { if (x)
+        L.push(String(x.q || "") + " " + String(x.a || "")); });
+    add((t.aiNotes || []).slice(0, 20));
+    Object.values(rk).slice(0, 20).forEach(r => { if (r && r.appliedTxt)
+        L.push(String(r.appliedTxt).slice(0, 3000)); });
+    if (sample)
+        Object.values(dd.regs || {}).slice(0, 12).forEach(r => add(r));
+    (t.sources || []).slice(0, 30).forEach(s => L.push(String((s && (s.name || s.file || s.t)) || s || "")));
+    (t.xdocs || []).slice(0, 30).forEach(x => L.push(Array.isArray(x) ? x.slice(0, 2).join(" ") : String((x && x.name) || x || "")));
+    (dd.docs || []).slice(0, 30).forEach(x => L.push(Array.isArray(x) ? x.slice(0, 2).join(" ") : String(x || "")));
+    (t.memos || []).slice(0, 20).forEach(m => { if (m)
+        L.push(String(m.t || "") + " " + String(m.body || "").slice(0, 800)); });
+    fbx.slice(0, 60).forEach(f => { if (f)
+        L.push([f.st, f.note, f.why, f.price, f.lot, f.term, f.spec, f.memo].filter(Boolean).join(" ").slice(0, 600)); });
+    const st = v73St(dd, tt);
+    Object.values(st.ans || {}).forEach(x => { if (x && x.a)
+        L.push(String(x.a)); });
+    const txt = v73N(L.join("\n")).slice(0, 60000);
+    return { t, dd, tg, regN: tg.length, regDone, fbN, lostN, fwd, decks, ddp, fob, buyers, samp, txt, sample,
+        quotes: +K.quotes || 0 };
+}
+function v73FnOk(fn, c) {
+    const t = c.t, dd = c.dd;
+    const g = k => (t && t[k] !== undefined) ? t[k] : dd[k];
+    switch (fn) {
+        case "hs": {
+            const h = String(g("hs") || "");
+            return !!h.trim() && !/不明|未定|unknown|わから/i.test(h);
+        }
+        case "price": return v73Has(g("priceRows"));
+        case "moqlead": return v73Has(g("moq")) && v73Has(g("lead"));
+        case "dim": return v73Has(g("dimRows"));
+        case "str3": return (g("strengths") || []).length >= 3;
+        case "regAll": return c.regN > 0 && c.regDone >= c.regN;
+        case "px": return (c.ddp + c.fob) > 0;
+        case "fwd": return c.fwd > 0 || /運賃|物流費|freight|海上運賃|航空運賃/i.test(c.txt);
+        case "lost3": return c.lostN >= 3;
+        case "deck": return c.decks > 0;
+        case "buyer": return c.buyers > 0 || c.fbN > 0;
+        case "samp": return c.samp || /サンプル[^。\n]{0,24}(無償|有償|費用|個|本|袋|送料|可能)|sample[^.\n]{0,24}(free|cost|units|pcs)/i.test(c.txt);
+        case "comp": return v73Has(g("compRows"));
+        case "compNum": {
+            const rows = g("compRows") || [];
+            const s = v73N(rows.map(r => Array.isArray(r) ? r.join(" ") : String(r || "")).join(" "));
+            return rows.length >= 2 && /\d\s*(mg|μg|ug|mcg|IU|ＩＵ|g\b|%)/i.test(s);
+        }
+    }
+    return false;
+}
+function v73Test(it, c) {
+    const T = it.t || {};
+    if (T.f) {
+        const v = (c.t && c.t[T.f] !== undefined) ? c.t[T.f] : c.dd[T.f];
+        if (v73Has(v))
+            return { ok: 1, src: v73M("登録の項目", "Registered field") };
+    }
+    if (T.fn && v73FnOk(T.fn, c))
+        return { ok: 1, src: T.fn === "regAll" ? v73M(`規制の詳しい調査（${c.regDone}/${c.regN}か国）`, `Detailed regulation check (${c.regDone}/${c.regN})`) : v73M("登録・記録から", "From your records") };
+    if (T.kw && T.kw.test(c.txt))
+        return { ok: 1, src: v73M("登録・資料・回答の中の言葉から", "Found in your records/documents") };
+    return { ok: 0 };
+}
+function v73Items(P, dd, tt, c) {
+    c = c || v73Ctx(dd, tt);
+    const st = v73St(dd, tt);
+    const done = st.done || {}, ans = st.ans || {};
+    const nmTx = v73N([dd.item, dd.itemEn, dd.cat].join(" ")) + " " + c.txt.slice(0, 6000);
+    const tgTx = c.tg.join(" ");
+    let list = V73_COMMON.map(x => Object.assign({}, x, { src0: "common" }));
+    if (/^(supp|cosme|med|alcohol|fresh|elec|car)$/.test(P.key))
+        list = list.map(x => x.id === "reg" ? Object.assign({}, x, { p: "m" }) : x);
+    (V73_SPEC[P.key] || []).forEach(x => {
+        if (x.only && !x.only.test(nmTx))
+            return;
+        const i = list.findIndex(y => y.id === x.id);
+        if (i >= 0)
+            list[i] = Object.assign({}, list[i], x, { src0: "common" });
+        else
+            list.push(Object.assign({}, x, { src0: "spec" }));
+    });
+    V73_RULES.forEach(r => {
+        if (r.prof && r.prof.indexOf(P.key) < 0)
+            return;
+        if (r.cty && !r.cty.test(tgTx))
+            return;
+        if (r.kw && !r.kw.test(nmTx))
+            return;
+        if (list.some(x => x.id === r.id))
+            return;
+        list.push(Object.assign({ t: {}, go: ["ai"] }, r, { src0: "rule" }));
+    });
+    if (P.ai && Array.isArray(P.ai.add))
+        P.ai.add.forEach((x, i) => { list.push({ id: "ai" + i, a: x.area, p: x.pri, g: x.goal, s: x.stage, nm: [x.nm, x.nm], why: [x.why, x.why], q: [x.q || x.nm, x.q || x.nm], t: {}, go: ["ai"], ask: x.q ? [x.q, x.q] : null, src0: "ai", cty: x.cty || "" }); });
+    return list.map(it => {
+        let r = { ok: 0 };
+        if (ans[it.id] && ans[it.id].a)
+            r = { ok: 1, src: v73M("この画面で回答", "Answered here") + "（" + v73MD(ans[it.id].at) + "）", ans: ans[it.id].a };
+        else if (done[it.id])
+            r = { ok: 1, src: v73M("確かめた", "Confirmed") + "（" + v73MD(done[it.id].at) + (done[it.id].note ? "・" + String(done[it.id].note).slice(0, 40) : "") + "）" };
+        else
+            r = v73Test(it, c);
+        return Object.assign({}, it, { ok: !!r.ok, from: r.src || "", ans: r.ans || "" });
+    });
+}
+function v73Apply(L, d, t) {
+    if (!L || !Array.isArray(L.cats))
+        return L;
+    const { dd, tt } = v73Cur(d, t);
+    const st = v73St(dd, tt);
+    const P = v73Prof(dd, tt, st);
+    const c = v73Ctx(dd, tt);
+    const items = v73Items(P, dd, tt, c);
+    const pw = it => (V73_PRI[it.p] || V73_PRI.k)[2];
+    const cov = {};
+    V73_AREAS.forEach(a => { const xs = items.filter(it => it.a === a); if (!xs.length)
+        return; const tot = xs.reduce((s, it) => s + pw(it), 0), ok = xs.filter(it => it.ok).reduce((s, it) => s + pw(it), 0); cov[a] = { tot, ok, n: xs.length, nOk: xs.filter(it => it.ok).length, pct: tot ? Math.round(ok / tot * 100) : 0 }; });
+    L.cats.forEach(cat => {
+        const a = cat.k;
+        if (!V73_AREAS.includes(a))
+            return;
+        let act = +cat.pct || 0;
+        if (a === "fb" && P.fb !== 42 && typeof growN === "function") {
+            act = Math.max(0, Math.min(100, Math.round(act + 0.85 * (growN(c.fbN, P.fb) - growN(c.fbN, 42)))));
+            cat.detail = String(cat.detail || "").replace(/（分析の目安\s*42件）/, P.fbOwn ? v73M(`（御社の目安 ${P.fb}件・共通は 42件）`, `(your target: ${P.fb}; common: 42)`) : v73M(`（この商材の目安 ${P.fb}件・共通は 42件）`, `(target for this type: ${P.fb}; common: 42)`));
+            if (cat.next && c.fbN >= P.fb)
+                cat.next = null;
+        }
+        cat.act = act;
+        if (cov[a]) {
+            cat.cov = cov[a].pct;
+            cat.pct = Math.max(0, Math.min(100, Math.round(act * (1 - V73_BLEND) + cov[a].pct * V73_BLEND)));
+            cat.detail = String(cat.detail || "") + v73M(`／この商材で吸収する情報 ${cov[a].nOk}/${cov[a].n}件`, `／Information for this product type ${cov[a].nOk}/${cov[a].n}`);
+        }
+        else
+            cat.pct = Math.max(0, Math.min(100, Math.round(act)));
+        cat.w0 = cat.w;
+        cat.w = P.w[a] != null ? P.w[a] : cat.w;
+    });
+    const pct = Math.max(0, Math.min(100, Math.round(L.cats.reduce((s, x) => s + x.pct * x.w / 100, 0))));
+    const S = (typeof GROW_STAGES !== "undefined") ? GROW_STAGES : [[0, "見習い"], [25, "駆け出し"], [50, "中堅"], [75, "ベテラン候補"], [90, "一人前"]];
+    const PRO = (typeof GROW_PRO !== "undefined") ? GROW_PRO : 90;
+    const musts = items.filter(it => it.p === "m" && !it.ok);
+    let lvIdx = 0;
+    S.forEach((s, i) => { if (pct >= s[0])
+        lvIdx = i; });
+    const gated = pct >= PRO && musts.length > 0;
+    if (gated)
+        lvIdx = Math.max(0, S.length - 2);
+    L.pct = pct;
+    L.lv = lvIdx + 1;
+    L.lvIdx = lvIdx;
+    L.stage = S[lvIdx][1];
+    L.nextStage = S[lvIdx + 1] ? S[lvIdx + 1][1] : null;
+    L.nextTh = S[lvIdx + 1] ? S[lvIdx + 1][0] : null;
+    L.to = Math.max(0, PRO - pct);
+    L.pro = pct >= PRO && !musts.length;
+    L.gp = { key: P.key, P, items, cov, musts, gated, c };
+    return L;
+}
+if (typeof aiLevelFor === "function") {
+    const __lvl73 = aiLevelFor;
+    aiLevelFor = function (d, t) { const L = __lvl73.apply(this, arguments); try {
+        v73Apply(L, d, t);
+    }
+    catch (e) {
+        try {
+            console.warn("v73", e);
+        }
+        catch (x) { }
+    } return L; };
+}
+function v73Hist(st, pct) {
+    try {
+        const h = Array.isArray(st.hist) ? st.hist : (st.hist = []);
+        const day = v73Day();
+        const last = h[h.length - 1];
+        if (last && last[0] === day) {
+            if (last[1] !== pct) {
+                last[1] = pct;
+                return 1;
+            }
+            return 0;
+        }
+        h.push([day, pct]);
+        while (h.length > 120)
+            h.shift();
+        return 1;
+    }
+    catch (e) {
+        return 0;
+    }
+}
+function v73Pace(st, pct, PRO) {
+    const h = Array.isArray(st.hist) ? st.hist : [];
+    if (h.length < 2)
+        return null;
+    const f = h[0], days = Math.round((new Date(v73Day()) - new Date(f[0])) / 864e5);
+    if (days < 7)
+        return { wait: 7 - days };
+    const gain = pct - f[1];
+    if (gain <= 0)
+        return { flat: 1, days };
+    const rate = gain / days;
+    const rest = Math.max(0, PRO - pct);
+    return { days, gain, mo: Math.max(0.5, Math.round(rest / rate / 30 * 2) / 2) };
+}
+function v73Pts(w) { return V73_AREAS.map(a => `${v73T(V73_AREA_NM[a])} ${w[a]}`).join("・"); }
+function v73Heavy(P) { const d = V73_AREAS.map(a => [a, (P.w[a] || 0) - (V73_BASEW[a] || 0)]).sort((x, y) => y[1] - x[1]); return d.filter(x => x[1] > 0).slice(0, 2).map(x => x[0]); }
+function v73ItemRow(it) {
+    const g = String(it.g || "").split("").map(k => V73_GOAL[k]).filter(Boolean).map(x => `<span class="v73g" title="${v73E(v73T([x[1], x[2]]))}">${x[0]}${v73E(v73T([x[1], x[2]]))}</span>`).join("");
+    const pr = V73_PRI[it.p] || V73_PRI.k;
+    const op = V73.open[it.id];
+    const askQ = it.ask ? v73T(it.ask) : "";
+    const q = it.q ? v73T(it.q) : v73T(it.nm);
+    const btns = it.ok ? `<button class="btn g v73b" onclick="v73Undo('${jsa(it.id)}')">${v73M("取り消す", "Undo")}</button>`
+        : `${it.go && it.go[0] !== "ai" ? `<button class="btn v73b" onclick="v73Go('${jsa(it.go[0])}','${it.go[1] || ""}')">${v73M("やる", "Do it")} →</button>` : ""}${askQ ? `<button class="btn g v73b" onclick="v73Ask('${jsa(it.id)}')">🤖 ${v73M("AIに聞く", "Ask AI")}</button>` : ""}<button class="btn g v73b" onclick="v73Toggle('${jsa(it.id)}')">${v73M("答える・確かめた", "Answer / confirm")}</button>`;
+    return `<li class="v73it ${it.ok ? "ok" : ""} p-${it.p}" data-id="${v73E(it.id)}"><span class="v73ck" aria-hidden="true">${it.ok ? "✓" : "○"}</span>
+    <div class="v73bd"><div class="v73nm"><b>${v73E(v73T(it.nm))}</b><span class="v73pr p-${it.p}">${v73E(v73T([pr[0], pr[1]]))}</span>${it.src0 === "rule" ? `<span class="v73tag">${v73M("国と成分の注意", "Country × ingredient alert")}</span>` : ""}${it.src0 === "ai" ? `<span class="v73tag ai">${v73M("AIが追加", "Added by AI")}</span>` : ""}${g}</div>
+      <div class="v73why">${v73E(v73T(it.why))}${it.ok && it.from ? `<span class="v73from">（${v73E(it.from)}）</span>` : ""}${it.ans ? `<span class="v73ans">${v73E(String(it.ans).slice(0, 120))}</span>` : ""}</div>
+      ${op && !it.ok ? `<div class="v73form"><label>${v73E(q)}</label><textarea id="v73a-${v73E(it.id)}" rows="2" placeholder="${v73M("分かる範囲で。確かめた場所（例：香港の規制の調査・○○様に確認）でも構いません", "As far as you know, or where you confirmed it")}"></textarea>
+        <div class="v73fb"><button class="btn" onclick="v73Answer('${jsa(it.id)}')">${v73M("答えを保存（AIが覚えます）", "Save answer (the AI learns it)")}</button><button class="btn g" onclick="v73Confirm('${jsa(it.id)}')">${v73M("確かめた（答えは書かない）", "Confirmed (no details)")}</button></div></div>` : ""}
+    </div><div class="v73act">${btns}</div></li>`;
+}
+function v73CardHtml(L) {
+    const G = L && L.gp;
+    if (!G)
+        return "";
+    const P = G.P, items = G.items;
+    const { dd, tt } = v73Cur();
+    const st = v73St(dd, tt);
+    const PRO = (typeof GROW_PRO !== "undefined") ? GROW_PRO : 90;
+    const nOk = items.filter(x => x.ok).length, mustN = items.filter(x => x.p === "m").length, mustMiss = G.musts.length;
+    const heavy = v73Heavy(P);
+    const pace = v73Pace(st, L.pct, PRO);
+    const sel = `<select id="v73prof" class="sel" aria-label="${v73M("商材の種類", "Product type")}" onchange="v73SetProf(this.value)">${V73_ORDER.map(k => `<option value="${k}" ${k === P.key ? "selected" : ""}>${V73_PROF[k].ic} ${v73E(v73T(V73_PROF[k].nm))}${k === v73AutoProf(dd, tt) ? v73M("（商品情報から）", "(from product info)") : ""}</option>`).join("")}</select>`;
+    const paceTx = L.pro ? v73M("一人前に到達しています", "Reached full competence")
+        : pace && pace.mo ? v73M(`いまのペースで あと約 ${pace.mo} か月`, `About ${pace.mo} more months at the current pace`)
+            : pace && pace.flat ? v73M(`この ${pace.days} 日は伸びていません`, `No growth in the last ${pace.days} days`)
+                : pace && pace.wait ? v73M(`ペースは あと ${pace.wait} 日で出ます`, `Pace available in ${pace.wait} days`)
+                    : v73M("ペースは記録が1週間たまると出ます", "Pace appears after a week of records");
+    const tiles = `<div class="v73tiles">
+    <div class="v73tl"><span>${v73M("一人前までの目安（契約から）", "Typical time to full competence (from contract)")}</span><b>${P.mo[0]}〜${P.mo[1]}${v73M("か月", " months")}</b><small>${v73M("速い場合〜標準のペース", "Fast to typical pace")}・${v73E(paceTx)}<br>${v73M("登録・認証の待ちは別", "Approval waits are extra")}：${v73E(v73T(P.wait))}</small></div>
+    <div class="v73tl"><span>${v73M("この商材で吸収する情報", "Information to absorb")}</span><b>${nOk} / ${items.length}${v73M("件", "")}</b><small>${mustMiss ? v73M(`必須の残り ${mustMiss}件（必須は全部で ${mustN}件）`, `${mustMiss} must-have items left (of ${mustN})`) : v73M(`必須 ${mustN}件はすべて済み`, `All ${mustN} must-have items done`)}</small></div>
+    <div class="v73tl"><span>${v73M("重く見る分野", "Weighted areas")}</span><b>${heavy.length ? heavy.map(a => v73E(v73T(V73_AREA_NM[a])) + " " + P.w[a] + v73M("点", "")).join("・") : v73M("共通と同じ", "Same as common")}</b><small>${heavy.length ? heavy.map(a => v73M(`共通は ${V73_BASEW[a]}点`, `common ${V73_BASEW[a]}`)).join("・") : ""}</small></div>
+    <div class="v73tl"><span>${v73M("商談記録の目安", "Deal records target")}</span><b>${P.fb}${v73M("件", "")}${P.fbOwn ? v73M("（御社の目安）", " (your target)") : ""}</b><small>${v73M("商談の単位", "Unit of a deal")}：${v73E(v73T(P.unit))}${P.fbOwn ? "" : P.fb < 42 ? v73M("・少なく深い商談の商材（共通は 42件）", "; fewer, deeper deals (common: 42)") : ""}</small></div></div>`;
+    const own = `<details class="v73own" ${P.fbOwn || P.ownNote ? "open" : ""}><summary>🎯 ${v73M("御社の物差しを足す（合格を決めるのは御社）", "Add your own yardstick (you decide what passes)")}</summary>
+    <div class="v73ownb"><p class="nn">${v73M("一人前の基準は会社や担当で違います。御社の基準（例：月10枚の図面・10社に1社の採用）と、商談の記録の目安の件数を入れると、AI商社マンはそれを物差しにします。", "Competence differs by company. Enter your own standard and target, and the AI will use them.")}</p>
+      <label>${v73M("商談の記録の目安（件・5〜200。空ならこの商材の目安）", "Deal-record target (5–200; blank = type default)")}<input id="v73fbown" class="sel" type="number" min="5" max="200" value="${P.fbOwn ? P.fb : ""}" placeholder="${P.fb0}"></label>
+      <label>${v73M("御社の一人前の基準（AI商社マンが答えるときにも使います）", "Your standard of competence (also used by the AI)")}<textarea id="v73ownnote" rows="2" placeholder="${v73M("例：月10枚の図面を受け取り、10社に1社が採用", "e.g. 10 drawings a month; 1 in 10 adopts")}">${v73E(P.ownNote)}</textarea></label>
+      <div class="v73fb"><button class="btn" onclick="v73SaveOwn()">${v73M("御社の物差しを保存", "Save your yardstick")}</button>${P.fbOwn || P.ownNote ? `<button class="btn g" onclick="v73SaveOwn(1)">${v73M("消す", "Clear")}</button>` : ""}</div></div></details>`;
+    const bars = `<div class="v73w" role="table" aria-label="${v73M("配点", "Weights")}">${V73_AREAS.map(a => {
+        const w = P.w[a] || 0, b = V73_BASEW[a] || 0;
+        const dv = w - b;
+        return `<div class="v73wr" role="row"><span role="cell">${v73E(v73T(V73_AREA_NM[a]))}</span><span class="v73wb" role="cell"><i style="width:${w * 2.5}%"></i><em style="left:${b * 2.5}%" title="${v73M("共通の配点", "Common weight")} ${b}"></em></span><span class="n" role="cell">${w}${v73M("点", "")}${dv ? `<small class="${dv > 0 ? "up" : "dn"}">${dv > 0 ? "+" : ""}${dv}</small>` : ""}</span></div>`;
+    }).join("")}</div>`;
+    const next = items.filter(x => !x.ok).sort((x, y) => ((V73_PRI[y.p] || [0, 0, 0])[2] - (V73_PRI[x.p] || [0, 0, 0])[2]) || (x.s - y.s)).slice(0, 3);
+    const stages = [1, 2, 3].map(s => {
+        const xs = items.filter(it => it.s === s);
+        if (!xs.length)
+            return "";
+        const ok = xs.filter(x => x.ok).length;
+        return `<details class="v73st" ${s === 1 || xs.some(x => !x.ok && x.p === "m") ? "open" : ""}><summary><b>${v73E(v73T(V73_STAGE[s]))}</b><span class="n">${ok}/${xs.length}</span></summary><ul class="v73ul">${xs.sort((x, y) => (x.ok - y.ok) || ((V73_PRI[y.p] || [0, 0, 0])[2] - (V73_PRI[x.p] || [0, 0, 0])[2])).map(v73ItemRow).join("")}</ul></details>`;
+    }).join("");
+    const ai = v73AiHtml(P, st, dd, tt);
+    const how = `<details class="v73how"><summary>📏 ${v73M("この物差しの決め方（誰から見ての一人前か）", "How this yardstick works")}</summary><div class="v73howb">
+    <p>${v73M(`成長レベル＝6分野の達成率 × この商材の配点（${v73Pts(P.w)}・合計100点）の合計です。決まった式なので、同じ記録なら誰が見ても同じ点数になります。`, `Growth level = achievement in 6 areas × weights for this product type (${v73Pts(P.w)}, total 100). The same records always give the same score.`)}</p>
+    <p>${v73M(`各分野の達成率は「これまでの経験の量」${Math.round((1 - V73_BLEND) * 100)}% と「この商材で先に吸収すべき情報の揃い具合」${Math.round(V73_BLEND * 100)}% を合わせたものです（必須3・重要2・あると良い1 の重み）。`, `Each area combines the volume of experience (${Math.round((1 - V73_BLEND) * 100)}%) and the information this product type needs (${Math.round(V73_BLEND * 100)}%; must 3, key 2, nice 1).`)}</p>
+    <p>${v73M(`一人前＝${PRO}% 以上、かつ「必須」の情報がすべてそろっていること。安全に売れない状態では、点数が高くても一人前にしません。`, `Full competence = ${PRO}% or more and every must-have item done.`)}</p>
+    <p>${v73M("配点の理由：", "Why these weights: ")}${v73E(v73T(P.why))}</p>
+    <p>${v73M("この商材の商談の単位：", "Unit of a deal for this type: ")}${v73E(v73T(P.unit))}${v73M("。登録・認証の待ち（", "; approval waits (")}${v73E(v73T(P.wait))}${v73M("）は、一人前までの期間とは別にかかります。", ") come on top of the time range.")}</p>
+    <p>${v73M("根拠：", "Basis: ")}${v73E(v73T(P.ev))}${v73M("。一人前までの期間は、同じ商材の STANDAGE の記録で、契約から最初の商談までの日数と1年あたりの商談の数（速い場合＝上位4分の1・標準＝真ん中）から出した目安で、お約束ではありません。", "; the time range comes from STANDAGE records for the same product type (fast = top quarter, typical = median pace) and is a guide, not a promise.")}</p>
+    <p><b>${v73M("物差しは当社が用意し、合格はお客様が決めます。", "STANDAGE provides the yardstick; you decide what passes.")}</b>${v73M("AI の答えに「違う」と教えた内容は、次から最優先で守ります。商材の種類が違うときは、右上の選択で変えられます。", "Corrections you teach are followed first. Change the product type at the top right if it is wrong.")}</p></div></details>`;
+    return `<div class="c v73" id="v73gp" style="margin-bottom:11px">
+    <div class="v73hd"><div><h3>🧭 ${v73M("この商品の育て方", "How the AI trading partner grows for this product")} <span class="nt">${v73M("この版で新規", "New")}</span></h3>
+      <p class="v73sub">${v73M("AI商社マンが、この商品で一人前になるまで", "Until the AI becomes fully competent for this product")}</p>
+      <p class="nn">${v73M("ゴールは、この商品が海外で、一分一秒でも早く・安全に・リスクを抑えて・利益を最大にできる売上をつくること。そのために、見込み顧客をいち早く見つけて商談にし、その前のスタートラインに早く・正確に・漏れなく立ちます。商材によって、吸収すべき情報と割合、一人前までの速さが違います。", "The goal: sales abroad that come fast, safely, with low risk and maximum profit — by finding and meeting the right prospects early, from a well-prepared starting line. What to absorb and how fast differ by product type.")}</p></div>
+      <div class="v73sel"><span>${v73M("商材の種類", "Product type")}</span>${sel}</div></div>
+    <div class="v73flow" aria-label="${v73M("ゴールまでの流れ", "Path to the goal")}"><span>${v73E(v73T(V73_STAGE[1]))}</span><i aria-hidden="true">→</i><span>${v73E(v73T(V73_STAGE[2]))}</span><i aria-hidden="true">→</i><span>${v73M("③ 早く・安全に・利益の出る売上", "③ Fast, safe, profitable sales")}</span></div>
+    ${tiles}
+    <div class="v73cols"><div><p class="lbl">${v73M("この商材の配点（灰色の印＝共通の配点）", "Weights for this type (grey mark = common)")}</p>${bars}</div>
+      <div><p class="lbl">${v73M("次に吸収する情報", "Next to absorb")}</p>${next.length ? `<ol class="v73nx">${next.map(x => `<li><b>${v73E(v73T(x.nm))}</b><span class="v73pr p-${x.p}">${v73E(v73T([(V73_PRI[x.p] || V73_PRI.k)[0], (V73_PRI[x.p] || V73_PRI.k)[1]]))}</span></li>`).join("")}</ol>` : `<p class="nn">${v73M("すべてそろいました。商談の記録を重ねて、判断の質を上げていきます。", "All set. Keep logging deals to sharpen judgement.")}</p>`}</div></div>
+    ${ai}
+    <p class="lbl" style="margin-top:12px">${v73M("この商材で先に吸収すべき情報", "What to absorb first for this product type")}</p>
+    <div class="v73stages">${stages}</div>
+    ${own}
+    ${how}</div>`;
+}
+function v73AiHtml(P, st, dd, tt) {
+    const on = v73AiOn();
+    const A = st.ai;
+    const head = `<div class="v73ai"><div class="v73aih"><b>🤖 ${v73M("AI商社マンの考え（この商品に合わせた育て方）", "The AI's own plan for this product")}</b>
+    <button class="btn ${A ? "g" : ""}" id="v73think" ${on && !V73.busy ? "" : "disabled"} onclick="v73Think()">${V73.busy ? v73M("考えています…（30秒ほど）", "Thinking… (about 30 s)") : A ? v73M("考え直させる", "Rethink") : v73M("AIに考えさせる", "Let the AI think")}</button></div>`;
+    if (!on && !A)
+        return head + `<p class="nn">${v73M("AIエンジンにつなぐと、AI商社マンが商品情報と規制の調査を読んで、この商品だけの「吸収すべき情報」・配点・一人前までの期間を考えて提案します。いまは、STANDAGE の事例から作った内蔵の物差しで判定しています。", "Connect an AI engine and the AI will read your product information and propose its own plan. For now the built-in yardstick from STANDAGE's cases is used.")}</p></div>`;
+    if (V73.err)
+        return head + `<p class="nn" style="color:var(--bad,#c0392b)">${v73E(V73.err)}</p></div>`;
+    if (!A)
+        return head + `<p class="nn">${v73M("「AIに考えさせる」を押すと、商品情報・成分・進出希望国・規制の調査を読んで、この商品で特に吸収すべき情報と、配点・期間の見直しを提案します（提案は、使うと決めるまで点数に入りません）。", "Press the button and the AI proposes product-specific items, weights and time (not used until you accept).")}</p></div>`;
+    const same = A.prof === P.key;
+    const using = !!(st.use && same);
+    const wd = V73_AREAS.map(a => { const b = (V73_PROF[A.prof] || V73_PROF.other).w[a]; const x = A.w ? A.w[a] : b; return x !== b ? `${v73T(V73_AREA_NM[a])} ${b}→${x}` : ""; }).filter(Boolean).join("・");
+    return head + `<div class="v73aib">
+    <p><b>${v73M("見立て", "Assessment")}</b>：${V73_PROF[A.prof] ? V73_PROF[A.prof].ic + " " + v73E(v73T(V73_PROF[A.prof].nm)) : ""}${A.why ? "。" + v73E(A.why) : ""}</p>
+    ${A.risks && A.risks.length ? `<p><b>${v73M("特に気をつける点", "Key risks")}</b>：${A.risks.map(v73E).join("／")}</p>` : ""}
+    ${A.focus && A.focus.length ? `<p><b>${v73M("いま先にやること", "Do first")}</b>：${A.focus.map(v73E).join("／")}</p>` : ""}
+    <p><b>${v73M("配点の見直し", "Weight changes")}</b>：${wd ? v73E(wd) : v73M("変えない", "none")}／<b>${v73M("一人前までの期間", "Time")}</b>：${A.mo ? A.mo[0] + "〜" + A.mo[1] + v73M("か月", " months") : "-"}${A.moWhy ? "（" + v73E(A.moWhy) + "）" : ""}</p>
+    ${A.add && A.add.length ? `<p><b>${v73M("この商品だけに足す情報", "Product-specific items")}</b>：${A.add.map(x => v73E(x.nm)).join("／")}</p>` : ""}
+    <p class="nn">${v73M("考えた日", "Thought on")} ${v73MD(A.at)}${A.eng ? "・" + v73E(A.eng) : ""}${A.kbN ? v73M(`・STANDAGE の一次情報（現場の記録・匿名）${A.kbN}件も読んで考えました`, `; also read ${A.kbN} STANDAGE first-hand records`) : ""}${!same ? v73M(`。いまの商材の種類（${v73T(P.nm)}）と見立てが違うため、使うときは商材の種類も見立てに合わせます`, `; the AI's type differs from the current one and will be applied too`) : ""}</p>
+    <div class="v73fb">${using ? `<span class="v73using">✓ ${v73M("この育て方を使っています", "Using this plan")}</span><button class="btn g" onclick="v73Use(0)">${v73M("内蔵の物差しに戻す", "Back to built-in")}</button>`
+        : `<button class="btn" onclick="v73Use(1)">${v73M("この育て方を使う", "Use this plan")}</button><span class="nn">${v73M("使うと、配点・期間・足した情報が点数に入ります", "Accepting applies the weights, time and items")}</span>`}</div></div></div>`;
+}
+if (typeof aiLevelCard === "function") {
+    const __alc73 = aiLevelCard;
+    aiLevelCard = function () {
+        let h = __alc73.apply(this, arguments);
+        try {
+            const L = aiLevel();
+            const G = L && L.gp;
+            if (!G)
+                return h;
+            const P = G.P;
+            const { dd, tt } = v73Cur();
+            const st = v73St(dd, tt);
+            if (v73Hist(st, L.pct) && v73Persist(tt))
+                v73Save();
+            const band = `<p class="v73band">📏 ${v73M("物差し", "Yardstick")}：<b>${P.ic} ${v73E(v73T(P.nm))}</b>${P.ai && st.use ? v73M("（AI商社マンの育て方を使用）", " (AI plan in use)") : ""}／${v73M(`一人前の条件：${(typeof GROW_PRO !== "undefined" ? GROW_PRO : 90)}% 以上＋必須の情報 ${G.items.filter(x => x.p === "m").length}件`, `Full competence: ${(typeof GROW_PRO !== "undefined" ? GROW_PRO : 90)}%+ and ${G.items.filter(x => x.p === "m").length} must-have items`)} <a href="#v73gp" onclick="v73Scroll(event)">${v73M("育て方を見る", "See the plan")}</a></p>`;
+            h = h.replace('<div class="growwrap">', band + '<div class="growwrap">');
+            if (G.gated)
+                h = h.replace(/<p class="g2to">[\s\S]*?<\/p>/, `<p class="g2to">${v73M(`一人前まで：必須の情報 あと ${G.musts.length}件`, `To full competence: ${G.musts.length} must-have items left`)}</p>`);
+            h = h.replace(/採点は内蔵ロジック（6分野の加重合計・根拠を明示）で、AIエンジンの接続有無にかかわらず同じ基準です。/, v73M(`採点は内蔵ロジック（6分野の加重合計・根拠を明示）で、配点と吸収すべき情報は商材の種類（${v73T(P.nm)}）で変わります。AIエンジンの接続の有無で基準は変わりません（AI の育て方は、使うと決めたときだけ入ります）。`, "Scoring is a fixed formula; weights and items depend on the product type. The AI's plan applies only when you accept it."));
+            h += v73CardHtml(L);
+        }
+        catch (e) {
+            try {
+                console.warn("v73 card", e);
+            }
+            catch (x) { }
+        }
+        return h;
+    };
+}
+function v73Rerender(keepY) { const y = window.scrollY; try {
+    render();
+}
+catch (e) { } if (keepY)
+    try {
+        window.scrollTo(0, y);
+    }
+    catch (e) { } }
+function v73Scroll(ev) { try {
+    if (ev)
+        ev.preventDefault();
+    const el = document.getElementById("v73gp");
+    if (el)
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+catch (e) { } }
+function v73Go(id, pre) { try {
+    if (typeof growGo === "function")
+        growGo(id, pre || "");
+    else
+        go(id);
+}
+catch (e) {
+    try {
+        go(id);
+    }
+    catch (x) { }
+} }
+function v73Toggle(id) { V73.open[id] = !V73.open[id]; v73Rerender(1); setTimeout(() => { try {
+    const t = document.getElementById("v73a-" + id);
+    if (t)
+        t.focus();
+}
+catch (e) { } }, 30); }
+function v73FindItem(id) { try {
+    const L = aiLevel();
+    return ((L.gp && L.gp.items) || []).find(x => x.id === id) || null;
+}
+catch (e) {
+    return null;
+} }
+function v73Answer(id) {
+    const ta = document.getElementById("v73a-" + id);
+    const a = String((ta && ta.value) || "").trim();
+    if (!a) {
+        try {
+            toast(v73M("答えを書いてください（確かめただけなら「確かめた」）", "Please write an answer"));
+        }
+        catch (e) { }
+        return;
+    }
+    const { dd, tt } = v73Cur();
+    const st = v73St(dd, tt);
+    const it = v73FindItem(id);
+    st.ans = st.ans || {};
+    st.ans[id] = { a: a.slice(0, 1000), at: Date.now() };
+    try {
+        if (tt && tt.src !== "sample") {
+            const q = it ? v73T(it.q || it.nm) : id;
+            tt.extraQA = (tt.extraQA || []).filter(x => !(x && x.v73 === id)).concat([{ q, a: a.slice(0, 1000), v73: id }]);
+        }
+    }
+    catch (e) { }
+    V73.open[id] = false;
+    if (v73Persist(tt))
+        v73Save();
+    try {
+        if (typeof syncTenant === "function" && tt && tt.src !== "sample")
+            syncTenant();
+    }
+    catch (e) { }
+    try {
+        toast(v73M("保存しました。AI商社マンが次の答えから使います", "Saved. The AI will use it from now on"));
+    }
+    catch (e) { }
+    v73Rerender(1);
+}
+function v73Confirm(id) {
+    const ta = document.getElementById("v73a-" + id);
+    const note = String((ta && ta.value) || "").trim().slice(0, 200);
+    const { dd, tt } = v73Cur();
+    const st = v73St(dd, tt);
+    st.done = st.done || {};
+    st.done[id] = { at: Date.now(), note };
+    V73.open[id] = false;
+    if (v73Persist(tt))
+        v73Save();
+    v73Rerender(1);
+}
+function v73Undo(id) {
+    const { dd, tt } = v73Cur();
+    const st = v73St(dd, tt);
+    let n = 0;
+    if (st.done && st.done[id]) {
+        delete st.done[id];
+        n++;
+    }
+    if (st.ans && st.ans[id]) {
+        delete st.ans[id];
+        n++;
+        try {
+            if (tt && tt.extraQA)
+                tt.extraQA = tt.extraQA.filter(x => !(x && x.v73 === id));
+        }
+        catch (e) { }
+    }
+    if (!n) {
+        try {
+            toast(v73M("登録・資料から自動で判定した項目です。元の登録を直すと変わります", "Detected from your records; edit the source to change it"));
+        }
+        catch (e) { }
+        return;
+    }
+    if (v73Persist(tt))
+        v73Save();
+    v73Rerender(1);
+}
+function v73SetProf(k) {
+    if (!V73_PROF[k])
+        return;
+    const { dd, tt } = v73Cur();
+    const st = v73St(dd, tt);
+    if (k === v73AutoProf(dd, tt))
+        delete st.prof;
+    else
+        st.prof = k;
+    if (st.ai && st.ai.prof !== k)
+        st.use = 0;
+    if (v73Persist(tt))
+        v73Save();
+    try {
+        toast(v73M("商材の種類を変えました。配点と吸収すべき情報が変わります", "Product type changed"));
+    }
+    catch (e) { }
+    v73Rerender(1);
+}
+function v73SaveOwn(clear) {
+    const { dd, tt } = v73Cur();
+    const st = v73St(dd, tt);
+    if (clear) {
+        delete st.fbOwn;
+        delete st.ownNote;
+    }
+    else {
+        const n = Math.round(+String((document.getElementById("v73fbown") || {}).value || "").trim());
+        const note = String((document.getElementById("v73ownnote") || {}).value || "").trim().slice(0, 200);
+        if (String((document.getElementById("v73fbown") || {}).value || "").trim() && !(isFinite(n) && n >= 5 && n <= 200)) {
+            try {
+                toast(v73M("商談の記録の目安は 5〜200 の数で入れてください", "Enter a number between 5 and 200"));
+            }
+            catch (e) { }
+            return;
+        }
+        if (isFinite(n) && n >= 5 && n <= 200)
+            st.fbOwn = n;
+        else
+            delete st.fbOwn;
+        if (note)
+            st.ownNote = note;
+        else
+            delete st.ownNote;
+    }
+    if (v73Persist(tt))
+        v73Save();
+    try {
+        toast(clear ? v73M("御社の物差しを消しました", "Cleared") : v73M("御社の物差しを保存しました。AI商社マンが使います", "Saved. The AI will use it"));
+    }
+    catch (e) { }
+    v73Rerender(1);
+}
+function v73Use(on) {
+    const { dd, tt } = v73Cur();
+    const st = v73St(dd, tt);
+    if (!st.ai)
+        return;
+    if (on) {
+        st.use = 1;
+        if (st.ai.prof && st.ai.prof !== v73ProfKey(dd, tt, st)) {
+            if (st.ai.prof === v73AutoProf(dd, tt))
+                delete st.prof;
+            else
+                st.prof = st.ai.prof;
+        }
+    }
+    else
+        st.use = 0;
+    if (v73Persist(tt))
+        v73Save();
+    try {
+        toast(on ? v73M("AI商社マンの育て方を使います", "Using the AI plan") : v73M("内蔵の物差しに戻しました", "Back to the built-in yardstick"));
+    }
+    catch (e) { }
+    v73Rerender(1);
+}
+function v73Ask(id) {
+    const it = v73FindItem(id);
+    if (!it)
+        return;
+    const q = v73T(it.ask || it.q || it.nm);
+    try {
+        const box = document.getElementById("aiq");
+        if (box) {
+            box.value = q;
+            box.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        if (typeof askFree === "function")
+            askFree(q);
+    }
+    catch (e) { }
+}
+function v73AiOn() { try {
+    return typeof ppReady === "function" && !!ppReady() && typeof llmAsk === "function";
+}
+catch (e) {
+    return false;
+} }
+function v73Brief(dd, tt, P, items) {
+    const p = tt || dd;
+    const j = (rows, n) => (rows || []).slice(0, n).map(r => Array.isArray(r) ? r.filter(Boolean).join(" | ") : String(r || "")).join("\n");
+    const tg = (Array.isArray(p.targets) && p.targets.length) ? p.targets : Object.keys(dd.regs || {});
+    return `商品名：${p.item || ""}（${p.itemEn || ""}）／カテゴリ：${p.cat || ""}／HS：${p.hs || "未確定"}／産地：${p.origin || ""}
+進出希望国：${tg.join("、") || "未定"}
+賞味期限・保証：${p.shelf || "未登録"}／認証：${p.cert || "未登録"}／MOQ：${p.moq || ""}／リードタイム：${p.lead || ""}／条件：${p.term || ""}
+強み：${(p.strengths || []).slice(0, 8).map(s => Array.isArray(s) ? s[0] : s).join("、")}
+${p.compTitle || "成分・材質"}：
+${j(p.compRows, 30)}
+いまの物差し：${v73T(P.nm)}（配点 ${v73Pts(P.w)}・商談記録の目安 ${P.fb}件・商談の単位 ${v73T(P.unit)}・一人前まで ${P.mo[0]}〜${P.mo[1]}か月・登録や認証の待ちは別：${v73T(P.wait)}）${P.ownNote ? "\n御社の一人前の基準：" + P.ownNote : ""}
+吸収すべき情報（済＝✓）：
+${items.map(x => `${x.ok ? "✓" : "・"}[${(V73_PRI[x.p] || V73_PRI.k)[0]}] ${v73T(x.nm)}`).join("\n")}`;
+}
+async function v73Think() {
+    if (V73.busy)
+        return;
+    if (!v73AiOn()) {
+        try {
+            toast(v73M("AIエンジンにつながっていません", "No AI engine connected"));
+        }
+        catch (e) { }
+        return;
+    }
+    const { dd, tt } = v73Cur();
+    const st = v73St(dd, tt);
+    const L = aiLevel();
+    const G = L.gp;
+    if (!G)
+        return;
+    V73.busy = 1;
+    V73.err = "";
+    v73Rerender(1);
+    try {
+        const sys = "あなたは AI商社マン（日本の中小企業の輸出を伴走する商社マン）。商品情報を読み、この商品で AI商社マン自身が一人前になるために、何の情報を先に吸収すべきかを考える。返答は指定の JSON だけ。登録データに無い事実を作らない。規制の数値は確かなものだけ書き、分からなければ『国ごとに確かめる』と書く。";
+        const keys = V73_ORDER.map(k => `${k}=${V73_PROF[k].nm[0]}`).join("、");
+        let kbN = 0;
+        const mkQ = () => `次の商品の輸出を伴走する AI商社マンとして、自分の「育て方」を考えてください。
+ゴール：この商品が海外で、一分一秒でも早く・安全に・リスクを抑えて・利益を最大にできる貿易売上をつくる。そのために海外の適切な見込み顧客をいち早く見つけて商談化する。そのための事前準備（スタートライン）に早く・正確に・漏れなく立つ。
+返答は JSON だけ：{"prof":"商材の種類（${keys} のどれか）","why":"見立ての理由（日本語・2文まで）","w":{"fb":数,"product":数,"market":数,"dialog":数,"practice":数,"data":数},"mo":[最短か月,最長か月],"moWhy":"期間の理由（1文）","add":[{"nm":"この商品だけに足す、先に吸収すべき情報（30字まで）","why":"理由（1文）","area":"product|market|fb|practice|data","pri":"must|key|nice","goal":"f s r p を組み合わせた文字（f早く s安全 r リスク p利益）","stage":1か2か3,"q":"お客様に聞く質問（1文）","cty":"関係する国（無ければ空）"}],"focus":["いま先にやること（3つまで・短く）"],"risks":["この商品で特に気をつける点（3つまで・短く）"]}
+決まり：
+・w は 6分野の配点で合計 100。いまの物差しから各分野 ±10 までの見直しにとどめる
+・add は、下の「吸収すべき情報」に無いものだけ、6つまで。成分×進出希望国の組み合わせで止まりそうな点（上限・分類・登録・検疫・認証・危険物・商標など）を優先する
+・stage：1＝スタートライン（事前準備）、2＝見込み顧客の発見・商談化、3＝売上の構築
+・mo は、この商品で一人前（必須の情報がそろい、商談の経験が積み上がる）までの目安。1〜36 の整数
+=== 商品と、いまの物差し ===
+${v73Brief(dd, tt, G.P, G.items)}
+=== 登録データ（詳細） ===
+${(typeof ppContext === "function" ? String(ppContext() || "") : "").slice(0, 6000)}`;
+        const ask = async () => {
+            try {
+                if (typeof V66KB !== "undefined" && V66KB && V66KB.ctx && V66KB.ctx.items)
+                    kbN = V66KB.ctx.items.length;
+            }
+            catch (e) { }
+            const kbRule = kbN ? "\n・「STANDAGE 一次情報」の節は、STANDAGE の商社マンが海外の現場で集めた記録を匿名にしたもの。規制・バイヤーの反応・見送りの理由があれば優先して add・risks・why に反映する。社名・人名・商品名は書かない" : "";
+            return llmAsk(mkQ() + kbRule, 2400, { sys, timeout: 120000, task: "gp", noWeb: 1 });
+        };
+        const p0 = tt || dd;
+        const kq = [p0.cat, p0.item, "規制 認証 バイヤーの反応 見送りの理由 成約 価格 物流"].filter(Boolean).join(" ");
+        const r = (typeof v66kbWith === "function") ? await v66kbWith(kq, null, ask) : await ask();
+        const t = String((r && r.txt) || "").replace(/```json|```/g, "").trim();
+        const a = t.indexOf("{"), b = t.lastIndexOf("}");
+        if (a < 0 || b <= a)
+            throw new Error(v73M("AI の答えが読めませんでした", "Could not read the AI answer"));
+        const A = v73Valid(JSON.parse(t.slice(a, b + 1)), G.P);
+        A.at = Date.now();
+        A.kbN = kbN;
+        try {
+            A.eng = (r && (r.model || r.eng)) ? String(r.model || r.eng).slice(0, 40) : "";
+        }
+        catch (e) { }
+        st.ai = A;
+        if (st.use && A.prof !== v73ProfKey(dd, tt, st))
+            st.use = 0;
+        if (v73Persist(tt))
+            v73Save();
+    }
+    catch (e) {
+        V73.err = v73M("考えられませんでした：", "Could not think: ") + String((e && e.message) || e).slice(0, 160);
+    }
+    V73.busy = 0;
+    v73Rerender(1);
+}
+function v73Valid(j, P) {
+    const A = {};
+    A.prof = V73_PROF[j && j.prof] ? j.prof : P.key;
+    const base = (V73_PROF[A.prof] || V73_PROF.other).w;
+    const lo = k => Math.max(0, base[k] - 10), hi = k => base[k] + 10;
+    const w = {};
+    V73_AREAS.forEach(k => { let v = Math.round(+((j && j.w) || {})[k]); if (!isFinite(v))
+        v = base[k]; w[k] = Math.max(lo(k), Math.min(hi(k), v)); });
+    let d = 100 - V73_AREAS.reduce((s2, k) => s2 + w[k], 0);
+    for (let i = 0; d !== 0 && i < 300; i++) {
+        const c = V73_AREAS.filter(k => d > 0 ? w[k] < hi(k) : w[k] > lo(k));
+        if (!c.length)
+            break;
+        c.sort((x, y) => d > 0 ? (w[x] - base[x]) - (w[y] - base[y]) : (w[y] - base[y]) - (w[x] - base[x]));
+        w[c[0]] += d > 0 ? 1 : -1;
+        d += d > 0 ? -1 : 1;
+    }
+    if (d !== 0)
+        V73_AREAS.forEach(k => w[k] = base[k]);
+    A.w = w;
+    const mo = Array.isArray(j && j.mo) ? j.mo.map(x => Math.round(+x)).filter(x => isFinite(x)) : [];
+    A.mo = mo.length >= 2 ? [Math.max(1, Math.min(36, Math.min(mo[0], mo[1]))), Math.max(1, Math.min(36, Math.max(mo[0], mo[1])))] : (V73_PROF[A.prof] || P).mo.slice();
+    const s = (v, n) => String(v == null ? "" : v).replace(/[<>]/g, "").trim().slice(0, n);
+    A.why = s(j && j.why, 200);
+    A.moWhy = s(j && j.moWhy, 120);
+    A.risks = (Array.isArray(j && j.risks) ? j.risks : []).map(x => s(x, 80)).filter(Boolean).slice(0, 3);
+    A.focus = (Array.isArray(j && j.focus) ? j.focus : []).map(x => s(x, 80)).filter(Boolean).slice(0, 3);
+    const PR = { must: "m", key: "k", nice: "n", m: "m", k: "k", n: "n" };
+    A.add = (Array.isArray(j && j.add) ? j.add : []).map(x => ({ nm: s(x && x.nm, 60), why: s(x && x.why, 140), area: V73_AREAS.includes(x && x.area) && x.area !== "dialog" ? x.area : "market", pri: PR[x && x.pri] || "k",
+        goal: (String((x && x.goal) || "s").match(/[fsrp]/g) || ["s"]).filter((c, i, a) => a.indexOf(c) === i).join(""), stage: [1, 2, 3].includes(+(x && x.stage)) ? +x.stage : 1, q: s(x && x.q, 140), cty: s(x && x.cty, 30) })).filter(x => x.nm).slice(0, 6);
+    return A;
+}
+if (typeof ppContext === "function") {
+    const __ppc73 = ppContext;
+    ppContext = function () {
+        let s = __ppc73.apply(this, arguments);
+        try {
+            const L = aiLevel();
+            const G = L && L.gp;
+            if (!G)
+                return s;
+            const miss = G.items.filter(x => !x.ok);
+            s = String(s || "") + `\n【AI商社マンの育て方（この商品）】商材の種類：${G.P.nm[0]}／配点 ${V73_AREAS.map(a => V73_AREA_NM[a][0] + G.P.w[a]).join("・")}／一人前の条件：${(typeof GROW_PRO !== "undefined" ? GROW_PRO : 90)}%以上＋必須の情報すべて／商談の単位：${G.P.unit[0]}・商談の記録の目安 ${G.P.fb}件${G.P.fbOwn ? "（御社の設定）" : ""}${G.P.ownNote ? "／御社の一人前の基準：" + G.P.ownNote : ""}／まだ吸収していない情報：${miss.slice(0, 12).map(x => `[${V73_PRI[x.p][0]}]${x.nm[0]}`).join("、") || "なし"}。関係する質問には、足りない情報を正直に伝え、先に確かめるべきことを提案する。`;
+        }
+        catch (e) { }
+        return s;
+    };
+}
+function v73AskBrain(q) {
+    q = String(q || "");
+    if (!/(成長レベル|一人前|物差し|育て方)/.test(q) || !/(決め|基準|計算|誰|どう|なぜ|何|条件|仕組|理由|意味|足り|吸収|速|期間|割合|配点)/.test(q))
+        return null;
+    const L = aiLevel();
+    const G = L && L.gp;
+    if (!G)
+        return null;
+    const P = G.P;
+    const miss = G.items.filter(x => !x.ok);
+    const PRO = (typeof GROW_PRO !== "undefined") ? GROW_PRO : 90;
+    return { a: v73M(`この商品の物差しは <b>${P.ic} ${v73E(v73T(P.nm))}</b> です。<br>・成長レベル＝6分野の達成率 × この商材の配点（${v73E(v73Pts(P.w))}）の合計。いま <b>${L.pct}%</b>（${v73E(L.stage)}）<br>・各分野＝これまでの経験の量 ${Math.round((1 - V73_BLEND) * 100)}%＋この商材で先に吸収すべき情報の揃い具合 ${Math.round(V73_BLEND * 100)}%<br>・一人前＝${PRO}% 以上、かつ必須の情報がすべてそろうこと（いま必須の残り <b>${G.musts.length}件</b>）<br>・一人前までの目安：${P.mo[0]}〜${P.mo[1]}か月（STANDAGE の支援の記録から・お約束ではありません）<br>・配点の理由：${v73E(v73T(P.why))}<br>・商談の単位：${v73E(v73T(P.unit))}${P.ownNote ? `<br>・御社の一人前の基準：${v73E(P.ownNote)}` : ""}<br>${miss.length ? `・次に吸収する情報：${miss.slice(0, 3).map(x => v73E(v73T(x.nm))).join("／")}<br>` : ""}物差しは当社が用意し、合格はお客様が決めます。商材の種類は「この商品の育て方」で変えられます。`, `Yardstick for this product: <b>${P.ic} ${v73E(v73T(P.nm))}</b>.<br>Growth level = 6 areas × weights (${v73E(v73Pts(P.w))}); now <b>${L.pct}%</b>.<br>Full competence = ${PRO}%+ and all must-have items (${G.musts.length} left).<br>Typical time: ${P.mo[0]}–${P.mo[1]} months (a guide, not a promise).`) };
+}
+if (typeof brain === "function") {
+    const __br73 = brain;
+    brain = function (q, opts) { try {
+        const q0 = (opts && opts.raw) || q;
+        const r = v73AskBrain(q0);
+        if (r)
+            return r;
+    }
+    catch (e) { } return __br73.apply(this, arguments); };
+}
+(function () {
+    try {
+        if (document.getElementById("v73css"))
+            return;
+        const st = document.createElement("style");
+        st.id = "v73css";
+        st.textContent = `
+.v73band{margin:2px 0 10px;padding:7px 10px;border-radius:9px;background:var(--surface-2,rgba(0,100,191,.06));border:1px solid var(--line);font-size:12.5px;line-height:1.6;color:var(--ink-2)}
+.v73band b{color:var(--ink)}.v73band a{margin-left:6px;color:var(--bl);font-weight:700}
+.c.v73 .v73hd{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.c.v73 .v73hd>div:first-child{flex:1 1 420px;min-width:0}
+.c.v73 .v73sub{margin:2px 0 4px;font-size:12px;color:var(--ink-3)}
+.c.v73 .v73sel{display:flex;flex-direction:column;gap:4px;font-size:11.5px;color:var(--ink-3);min-width:min(260px,100%)}
+.c.v73 .v73sel select{max-width:100%;font-size:13px}
+.c.v73 .v73flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0;font-size:12px}
+.c.v73 .v73flow span{padding:4px 9px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.c.v73 .v73flow span:last-child{border-color:var(--good);color:var(--good);font-weight:700}
+.c.v73 .v73flow i{color:var(--ink-3);font-style:normal}
+.c.v73 .v73tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin:6px 0 12px}
+.c.v73 .v73tl{border:1px solid var(--line);border-radius:10px;padding:9px 11px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.c.v73 .v73tl span{font-size:11.5px;color:var(--ink-3)}.c.v73 .v73tl b{font-size:16px;line-height:1.35;overflow-wrap:anywhere}.c.v73 .v73tl small{font-size:11.5px;color:var(--ink-2);line-height:1.5}
+.c.v73 .v73cols{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:14px}
+@media (max-width:760px){.c.v73 .v73cols{grid-template-columns:1fr}}
+.c.v73 .v73w{display:flex;flex-direction:column;gap:5px}
+.c.v73 .v73wr{display:grid;grid-template-columns:minmax(96px,9em) 1fr 4.6em;gap:8px;align-items:center;font-size:12px}
+.c.v73 .v73wb{position:relative;height:9px;border-radius:5px;background:var(--line-2,#e8edf2)}
+.c.v73 .v73wb i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--bl)}
+.c.v73 .v73wb em{position:absolute;top:-3px;width:2px;height:15px;background:var(--ink-3);opacity:.7}
+.c.v73 .v73wr small{margin-left:3px;font-size:10.5px}.c.v73 .v73wr small.up{color:var(--good)}.c.v73 .v73wr small.dn{color:var(--ink-3)}
+.c.v73 .v73nx{margin:4px 0 0 1.2em;padding:0;font-size:12.5px;line-height:1.7}
+.c.v73 .v73ai{margin-top:12px;border:1px dashed var(--line);border-radius:10px;padding:10px 12px}
+.c.v73 .v73aih{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.c.v73 .v73aib p{margin:6px 0;font-size:12.5px;line-height:1.65}
+.c.v73 .v73using{color:var(--good);font-weight:700;font-size:12.5px}
+.c.v73 .v73fb{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.c.v73 .v73stages{display:flex;flex-direction:column;gap:8px}
+.c.v73 .v73st{border:1px solid var(--line);border-radius:10px;padding:2px 10px}
+.c.v73 .v73st>summary{display:flex;justify-content:space-between;gap:8px;cursor:pointer;padding:7px 0;font-size:13px;list-style:none}
+.c.v73 .v73st>summary::-webkit-details-marker{display:none}
+.c.v73 .v73ul{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-direction:column}
+.c.v73 .v73it{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:8px;padding:8px 0;border-top:1px solid var(--line-2,#eef1f4);align-items:start}
+.c.v73 .v73it .v73ck{font-weight:800;color:var(--ink-3);text-align:center}.c.v73 .v73it.ok .v73ck{color:var(--good)}
+.c.v73 .v73it.ok .v73nm b{color:var(--ink-2)}
+.c.v73 .v73nm{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;font-size:13px}
+.c.v73 .v73pr{font-size:10.5px;padding:1px 6px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.c.v73 .v73pr.p-m{border-color:var(--or);color:var(--or);font-weight:700}.c.v73 .v73pr.p-k{border-color:var(--bl);color:var(--bl)}
+.c.v73 .v73tag{font-size:10.5px;padding:1px 6px;border-radius:999px;background:rgba(248,149,29,.12);color:var(--ink-2)}.c.v73 .v73tag.ai{background:rgba(0,100,191,.1)}
+.c.v73 .v73g{font-size:10.5px;color:var(--ink-3);white-space:nowrap}
+.c.v73 .v73why{font-size:11.5px;color:var(--ink-2);line-height:1.55;margin-top:2px}
+.c.v73 .v73from{color:var(--good);margin-left:4px}.c.v73 .v73ans{display:block;color:var(--ink);margin-top:2px}
+.c.v73 .v73act{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:260px}
+.c.v73 .v73b{font-size:11.5px;padding:4px 8px}
+@media (max-width:640px){.c.v73 .v73it{grid-template-columns:20px minmax(0,1fr)}.c.v73 .v73act{grid-column:2;justify-content:flex-start;max-width:none}}
+.c.v73 .v73form{margin-top:6px;display:flex;flex-direction:column;gap:5px}
+.c.v73 .v73form label{font-size:12px;color:var(--ink)}
+.c.v73 .v73form textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;font-size:12.5px;background:var(--surface);color:var(--ink)}
+.c.v73 .v73own{margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:4px 12px}
+.c.v73 .v73own>summary{cursor:pointer;font-size:13px;font-weight:700;padding:6px 0}
+.c.v73 .v73ownb{display:flex;flex-direction:column;gap:7px;padding-bottom:8px}
+.c.v73 .v73ownb label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink-2)}
+.c.v73 .v73ownb input,.c.v73 .v73ownb textarea{max-width:100%;box-sizing:border-box;font:inherit;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--surface);color:var(--ink)}
+.c.v73 .v73ownb input{width:9em}
+.c.v73 .v73how{margin-top:12px;border-top:1px dashed var(--line);padding-top:8px}
+.c.v73 .v73how>summary{cursor:pointer;font-size:13px;font-weight:700}
+.c.v73 .v73howb p{font-size:12.5px;line-height:1.7;margin:6px 0}
+`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+window.V73GP = { ver: "21.73", prof: V73_PROF, order: V73_ORDER, common: V73_COMMON, spec: V73_SPEC, rules: V73_RULES, auto: v73AutoProf, valid: v73Valid };
+try {
+    if (typeof S30_NEWS !== "undefined" && Array.isArray(S30_NEWS)) {
+        if (!S30_NEWS.some(x => x && x[1] === "v21.73"))
+            S30_NEWS.unshift(["2026-11", "v21.73", "AI商社マンの育て方を、商材ごとに",
+                ["商品情報から商材の種類（食品・酒類・健康食品・化粧品・生鮮・医療・工業・電気・雑貨・中古車など11種類）を決め、成長レベルの配点・商談記録の目安・一人前までの期間の目安を商材ごとに変える",
+                    "AI商社マンの画面に「この商品の育て方」：スタートライン（事前準備）→見込み顧客の発見・商談化→売上の構築の順に、この商材で先に吸収すべき情報（必須・重要・あると良い）と、そろったかを表示",
+                    "進出希望国と成分の組み合わせの注意（例：香港のビタミンD・電池の UN38.3・ワシントン条約・中国の輸入停止・EU の化粧品の責任者）を、STANDAGE の事例から自動で足す",
+                    "一人前＝90% 以上、かつ必須の情報がすべてそろうこと。項目ごとに「答える・確かめた」「AIに聞く」ができ、答えは AI商社マンが次から使う",
+                    "AI エンジンにつながっていれば、AI商社マンが商品を読んで自分の育て方（この商品だけの情報・配点・期間・注意点）を考えて提案。「この育て方を使う」を押したときだけ点数に入る"]]);
     }
 }
 catch (e) { }
