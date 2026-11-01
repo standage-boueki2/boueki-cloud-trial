@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="b9635a1bce1b";
+const BC20_BUILD="1f8c6f85aa83";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -45352,7 +45352,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.71.2";
+const BC20_VER = "21.72";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -141904,6 +141904,1013 @@ try {
                     "相手ごとに、手法・言語・タイミング・3通の流れ（初回・フォロー1・フォロー2）と文面を提案。送った相手は自社のバイヤーに入り、フォローの予定がタスクに入る",
                     "「エージェントの次の一手」：返信の無い相手へのフォロー、返信が来た相手とのやり取りを案内",
                     "出荷・入金（書類をつくる・出荷を進める・受注・請求・入金）は開発中（Coming Soon）。先行プレビューで開発中の画面を見本で見られる"]]);
+    }
+}
+catch (e) { }
+var V72RP = { busy: {}, pend: null, qrun: 0, tm: 0 };
+const V72RP_KIND = { quote: "見積依頼", question: "質問", sample: "サンプル依頼", meeting: "商談の希望", decline: "お断り", other: "その他" };
+const V72RP_VALID = 30;
+const V72RP_TERMS = /\b(EXW|FCA|FAS|FOB|CFR|CNF|CIF|CPT|CIP|DAP|DPU|DDP)\b/i;
+const V72RP_PORT = { "横浜": "Yokohama", "東京": "Tokyo", "神戸": "Kobe", "大阪": "Osaka", "名古屋": "Nagoya", "博多": "Hakata", "福岡": "Fukuoka", "清水": "Shimizu", "川崎": "Kawasaki", "千葉": "Chiba", "北九州": "Kitakyushu", "門司": "Moji", "四日市": "Yokkaichi", "広島": "Hiroshima", "仙台": "Sendai", "新潟": "Niigata", "苫小牧": "Tomakomai", "那覇": "Naha", "成田": "Narita", "羽田": "Haneda", "関西": "Kansai", "中部": "Chubu", "日本": "Japan" };
+function v72T(s) { try {
+    return typeof v30T === "function" ? v30T(s) : s;
+}
+catch (e) {
+    return s;
+} }
+function v72F(s, o) { let t = v72T(s); Object.keys(o || {}).forEach(k => { t = t.split("{" + k + "}").join(String(o[k])); }); return t; }
+function v72E(s) { try {
+    return esc(s);
+}
+catch (e) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+} }
+function v72N(s) { return v72E(v72T(s)); }
+function v72Toast(s) { try {
+    toast(s);
+}
+catch (e) { } }
+function v72Ai() { try {
+    return typeof ppReady === "function" && !!ppReady();
+}
+catch (e) {
+    return false;
+} }
+function v72Ths() { try {
+    return typeof dmThreads === "function" ? (dmThreads() || {}) : {};
+}
+catch (e) {
+    return {};
+} }
+function v72Save() { try {
+    if (typeof saveTen === "function")
+        saveTen();
+}
+catch (e) { } }
+function v72D() { try {
+    return (typeof D !== "undefined" && D) || {};
+}
+catch (e) {
+    return {};
+} }
+function v72Sig(m) { return m ? String(m.msgId || ((+m.at || 0) + "|" + String(m.body || "").slice(0, 60))) : ""; }
+function v72Last(th) { const ms = (th && Array.isArray(th.msgs)) ? th.msgs : []; return ms.length ? ms[ms.length - 1] : null; }
+function v72Need(th) { const m = v72Last(th); return !!(m && m.w === "by" && (!th.v72 || th.v72.sig !== v72Sig(m))); }
+function v72AutoOn() { try {
+    const t = (typeof TEN !== "undefined" && TEN) || null;
+    return !(t && t.v72rpOff);
+}
+catch (e) {
+    return true;
+} }
+function v72Today() { try {
+    if (typeof TODAYS !== "undefined" && TODAYS)
+        return String(TODAYS).slice(0, 10);
+}
+catch (e) { } return new Date().toISOString().slice(0, 10); }
+function v72AddDays(n) {
+    const t = v72Today();
+    try {
+        if (typeof addDays === "function") {
+            const r = addDays(t, n);
+            if (r)
+                return String(r).slice(0, 10);
+        }
+    }
+    catch (e) { }
+    const d = new Date(t + "T00:00:00Z");
+    d.setUTCDate(d.getUTCDate() + n);
+    return d.toISOString().slice(0, 10);
+}
+function v72Day(ms) { try {
+    const d = new Date(ms);
+    return (d.getMonth() + 1) + "/" + d.getDate() + " " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+}
+catch (e) {
+    return "";
+} }
+function v72Val(v) { v = String(v == null ? "" : v).trim(); return /^[\s—\-–ー・]*$|未登録|未設定|^なし$/.test(v) ? "" : v; }
+function v72Ascii(s) { return !!String(s || "").trim() && !/[^\x20-\x7E]/.test(String(s)); }
+function v72Uniq(a) { const out = []; (a || []).forEach(x => { x = String(x || "").trim(); if (x && !out.includes(x))
+    out.push(x); }); return out; }
+function v72Buyer(th) { try {
+    const b = typeof myBuyers === "function" && myBuyers().find(x => x && x.id === th.id);
+    if (b && b.co)
+        return String(b.co);
+}
+catch (e) { } return [th.cty, th.biz].filter(Boolean).join("の") || String(th.id || ""); }
+function v72Num(s) { const m = String(s == null ? "" : s).replace(/,/g, "").match(/\d+(?:\.\d+)?/); return m ? parseFloat(m[0]) : null; }
+function v72Cur(s) {
+    s = String(s || "");
+    const m = s.match(/(HK\$|S\$|NT\$|A\$|C\$|US\$|USD|EUR|€|JPY|¥|￥|RMB|CNY|\$)/);
+    if (!m)
+        return /円/.test(s) ? "JPY " : "";
+    const c = m[1];
+    return c === "$" || c === "USD" ? "US$" : (c === "￥" || c === "¥" || c === "JPY") ? "JPY " : c === "EUR" ? "€" : (c === "RMB" || c === "CNY") ? "CNY " : c;
+}
+function v72Money(cur, v) {
+    if (v == null || !isFinite(v))
+        return "—";
+    const jp = /JPY/.test(cur || "");
+    return (cur || "US$") + (+v).toLocaleString("en-US", { minimumFractionDigits: jp ? 0 : 2, maximumFractionDigits: jp ? 0 : 2 });
+}
+function v72Band(s) {
+    s = String(s || "").replace(/,/g, "").trim();
+    let m;
+    if ((m = s.match(/(\d+)\s*[^\d〜~～\-–\s]{0,3}\s*[〜~～\-–]\s*(\d+)/)))
+        return { lo: +m[1], hi: +m[2] };
+    if ((m = s.match(/^[^\d]{0,4}[〜~～]\s*(\d+)/)))
+        return { lo: 0, hi: +m[1] };
+    if ((m = s.match(/(\d+)\s*[^\d〜~～\s]{0,3}\s*[〜~～]\s*$/)) || (m = s.match(/(\d+)\s*[^\d\s]{0,3}\s*(?:以上|\+|or more|and above)/i)))
+        return { lo: +m[1], hi: Infinity };
+    return null;
+}
+function v72Table() {
+    const d = v72D();
+    const cols = (Array.isArray(d.priceCols) ? d.priceCols : []).map(c => String(c == null ? "" : c));
+    const rows = (Array.isArray(d.priceRows) ? d.priceRows : []).filter(r => Array.isArray(r) && r.some(v => String(v == null ? "" : v).trim())).map(r => r.map(v => String(v == null ? "" : v)));
+    return { cols, rows };
+}
+function v72Col(cols, re) { return cols.findIndex((c, i) => i > 0 && re.test(c)); }
+function v72PriceCol(cols) { return v72Col(cols, /単価|価格|price|fob|cif|卸値|unit/i); }
+function v72Match(rows, hint) {
+    const norm = s => String(s || "").toLowerCase().replace(/[\s\-_]+/g, "");
+    const h = norm(hint);
+    if (!h)
+        return null;
+    return rows.find(r => { const a = norm(r[0]); return a && (h.includes(a) || (h.length >= 3 && a.includes(h))); })
+        || rows.find(r => { const a = norm(r[1]); return a && a.length >= 2 && (a === h || (a.length >= 3 && h.includes(a))); }) || null;
+}
+function v72RowTiers(T) {
+    if (!/数量|qty|quantity|ロット|lot|個数|注文数|order/i.test(String(T.cols[0] || "")))
+        return null;
+    const bands = T.rows.map(r => v72Band(r[0]));
+    if (!bands.length || bands.some(b => !b))
+        return null;
+    const pi = v72PriceCol(T.cols), i = pi > 0 ? pi : 1;
+    const L = T.rows.map((r, k) => ({ lo: bands[k].lo, hi: bands[k].hi, label: String(r[0]), v: r[i], n: v72Num(r[i]), cur: v72Cur(r[i]) || v72Cur(T.cols[i]) })).filter(x => x.n != null);
+    return L.length ? L.sort((a, b) => a.lo - b.lo) : null;
+}
+function v72RowPrice(T, row) {
+    const tiers = [];
+    T.cols.forEach((c, i) => { if (i === 0)
+        return; const b = v72Band(c); if (b && v72Num(row[i]) != null)
+        tiers.push({ lo: b.lo, hi: b.hi, label: c, v: row[i], n: v72Num(row[i]), cur: v72Cur(row[i]) || v72Cur(c) }); });
+    if (tiers.length)
+        return tiers.sort((a, b) => a.lo - b.lo);
+    const pi = v72PriceCol(T.cols);
+    if (pi > 0 && v72Num(row[pi]) != null)
+        return [{ lo: 0, hi: Infinity, label: T.cols[pi], v: row[pi], n: v72Num(row[pi]), cur: v72Cur(row[pi]) || v72Cur(T.cols[pi]) }];
+    return null;
+}
+function v72Pick(tiers, qty) { if (!tiers || !tiers.length)
+    return null; if (qty == null)
+    return null; let hit = tiers[0]; tiers.forEach(t => { if (qty >= t.lo)
+    hit = t; }); return hit; }
+function v72PortEn(s) { s = String(s || "").trim(); if (!s)
+    return ""; if (v72Ascii(s))
+    return s; for (const k of Object.keys(V72RP_PORT))
+    if (s.includes(k))
+        return V72RP_PORT[k]; return "Japan"; }
+function v72Basis() {
+    const d = v72D();
+    const T = v72Table();
+    const src = [d.term, d.pol].filter(Boolean).join(" ");
+    const m = src.match(V72RP_TERMS);
+    const term = m ? m[1].toUpperCase().replace("CNF", "CFR") : (T.cols.some(c => /cif/i.test(c)) ? "CIF" : "FOB");
+    let port = "";
+    if (m) {
+        const rest = src.slice(src.search(V72RP_TERMS) + m[1].length).trim().split(/[／\/、,，(（\s]/)[0];
+        port = rest || "";
+    }
+    if (!port && d.pol)
+        port = String(d.pol);
+    return { term, port, portEn: v72PortEn(port), assumed: !m };
+}
+function v72Quote(req) {
+    const d = v72D(), T = v72Table(), B = v72Basis();
+    const Q = { lines: [], unknown: [], warn: [], notesEn: [], valid: v72AddDays(V72RP_VALID), total: null, cur: "", basis: B.term, port: B.port, portEn: B.portEn, reqTerm: "", reqPort: "", payEn: "", none: 0 };
+    if (!T.rows.length) {
+        Q.none = 1;
+        Q.unknown.push(v72T("価格表（商品情報に登録がありません）"));
+        return Q;
+    }
+    const items = (req && Array.isArray(req.items) && req.items.length ? req.items : [{}]).slice(0, 5);
+    const RT = v72RowTiers(T), mi = v72Col(T.cols, /moq|最小|最低/i), li = v72Col(T.cols, /リードタイム|納期|lead/i);
+    const moqAll = v72Num(d.moq), descOk = T.cols.length > 1 && !v72Band(T.cols[1]) && !/単価|価格|price|moq|最小|リード|納期|lead/i.test(T.cols[1]);
+    const seen = {};
+    items.forEach(it => {
+        it = it || {};
+        const q = it.qty == null || it.qty === "" ? null : v72Num(it.qty);
+        const qty = q != null && q > 0 ? Math.round(q) : null;
+        const unit = String(it.unit || "").slice(0, 16);
+        if (RT) {
+            const hit = v72Pick(RT, qty);
+            if (seen.__rt)
+                return;
+            seen.__rt = 1;
+            Q.lines.push({ sku: String(d.sku || (v72Ascii(d.itemEn) ? d.itemEn : "") || d.item || "").slice(0, 48), desc: "", qty, unit, tiers: RT, hit, moq: moqAll, lead: String(d.lead || "") });
+            return;
+        }
+        let rows = [];
+        const m = v72Match(T.rows, it.sku);
+        if (m)
+            rows = [m];
+        else if (T.rows.length === 1)
+            rows = [T.rows[0]];
+        else {
+            rows = T.rows.slice(0, 5);
+            if (String(it.sku || "").trim())
+                Q.unknown.push(v72F("ご指定の品目「{s}」が価格表に見つかりません（近い品目の価格を出しています）", { s: String(it.sku).slice(0, 40) }));
+        }
+        rows.forEach(r => {
+            const key = String(r[0]) + "|" + qty;
+            if (seen[key])
+                return;
+            seen[key] = 1;
+            const tiers = v72RowPrice(T, r);
+            if (!tiers)
+                return;
+            Q.lines.push({ sku: String(r[0] || "").slice(0, 48), desc: descOk ? String(r[1] || "").slice(0, 40) : "", qty, unit, tiers, hit: v72Pick(tiers, qty), moq: mi > 0 && v72Num(r[mi]) != null ? v72Num(r[mi]) : moqAll, lead: li > 0 ? String(r[li] || "") : String(d.lead || "") });
+        });
+    });
+    Q.lines.forEach(l => { if (l.hit && l.qty != null)
+        l.amount = Math.round(l.hit.n * l.qty * 100) / 100; if (l.moq && l.qty != null && l.qty < l.moq)
+        l.moqWarn = 1; });
+    if (!Q.lines.length) {
+        Q.none = 1;
+        Q.unknown.push(v72T("価格表から単価を読めませんでした（価格の列を確かめてください）"));
+        return Q;
+    }
+    Q.cur = (Q.lines[0].hit || Q.lines[0].tiers[0] || {}).cur || "US$";
+    if (Q.lines.every(l => l.amount != null && ((l.hit || {}).cur || "US$") === Q.cur))
+        Q.total = Math.round(Q.lines.reduce((s, l) => s + l.amount, 0) * 100) / 100;
+    if (Q.lines.some(l => l.qty == null))
+        Q.unknown.push(v72T("数量（数量を伺えば、合計を出します）"));
+    Q.lines.filter(l => l.moqWarn).forEach(l => Q.warn.push(v72F("{s} は数量 {q} が MOQ（{m}）より少なくなっています。受けるかどうか確かめてください", { s: l.sku, q: l.qty.toLocaleString(), m: l.moq.toLocaleString() })));
+    if (B.assumed)
+        Q.warn.push(v72T("取引条件の登録が無いので、FOB（日本の港）として書いています。商品情報に取引条件を登録してください"));
+    const rq = String((req && req.term) || "").toUpperCase().match(V72RP_TERMS);
+    Q.reqTerm = rq ? rq[1].replace("CNF", "CFR") : "";
+    Q.reqPort = String((req && req.port) || "").slice(0, 40);
+    if (Q.reqTerm && Q.reqTerm !== Q.basis) {
+        Q.notesEn.push(`Note: The prices above are ${Q.basis}${Q.portEn ? " " + Q.portEn : ""}. We will send the ${Q.reqTerm}${Q.reqPort && v72Ascii(Q.reqPort) ? " " + Q.reqPort : ""} price after confirming the freight.`);
+        Q.unknown.push(v72F("{t}{p} の運賃（物流会社に確かめる）", { t: Q.reqTerm, p: Q.reqPort ? " " + Q.reqPort : "" }));
+    }
+    if (v72Ascii(d.pay))
+        Q.payEn = String(d.pay);
+    return Q;
+}
+function v72UnitEn(u) {
+    u = String(u || "").trim();
+    if (!u)
+        return "units";
+    const M = { "個": "pcs", "袋": "bags", "箱": "boxes", "本": "bottles", "缶": "cans", "瓶": "bottles", "台": "units", "枚": "sheets", "セット": "sets", "ケース": "cases", "カートン": "cartons", "パック": "packs", "套": "sets", "个": "pcs", "件": "pcs" };
+    return M[u] || (v72Ascii(u) ? u : "units");
+}
+function v72BandEn(s) { s = String(s || "").replace(/[^\x20-\x7E〜~～]/g, "").replace(/[〜~～]/g, "-").trim(); if (/^-/.test(s))
+    return "up to " + s.replace(/^-\s*/, ""); if (/-$/.test(s))
+    return s.replace(/\s*-$/, "") + "+"; return s || "price"; }
+function v72LeadEn(s) { s = String(s || "").replace(/[〜~～]/g, "-").replace(/\s*営業日/g, " business days").replace(/\s*日/g, " days").replace(/\s*週間?/g, " weeks").replace(/\s*(ヶ|か|カ|ケ)月/g, " months").trim(); return v72Ascii(s) ? s : ""; }
+function v72QuoteText(Q) {
+    if (!Q || Q.none || !Q.lines.length)
+        return "";
+    const L = ["--- Quotation (valid until " + Q.valid + ") ---"];
+    Q.lines.forEach((l, i) => {
+        const name = [l.sku, v72Ascii(l.desc) ? "(" + l.desc + ")" : ""].filter(Boolean).join(" ") || "Item";
+        if (l.qty != null && l.hit)
+            L.push(`${i + 1}. ${name}: ${l.qty.toLocaleString("en-US")} ${v72UnitEn(l.unit)} x ${v72Money(l.hit.cur, l.hit.n)} = ${v72Money(l.hit.cur, l.amount)}`);
+        else
+            L.push(`${i + 1}. ${name}: ` + l.tiers.slice(0, 6).map(t => `${v72BandEn(t.label)}: ${v72Money(t.cur, t.n)}`).join(" / ") + " per unit");
+        const ex = [];
+        if (l.moq)
+            ex.push("MOQ: " + (+l.moq).toLocaleString("en-US"));
+        const ld = v72LeadEn(l.lead);
+        if (ld)
+            ex.push("Lead time: " + ld);
+        if (l.moqWarn)
+            ex.push("Note: below our MOQ");
+        if (ex.length)
+            L.push("   " + ex.join(" / "));
+    });
+    if (Q.total != null && Q.lines.length > 1)
+        L.push("Total: " + v72Money(Q.cur, Q.total));
+    L.push("Terms: " + Q.basis + (Q.portEn ? " " + Q.portEn : "") + ". " + (Q.payEn ? "Payment: " + Q.payEn + "." : "Payment terms: to be agreed."));
+    Q.notesEn.forEach(n => L.push(n));
+    L.push("Prices are based on our current price list and will be confirmed with your final order details.");
+    L.push("---");
+    return L.join("\n");
+}
+function v72Allow(Q) {
+    const out = [];
+    v72Table().rows.forEach(r => r.forEach(v => { String(v).replace(/,/g, "").replace(/\d+(?:\.\d+)?/g, x => { out.push(parseFloat(x)); return x; }); }));
+    ((Q && Q.lines) || []).forEach(l => { if (l.amount != null)
+        out.push(l.amount); if (l.hit)
+        out.push(l.hit.n); });
+    if (Q && Q.total != null)
+        out.push(Q.total);
+    return out;
+}
+function v72Leak(draft, Q) {
+    const allow = v72Allow(Q);
+    const txt = String(draft || "").split(/--- Quotation[\s\S]*?\n---/).join(" ");
+    const re = /(?:HK\$|S\$|NT\$|US\$|USD|EUR|JPY|RMB|CNY|€|¥|￥|\$)\s?(\d[\d,]*(?:\.\d+)?)|(\d[\d,]*(?:\.\d+)?)\s?(?:USD|EUR|JPY|RMB|CNY|美元|美金|元|円|dólares|euros)/gi;
+    const bad = [];
+    let m;
+    while ((m = re.exec(txt))) {
+        const v = parseFloat(String(m[1] || m[2]).replace(/,/g, ""));
+        if (!(v > 0))
+            continue;
+        if (!allow.some(a => Math.abs(a - v) <= Math.max(0.005, a * 0.001)))
+            bad.push(m[0].trim());
+    }
+    return v72Uniq(bad).slice(0, 5);
+}
+function v72TplRead(th) {
+    const last = [...(th.msgs || [])].reverse().find(m => m.w === "by") || {};
+    const s = String(last.body || "");
+    const kind = /not interested|no interest|no need|not (?:looking|in a position)|unfortunately|we (?:will|would) pass|not at (?:this|the) (?:time|moment)|not for now|declin|お断り|見送|不需要|不感兴趣|沒有興趣|没有兴趣|no (?:estamos|nos) interesa|no tenemos inter[eé]s/i.test(s) ? "decline"
+        : /quot|price ?list|pricing|best price|your price|offer|proforma|\bPI\b|見積|报价|報價|價格|价格|cotiza|precio/i.test(s) ? "quote"
+            : /sample|样品|樣品|サンプル|muestra/i.test(s) ? "sample"
+                : /meeting|\bcall\b|zoom|teams|video|visit|appointment|schedule a|商談|面談|会议|會議|reuni[oó]n|llamada/i.test(s) ? "meeting"
+                    : ((typeof bmDetectQ === "function" && bmDetectQ(s).length) || /[?？]/.test(s)) ? "question" : "other";
+    const T = v72Table();
+    const qm = s.match(/(\d[\d,]*)\s*(pcs|pieces|units?|bags?|boxes|box|cartons?|ctns?|cases?|kg|bottles?|cans?|sets?|packs?|個|袋|箱|本|台|枚|缶|瓶|套|个|件|unidades|cajas|bolsas)(?![A-Za-z])/i);
+    const qty = qm ? parseInt(qm[1].replace(/,/g, ""), 10) : null;
+    const unit = qm ? qm[2] : "";
+    const hits = T.rows.filter(r => { const a = String(r[0] || "").trim(); return a.length >= 3 && s.toUpperCase().includes(a.toUpperCase()); });
+    const items = hits.length ? hits.slice(0, 5).map(r => ({ sku: String(r[0]), qty, unit })) : [{ sku: "", qty, unit }];
+    const tm = s.match(V72RP_TERMS);
+    const pm = s.match(/\b(?:CIF|CFR|CPT|CIP|DAP|DDP|DPU)\s+([A-Z][A-Za-z]+(?:\s[A-Z][A-Za-z]+)?)/) || s.match(/\b(?:port of|destination(?: port)?:?|delivered to|ship(?:ped)? to)\s+([A-Z][A-Za-z]+(?:\s[A-Z][A-Za-z]+)?)/);
+    const asks = (typeof bmDetectQ === "function" ? bmDetectQ(s) : []).map(x => String(x).replace(/^\S+\s/, ""));
+    return { kind, asks, quote_req: { items, term: tm ? tm[1].toUpperCase() : "", port: pm ? pm[1] : "" } };
+}
+function v72TplDraft(kind, R) {
+    const b = (typeof dmBrief === "function") ? (dmBrief() || {}) : {};
+    const co = b.co || "Export Team";
+    const L = ["Dear Purchasing Team,", ""];
+    const unk = [], unkEn = [];
+    const asks = R.asks || [];
+    const want = k => asks.some(a => a.includes(k));
+    if (kind === "decline")
+        L.push("Thank you for your reply and for taking the time to consider our products.", "We fully understand. May we keep you informed of new products and seasonal offers from time to time? If your needs change, we would be happy to help.");
+    else if (kind === "quote")
+        L.push("Thank you for your inquiry. Please find our quotation below.", "", "{{QUOTE}}");
+    else if (kind === "sample") {
+        L.push("Thank you for your interest. We would be happy to send samples.", "Could you share the delivery address of your office and the quantity you need?");
+        unk.push(v72T("サンプルの条件（数量・費用・送料）"));
+        unkEn.push("the sample conditions (quantity, cost and shipping)");
+    }
+    else if (kind === "meeting")
+        L.push("Thank you for your reply. We would be glad to arrange an online meeting.", "Could you share a few dates and times that suit you (with your time zone)? We will send an invitation.");
+    else
+        L.push("Thank you for your message." + (asks.length ? " Please find our answers below." : ""));
+    if (kind !== "decline") {
+        const A = [];
+        const add = (k, v) => { if (v)
+            A.push(`  - ${k}: ${v}`); };
+        const q = kind === "quote";
+        if (want("MOQ") && !q) {
+            if (v72Val(b.moq))
+                add("MOQ", b.moq);
+            else {
+                unk.push("MOQ");
+                unkEn.push("the MOQ");
+            }
+        }
+        if (want("納期") && !q) {
+            if (v72Val(b.lead))
+                add("Lead time", v72LeadEn(b.lead) || b.lead);
+            else {
+                unk.push(v72T("納期"));
+                unkEn.push("the lead time");
+            }
+        }
+        if (want("認証")) {
+            if (v72Val(b.cert))
+                add("Certifications", b.cert);
+            else {
+                unk.push(v72T("認証"));
+                unkEn.push("certifications");
+            }
+        }
+        if (want("支払")) {
+            if (v72Val(b.pay))
+                add("Payment", b.pay);
+            else {
+                unk.push(v72T("支払条件"));
+                unkEn.push("payment terms");
+            }
+        }
+        if (want("サンプル") && kind !== "sample") {
+            unk.push(v72T("サンプルの条件（数量・費用・送料）"));
+            unkEn.push("the sample conditions (quantity, cost and shipping)");
+        }
+        if (want("仕様")) {
+            unk.push(v72T("仕様・寸法"));
+            unkEn.push("the specifications");
+        }
+        if (want("ラベル") || want("梱包")) {
+            unk.push(v72T("ラベル・梱包"));
+            unkEn.push("labelling and packaging");
+        }
+        if (A.length)
+            L.push("", ...A);
+    }
+    if (unkEn.length)
+        L.push("", "Regarding " + unkEn.join(", ") + ", we will confirm internally and revert within 2 business days.");
+    if (kind !== "decline" && kind !== "sample" && kind !== "meeting")
+        L.push("", "We would be glad to send samples or arrange a short online meeting at your convenience.");
+    L.push("", "Best regards,", co);
+    return { draft: L.join("\n"), unknown: unk };
+}
+const V72RP_NEXT = { quote: ["見積を送る（承認して送る）", "1週間後に、見積の返事を確かめる"], question: ["答えを送る", "社内で確かめることを、2日以内に答える"],
+    sample: ["サンプルの条件（数量・費用・送料）を決める", "届け先を伺って、サンプルを送る"], meeting: ["日程の候補を伺って、オンライン商談を設定する"],
+    decline: ["お礼を送り、この相手は終わりにする", "AIバイヤー開拓で、別の業態・別の国のリストも試す"], other: ["返事を送り、相手の関心を伺う"] };
+async function v72AiRead(th) {
+    const T = v72Table();
+    const brief = (typeof dmBrief === "function") ? (dmBrief() || {}) : {};
+    const hist = (th.msgs || []).slice(-8).map(m => (m.w === "me" ? "[自社→Buyer] " : "[Buyer→自社] ") + (m.subj ? "件名:" + m.subj + "\n" : "") + String(m.body || "").slice(0, 1200)).join("\n---\n");
+    let prof = "";
+    try {
+        const b = typeof myBuyers === "function" && myBuyers().find(x => x && x.id === th.id);
+        if (b)
+            prof = `会社:${b.co || ""}／国:${b.cty || ""}／業態:${b.biz || ""}／メモ:${String(b.memo || "").slice(0, 200)}`;
+    }
+    catch (e) { }
+    const lastBy = [...(th.msgs || [])].reverse().find(m => m.w === "by");
+    let wp = false;
+    try {
+        wp = typeof webPerm !== "function" || !!webPerm();
+    }
+    catch (e) { }
+    const needWeb = wp && !!lastBy && /regulat|tariff|duty|import (?:permit|licen)|label(?:ling)? (?:rule|requirement)|規制|関税|法規|進口|进口|关税|關稅|arancel|regulac/i.test(lastBy.body);
+    const lang = th.lang || "English";
+    const sys = "あなたは AI商社マン（輸出営業のプロ）。海外バイヤーの返事を読み、返信案を作る。返答は指定の JSON だけ。値段・単価・金額は書かない（見積の表はシステムが価格表から入れる）。登録データに無い事実は書かない。";
+    const q = `日本のサプライヤー（自社）と海外バイヤーのメールのやり取りを読み、バイヤーの最新の返事への返信案を作ってください。
+返答は JSON だけ：{"kind":"quote|question|sample|meeting|decline|other","summary":"相手の返事の要約（日本語1〜2文）","asks":["相手が求めていること（日本語・短く）"],"quote_req":{"items":[{"sku":"相手が指定した品目（下の価格表の SKU・型番・容量に合わせる。無ければ空）","qty":数量の数字または null,"unit":"単位"}],"term":"相手が求める取引条件（FOB・CIF など・無ければ空）","port":"仕向港・仕向地（無ければ空）"},"draft":"返信の本文（${lang}・120〜220語・件名なし）","facts":["根拠にした登録データ（日本語・短く）"],"unknown":["登録データに無く、社内で確かめること（日本語）"],"next":["次の一手（日本語・2〜3個）"]}
+種類：quote＝見積・価格表・単価の依頼／question＝商品の質問（仕様・MOQ・納期・認証など）／sample＝サンプルの依頼／meeting＝商談・電話・訪問の希望／decline＝お断り・今は要らない／other＝それ以外。見積の依頼が含まれていれば quote。
+厳守：
+・値段・単価・金額・合計は本文に書かない。quote のときは、見積の表を入れる位置に {{QUOTE}} とだけ書いた行を置く（表はシステムが価格表から計算して入れる）
+・仕様・MOQ・納期・認証・成分などの事実は、下の登録データだけを根拠にする。無いことは創作せず、本文では「確かめて 2 営業日以内にご連絡します」の趣旨で書き、unknown に入れる
+・お断り（decline）には、お礼と、今後の情報提供の可否を伺う程度にする（押し売りしない）
+・サンプル・商談は、登録データにある条件だけで答え、日程・費用など分からないことは相手の希望を伺う
+・相手の言語とトーンに合わせ、最後に次のアクションを 1 つ提案する。差し込みのしるし（[Name] など）は使わない
+・${needWeb ? "規制・関税などの一般的な事実は Web で確かめ、出典が確かなものだけ使う" : "Web 検索は使わない"}
+=== 相手 ===
+${th.cty || ""}の${th.biz || ""}（ID ${th.id}）${prof ? "\n" + prof : ""}
+=== 登録データ（営業ブリーフ） ===
+${JSON.stringify(brief).slice(0, 1500)}
+=== 価格表（品目を合わせるためだけに使う・値段は書かない） ===
+${[T.cols.join(" | ")].concat(T.rows.slice(0, 15).map(r => r.join(" | "))).join("\n").slice(0, 2000) || "（登録なし）"}
+=== 登録データ（詳細） ===
+${(typeof ppContext === "function" ? String(ppContext() || "") : "").slice(0, 5000)}
+=== やり取り（古い順） ===
+${hist}`;
+    const r = await llmAsk(q, 2400, Object.assign({ sys, timeout: 120000, task: "rp" }, needWeb ? { forceWeb: 1 } : { noWeb: 1 }));
+    const t = String((r && r.txt) || "").replace(/```json|```/g, "").trim();
+    const a = t.indexOf("{"), b = t.lastIndexOf("}");
+    if (a < 0 || b <= a)
+        throw new Error("JSON が読めません");
+    return { j: JSON.parse(t.slice(a, b + 1)), cits: (r && Array.isArray(r.cits)) ? r.cits : [] };
+}
+function v72Insert(draft, qt) {
+    if (!qt)
+        return draft;
+    if (/\{\{QUOTE\}\}/.test(draft))
+        return draft.replace(/\{\{QUOTE\}\}/, qt);
+    const m = draft.match(/\n\s*(Best regards|Kind regards|Warm regards|Regards|Sincerely|Yours (?:sincerely|faithfully)|此致|敬上|顺祝|順祝|Saludos|Atentamente|Cordialmente|よろしく)/i);
+    return m ? draft.slice(0, m.index) + "\n\n" + qt + "\n" + draft.slice(m.index) : draft + "\n\n" + qt;
+}
+async function v72Prep(id) {
+    const th = v72Ths()[id];
+    if (!th)
+        return null;
+    const last = v72Last(th);
+    if (!last || last.w !== "by")
+        return null;
+    if (V72RP.busy[id])
+        return null;
+    V72RP.busy[id] = 1;
+    v72Paint(id);
+    try {
+        const base = v72TplRead(th);
+        let R = null, how = "tpl", err = "", cits = [];
+        if (v72Ai()) {
+            try {
+                const o = await v72AiRead(th);
+                R = o.j || {};
+                cits = o.cits;
+                how = "ai";
+            }
+            catch (e) {
+                err = String((e && e.message) || e).slice(0, 80);
+            }
+        }
+        if (!R)
+            R = base;
+        const kind = V72RP_KIND[R.kind] ? R.kind : base.kind;
+        let qr = (R.quote_req && typeof R.quote_req === "object") ? R.quote_req : base.quote_req;
+        if (!Array.isArray(qr.items) || !qr.items.length)
+            qr = Object.assign({}, qr, { items: base.quote_req.items });
+        if (!qr.term && base.quote_req.term)
+            qr = Object.assign({}, qr, { term: base.quote_req.term });
+        if (!qr.port && base.quote_req.port)
+            qr = Object.assign({}, qr, { port: base.quote_req.port });
+        const Q = kind === "quote" ? v72Quote(qr) : null;
+        const qt = Q ? v72QuoteText(Q) : "";
+        let draft, unknown = [];
+        if (how === "ai") {
+            draft = String(R.draft || "");
+            unknown = Array.isArray(R.unknown) ? R.unknown.map(String) : [];
+        }
+        else {
+            const td = v72TplDraft(kind, base);
+            draft = td.draft;
+            unknown = td.unknown;
+        }
+        if (kind === "quote")
+            draft = qt ? v72Insert(draft, qt) : draft.replace(/\{\{QUOTE\}\}/, "We will send our quotation within 2 business days.");
+        draft = draft.replace(/\{\{QUOTE\}\}/g, "").replace(/\n{3,}/g, "\n\n").trim();
+        if (!draft)
+            throw new Error("返信案が空です");
+        const P = { sig: v72Sig(last), at: Date.now(), how, err, kind, lang: th.lang || "English",
+            summary: String(R.summary || "").slice(0, 300) || v72F("相手の返事を「{k}」と読みました（定型の読み取り）", { k: v72T(V72RP_KIND[kind]) }),
+            asks: v72Uniq((Array.isArray(R.asks) ? R.asks : base.asks).map(String)).slice(0, 6), facts: v72Uniq(Array.isArray(R.facts) ? R.facts.map(String) : []).slice(0, 6),
+            unknown: v72Uniq(unknown.concat(Q ? Q.unknown : [])).slice(0, 8), next: v72Uniq(Array.isArray(R.next) && R.next.length ? R.next.map(String) : V72RP_NEXT[kind].map(v72T)).slice(0, 4),
+            warn: Q ? Q.warn.slice() : [], quote: Q && !Q.none ? Q : null, qnone: !!(Q && Q.none), draft, cits: cits.slice(0, 3) };
+        P.leak = v72Leak(draft, P.quote);
+        th.v72 = P;
+        v72Save();
+        try {
+            if (typeof logU === "function")
+                logU("ai", "返信エージェント:" + kind + "/" + how);
+        }
+        catch (e) { }
+    }
+    catch (e) {
+        th.v72 = { sig: v72Sig(last), at: Date.now(), fail: String((e && e.message) || e).slice(0, 80) };
+    }
+    finally {
+        delete V72RP.busy[id];
+    }
+    v72Paint(id);
+    return th.v72;
+}
+async function v72AutoRun() {
+    if (V72RP.qrun || !v72AutoOn())
+        return 0;
+    V72RP.qrun = 1;
+    let n = 0;
+    try {
+        const ths = v72Ths();
+        const since = Date.now() - 14 * 864e5;
+        const ids = Object.keys(ths).filter(k => v72Need(ths[k]) && !V72RP.busy[k] && (+(v72Last(ths[k]) || {}).at || 0) > since).slice(0, 5);
+        for (const id of ids) {
+            const P = await v72Prep(id);
+            if (P && !P.fail)
+                n++;
+        }
+        if (n) {
+            v72Toast(v72F("🤖 AI商社マンが、返事 {n}件の返信案を用意しました（やり取りを開いて、承認して送る）", { n }));
+            try {
+                if (typeof cur !== "undefined" && cur === "db" && typeof render === "function")
+                    render();
+            }
+            catch (e) { }
+        }
+    }
+    finally {
+        V72RP.qrun = 0;
+    }
+    return n;
+}
+function v72AutoSoon() { clearTimeout(V72RP.tm); V72RP.tm = setTimeout(() => { try {
+    v72AutoRun();
+}
+catch (e) { } }, 400); }
+function v72QuoteJa(Q) {
+    if (!Q || !Q.lines.length)
+        return "";
+    return `<table class="v72qt"><thead><tr><th>${v72N("品目")}</th><th>${v72N("数量")}</th><th>${v72N("単価")}</th><th>${v72N("金額")}</th></tr></thead><tbody>
+    ${Q.lines.map(l => `<tr><td data-noi18n><b>${v72E(l.sku)}</b>${l.desc ? `<span class="v72sub">${v72E(l.desc)}</span>` : ""}</td>
+      <td class="n">${l.qty != null ? v72E(l.qty.toLocaleString() + (l.unit ? " " + l.unit : "")) : "—"}${l.moqWarn ? `<span class="v72bad">${v72N("MOQ 未満")}</span>` : ""}</td>
+      <td class="n" data-noi18n>${l.qty != null && l.hit ? `${v72E(v72Money(l.hit.cur, l.hit.n))}<span class="v72sub">${v72E(l.hit.label)}</span>` : l.tiers.slice(0, 6).map(t => `<span class="v72tier">${v72E(t.label)}：${v72E(v72Money(t.cur, t.n))}</span>`).join("")}</td>
+      <td class="n">${l.amount != null ? v72E(v72Money(l.hit.cur, l.amount)) : "—"}</td></tr>`).join("")}
+    ${Q.total != null && Q.lines.length > 1 ? `<tr class="v72tot"><td colspan="3">${v72N("合計")}</td><td class="n">${v72E(v72Money(Q.cur, Q.total))}</td></tr>` : ""}</tbody></table>
+    <p class="nn v72qn">${v72F("条件：{b}・有効期限 {v}（30日）・単価は登録した価格表から計算（AI は値段を書きません）", { b: Q.basis + (Q.port ? " " + Q.port : ""), v: Q.valid })}</p>`;
+}
+function v72AutoHtml() { return `<label class="v72auto"><input type="checkbox" id="v72auto" ${v72AutoOn() ? "checked" : ""}> <span>${v72N("返事が届いたら、AI商社マンが自動で返信案と見積を用意する（送るのは承認してから）")}</span></label>`; }
+function v72Head() { const on = v72Ai(); return `<div class="v72hd"><b>🤖 ${v72N("AI商社マンの返信エージェント")}</b><span class="p ${on ? "hi" : "lo"}">${v72N(on ? "接続AI＋登録データ" : "AI未接続：定型")}</span></div>`; }
+function v72CardHtml(th) {
+    const ms = Array.isArray(th.msgs) ? th.msgs : [];
+    if (!ms.some(m => m.w === "by"))
+        return "";
+    const last = v72Last(th), P = th.v72;
+    if (V72RP.busy[th.id])
+        return v72Head() + `<p class="nn v72busy"><span class="spin"></span> ${v72N("AI商社マンが相手の返事を読んで、返信案と見積を用意しています…（10〜60秒）")}</p>`;
+    if (last.w === "me") {
+        if (!P || !P.sent)
+            return "";
+        return v72Head() + `<p class="nn v72ok">✓ ${v72F("{d} に送りました（{k}{q}）", { d: v72Day(P.sent.at), k: v72T(V72RP_KIND[P.kind] || "その他"), q: P.quote && P.quote.total != null ? "・" + v72T("見積") + " " + v72Money(P.quote.cur, P.quote.total) : "" })}${P.sent.edited ? v72N("・直してから送信") : ""}</p>
+      ${(P.sent.tasks || []).length ? `<p class="nn">${v72N("タスクに入れました")}：<span data-noi18n>${P.sent.tasks.map(v72E).join("／")}</span></p>` : ""}
+      <p class="nn">${v72N("相手から次の返事が届いたら、また返信案を用意します。")}</p>`;
+    }
+    if (!P || P.sig !== v72Sig(last))
+        return v72Head() + `<p class="nn">${v72N("相手から返事が届いています。")}</p><div class="rw v72acts"><button class="btn" id="v72go">🤖 ${v72N("返事を読んで、返信案と見積を用意する")}</button></div>${v72AutoHtml()}`;
+    if (P.fail)
+        return v72Head() + `<p class="nn v72warn">${v72F("返信案を用意できませんでした（{e}）", { e: P.fail })}</p><div class="rw v72acts"><button class="btn" id="v72redo">🤖 ${v72N("もう一度用意する")}</button></div>${v72AutoHtml()}`;
+    const kl = v72T(V72RP_KIND[P.kind] || "その他");
+    return v72Head() + `
+    ${P.how === "tpl" && P.err ? `<p class="nn v72warn">${v72F("AI の答えを読めなかったので、定型で用意しました（{e}）", { e: P.err })}</p>` : ""}
+    <div class="v72sum"><span class="v72k v72k-${v72E(P.kind)}">${v72E(kl)}</span> <span data-noi18n>${v72E(P.summary)}</span></div>
+    ${P.asks.length ? `<p class="nn v72row"><b>${v72N("相手が求めていること")}：</b><span data-noi18n>${P.asks.map(a => `<span class="p on">${v72E(a)}</span>`).join(" ")}</span></p>` : ""}
+    ${P.quote ? `<div class="v72qbox"><b>💰 ${v72N("見積（価格表から計算）")}</b>${v72QuoteJa(P.quote)}</div>` : P.kind === "quote" && P.qnone ? `<p class="nn v72warn">${v72N("価格表が無いので、見積は「2営業日以内にお送りします」と書いています。商品情報に価格表を登録すると、次から見積を計算して入れます。")}</p>` : ""}
+    ${(P.warn || []).map(w => `<p class="nn v72warn">⚠ ${v72E(w)}</p>`).join("")}
+    ${P.unknown.length ? `<p class="nn v72row"><b>⚠ ${v72N("登録データに無い（社内で確かめること）")}：</b><span data-noi18n>${P.unknown.map(u => `<span class="p mid">${v72E(u)}</span>`).join(" ")}</span><br><span class="v72sub">${v72N("返信では「確かめて2営業日以内にご連絡」と書いています。送ると、確かめるタスクを作ります。")}</span></p>` : ""}
+    <p class="lbl v72lbl">${v72F("返信案（{l}・直せます）", { l: P.lang })}</p>
+    <textarea class="sel v72d" id="v72d" rows="10" data-noi18n>${v72E(P.draft)}</textarea>
+    <p class="nn v72warn" id="v72leak" ${P.leak && P.leak.length ? "" : "hidden"}>${P.leak && P.leak.length ? v72F("価格表に無い金額があります：{a}。直すか消してから送ってください（見積の表の金額は価格表から計算したものです）", { a: P.leak.join("・") }) : ""}</p>
+    ${P.facts.length ? `<p class="nn v72row"><b>${v72N("根拠にした登録データ")}：</b><span data-noi18n>${P.facts.map(f => `<span class="p hi">${v72E(f)}</span>`).join(" ")}</span></p>` : ""}
+    ${P.cits && P.cits.length ? `<p class="nn">🌐 ${v72N("参照")}：${P.cits.map(u => `<a href="${v72E(u)}" target="_blank" rel="noopener" data-noi18n>${v72E(String(u).replace(/^https?:\/\//, "").slice(0, 40))}</a>`).join("　")}</p>` : ""}
+    <div class="rw v72acts"><button class="btn" id="v72ok" ${P.leak && P.leak.length ? "disabled" : ""}>✓ ${v72N("承認して送る")}</button><button class="btn g" id="v72ins">↓ ${v72N("返信欄に入れて直す")}</button><button class="btn g" id="v72redo">🤖 ${v72N("作り直す")}</button></div>
+    <p class="nn v72sub">${v72N("送る前に点検が入ります。自動では送りません。")}</p>
+    ${P.next.length ? `<div class="v72nx"><b>${v72N("次の一手")}</b><ol data-noi18n>${P.next.map(x => `<li>${v72E(x)}</li>`).join("")}</ol></div>` : ""}
+    ${v72AutoHtml()}`;
+}
+function v72Paint(id) {
+    const pn = document.getElementById("pn");
+    if (!pn || String(pn.dataset.dmid || "") !== String(id) || !document.getElementById("dmThread"))
+        return;
+    const th = v72Ths()[id];
+    if (!th)
+        return;
+    let box = document.getElementById("v72rp");
+    const html = v72CardHtml(th);
+    if (!html) {
+        if (box)
+            box.remove();
+        return;
+    }
+    if (!box) {
+        const anchor = document.getElementById("bmAI") || pn.querySelector(".composer");
+        if (!anchor)
+            return;
+        anchor.insertAdjacentHTML("beforebegin", `<div class="c v72rp" id="v72rp"></div>`);
+        box = document.getElementById("v72rp");
+    }
+    box.innerHTML = html;
+    v72Bind(id);
+}
+function v72Bind(id) {
+    const th = v72Ths()[id];
+    if (!th)
+        return;
+    const P = th.v72;
+    const $i = x => document.getElementById(x);
+    const go = $i("v72go");
+    if (go)
+        go.onclick = () => v72Prep(id);
+    const rd = $i("v72redo");
+    if (rd)
+        rd.onclick = () => { if (th.v72 && !th.v72.sent)
+            th.v72 = null; v72Prep(id); };
+    const au = $i("v72auto");
+    if (au)
+        au.onchange = () => { try {
+            if (typeof TEN !== "undefined" && TEN) {
+                if (au.checked)
+                    delete TEN.v72rpOff;
+                else
+                    TEN.v72rpOff = 1;
+                v72Save();
+            }
+        }
+        catch (e) { } if (au.checked)
+            v72AutoSoon(); };
+    const ta = $i("v72d");
+    if (ta && P) {
+        const chk = () => {
+            P.draft = ta.value;
+            P.leak = v72Leak(ta.value, P.quote);
+            const lk = $i("v72leak"), ok = $i("v72ok");
+            if (lk) {
+                lk.hidden = !P.leak.length;
+                lk.textContent = P.leak.length ? v72F("価格表に無い金額があります：{a}。直すか消してから送ってください（見積の表の金額は価格表から計算したものです）", { a: P.leak.join("・") }) : "";
+            }
+            if (ok)
+                ok.disabled = !!P.leak.length || !ta.value.trim();
+        };
+        ta.oninput = chk;
+        ta.onchange = () => { chk(); v72Save(); };
+    }
+    const put = (send) => {
+        if (!P || !ta)
+            return;
+        const body = ta.value.trim();
+        if (!body)
+            return;
+        P.leak = v72Leak(body, P.quote);
+        if (send && P.leak.length) {
+            v72Toast(v72T("価格表に無い金額を直してから送ってください"));
+            return;
+        }
+        P.draft = ta.value;
+        v72Save();
+        V72RP.pend = { id: String(id), body, at: Date.now(), allow: v72Allow(P.quote) };
+        const r = document.getElementById("dmR");
+        if (!r)
+            return;
+        r.value = body;
+        try {
+            r.dispatchEvent(new Event("input"));
+        }
+        catch (e) { }
+        if (send) {
+            const g = document.getElementById("dmRgo");
+            if (g)
+                g.click();
+        }
+        else {
+            try {
+                r.focus();
+            }
+            catch (e) { }
+            v72Toast(v72T("返信欄に入れました。直してから送信してください"));
+        }
+    };
+    const ok = $i("v72ok");
+    if (ok)
+        ok.onclick = () => put(true);
+    const ins = $i("v72ins");
+    if (ins)
+        ins.onclick = () => put(false);
+}
+function v72Tasks(th, P) {
+    const nm = v72Buyer(th);
+    const who = (v72D().co) || "貴社";
+    const out = [];
+    const mk = (n, days) => ({ n, pri: "中", s: v72AddDays(days), e: v72AddDays(days), st: "未着手", who, ref: v72F("返信エージェント（{c}）", { c: th.cty || "" }), kids: [], ai: 1, v72rp: String(th.id) });
+    if (P.kind === "quote")
+        out.push(mk(v72F("見積の返事を確かめる：{b}", { b: nm }), 7));
+    if (P.kind === "sample")
+        out.push(mk(v72F("サンプルを送る：{b}（数量・費用・送料を決める）", { b: nm }), 3));
+    if (P.kind === "meeting")
+        out.push(mk(v72F("オンライン商談の日程を決める：{b}", { b: nm }), 2));
+    if ((P.unknown || []).length)
+        out.push(mk(v72F("バイヤーへの答えを確かめて送る：{b}（{u}）", { b: nm, u: P.unknown.slice(0, 3).join("・") }), 2));
+    if (out.length) {
+        try {
+            if (typeof TEN !== "undefined" && TEN) {
+                TEN.xtasks = (TEN.xtasks || []).concat(out);
+                if (typeof syncTenant === "function")
+                    syncTenant();
+            }
+            else {
+                const d = v72D();
+                if (Array.isArray(d.tasks))
+                    out.forEach(t => d.tasks.push(t));
+            }
+        }
+        catch (e) { }
+    }
+    return out.map(t => t.n + "（" + t.s + "）");
+}
+function v72AfterSend(id, body) {
+    const pd = V72RP.pend;
+    if (!pd || pd.id !== String(id))
+        return;
+    V72RP.pend = null;
+    if (Date.now() - pd.at > 30 * 60000)
+        return;
+    const th = v72Ths()[id];
+    if (!th || !th.v72 || th.v72.sent || th.v72.fail)
+        return;
+    const P = th.v72;
+    const edited = String(body || "").trim() !== pd.body;
+    P.sent = { at: Date.now(), edited, tasks: v72Tasks(th, P) };
+    if (P.kind === "quote")
+        P.sent.chk = v72AddDays(7);
+    try {
+        const b = typeof myBuyers === "function" && myBuyers().find(x => x && x.id === th.id);
+        if (b) {
+            b.memo = (String(b.memo || "").trim() + "\n" + v72F("{d} 返信エージェント：{k}{q}を送付", { d: v72Day(P.sent.at), k: v72T(V72RP_KIND[P.kind] || "その他"), q: P.quote && P.quote.total != null ? "・" + v72T("見積") + " " + v72Money(P.quote.cur, P.quote.total) : "" })).trim();
+            if (typeof mybSave === "function")
+                mybSave();
+        }
+    }
+    catch (e) { }
+    try {
+        if (typeof logU === "function")
+            logU("ai", "返信エージェント送信:" + P.kind);
+    }
+    catch (e) { }
+    try {
+        if (P.kind === "quote" && typeof v33AuLog === "function")
+            v33AuLog("quote_send", v72T("見積（返信エージェント）") + "：" + v72Buyer(th), P.quote && P.quote.total != null ? v72Money(P.quote.cur, P.quote.total) : "");
+    }
+    catch (e) { }
+    v72Save();
+}
+if (typeof openDMThread === "function") {
+    const __odt72 = openDMThread;
+    openDMThread = function (id) {
+        const r = __odt72.apply(this, arguments);
+        try {
+            v72Paint(id);
+            const th = v72Ths()[id];
+            if (th && v72Need(th) && v72AutoOn() && !V72RP.busy[id])
+                setTimeout(() => { try {
+                    if (v72Need(v72Ths()[id] || {}))
+                        v72Prep(id);
+                }
+                catch (e) { } }, 30);
+        }
+        catch (e) {
+            console.warn("v72 card", e);
+        }
+        return r;
+    };
+}
+if (typeof bmSend === "function") {
+    const __bms72 = bmSend;
+    bmSend = function (id, cty, biz, subj, body) { const r = __bms72.apply(this, arguments); try {
+        v72AfterSend(id, body);
+    }
+    catch (e) {
+        console.warn("v72 send", e);
+    } return r; };
+}
+if (typeof dmNotify === "function") {
+    const __dn72 = dmNotify;
+    dmNotify = function () { const r = __dn72.apply(this, arguments); try {
+        v72AutoSoon();
+    }
+    catch (e) { } return r; };
+}
+if (typeof bmSimulate === "function") {
+    const __bsi72 = bmSimulate;
+    bmSimulate = async function () { const r = await __bsi72.apply(this, arguments); try {
+        v72AutoSoon();
+    }
+    catch (e) { } return r; };
+}
+if (typeof v33CkPriceNums === "function") {
+    const __pn72 = v33CkPriceNums;
+    v33CkPriceNums = function () {
+        const r = __pn72.apply(this, arguments);
+        try {
+            const pd = V72RP.pend;
+            if (pd && Date.now() - pd.at < 30 * 60000 && Array.isArray(pd.allow) && Array.isArray(r))
+                pd.allow.forEach(v => { if (v > 0)
+                    r.push(v); });
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof v71obNext === "function") {
+    const __nx72 = v71obNext;
+    v71obNext = function (L) {
+        const r = __nx72.apply(this, arguments);
+        try {
+            if (!r || !L || !L.myId)
+                return r;
+            const th = v72Ths()[L.myId];
+            if (!th || !Array.isArray(th.msgs) || !th.msgs.some(m => m.w === "by"))
+                return r;
+            const last = v72Last(th), P = th.v72;
+            if (last.w === "by") {
+                const ok = P && !P.fail && P.sig === v72Sig(last);
+                return { k: "reply", t: ok ? v72F("返信あり（{k}）：AI が返信案{q}を用意しました。やり取りを開いて、承認して送る", { k: v72T(V72RP_KIND[P.kind] || "その他"), q: P.quote ? v72T("と見積") : "" }) : v72T("返信あり：やり取りを開くと、AI が返信案と見積を用意します") };
+            }
+            if (P && P.sent) {
+                if (P.kind === "decline")
+                    return { k: "end", t: v72T("お断りにお礼を送りました：別の業態・別の国のリストも試す") };
+                if (P.kind === "quote")
+                    return { k: "wait", t: v72F("見積を送りました：返事待ち（{d} に確かめる）", { d: String(P.sent.chk || "").slice(5).replace("-", "/") }) };
+                return { k: "wait", t: v72T("返事を送りました：相手の返事待ち") };
+            }
+            return { k: "wait", t: v72T("返事を送りました：相手の返事待ち") };
+        }
+        catch (e) {
+            return r;
+        }
+    };
+}
+if (typeof v71obSteps === "function") {
+    const __st72 = v71obSteps;
+    v71obSteps = function () {
+        let h = __st72.apply(this, arguments);
+        try {
+            h = String(h).replace("</i>" + v72N("実行・フォロー") + "</li>", "</i>" + v72N("実行・フォロー・返事") + "</li>");
+        }
+        catch (e) { }
+        return h;
+    };
+}
+if (typeof v71obHtml === "function") {
+    const __oh72 = v71obHtml;
+    v71obHtml = function () {
+        let h = __oh72.apply(this, arguments);
+        try {
+            const k = v72N("STANDAGE がおまかせ貿易の現場で集めた一次情報（どの国のどの業態が日本の商品に反応したか・返信が来た文面）をもとに、商談になりやすい相手をリストにし、アプローチの文面を提案して、送信とフォローまで進めます。");
+            h = String(h).replace(k, k + "<br>" + v72N("相手から返事が来たら、返信案と見積も用意します（送るのは承認してから）。"));
+        }
+        catch (e) { }
+        return h;
+    };
+}
+(function () {
+    try {
+        if (document.getElementById("v72rpcss"))
+            return;
+        const st = document.createElement("style");
+        st.id = "v72rpcss";
+        st.textContent = `
+.v72rp{margin-top:9px;padding:10px 12px;border-color:var(--bl);background:var(--surface)}
+.v72rp .v72hd{display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap;align-items:center}
+.v72rp .v72sum{margin-top:7px;font-size:12.5px;line-height:1.7}
+.v72rp .v72k{display:inline-block;padding:1px 9px;border-radius:999px;font-size:11px;font-weight:800;background:var(--bl-soft);color:var(--bl);margin-right:4px}
+.v72rp .v72k-quote{background:var(--or-soft);color:var(--or)}.v72rp .v72k-decline{background:var(--line-2);color:var(--ink-3)}
+.v72rp .v72row{margin-top:5px}.v72rp .v72sub{display:block;font-size:10.5px;color:var(--ink-3);font-weight:400}
+.v72rp .v72qbox{margin-top:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--or-soft)}
+.v72rp .v72qt{width:100%;border-collapse:collapse;font-size:12px;margin-top:5px;background:var(--surface)}
+.v72rp .v72qt th,.v72rp .v72qt td{border-bottom:1px solid var(--line);padding:4px 6px;text-align:left;vertical-align:top}
+.v72rp .v72qt td.n{text-align:right;white-space:nowrap}.v72rp .v72qt .v72tot td{font-weight:800}
+.v72rp .v72tier{display:block;white-space:nowrap}.v72rp .v72bad{display:block;color:var(--crit);font-size:10.5px;font-weight:700}
+.v72rp .v72qn{margin-top:4px}.v72rp .v72warn{color:var(--crit);margin-top:5px}.v72rp .v72ok{color:var(--ok,#1a7f37);font-weight:700;margin-top:6px}
+.v72rp .v72lbl{margin-top:9px}.v72rp .v72d{display:block;width:100%;box-sizing:border-box;min-height:150px;font-size:12.5px;line-height:1.6;margin-top:3px;resize:vertical}
+.v72rp .v72acts{gap:6px;margin-top:7px;flex-wrap:wrap}.v72rp .v72busy{margin-top:7px}
+.v72rp .v72nx{margin-top:8px;font-size:12px}.v72rp .v72nx ol{margin:3px 0 0 18px;padding:0}
+.v72rp .v72auto{display:flex;gap:6px;align-items:flex-start;font-size:11px;color:var(--ink-3);margin-top:9px;cursor:pointer}
+@media (max-width:760px){.v72rp .v72qt{font-size:11px}.v72rp .v72qt th,.v72rp .v72qt td{padding:3px 4px}}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N || !I18N.dict)
+            return;
+        const R = [
+            ["見積依頼", "Quote request", "询价", "Solicitud de cotización"], ["質問", "Question", "提问", "Pregunta"], ["サンプル依頼", "Sample request", "样品请求", "Solicitud de muestras"],
+            ["商談の希望", "Meeting request", "希望商谈", "Solicitud de reunión"], ["お断り", "Declined", "婉拒", "Rechazo"], ["その他", "Other", "其他", "Otro"],
+            ["AI商社マンの返信エージェント", "AI Trade Agent · Reply Agent", "AI商社员·回复代理", "Agente IA · respuestas"], ["接続AI＋登録データ", "Connected AI + your data", "已连接AI＋登记数据", "IA conectada + sus datos"], ["AI未接続：定型", "AI not connected: template", "未连接AI：模板", "IA no conectada: plantilla"],
+            ["AI商社マンが相手の返事を読んで、返信案と見積を用意しています…（10〜60秒）", "The AI Trade Agent is reading the reply and preparing a response and quotation… (10–60 s)", "AI商社员正在阅读回复并准备回复草稿和报价…（10〜60秒）", "El agente IA está leyendo la respuesta y preparando borrador y cotización… (10–60 s)"],
+            ["相手から返事が届いています。", "The buyer has replied.", "对方已回复。", "El comprador respondió."], ["返事を読んで、返信案と見積を用意する", "Read the reply and prepare a response and quotation", "阅读回复，准备回复草稿和报价", "Leer la respuesta y preparar borrador y cotización"],
+            ["返信案を用意できませんでした（{e}）", "Could not prepare a reply ({e})", "未能准备回复草稿（{e}）", "No se pudo preparar la respuesta ({e})"], ["もう一度用意する", "Prepare again", "重新准备", "Preparar de nuevo"],
+            ["AI の答えを読めなかったので、定型で用意しました（{e}）", "Could not read the AI answer, so a template was used ({e})", "无法读取AI回答，已使用模板（{e}）", "No se pudo leer la respuesta de la IA; se usó una plantilla ({e})"],
+            ["相手の返事を「{k}」と読みました（定型の読み取り）", "Read the reply as “{k}” (template reading)", "将对方回复判断为“{k}”（模板判断）", "Respuesta leída como «{k}» (lectura por plantilla)"],
+            ["相手が求めていること", "What the buyer asks for", "对方的需求", "Lo que pide el comprador"], ["見積（価格表から計算）", "Quotation (calculated from your price list)", "报价（根据价格表计算）", "Cotización (calculada con su lista de precios)"],
+            ["品目", "Item", "品目", "Artículo"], ["数量", "Quantity", "数量", "Cantidad"], ["単価", "Unit price", "单价", "Precio unitario"], ["金額", "Amount", "金额", "Importe"], ["合計", "Total", "合计", "Total"], ["MOQ 未満", "Below MOQ", "低于MOQ", "Bajo el MOQ"],
+            ["条件：{b}・有効期限 {v}（30日）・単価は登録した価格表から計算（AI は値段を書きません）", "Terms: {b} · valid until {v} (30 days) · unit prices come from your price list (the AI never writes prices)", "条件：{b}・有效期至 {v}（30天）・单价按登记的价格表计算（AI不写价格）", "Condiciones: {b} · válida hasta {v} (30 días) · precios de su lista (la IA no escribe precios)"],
+            ["価格表が無いので、見積は「2営業日以内にお送りします」と書いています。商品情報に価格表を登録すると、次から見積を計算して入れます。", "No price list is registered, so the reply says the quotation will follow within 2 business days. Register a price list to have quotations calculated.", "尚未登记价格表，因此回复中写明“2个工作日内发送报价”。登记价格表后将自动计算报价。", "No hay lista de precios; la respuesta indica que la cotización llegará en 2 días hábiles. Registre una lista de precios para calcularla."],
+            ["登録データに無い（社内で確かめること）", "Not in your data (check internally)", "登记数据中没有（需内部确认）", "No está en sus datos (verificar internamente)"],
+            ["返信では「確かめて2営業日以内にご連絡」と書いています。送ると、確かめるタスクを作ります。", "The reply says you will confirm and revert within 2 business days. Sending creates a task to check.", "回复中写明“确认后2个工作日内联系”。发送后会创建确认任务。", "La respuesta dice que confirmará y responderá en 2 días hábiles. Al enviar se crea una tarea."],
+            ["返信案（{l}・直せます）", "Draft reply ({l} · editable)", "回复草稿（{l}・可修改）", "Borrador ({l} · editable)"],
+            ["価格表に無い金額があります：{a}。直すか消してから送ってください（見積の表の金額は価格表から計算したものです）", "Amounts not in your price list: {a}. Fix or remove them before sending (the quotation table is calculated from your price list).", "有价格表中没有的金额：{a}。请修改或删除后再发送（报价表金额按价格表计算）。", "Importes que no están en su lista: {a}. Corríjalos o elimínelos antes de enviar (la tabla se calcula con su lista)."],
+            ["根拠にした登録データ", "Data used", "依据的登记数据", "Datos utilizados"], ["参照", "Sources", "参考", "Fuentes"],
+            ["承認して送る", "Approve and send", "批准并发送", "Aprobar y enviar"], ["返信欄に入れて直す", "Put in the reply box to edit", "放入回复栏修改", "Pasar al cuadro para editar"], ["作り直す", "Redo", "重新生成", "Rehacer"],
+            ["送る前に点検が入ります。自動では送りません。", "A pre-send check runs first. Nothing is sent automatically.", "发送前会进行检查。不会自动发送。", "Se revisa antes de enviar. No se envía nada automáticamente."], ["次の一手", "Next steps", "下一步", "Próximos pasos"],
+            ["返事が届いたら、AI商社マンが自動で返信案と見積を用意する（送るのは承認してから）", "When a reply arrives, have the AI Trade Agent prepare a response and quotation automatically (sent only after your approval)", "收到回复后，由AI商社员自动准备回复草稿和报价（批准后才发送）", "Cuando llegue una respuesta, el agente IA prepara borrador y cotización (solo se envía tras su aprobación)"],
+            ["{d} に送りました（{k}{q}）", "Sent on {d} ({k}{q})", "已于{d}发送（{k}{q}）", "Enviado el {d} ({k}{q})"], ["見積", "quotation", "报价", "cotización"], ["・直してから送信", " · edited before sending", "・修改后发送", " · editado antes de enviar"],
+            ["タスクに入れました", "Added to tasks", "已加入任务", "Añadido a tareas"], ["相手から次の返事が届いたら、また返信案を用意します。", "When the next reply arrives, a new draft will be prepared.", "收到下一封回复后，会再次准备草稿。", "Cuando llegue la siguiente respuesta, se preparará un nuevo borrador."],
+            ["価格表に無い金額を直してから送ってください", "Fix the amounts that are not in your price list before sending", "请先修改价格表中没有的金额再发送", "Corrija los importes que no están en su lista antes de enviar"],
+            ["返信欄に入れました。直してから送信してください", "Put in the reply box. Edit and send.", "已放入回复栏。请修改后发送。", "Pasado al cuadro de respuesta. Edite y envíe."],
+            ["🤖 AI商社マンが、返事 {n}件の返信案を用意しました（やり取りを開いて、承認して送る）", "🤖 The AI Trade Agent prepared drafts for {n} replies (open the conversation to approve and send)", "🤖 AI商社员已为{n}封回复准备草稿（打开往来记录批准并发送）", "🤖 El agente IA preparó borradores para {n} respuestas (abra la conversación para aprobar y enviar)"],
+            ["返信あり（{k}）：AI が返信案{q}を用意しました。やり取りを開いて、承認して送る", "Replied ({k}): the AI prepared a draft{q}. Open the conversation to approve and send", "已回复（{k}）：AI已准备回复草稿{q}。打开往来记录批准并发送", "Respondió ({k}): la IA preparó un borrador{q}. Abra la conversación para aprobar y enviar"],
+            ["と見積", " and quotation", "和报价", " y cotización"], ["返信あり：やり取りを開くと、AI が返信案と見積を用意します", "Replied: open the conversation and the AI prepares a draft and quotation", "已回复：打开往来记录后，AI会准备回复草稿和报价", "Respondió: abra la conversación y la IA prepara borrador y cotización"],
+            ["お断りにお礼を送りました：別の業態・別の国のリストも試す", "Thanked them for the reply: try another business type or country", "已对婉拒致谢：尝试其他业态或国家", "Se agradeció la respuesta: pruebe otro tipo de negocio o país"],
+            ["見積を送りました：返事待ち（{d} に確かめる）", "Quotation sent: waiting (check on {d})", "已发送报价：等待回复（{d}确认）", "Cotización enviada: en espera (revisar el {d})"], ["返事を送りました：相手の返事待ち", "Reply sent: waiting for the buyer", "已回复：等待对方回复", "Respuesta enviada: esperando al comprador"],
+            ["実行・フォロー・返事", "Send, follow up, reply", "执行・跟进・回复", "Enviar, seguir, responder"],
+            ["相手から返事が来たら、返信案と見積も用意します（送るのは承認してから）。", "When a buyer replies, it also prepares a response and quotation (sent only after your approval).", "对方回复后，还会准备回复草稿和报价（批准后才发送）。", "Cuando un comprador responde, también prepara la respuesta y la cotización (solo se envía tras su aprobación)."],
+            ["見積を送る（承認して送る）", "Send the quotation (approve and send)", "发送报价（批准并发送）", "Enviar la cotización (aprobar y enviar)"], ["1週間後に、見積の返事を確かめる", "Check the response to the quotation in a week", "一周后确认报价回复", "Revisar la respuesta en una semana"],
+            ["答えを送る", "Send the answers", "发送回答", "Enviar las respuestas"], ["社内で確かめることを、2日以内に答える", "Answer the items to check within 2 days", "2天内回答需确认的事项", "Responder lo pendiente en 2 días"],
+            ["サンプルの条件（数量・費用・送料）を決める", "Decide sample conditions (quantity, cost, shipping)", "确定样品条件（数量・费用・运费）", "Definir condiciones de muestras (cantidad, costo, envío)"], ["届け先を伺って、サンプルを送る", "Ask for the address and send samples", "询问收件地址并寄送样品", "Pedir la dirección y enviar muestras"],
+            ["日程の候補を伺って、オンライン商談を設定する", "Ask for dates and set up an online meeting", "询问时间并安排线上商谈", "Pedir fechas y organizar una reunión en línea"], ["お礼を送り、この相手は終わりにする", "Send thanks and close this lead", "致谢并结束此对象", "Agradecer y cerrar este contacto"],
+            ["AIバイヤー開拓で、別の業態・別の国のリストも試す", "Try another list in AI Buyer Prospecting (other business type or country)", "在AI买家开拓中尝试其他业态或国家", "Pruebe otra lista en la prospección con IA"], ["返事を送り、相手の関心を伺う", "Reply and ask about their interests", "回复并询问对方关注点", "Responder y preguntar por sus intereses"],
+            ["価格表（商品情報に登録がありません）", "Price list (not registered)", "价格表（未登记）", "Lista de precios (no registrada)"], ["数量（数量を伺えば、合計を出します）", "Quantity (the total is calculated once known)", "数量（得知数量后计算合计）", "Cantidad (el total se calcula al conocerla)"],
+            ["サンプルの条件（数量・費用・送料）", "Sample conditions (quantity, cost, shipping)", "样品条件（数量・费用・运费）", "Condiciones de muestras (cantidad, costo, envío)"], ["納期", "Lead time", "交期", "Plazo"], ["認証", "Certifications", "认证", "Certificaciones"], ["支払条件", "Payment terms", "付款条件", "Condiciones de pago"], ["仕様・寸法", "Specifications", "规格・尺寸", "Especificaciones"], ["ラベル・梱包", "Labelling and packaging", "标签・包装", "Etiquetado y embalaje"],
+            ["取引条件の登録が無いので、FOB（日本の港）として書いています。商品情報に取引条件を登録してください", "No trade terms are registered, so FOB (Japanese port) is used. Register trade terms in your product data.", "未登记贸易条件，按FOB（日本港口）书写。请在商品信息中登记贸易条件。", "No hay condiciones registradas; se usa FOB (puerto japonés). Regístrelas en los datos del producto."],
+            ["価格表から単価を読めませんでした（価格の列を確かめてください）", "Could not read unit prices from the price list (check the price columns)", "无法从价格表读取单价（请检查价格列）", "No se pudieron leer precios de la lista (revise las columnas)"],
+            ["見積の返事を確かめる：{b}", "Check the response to the quotation: {b}", "确认报价回复：{b}", "Revisar respuesta a la cotización: {b}"], ["サンプルを送る：{b}（数量・費用・送料を決める）", "Send samples: {b} (decide quantity, cost, shipping)", "寄送样品：{b}（确定数量・费用・运费）", "Enviar muestras: {b} (definir cantidad, costo, envío)"],
+            ["オンライン商談の日程を決める：{b}", "Set the online meeting: {b}", "确定线上商谈时间：{b}", "Fijar la reunión en línea: {b}"], ["バイヤーへの答えを確かめて送る：{b}（{u}）", "Confirm and send answers to the buyer: {b} ({u})", "确认并回复买家：{b}（{u}）", "Confirmar y enviar respuestas: {b} ({u})"],
+            ["返信エージェント（{c}）", "Reply agent ({c})", "回复代理（{c}）", "Agente de respuestas ({c})"]
+        ];
+        R.forEach(r => { ["en", "zh", "es"].forEach((l, i) => { if (r[i + 1] && I18N.dict[l] && !I18N.dict[l][r[0]])
+            I18N.dict[l][r[0]] = r[i + 1]; }); });
+    }
+    catch (e) { }
+})();
+try {
+    if (typeof S30_NEWS !== "undefined" && Array.isArray(S30_NEWS)) {
+        if (!S30_NEWS.some(x => x && x[1] === "v21.72"))
+            S30_NEWS.unshift(["2026-11", "v21.72", "返信エージェント（相手の返事に返信案と見積）",
+                ["バイヤーから返事が届くと、AI商社マンが返事を読み、種類（見積依頼・質問・サンプル依頼・商談の希望・お断り）に分けて、相手の言語で返信案を用意する",
+                    "見積依頼には、数量・品目・条件を読み取り、登録した価格表から単価と金額を計算して本文に表で入れる（有効期限30日・AI は値段を書かない）",
+                    "登録に無いことは「確かめて2営業日以内にご連絡」と書き、社内で確かめることとして出す。送るのは「承認して送る」を押してから（送る前の点検あり）",
+                    "送ったら、見積の返事の確認・確かめることの回答などをタスクに入れる。AIバイヤー開拓の「次の一手」にも、返信案・見積の状態が出る"]]);
     }
 }
 catch (e) { }
