@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="00c8f0641982";
+const BC20_BUILD="4af0c9fc6efd";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -45352,7 +45352,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.73.1";
+const BC20_VER = "21.74";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -144161,6 +144161,3527 @@ try {
                     "進出希望国と成分の組み合わせの注意（例：香港のビタミンD・電池の UN38.3・ワシントン条約・中国の輸入停止・EU の化粧品の責任者）を、STANDAGE の事例から自動で足す",
                     "一人前＝90% 以上、かつ必須の情報がすべてそろうこと。項目ごとに「答える・確かめた」「AIに聞く」ができ、答えは AI商社マンが次から使う",
                     "AI エンジンにつながっていれば、AI商社マンが商品を読んで自分の育て方（この商品だけの情報・配点・期間・注意点）を考えて提案。「この育て方を使う」を押したときだけ点数に入る"]]);
+    }
+}
+catch (e) { }
+var V73PROD = { v: "21.73", fin: 0, gAt: 0 };
+function v73prodL() { try {
+    return (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v73prodM(ja, en, zh, es) { const l = v73prodL(); return l === "en" ? (en || ja) : l === "zh" ? (zh || ja) : l === "es" ? (es || ja) : ja; }
+function v73prodE(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v73prodCss() {
+    if (document.getElementById("v73prodcss"))
+        return;
+    const s = document.createElement("style");
+    s.id = "v73prodcss";
+    s.textContent = `
+.v73prodErr{margin:6px 0 0;font-size:12.5px;color:var(--crit,#c33);font-weight:600;line-height:1.6}
+.v68pnote.v73unk{background:#eef4fd;border-color:#bcd3f2}
+.v73prodSum{margin-top:8px;padding:8px 10px;border-radius:8px;border:1px solid var(--line,#ddd);background:var(--surface-2,#f6f7f9);font-size:12.5px;line-height:1.7}
+.v73prodFin{display:inline-block;margin-left:6px;font-size:12px;color:var(--ink-2,#444)}
+.v73prodNote{margin-top:6px;font-size:12px;color:var(--ink-2,#444);line-height:1.6}`;
+    document.head.appendChild(s);
+}
+const V73PROD_TALK = /[0-9０-９.．]+\s*(?:℃|度)\s*(?:も)?(?:ある|あります|あった|でした|です|だ|くらい|ぐらい|位|超え|を超え|越え|近い)|何\s*(?:℃|度)/;
+function v73prodTempOk(v) {
+    const s = String(v || "");
+    const all = (s.match(/℃/g) || []).length;
+    if (!all)
+        return false;
+    if (V73PROD_TALK.test(s))
+        return false;
+    const num = (s.match(/[0-9０-９](?:[.．][0-9０-９]+)?\s*℃/g) || []).length;
+    return num === all;
+}
+if (typeof valSick === "function") {
+    const __vs73 = valSick;
+    valSick = function (v) {
+        const r = __vs73.apply(this, arguments);
+        if (!r)
+            return r;
+        try {
+            const s = String(v == null ? "" : v).trim();
+            if (v73prodTempOk(s) && !__vs73.call(this, s.replace(/℃/g, "")))
+                return false;
+        }
+        catch (e) { }
+        return r;
+    };
+}
+function v73prodStErr(msg) {
+    v73prodCss();
+    const i = document.getElementById("stT");
+    if (!i)
+        return;
+    let e = document.getElementById("v73prodStErr");
+    if (!msg) {
+        if (e)
+            e.remove();
+        return;
+    }
+    if (!e) {
+        e = document.createElement("p");
+        e.id = "v73prodStErr";
+        e.className = "v73prodErr";
+        e.setAttribute("role", "alert");
+        e.setAttribute("data-noi18n", "");
+        i.insertAdjacentElement("afterend", e);
+    }
+    e.textContent = msg;
+}
+if (typeof openStrEdit === "function") {
+    const __ose73 = openStrEdit;
+    openStrEdit = function () {
+        const r = __ose73.apply(this, arguments);
+        try {
+            const b = document.getElementById("stGo");
+            const o = b && b.onclick;
+            if (b && typeof o === "function" && !b.dataset.v73) {
+                b.dataset.v73 = "1";
+                b.onclick = function (ev) {
+                    try {
+                        const i = document.getElementById("stT");
+                        const t = String((i && i.value) || "").trim();
+                        if (t && typeof valSick === "function" && valSick(t)) {
+                            v73prodStErr(v73prodM("「" + t.slice(0, 40) + "」は、会話文・天気の話のように読めるため、強みとして登録できません。商品の特長（数値・認証・産地・保存の条件など）の形に直してください。", "“" + t.slice(0, 40) + "” reads like conversation or weather talk, so it cannot be saved as a strength. Please rewrite it as a product feature (figures, certification, origin, storage conditions, etc.).", "“" + t.slice(0, 40) + "”看起来像对话或天气的内容，不能登记为优势。请改写为商品特点（数值・认证・产地・保存条件等）。", "«" + t.slice(0, 40) + "» parece una conversación o un comentario del tiempo y no se puede guardar como punto fuerte. Reescríbalo como una característica del producto (cifras, certificación, origen, conservación, etc.)."));
+                            try {
+                                i.focus();
+                            }
+                            catch (x) { }
+                            return;
+                        }
+                        v73prodStErr("");
+                    }
+                    catch (e) { }
+                    return o.call(this, ev);
+                };
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+function v73prodGuardOff() {
+    try {
+        const e = document.getElementById("tst");
+        if (!e || e.style.opacity !== "1" || e.classList.contains("v37err"))
+            return;
+        if (!/登録できません|cannot be (?:saved|registered)|不能登记|no se puede (?:guardar|registrar)/.test(e.textContent || ""))
+            return;
+        e.style.opacity = "0";
+        try {
+            (e.getAnimations ? e.getAnimations() : []).forEach(a => { try {
+                a.cancel();
+            }
+            catch (x) { } });
+        }
+        catch (x) { }
+    }
+    catch (e) { }
+}
+if (typeof go === "function") {
+    const __go73 = go;
+    go = function (id) {
+        let prev = null;
+        try {
+            prev = (typeof cur !== "undefined") ? cur : null;
+        }
+        catch (e) { }
+        const r = __go73.apply(this, arguments);
+        try {
+            if (prev !== id)
+                v73prodGuardOff();
+        }
+        catch (e) { }
+        return r;
+    };
+}
+function v73prodRnd(n, u) { if (n == null || !isFinite(n))
+    return n; const k = Math.round(1 / u); const s = n < 0 ? -1 : 1; return s * Math.round(Math.abs(n) * k + 1e-7) / k; }
+function v73prodTariffRound(K, T, fob) {
+    const calc = u => {
+        const R = n => v73prodRnd(n, u);
+        const f = K.fiKnown ? R(K.fi) : 0, fb = R(fob);
+        const cv = (T && T.base === "FOB") ? fb : R(fb + f);
+        const L = (K.lines || []).map(l => Object.assign({}, l, { amt: R(l.amt) }));
+        const tax = R(L.reduce((s, x) => s + x.amt, 0));
+        return Object.assign({}, K, { cv, lines: L, tax, landed: R(fb + f + tax), fi: f, v73unit: u });
+    };
+    let X = calc(0.01);
+    if (Math.abs(X.landed) >= 100)
+        X = calc(1);
+    return X;
+}
+if (typeof v56tariffCalc === "function") {
+    const __tc73 = v56tariffCalc;
+    v56tariffCalc = function (T, fob, fi) {
+        const K = __tc73.apply(this, arguments);
+        if (!K)
+            return K;
+        try {
+            return v73prodTariffRound(K, T, fob);
+        }
+        catch (e) {
+            return K;
+        }
+    };
+}
+function v73prodTrKinds() {
+    const K = new Set(["ten", "myb", "v30", "doc", "memo", "task", "gl", "rq"]);
+    try {
+        if (typeof V33TR_KIND !== "undefined" && V33TR_KIND)
+            Object.keys(V33TR_KIND).forEach(k => K.add(k));
+    }
+    catch (e) { }
+    try {
+        if (typeof V33TR !== "undefined" && V33TR) {
+            ["restore", "purge", "label"].forEach(s => Object.keys(V33TR[s] || {}).forEach(k => K.add(k)));
+        }
+    }
+    catch (e) { }
+    return K;
+}
+function v73prodTrAct(a) { return /^(?:del|restore|purge)$/.test(String(a || "")); }
+if (typeof v33AuLog === "function") {
+    const __au73 = v33AuLog;
+    v33AuLog = function (act, what, extra) {
+        try {
+            if (v73prodTrAct(act) && extra != null && v73prodTrKinds().has(String(extra))) {
+                const a = [].slice.call(arguments);
+                a[2] = "";
+                return __au73.apply(this, a);
+            }
+        }
+        catch (e) { }
+        return __au73.apply(this, arguments);
+    };
+}
+if (typeof v33List === "function") {
+    const __vl73 = v33List;
+    v33List = function (sec) {
+        const L = __vl73.apply(this, arguments);
+        if (sec !== "au" || !Array.isArray(L))
+            return L;
+        try {
+            const K = v73prodTrKinds();
+            return L.map(a => (a && v73prodTrAct(a.act) && a.x != null && a.x !== "" && K.has(String(a.x))) ? Object.assign({}, a, { x: "" }) : a);
+        }
+        catch (e) {
+            return L;
+        }
+    };
+}
+if (typeof uxPalItems === "function") {
+    const __pal73 = uxPalItems;
+    uxPalItems = function (q) {
+        let items = __pal73.apply(this, arguments);
+        try {
+            const pg = (typeof PAGES !== "undefined" && Array.isArray(PAGES)) ? PAGES.find(p => p && p.id === "trash" && !p.hide) : null;
+            const hasP = (typeof PID !== "undefined" && PID);
+            if (pg && (pg.free || hasP) && !(typeof FWDON !== "undefined" && FWDON)) {
+                const it = { g: "画面", t: v73prodM("操作の記録（誰が・いつ・何をしたか）", "Operation log (who did what, when)", "操作记录（谁・何时・做了什么）", "Registro de operaciones (quién, cuándo, qué)"), sub: v73prodM("ゴミ箱", "Trash", "回收站", "Papelera"), ic: "📄",
+                    run: () => { try {
+                        if (typeof V33TRV !== "undefined")
+                            V33TRV.tab = "au";
+                    }
+                    catch (e) { } go("trash"); } };
+                const qq = String(q || "").trim().toLowerCase();
+                if (!qq || (it.t + " " + it.sub + " 操作の記録 履歴 ログ log history").toLowerCase().includes(qq))
+                    items = (items || []).concat([it]);
+            }
+        }
+        catch (e) { }
+        return items;
+    };
+}
+const V73PROD_UNK = /^(?:不明|不明です|分からない|わからない|分かりません|わかりません|分からないです|わからないです|知らない|知りません|不詳|未確認|未定|unknown|n\/a|not sure|i don'?t know|don'?t know|不知道|不清楚|no sé|no se|desconocido)[。．.!！\s]*$/i;
+function v73prodNz(s) { s = String(s == null ? "" : s); try {
+    s = s.normalize("NFKC");
+}
+catch (e) { } return s.replace(/[\s　]+/g, " ").trim(); }
+function v73prodUnk(a) { return V73PROD_UNK.test(v73prodNz(a)); }
+const v73prodBy = "担当者の意向・補足";
+function v73prodSame(n, x) {
+    if (typeof v68pSimN !== "function")
+        return 0;
+    const s1 = v68pSimN(n, x.q), s2 = v68pSimN(n, String(x.q) + " " + String(x.a));
+    const ok = s1.wn >= 2 || s1.wl >= 4 || s2.wn >= 2 || s2.wl >= 4 || s1.r >= 0.4;
+    return ok ? (s1.wn * 2 + s1.wl + s1.r + (s2.wn + s2.wl) * 0.5) : 0;
+}
+function v73prodLink(res) {
+    if (!res || typeof v68pSimN !== "function" || typeof v68pNoteKey !== "function")
+        return res;
+    const ins = (Array.isArray(res.insights) ? res.insights : []).map(String);
+    (Array.isArray(res.questions) ? res.questions : []).forEach(q => {
+        if (!q)
+            return;
+        let best = -1, bs = 0;
+        ins.forEach((n, i) => { const s = v68pSimN(n, String(q.q || "") + " " + String(q.why || "")); const sc = s.wn * 2 + s.wl + s.r; if ((s.wn >= 1 || s.r >= 0.25) && sc > bs) {
+            bs = sc;
+            best = i;
+        } });
+        if (best >= 0)
+            q.nk = v68pNoteKey(ins[best]);
+    });
+    return res;
+}
+if (typeof llmGapAnalyze === "function") {
+    const __ga73 = llmGapAnalyze;
+    llmGapAnalyze = async function () { const res = await __ga73.apply(this, arguments); try {
+        v73prodLink(res);
+    }
+    catch (e) { } return res; };
+}
+if (typeof llmExtraRecord === "function") {
+    const __er73 = llmExtraRecord;
+    llmExtraRecord = function (q, a) {
+        const r = __er73.apply(this, arguments);
+        try {
+            const L = (typeof TEN !== "undefined" && TEN && Array.isArray(TEN.extraQA)) ? TEN.extraQA : null;
+            const e = L && L[L.length - 1];
+            if (e && e.q === q && q !== v73prodBy) {
+                const x = ((typeof FILL !== "undefined" && FILL && Array.isArray(FILL.xq)) ? FILL.xq : []).find(z => z && z.q === q);
+                if (x && x.nk)
+                    e.nk = x.nk;
+                if (v73prodUnk(a))
+                    e.unk = 1;
+                e.at = Date.now();
+                if (typeof saveTen === "function")
+                    saveTen();
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+function v73prodRecUnk(cu) { try {
+    if (!cu || !cu.x || !cu.qPlain || typeof llmExtraRecord !== "function")
+        return;
+    llmExtraRecord(cu.qPlain, "不明");
+}
+catch (e) { } }
+if (typeof llmExtraTriage === "function") {
+    const __tr73 = llmExtraTriage;
+    llmExtraTriage = async function (cu, val) {
+        let j;
+        if (v73prodUnk(val))
+            j = { kind: "skip" };
+        else
+            j = await __tr73.apply(this, arguments);
+        try {
+            if (j && j.kind === "answer" && v73prodUnk(j.value))
+                j = Object.assign({}, j, { kind: "skip" });
+            if (j && j.kind === "skip")
+                v73prodRecUnk(cu);
+        }
+        catch (e) { }
+        return j;
+    };
+}
+if (typeof llmExtraSkip === "function") {
+    const __sk73 = llmExtraSkip;
+    llmExtraSkip = function () {
+        try {
+            if (typeof FILL !== "undefined" && FILL && !FILL._xbz && FILL.cur && FILL.cur.x)
+                v73prodRecUnk(FILL.cur);
+        }
+        catch (e) { }
+        return __sk73.apply(this, arguments);
+    };
+}
+if (typeof v68pNotes === "function") {
+    const __nt73 = v68pNotes;
+    v68pNotes = function (t) {
+        const L = __nt73.apply(this, arguments);
+        try {
+            t = t || (typeof v68pTen === "function" ? v68pTen() : null);
+            if (!t || !Array.isArray(L))
+                return L;
+            const QA = (Array.isArray(t.extraQA) ? t.extraQA : []).filter(x => x && x.q !== v73prodBy && String(x.a == null ? "" : x.a).trim());
+            const known = QA.filter(x => !x.unk && !v73prodUnk(x.a)), unk = QA.filter(x => x.unk || v73prodUnk(x.a));
+            const st = t.v68noteSt || {};
+            L.forEach(x => {
+                const man = st[x.k];
+                x.st = x.done ? "done" : "open";
+                x.asked = QA.some(q => q.nk === x.k) || QA.some(q => v73prodSame(x.n, q) > 0);
+                if (man === "done" || man === "open")
+                    return;
+                if (x.done && x.qa && v73prodUnk(x.qa.a)) {
+                    x.done = false;
+                    x.st = "open";
+                    x.by = "";
+                    x.qa = null;
+                }
+                if (!x.done) {
+                    const kl = known.filter(q => q.nk === x.k).pop();
+                    if (kl) {
+                        x.done = true;
+                        x.st = "done";
+                        x.by = "追加ヒアリング";
+                        x.qa = kl;
+                        return;
+                    }
+                }
+                if (!x.done) {
+                    let u = unk.filter(q => q.nk === x.k).pop();
+                    if (!u) {
+                        let bs = 0;
+                        unk.forEach(q => { const s = v73prodSame(x.n, q); if (s > bs) {
+                            bs = s;
+                            u = q;
+                        } });
+                    }
+                    if (u) {
+                        x.st = "unk";
+                        x.unk = true;
+                        x.qa = u;
+                    }
+                }
+            });
+        }
+        catch (e) {
+            try {
+                console.warn("v73prod notes", e);
+            }
+            catch (x) { }
+        }
+        return L;
+    };
+}
+function v73prodNoteSum(t) {
+    const L = (typeof v68pNotes === "function") ? v68pNotes(t) : [];
+    const o = { n: L.length, done: 0, unk: 0, open: 0 };
+    (L || []).forEach(x => { if (x.done)
+        o.done++;
+    else if (x.st === "unk")
+        o.unk++;
+    else
+        o.open++; });
+    return o;
+}
+function v73prodSumTxt(o) { return v73prodM(`解決済み ${o.done}件・「不明」と回答 ${o.unk}件・未解決 ${o.open}件`, `${o.done} resolved · ${o.unk} answered “unknown” · ${o.open} open`, `已解决 ${o.done} 条・回答“不明” ${o.unk} 条・未解决 ${o.open} 条`, `${o.done} resueltas · ${o.unk} respondidas «no sé» · ${o.open} pendientes`); }
+const V73PROD_UNKTXT = () => v73prodM("追加ヒアリングで「不明」と答えた点です。STANDAGEの担当があらためて確認します。AI商社マンは、この点を推測で断定しません。分かったら「解決済みにする」を押してください。", "You answered “unknown” to this in the follow-up questions. STANDAGE staff will check it with you. The AI will not state guesses about it as fact. Once you know, press “Mark as resolved”.", "在追加询问中回答了“不明”。STANDAGE 的负责人会再次确认。AI 不会对此做出推测性的断定。弄清楚后请点击“标记为已解决”。", "Respondió «no sé» en las preguntas de seguimiento. El equipo de STANDAGE lo confirmará. La IA no dará suposiciones como hechos. Cuando lo sepa, pulse «Marcar como resuelto».");
+const V73PROD_NOQ = () => v73prodM("追加ヒアリングでは質問しなかった点です。確かめて問題がなければ「解決済みにする」を押してください（「AIにもう一度読み直させる」で、あらためて聞くこともできます）。", "This point was not asked in the follow-up questions. If you have checked it and it is fine, press “Mark as resolved” (you can also have the AI read the files again to ask about it).", "追加询问中没有就此提问。确认无问题后请点击“标记为已解决”（也可以让 AI 重新阅读资料再次询问）。", "No se preguntó en las preguntas de seguimiento. Si lo ha comprobado y está bien, pulse «Marcar como resuelto» (también puede pedir a la IA que vuelva a leer los archivos).");
+if (typeof v68pNoteHtml === "function") {
+    const __nh73 = v68pNoteHtml;
+    v68pNoteHtml = function (t) {
+        let h = String(__nh73.apply(this, arguments) || "");
+        if (!h)
+            return h;
+        try {
+            t = t || (typeof v68pTen === "function" ? v68pTen() : null);
+            const L = v68pNotes(t);
+            const o = { n: L.length, done: 0, unk: 0, open: 0 };
+            L.forEach(x => { if (x.done)
+                o.done++;
+            else if (x.st === "unk")
+                o.unk++;
+            else
+                o.open++; });
+            v73prodCss();
+            L.forEach(x => {
+                const re = new RegExp('<div class="v68pnote" data-v68note="' + x.k + '" data-st="open">[\\s\\S]*?</button></div>');
+                if (x.st === "unk") {
+                    h = h.replace(re, `<div class="v68pnote v73unk" data-v68note="${x.k}" data-st="unk"><span>？ <b>${v73prodE(v73prodM("「不明」と回答", "Answered “unknown”", "回答“不明”", "Respondida «no sé»"))}</b>：${v73prodE(x.n)}</span><br><span class="v68pans">${v73prodE(V73PROD_UNKTXT())}</span> <button class="v68plink" type="button" data-v68nst="${x.k}" data-to="done">${v73prodE(v73prodM("解決済みにする", "Mark as resolved", "标记为已解决", "Marcar como resuelto"))}</button></div>`);
+                }
+                else if (!x.done && t && t._xDone && !x.asked) {
+                    h = h.replace(re, m0 => m0.replace(/<br><span class="v68pans">[\s\S]*?<\/span> <button/, `<br><span class="v68pans" data-v73noq>${v73prodE(V73PROD_NOQ())}</span> <button`));
+                }
+            });
+            h = h.replace(/(<b>🤖 AIの気づき<\/b> )<span class="p (?:or|hi)" data-noi18n>[^<]*<\/span>/, (m0, a) => `${a}<span class="p ${o.open ? "or" : o.unk ? "bl" : "hi"}" data-noi18n data-v73sum="${o.done}/${o.unk}/${o.open}">${v73prodE(o.unk ? v73prodM(`未解決 ${o.open}件・「不明」と回答 ${o.unk}件・解決済み ${o.done}件`, `${o.open} open · ${o.unk} answered “unknown” · ${o.done} resolved`, `未解决 ${o.open} 条・回答“不明” ${o.unk} 条・已解决 ${o.done} 条`, `${o.open} pendientes · ${o.unk} «no sé» · ${o.done} resueltas`) : v73prodM(`未解決 ${o.open}件・解決済み ${o.done}件`, `${o.open} open · ${o.done} resolved`, `未解决 ${o.open} 条・已解决 ${o.done} 条`, `${o.open} pendientes · ${o.done} resueltas`))}</span>`);
+        }
+        catch (e) {
+            try {
+                console.warn("v73prod noteHtml", e);
+            }
+            catch (x) { }
+        }
+        return h;
+    };
+}
+if (typeof v68pNotesCtxFix === "function") {
+    const __cf73 = v68pNotesCtxFix;
+    v68pNotesCtxFix = function (s, t) {
+        let r = __cf73.apply(this, arguments);
+        try {
+            if (typeof r !== "string")
+                return r;
+            const L = v68pNotes(t);
+            L.forEach(x => {
+                if (x.st !== "unk")
+                    return;
+                const a = x.n + "（未解決）";
+                const i = r.indexOf(a);
+                if (i >= 0)
+                    r = r.slice(0, i) + x.n + "（追加ヒアリングで「不明」と回答・要確認。推測で断定しない。STANDAGEの担当が確認する）" + r.slice(i + a.length);
+            });
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof v68pQaHtml === "function") {
+    const __qh73 = v68pQaHtml;
+    v68pQaHtml = function (t) {
+        let h = String(__qh73.apply(this, arguments) || "");
+        try {
+            if (h && /<b>(?:不明|不明です|分からない|わからない|分かりません|わかりません)<\/b>/.test(h))
+                h = h.replace(/(→ <b>(?:不明|不明です|分からない|わからない|分かりません|わかりません)<\/b>)/g, `$1<span data-noi18n>（${v73prodE(v73prodM("STANDAGEの担当が確認します", "STANDAGE staff will check", "STANDAGE 负责人将确认", "STANDAGE lo confirmará"))}）</span>`);
+        }
+        catch (e) { }
+        return h;
+    };
+}
+if (typeof fillSay === "function") {
+    const __fs73 = fillSay;
+    fillSay = function (who, html, extra) {
+        try {
+            if (who === "ai" && typeof html === "string") {
+                if (html === "承知しました。この点はSTANDAGEの担当からあらためて確認します。" && typeof FILL !== "undefined" && FILL && FILL.cur && FILL.cur.x) {
+                    v73prodCss();
+                    arguments[1] = html + `<div class="v73prodNote" data-v73unk>${v73prodE(v73prodM("「不明」として記録しました。商品情報の「AIの気づき」では「不明と回答」と出し、AI商社マンはこの点を推測で断定しません。", "Recorded as “unknown”. It shows as “answered unknown” under “AI notes” on the product page, and the AI will not state guesses about it as fact.", "已记录为“不明”。商品信息的“AI的发现”中显示为“回答不明”，AI 不会对此做出推测性的断定。", "Registrado como «no sé». Aparece como «respondida no sé» en las notas de la IA de la ficha, y la IA no dará suposiciones como hechos."))}</div>`;
+                }
+                else if (V73PROD.fin && extra && extra.done && typeof TEN !== "undefined" && TEN) {
+                    v73prodCss();
+                    const o = v73prodNoteSum(TEN);
+                    let h2 = html.replace(/(<b>ヒアリングは以上です。)充足度/, "$1基本項目の充足度");
+                    if (o.n) {
+                        h2 += `<div class="v73prodSum" data-v73fin="${o.done}/${o.unk}/${o.open}">🤖 <b>${v73prodE(v73prodM(`AIの気づき ${o.n}件`, `AI notes: ${o.n}`, `AI的发现 ${o.n} 条`, `Notas de la IA: ${o.n}`))}</b>：${v73prodE(v73prodSumTxt(o))}${v73prodE(v73prodM("（商品情報の画面にも同じ内容で出ます）", " (the product page shows the same)", "（商品信息画面显示相同内容）", " (la ficha muestra lo mismo)"))}` +
+                            (o.unk ? `<br>${v73prodE(v73prodM("「不明」と答えた点は、STANDAGEの担当があらためて確認します。AI商社マンは推測で断定しません。", "Points answered “unknown” will be checked by STANDAGE staff. The AI will not state guesses as fact.", "回答“不明”的点由 STANDAGE 负责人再次确认。AI 不会做出推测性的断定。", "STANDAGE confirmará los puntos respondidos «no sé». La IA no dará suposiciones como hechos."))}` : "") +
+                            (o.open ? `<br>${v73prodE(v73prodM("未解決の点は、商品情報の「AIの気づき」で確かめて「解決済みにする」を押せます。", "You can check open points under “AI notes” on the product page and mark them as resolved.", "未解决的点可在商品信息的“AI的发现”中确认后标记为已解决。", "Puede revisar los puntos pendientes en las notas de la IA de la ficha y marcarlos como resueltos."))}` : "") + `</div>`;
+                    }
+                    arguments[1] = h2;
+                }
+            }
+        }
+        catch (e) {
+            try {
+                console.warn("v73prod fillSay", e);
+            }
+            catch (x) { }
+        }
+        return __fs73.apply(this, arguments);
+    };
+}
+if (typeof llmExtraFinish === "function") {
+    const __xf73 = llmExtraFinish;
+    llmExtraFinish = function () { V73PROD.fin = 1; try {
+        return __xf73.apply(this, arguments);
+    }
+    finally {
+        V73PROD.fin = 0;
+    } };
+}
+if (typeof fillRender === "function") {
+    const __fr73 = fillRender;
+    fillRender = function () {
+        const r = __fr73.apply(this, arguments);
+        try {
+            if (typeof FILL !== "undefined" && FILL && !FILL.cur && typeof TEN !== "undefined" && TEN && TEN._xDone) {
+                const box = document.getElementById("fin2");
+                const chip = box && box.querySelector(".p.hi");
+                if (chip && !box.querySelector("[data-v73fin2]")) {
+                    const o = v73prodNoteSum(TEN);
+                    if (o.n) {
+                        v73prodCss();
+                        chip.insertAdjacentHTML("afterend", `<span class="v73prodFin" data-v73fin2="${o.done}/${o.unk}/${o.open}" data-noi18n>🤖 ${v73prodE(v73prodM("AIの気づき", "AI notes", "AI的发现", "Notas de la IA"))}：${v73prodE(v73prodSumTxt(o))}</span>`);
+                    }
+                }
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+(function () {
+    try {
+        if (typeof v30I18n === "function")
+            v30I18n([
+                ["操作の記録（誰が・いつ・何をしたか）", "Operation log (who did what, when)", "操作记录（谁・何时・做了什么）", "Registro de operaciones (quién, cuándo, qué)"]
+            ]);
+    }
+    catch (e) { }
+})();
+const v73dashSt = { grT: 0, tenBack: 0 };
+function v73dashLang() { try {
+    return (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v73dashX(ja, en, zh, es) { const l = v73dashLang(); return l === "en" ? (en || ja) : l === "zh" ? (zh || en || ja) : l === "es" ? (es || en || ja) : ja; }
+function v73dashE(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]); }
+function v73dashF(s, o) { let t = String(s); Object.keys(o || {}).forEach(k => { t = t.split("{" + k + "}").join(String(o[k])); }); return t; }
+function v73dashShort(s, n) { s = String(s || ""); return s.length > n ? s.slice(0, n) + "…" : s; }
+(function () {
+    try {
+        if (document.getElementById("v73dashcss"))
+            return;
+        const st = document.createElement("style");
+        st.id = "v73dashcss";
+        st.textContent = `.v73same{white-space:nowrap}
+.v73grbasis{margin:10px 0 2px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r2,8px);background:var(--surface-2);font-size:12.5px;line-height:1.7}
+.v73grbasis p{margin:0}.v73grbasis p+p{margin-top:4px}
+.v73grtb{width:100%;border-collapse:collapse;margin-top:6px;font-size:12px}.v73grtb td{padding:3px 6px;border-bottom:1px dashed var(--line-2,var(--line));vertical-align:top}
+.v73grtb td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}.v73grtb tr.cur td{font-weight:700}
+.v73cnt{margin-top:8px;font-size:12px;line-height:1.7;color:var(--ink-2)}.v73cnt b{color:var(--ink)}
+#v73dealnote{margin:8px 0 2px}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+function v73dashTdSig() { try {
+    if (typeof todayStore !== "function")
+        return null;
+    const s = todayStore();
+    if (!s || typeof s !== "object")
+        return null;
+    if (!s.v73tdSig || typeof s.v73tdSig !== "object")
+        s.v73tdSig = {};
+    return s.v73tdSig;
+}
+catch (e) {
+    return null;
+} }
+function v73dashTdKey(x) { try {
+    return (typeof tdKey === "function") ? tdKey(x) : String((typeof D !== "undefined" && D && D.item) || "") + "｜" + String(x && x.t || "");
+}
+catch (e) {
+    return "";
+} }
+function v73dashTdSame(x) { try {
+    if (!x || x.cty)
+        return null;
+    const M = v73dashTdSig();
+    if (!M)
+        return null;
+    const s = M[v73dashTdKey(x)];
+    return (s && typeof s.d === "string" && s.d !== String(x.d || "")) ? s : null;
+}
+catch (e) {
+    return null;
+} }
+if (typeof todayStepsOf === "function") {
+    const __ts73 = todayStepsOf;
+    todayStepsOf = function (x) {
+        try {
+            if (x && !x.cty) {
+                const M = v73dashTdSig(), k = v73dashTdKey(x);
+                if (M && k) {
+                    const s = M[k];
+                    if (!s)
+                        M[k] = { d: String(x.d || ""), at: Date.now() };
+                    else if (typeof s.d === "string" && s.d !== String(x.d || ""))
+                        return __ts73.call(this, Object.assign({}, x, { d: s.d }));
+                }
+            }
+        }
+        catch (e) { }
+        return __ts73.apply(this, arguments);
+    };
+}
+if (typeof todayGen === "function") {
+    const __tg73 = todayGen;
+    todayGen = async function () {
+        let before = null;
+        try {
+            before = (typeof todayAIRec === "function") ? todayAIRec() : null;
+            (typeof todayItems === "function" ? (todayItems() || []) : []).forEach(x => { try {
+                todayStepsOf(x);
+            }
+            catch (e) { } });
+        }
+        catch (e) { }
+        const rec = await __tg73.apply(this, arguments);
+        try {
+            if (rec && rec !== before) {
+                const M = v73dashTdSig();
+                if (M) {
+                    const keep = new Set();
+                    (typeof todayItems === "function" ? (todayItems() || []) : []).forEach(x => { if (!x || x.cty)
+                        return; const k = v73dashTdKey(x); keep.add(k); if (!M[k])
+                        M[k] = { d: String(x.d || ""), at: Date.now() }; });
+                    Object.keys(M).filter(k => !keep.has(k)).sort((a, b) => ((M[b] && M[b].at) || 0) - ((M[a] && M[a].at) || 0)).slice(40).forEach(k => { delete M[k]; });
+                }
+                if (typeof TEN !== "undefined" && TEN && typeof saveTen === "function")
+                    saveTen();
+            }
+        }
+        catch (e) { }
+        return rec;
+    };
+}
+if (typeof vToday === "function") {
+    const __vt73 = vToday;
+    vToday = function () {
+        let h = String(__vt73.apply(this, arguments));
+        try {
+            const L = (typeof todayItems === "function") ? (todayItems() || []) : [];
+            L.forEach((x, i) => {
+                const s = v73dashTdSame(x);
+                if (!s)
+                    return;
+                const a = h.indexOf(`onclick="todayRun(${i})"`);
+                if (a < 0)
+                    return;
+                const b = h.indexOf(">進捗 ", a);
+                if (b < 0)
+                    return;
+                const c = h.indexOf("</span>", b);
+                if (c < 0)
+                    return;
+                let n = 0;
+                try {
+                    n = todayStepsOf(x).length;
+                }
+                catch (e) { }
+                const tip = v73dashX(`AI の再調査で説明が変わりましたが、題が同じなので、やるべきタスク一覧（${n}件）は前回のまま使い、進み具合を続けて数えています`, `The AI re-check changed the description, but the title is the same, so the same step list (${n}) is kept and progress continues`, `AI重新调查后说明有变，但标题相同，因此沿用之前的待办清单（${n}项）并继续计算进度`, `La descripción cambió, pero el título es el mismo: se mantiene la misma lista (${n}) y el avance continúa`);
+                h = h.slice(0, c + 7) + `<span class="p lo v73same" data-v73same="1" title="${v73dashE(tip)}">${v73dashE(v73dashX("手順は前回のまま", "same steps as before", "步骤沿用之前", "mismos pasos"))}</span>` + h.slice(c + 7);
+            });
+        }
+        catch (e) { }
+        return h;
+    };
+}
+function v73dashOpen() {
+    try {
+        if (typeof D === "undefined" || !D)
+            return null;
+        const demo = (typeof PID !== "undefined" && PID && PID !== "custom" && typeof PRODUCTS !== "undefined" && PRODUCTS[PID] === D);
+        const t = (typeof TEN !== "undefined" && TEN) || null;
+        const mihon = demo || D.src === "sample2" || !!(t && (t.src === "sample" || t.src === "sample2"));
+        return { item: String(D.item || ""), co: String(D.co || ""), mihon, demo };
+    }
+    catch (e) {
+        return null;
+    }
+}
+function v73dashOpenLabel(o) { o = o || v73dashOpen(); if (!o)
+    return ""; return o.item + (o.mihon ? v73dashX("（見本）", " (sample)", "（样本）", " (muestra)") : ""); }
+function v73dashLvScope() {
+    try {
+        if (typeof dashScopeUnits !== "function" || typeof aiLevelFor !== "function")
+            return null;
+        const us = dashScopeUnits() || [];
+        if (!us.length)
+            return null;
+        const T = (typeof TENS !== "undefined" && Array.isArray(TENS)) ? TENS : [];
+        const Ls = us.map(u => { try {
+            return aiLevelFor(u.D, (u.i >= 0 && T[u.i]) ? T[u.i] : null);
+        }
+        catch (e) {
+            return null;
+        } }).filter(Boolean);
+        if (!Ls.length)
+            return null;
+        const pct = Ls.length === 1 ? Ls[0].pct : Math.round(Ls.reduce((a, L) => a + L.pct, 0) / Ls.length);
+        let name = "";
+        try {
+            name = (typeof dashScopeName === "function") ? dashScopeName() : "";
+        }
+        catch (e) { }
+        return { pct, n: Ls.length, name };
+    }
+    catch (e) {
+        return null;
+    }
+}
+if (typeof v70dashOpenUnit === "function") {
+    const __vou73 = v70dashOpenUnit;
+    v70dashOpenUnit = function () {
+        const o = __vou73.apply(this, arguments);
+        try {
+            if (o && (o.kind === "demo" || o.kind === "s2") && /^(k|s2):/.test(String(o.ref || "")) && o.i >= 0)
+                return Object.assign({}, o, { i: -1 });
+        }
+        catch (e) { }
+        return o;
+    };
+}
+function v73dashSameTen(t, d) { return !!t && !!d && String(t.item || "") === String(d.item || "") && String(t.co || "") === String(d.co || ""); }
+if (typeof aiLevelFor === "function") {
+    const __alf73 = aiLevelFor;
+    aiLevelFor = function (d, t) {
+        try {
+            const curD = (typeof D !== "undefined" && D) || null;
+            if (arguments.length >= 2 && d && d === curD && typeof TEN !== "undefined" && TEN && t !== TEN && v73dashSameTen(TEN, curD) && (t === null || !v73dashSameTen(t, curD)))
+                return __alf73.call(this, d);
+        }
+        catch (e) { }
+        return __alf73.apply(this, arguments);
+    };
+}
+function v73dashLvRows() {
+    const rows = [];
+    let cur = null;
+    try {
+        cur = aiLevel();
+    }
+    catch (e) { }
+    try {
+        const us = (typeof dashUnits === "function" ? (dashUnits() || []) : []).filter(u => u && u.i >= 0);
+        const T = (typeof TENS !== "undefined" && Array.isArray(TENS)) ? TENS : [];
+        us.forEach(u => {
+            const act = !!u.act;
+            let L = null;
+            try {
+                L = act ? cur : aiLevelFor(u.D, T[u.i] || null);
+            }
+            catch (e) {
+                L = null;
+            }
+            if (L)
+                rows.push({ item: u.item, co: u.co, pct: L.pct, lv: L.lv, stage: L.stage, cur: act, mihon: u.kind === "demo" || u.kind === "s2" });
+        });
+    }
+    catch (e) { }
+    if (cur && !rows.some(r => r.cur)) {
+        const o = v73dashOpen() || {};
+        rows.push({ item: o.item || "", co: o.co || "", pct: cur.pct, lv: cur.lv, stage: cur.stage, cur: true, mihon: !!o.mihon });
+    }
+    return rows;
+}
+if (typeof aiLevelChipBtn === "function") {
+    const __lc73 = aiLevelChipBtn;
+    aiLevelChipBtn = function () {
+        let h = String(__lc73.apply(this, arguments) || "");
+        try {
+            if (h.indexOf('id="gai"') < 0)
+                return h;
+            const o = v73dashOpen();
+            if (!o || !o.item)
+                return h;
+            const L = aiLevel();
+            const dash = typeof cur !== "undefined" && cur === "dash";
+            if (!dash) {
+                const lab = `<span class="lvs v73lvs" data-noi18n>${v73dashE(v73dashX("表示中：", "Viewing: ", "当前：", "Viendo: "))}${v73dashE(v73dashShort(v73dashOpenLabel(o), 16))}</span>`;
+                const k = h.lastIndexOf("</button>");
+                if (k >= 0)
+                    h = h.slice(0, k) + lab + h.slice(k);
+                const tt = v73dashX(`AI商社マンの画面へ（表示中の商品「${v73dashOpenLabel(o)}」の成長レベル ${L.pct}%・${L.stage}。成長レベルは商品ごとに数えます）`, `Open the AI Trade Agent (growth level of the product you are viewing, “${v73dashOpenLabel(o)}”: ${L.pct}%. The level is counted per product)`, `前往AI商社专员（当前商品“${v73dashOpenLabel(o)}”的成长等级 ${L.pct}%。成长等级按商品计算）`, `Abrir el Agente IA (nivel del producto que está viendo, «${v73dashOpenLabel(o)}»: ${L.pct}%. Se cuenta por producto)`);
+                h = h.replace(/title="[^"]*"/, `title="${v73dashE(tt)}"`);
+            }
+            else {
+                const S = v73dashLvScope();
+                if (S && !(S.n === 1 && S.pct === L.pct)) {
+                    const add = v73dashX(`。表示中の商品「${v73dashOpenLabel(o)}」は ${L.pct}%`, `. The product you are viewing, “${v73dashOpenLabel(o)}”, is ${L.pct}%`, `。当前商品“${v73dashOpenLabel(o)}”为 ${L.pct}%`, `. El producto que está viendo, «${v73dashOpenLabel(o)}», está en ${L.pct}%`);
+                    h = h.replace(/title="([^"]*)）"/, (m, a) => `title="${a}${v73dashE(add)}）"`);
+                }
+            }
+        }
+        catch (e) { }
+        return h;
+    };
+}
+if (typeof aiLevelCard === "function") {
+    const __alc73 = aiLevelCard;
+    aiLevelCard = function () {
+        let h = String(__alc73.apply(this, arguments) || "");
+        try {
+            if (h.indexOf("v73grbasis") >= 0)
+                return h;
+            const o = v73dashOpen();
+            if (!o)
+                return h;
+            const rows = v73dashLvRows();
+            const S = v73dashLvScope();
+            const many = rows.length > 1;
+            const tb = many ? `<table class="v73grtb"><tbody>${rows.slice(0, 8).map(r => `<tr class="${r.cur ? "cur" : ""}" data-v73gr="${r.pct}" data-v73cur="${r.cur ? 1 : 0}"><td>${v73dashE(r.item)}${r.mihon ? v73dashE(v73dashX("（見本）", " (sample)", "（样本）", " (muestra)")) : ""}<span class="nn">　${v73dashE(r.co)}</span>${r.cur ? `<span class="p lo" style="margin-left:6px">${v73dashE(v73dashX("表示中", "viewing", "当前", "viendo"))}</span>` : ""}</td><td class="n">Lv.${r.lv} ${v73dashE(r.stage)}・${r.pct}%</td></tr>`).join("")}</tbody></table>${rows.length > 8 ? `<p class="nn">${v73dashE(v73dashF(v73dashX("ほか {n}商品", "and {n} more", "另有 {n} 个商品", "y {n} más"), { n: rows.length - 8 }))}</p>` : ""}` : "";
+            const sc = S ? `<p>${v73dashE(S.n > 1
+                ? v73dashX(`ダッシュボードの成長レベル（集計範囲「${S.name}」・${S.n}商品の平均）：${S.pct}%`, `Dashboard growth level (scope “${S.name}”, average of ${S.n} products): ${S.pct}%`, `仪表板的成长等级（统计范围“${S.name}”・${S.n}个商品的平均）：${S.pct}%`, `Nivel en el panel (ámbito «${S.name}», media de ${S.n} productos): ${S.pct}%`)
+                : v73dashX(`ダッシュボードの成長レベル（集計範囲「${S.name}」）：${S.pct}%`, `Dashboard growth level (scope “${S.name}”): ${S.pct}%`, `仪表板的成长等级（统计范围“${S.name}”）：${S.pct}%`, `Nivel en el panel (ámbito «${S.name}»): ${S.pct}%`))}</p>` : "";
+            const blk = `<div class="v73grbasis" id="v73grbasis" data-noi18n><p>${v73dashE(v73dashX(`この成長レベルは、表示中の商品「${v73dashOpenLabel(o)}」（${o.co}）のものです。成長レベルは商品ごとに数えます（商品情報・商談の記録・資料は商品ごと、質問・Web検索の回数など、アカウント全体の利用は、どの商品にも同じように入ります）。`, `This is the growth level of the product you are viewing, “${v73dashOpenLabel(o)}” (${o.co}). The level is counted per product (product data, meeting records and files per product; account-wide use such as questions and web searches counts for every product).`, `这是当前商品“${v73dashOpenLabel(o)}”（${o.co}）的成长等级。成长等级按商品计算（商品信息・商谈记录・资料按商品，提问・网络搜索次数等账户整体的使用计入每个商品）。`, `Es el nivel del producto que está viendo, «${v73dashOpenLabel(o)}» (${o.co}). Se cuenta por producto (datos, registros y archivos por producto; el uso de la cuenta, como preguntas y búsquedas, cuenta para todos).`))}</p>${tb}${sc}</div>`;
+            const k = h.indexOf('<div class="growwrap">');
+            if (k >= 0)
+                h = h.slice(0, k) + blk + h.slice(k);
+        }
+        catch (e) { }
+        return h;
+    };
+}
+function v73dashSum(a) { return (Array.isArray(a) ? a : []).reduce((s, r) => s + (+(r && r[1]) || 0), 0); }
+function v73dashCnt(us) {
+    const o = { contact: 0, meet: 0, resp: 0, byc: 0, fb: 0, fbDone: 0, mihon: false, per: false };
+    try {
+        o.per = !!(typeof DASH !== "undefined" && DASH && (DASH.from || DASH.to));
+        (us || []).forEach(u => {
+            const d = (u && u.D) || {};
+            const F = Array.isArray(d.funnel) ? d.funnel : [];
+            o.contact += +((F[0] || [])[1]) || 0;
+            o.meet += +((F[1] || [])[1]) || 0;
+            o.resp += +((F[2] || [])[1]) || 0;
+            o.byc += v73dashSum(d.byc);
+            o.fb += Array.isArray(d.fb) ? d.fb.length : 0;
+            o.fbDone += +((d.kpi || {}).fbDone) || 0;
+            if (u.kind === "demo" || u.kind === "s2")
+                o.mihon = true;
+        });
+    }
+    catch (e) { }
+    return o;
+}
+function v73dashCntD() { try {
+    const o = v73dashOpen();
+    return v73dashCnt([{ D, kind: o && o.mihon ? "demo" : "up" }]);
+}
+catch (e) {
+    return null;
+} }
+function v73dashSame(c) { return c.contact === c.fb && c.meet === c.fb && c.byc <= c.fb && c.resp <= c.fb; }
+function v73dashFunnelNote(c) {
+    if (!c || c.per || !(c.contact || c.meet || c.resp || c.fb))
+        return "";
+    if (v73dashSame(c))
+        return v73dashX(`数え方：どの段も、商談の記録（${c.fb}件）から数えています。「バイヤーに接触」「商談を実施」は記録の件数、「反応を記録」は反応の欄が入っている記録です。`, `How it is counted: every stage comes from the meeting records (${c.fb}). “Contacted” and “Meetings held” are the number of records; “Responses logged” are records with a reaction.`, `统计方法：每一段都按商谈记录（${c.fb}条）计算。“接触买家”“已商谈”为记录条数，“记录反应”为填写了反应的记录。`, `Cómo se cuenta: cada etapa sale de los registros de reuniones (${c.fb}). «Contacto» y «Reuniones» son el número de registros; «Respuestas» son los registros con reacción.`);
+    const head = c.mihon ? v73dashX("見本のデータです。", "This is sample data. ", "这是样本数据。", "Son datos de muestra. ") : "";
+    const parts = [];
+    if (c.contact !== c.fb || c.meet !== c.fb)
+        parts.push(v73dashX(`「バイヤーに接触」${c.contact}・「商談を実施」${c.meet} は、活動の件数の合計です（1件ずつの明細は入っていません）`, `“Contacted” ${c.contact} and “Meetings held” ${c.meet} are activity totals (no item-by-item details)`, `“接触买家”${c.contact}・“已商谈”${c.meet} 为活动次数合计（没有逐条明细）`, `«Contacto» ${c.contact} y «Reuniones» ${c.meet} son totales de actividad (sin detalle uno por uno)`));
+    parts.push(v73dashX(`「反応を記録」${c.resp} は、相手の反応を残した件数です${c.resp === c.byc ? `（「どの国で手応えがあるか」の合計 ${c.byc}件と同じ数）` : ""}`, `“Responses logged” ${c.resp} is the number of buyer reactions recorded${c.resp === c.byc ? ` (same as the country total, ${c.byc})` : ""}`, `“记录反应”${c.resp} 为记录了对方反应的次数${c.resp === c.byc ? `（与“哪些国家有反响”的合计 ${c.byc}条相同）` : ""}`, `«Respuestas» ${c.resp} es el número de reacciones registradas${c.resp === c.byc ? ` (igual al total por país, ${c.byc})` : ""}`));
+    parts.push(v73dashX(`1件ずつの明細がある商談の記録は ${c.fb}件です（商談・バイヤー › 商談の記録）`, `Meeting records with details: ${c.fb} (Deals & buyers › Meeting records)`, `有逐条明细的商谈记录为 ${c.fb}条（商谈・买家 › 商谈记录）`, `Registros con detalle: ${c.fb} (Negocios y compradores › Registros)`));
+    return v73dashX("数え方：", "How it is counted: ", "统计方法：", "Cómo se cuenta: ") + head + parts.join(v73dashX("。", ". ", "。", ". ")) + v73dashX("。", ".", "。", ".");
+}
+function v73dashBycNote(c) {
+    if (!c || c.per || !(c.byc || c.fb))
+        return "";
+    if (c.byc === c.fb)
+        return v73dashX(`国別の数は、商談の記録（${c.fb}件）の国ごとの件数です。`, `By country: meeting records (${c.fb}) counted per country.`, `按国家：商谈记录（${c.fb}条）按国家计数。`, `Por país: registros de reuniones (${c.fb}) contados por país.`);
+    return v73dashX(`国別の数は、相手の反応を残した件数（合計 ${c.byc}件）の国ごとの内訳です。1件ずつの明細がある商談の記録（${c.fb}件）とは数え方が違います。`, `By country: recorded buyer reactions (total ${c.byc}) per country. This differs from the meeting records with details (${c.fb}).`, `按国家：记录了对方反应的次数（合计 ${c.byc}条）的国别明细。与有逐条明细的商谈记录（${c.fb}条）统计方法不同。`, `Por país: reacciones registradas (total ${c.byc}) por país. Difiere de los registros con detalle (${c.fb}).`);
+}
+if (typeof vDash === "function") {
+    const __vd73 = vDash;
+    vDash = function () {
+        let h = String(__vd73.apply(this, arguments));
+        try {
+            if (h.indexOf("v73fnote") >= 0)
+                return h;
+            const c = v73dashCnt(dashScopeUnits());
+            const fn = v73dashFunnelNote(c), bn = v73dashBycNote(c);
+            const i2 = h.indexOf('<div class="c"><h3>どの国で手応えがあるか</h3>');
+            if (i2 > 0) {
+                if (bn) {
+                    if (c.byc !== c.fb) {
+                        const a = h.indexOf('<p class="nn">商談記録の件数です。', i2);
+                        if (a === h.indexOf('<p class="nn">', i2))
+                            h = h.slice(0, a) + '<p class="nn">' + h.slice(a + '<p class="nn">商談記録の件数です。'.length);
+                    }
+                    const pe = h.indexOf("</p>", i2);
+                    if (pe > 0)
+                        h = h.slice(0, pe + 4) + `<p class="v73cnt" id="v73bnote">${v73dashE(bn)}</p>` + h.slice(pe + 4);
+                }
+                if (fn) {
+                    const k = h.lastIndexOf("</div>", i2);
+                    if (k > 0)
+                        h = h.slice(0, k) + `<p class="v73cnt" id="v73fnote">${v73dashE(fn)}</p>` + h.slice(k);
+                }
+            }
+        }
+        catch (e) { }
+        return h;
+    };
+}
+function v73dashDealNote() {
+    try {
+        if (typeof cur === "undefined" || cur !== "deal" || typeof B30 === "undefined" || !B30 || B30.tab !== "rec")
+            return;
+        const tabs = document.getElementById("b30tabs");
+        if (!tabs || document.getElementById("v73dealnote"))
+            return;
+        const c = v73dashCntD();
+        if (!c || !c.fb || v73dashSame(c))
+            return;
+        const t = v73dashX(`ここには、1件ずつの明細がある商談の記録（${c.fb}件）を出しています。ダッシュボードの「商談を実施」${c.meet}・「反応を記録」${c.resp}（国別の合計 ${c.byc}件）は${c.mihon ? "見本の会社の" : ""}活動の件数の合計で、明細は入っていません。`, `This list shows the meeting records with details (${c.fb}). The dashboard's “Meetings held” ${c.meet} and “Responses logged” ${c.resp} (country total ${c.byc}) are activity totals${c.mihon ? " of the sample company" : ""} without details.`, `此处显示有逐条明细的商谈记录（${c.fb}条）。仪表板的“已商谈”${c.meet}・“记录反应”${c.resp}（国别合计 ${c.byc}条）为${c.mihon ? "样本公司的" : ""}活动次数合计，没有明细。`, `Aquí se muestran los registros con detalle (${c.fb}). «Reuniones» ${c.meet} y «Respuestas» ${c.resp} (total por país ${c.byc}) del panel son totales de actividad${c.mihon ? " de la empresa de muestra" : ""} sin detalle.`);
+        tabs.insertAdjacentHTML("afterend", `<p class="v73cnt nn" id="v73dealnote" data-noi18n>ℹ ${v73dashE(t)}</p>`);
+    }
+    catch (e) { }
+}
+if (typeof render === "function") {
+    const __rd73 = render;
+    render = function () { const r = __rd73.apply(this, arguments); try {
+        v73dashDealNote();
+    }
+    catch (e) { } return r; };
+}
+if (typeof openReport === "function") {
+    const __or73 = openReport;
+    openReport = function () {
+        const r = __or73.apply(this, arguments);
+        try {
+            const pn = document.getElementById("pn");
+            const doc = pn && pn.querySelector(".doc");
+            if (doc && !doc.querySelector("#v73repnote")) {
+                const c = v73dashCntD();
+                if (c && (c.meet || c.fb || c.fbDone)) {
+                    const t = v73dashSame(c) && c.fbDone === c.fb
+                        ? v73dashX(`今月の数・累計とも、商談の記録（${c.fb}件）から数えています。`, `This month and the totals are counted from the meeting records (${c.fb}).`, `本月数量和累计都按商谈记录（${c.fb}条）计算。`, `El mes y los totales salen de los registros de reuniones (${c.fb}).`)
+                        : v73dashX(`今月の数は、日付のある商談の記録（明細 ${c.fb}件）から数えています。累計の「新しい商談」${c.meet}件・「記録した反応」${c.fbDone}件は、ダッシュボードの「どこまで進んだか」と同じ${c.mihon ? "見本の会社の" : ""}活動の件数の合計で、明細のある記録（${c.fb}件）より多くなります。`, `This month is counted from dated meeting records (${c.fb} with details). The totals, “New meetings” ${c.meet} and “Responses logged” ${c.fbDone}, are the same activity totals${c.mihon ? " of the sample company" : ""} as the dashboard pipeline, so they exceed the ${c.fb} records with details.`, `本月数量按有日期的商谈记录（明细 ${c.fb}条）计算。累计“新商谈”${c.meet}条・“记录的反应”${c.fbDone}条与仪表板“进展到哪一步”相同，为${c.mihon ? "样本公司的" : ""}活动次数合计，因此多于有明细的记录（${c.fb}条）。`, `El mes sale de los registros con fecha (${c.fb} con detalle). Los totales «Nuevas reuniones» ${c.meet} y «Respuestas» ${c.fbDone} son los mismos totales de actividad${c.mihon ? " de la empresa de muestra" : ""} del panel, por eso superan los ${c.fb} registros con detalle.`);
+                    doc.insertAdjacentHTML("beforeend", `<p class="v73cnt nn" id="v73repnote" data-noi18n>${v73dashE(t)}</p>`);
+                }
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+try {
+    if (typeof V33TR !== "undefined" && V33TR && V33TR.restore && typeof V33TR.restore.ten === "function") {
+        const __rt73 = V33TR.restore.ten;
+        V33TR.restore.ten = function (e) {
+            const prevTen = (typeof TEN !== "undefined") ? TEN : null, prevPid = (typeof PID !== "undefined") ? PID : null, prevIdx = (typeof TIDX !== "undefined") ? TIDX : 0;
+            const hadOpen = !!(prevPid && typeof D !== "undefined" && D);
+            const r = __rt73.apply(this, arguments);
+            try {
+                if (r !== false && typeof TENS !== "undefined" && Array.isArray(TENS)) {
+                    const i0 = prevTen ? TENS.indexOf(prevTen) : -1;
+                    if (hadOpen && prevPid !== "custom") {
+                        TEN = prevTen;
+                        if (prevIdx >= 0 && prevIdx < TENS.length)
+                            TIDX = prevIdx;
+                        if (typeof saveTen === "function")
+                            saveTen();
+                        if (typeof buildNav === "function")
+                            buildNav();
+                        v73dashSt.tenBack = 1;
+                    }
+                    else if (hadOpen && i0 >= 0) {
+                        TIDX = i0;
+                        TEN = prevTen;
+                        if (typeof saveTen === "function")
+                            saveTen();
+                        if (typeof buildNav === "function")
+                            buildNav();
+                        v73dashSt.tenBack = 1;
+                    }
+                    else if (typeof switchTen === "function" && TIDX >= 0 && TIDX < TENS.length) {
+                        switchTen(TIDX);
+                    }
+                }
+            }
+            catch (x) { }
+            return r;
+        };
+    }
+}
+catch (e) { }
+if (typeof v33Toast === "function") {
+    const __vt33t73 = v33Toast;
+    v33Toast = function (m) {
+        try {
+            if (v73dashSt.tenBack && /を元に戻しました/.test(String(m || ""))) {
+                v73dashSt.tenBack = 0;
+                try {
+                    toast(v33T(String(m)) + v73dashX("（上の商品の切替メニューから開けます）", " (open it from the product menu at the top)", "（可从上方的商品切换菜单打开）", " (ábralo desde el menú de productos arriba)"));
+                    return;
+                }
+                catch (x) { }
+            }
+        }
+        catch (e) { }
+        return __vt33t73.apply(this, arguments);
+    };
+}
+function v73dashOwnPaint() { try {
+    if (typeof v41PaintOwn === "function")
+        v41PaintOwn();
+}
+catch (e) { } }
+if (typeof mybSave === "function") {
+    const __ms73 = mybSave;
+    mybSave = function () { const r = __ms73.apply(this, arguments); v73dashOwnPaint(); return r; };
+}
+if (typeof v71obPaint === "function") {
+    const __op73 = v71obPaint;
+    v71obPaint = function () { const r = __op73.apply(this, arguments); v73dashOwnPaint(); return r; };
+}
+try {
+    if (typeof GROW_EVIC !== "undefined" && GROW_EVIC && !GROW_EVIC.learn)
+        GROW_EVIC.learn = "🧠";
+}
+catch (e) { }
+function v73dashDemoTag() {
+    try {
+        const o = v73dashOpen();
+        if (!o || !o.co)
+            return null;
+        const t = (typeof TEN !== "undefined" && TEN) || null;
+        if (t && (t.src === "upload" || t.src === "sample2"))
+            return null;
+        return { u: "k:" + String((typeof PID !== "undefined" && PID) || "").slice(0, 30), c: o.co.slice(0, 60) };
+    }
+    catch (e) {
+        return null;
+    }
+}
+function v73dashGrowLive() {
+    clearTimeout(v73dashSt.grT);
+    v73dashSt.grT = setTimeout(() => {
+        try {
+            if (typeof cur !== "undefined" && cur === "ai" && typeof aiLevelCard === "function") {
+                const old = document.querySelector("#well .c.grow");
+                if (old) {
+                    const open = [...old.querySelectorAll("details.growcat[open]")].map(d => d.dataset.k);
+                    const tmp = document.createElement("div");
+                    tmp.innerHTML = aiLevelCard();
+                    const nu = tmp.firstElementChild;
+                    if (nu) {
+                        open.forEach(k => { const d = nu.querySelector(`details.growcat[data-k="${k}"]`); if (d)
+                            d.open = true; });
+                        nu.querySelectorAll(".gseg.fg[data-fill]").forEach(el => el.setAttribute("stroke-dasharray", el.dataset.fill + " " + el.dataset.rest));
+                        old.replaceWith(nu);
+                        nu.querySelectorAll(".growcat").forEach(dt => {
+                            const k = dt.dataset.k;
+                            dt.addEventListener("mouseenter", () => document.querySelectorAll(`.gseg.fg[data-k="${k}"]`).forEach(s => s.classList.add("hl")));
+                            dt.addEventListener("mouseleave", () => document.querySelectorAll(`.gseg.fg[data-k="${k}"]`).forEach(s => s.classList.remove("hl")));
+                        });
+                        try {
+                            if (v73dashLang() !== "ja" && typeof i18nApply === "function")
+                                i18nApply(nu);
+                        }
+                        catch (e) { }
+                    }
+                }
+            }
+            if (typeof updateGuide === "function")
+                updateGuide();
+        }
+        catch (e) { }
+    }, 150);
+}
+if (typeof logU === "function") {
+    const __lu73 = logU;
+    logU = function (type, detail) {
+        const r = __lu73.apply(this, arguments);
+        try {
+            if (type !== "screen" && typeof SES !== "undefined" && SES && SES.t === "trial") {
+                const a = (typeof findAcct === "function") ? findAcct(SES.code) : null;
+                const ev = a && a.usage && a.usage.events;
+                const e0 = ev && ev[0];
+                if (Array.isArray(e0) && e0.length === 3 && e0[1] === type && String(e0[2]) === String(detail || "") && Math.abs(Date.now() - (+e0[0] || 0)) < 5000) {
+                    const tg = v73dashDemoTag();
+                    if (tg) {
+                        e0.push(tg);
+                        try {
+                            if (typeof v17GrowMine === "function")
+                                v17GrowMine();
+                        }
+                        catch (x) { }
+                        try {
+                            if (typeof asave === "function")
+                                asave();
+                        }
+                        catch (x) { }
+                    }
+                }
+                v73dashGrowLive();
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+window.V73GROW = {
+    log(kind, text) {
+        try {
+            const s = String(text || "").replace(/\s+/g, " ").trim().slice(0, 60);
+            if (!s || typeof logU !== "function")
+                return false;
+            logU("learn", s);
+            return true;
+        }
+        catch (e) {
+            return false;
+        }
+    }
+};
+var V73TR = { err: [], rp: null, fq: null };
+function v73trErr(k, e) { try {
+    V73TR.err.push(k + ": " + String((e && e.message) || e).slice(0, 160));
+}
+catch (x) { } }
+function v73trE(s) { s = String(s == null ? "" : s); try {
+    if (typeof esc === "function")
+        return esc(s);
+}
+catch (e) { } return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]); }
+function v73trN(s) { let x = String(s == null ? "" : s); try {
+    x = x.normalize("NFKC");
+}
+catch (e) { } return x; }
+function v73trUi() { try {
+    return (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v73trM(ja, en, zh, es, l) { l = l || v73trUi(); return l === "en" ? en : l === "zh" ? zh : l === "es" ? es : ja; }
+function v73trNum(s) { const m = v73trN(s).match(/\d[\d,]*(?:\.\d+)?/); return m ? parseFloat(m[0].replace(/,/g, "")) : null; }
+function v73trD() { try {
+    return (typeof D !== "undefined" && D) || null;
+}
+catch (e) {
+    return null;
+} }
+function v73trFwdOn() { try {
+    return typeof FWDON !== "undefined" && !!FWDON;
+}
+catch (e) {
+    return false;
+} }
+function v73trHas(v) { v = String(v == null ? "" : v).trim(); return !!v && !/^[\s—\-–ー・]*$|未登録|未設定|^なし$|まだ決めていない|^不明$|^-$/.test(v); }
+function v73trKey(s) { return v73trN(s).toLowerCase().replace(/[\s\-_・／\/()（）［］\[\]]+/g, ""); }
+function v73trRows(d) { return ((d && d.dimRows) || []).filter(r => Array.isArray(r) && r.some(x => String(x == null ? "" : x).trim())); }
+function v73trSkuTable(d, rows) {
+    if (rows.length < 2)
+        return false;
+    const h = v73trN(((d.dimCols || [])[0]) || "").trim();
+    if (/^(項目|内容|区分|種類|部位|寸法|サイズ項目)/.test(h))
+        return false;
+    const first = rows.map(r => v73trKey(r[0]));
+    if (first.some(x => !x) || new Set(first).size !== first.length)
+        return false;
+    if (/sku|品番|型番|品目|商品|コード|code|容量|内容量|model|規格|item|product/i.test(h))
+        return true;
+    const P = ((d.priceRows || []).map(r => v73trKey(Array.isArray(r) ? r[0] : r))).filter(Boolean);
+    return first.some(x => P.includes(x));
+}
+function v73trRowFor(rows, hint) {
+    const h = v73trKey(hint);
+    if (!h)
+        return -1;
+    let i = rows.findIndex(r => v73trKey(r[0]) === h);
+    if (i >= 0)
+        return i;
+    let L = rows.map((r, k) => k).filter(k => { const a = v73trKey(rows[k][0]); return a.length >= 3 && h.includes(a); });
+    if (L.length === 1)
+        return L[0];
+    const sz = (v73trN(hint).match(/\d+(?:\.\d+)?\s*(?:ml|l|g|kg|cc|oz|個入り?|枚入り?|本入り?|入)(?![a-z])/gi) || []).map(v73trKey);
+    if (sz.length) {
+        L = rows.map((r, k) => k).filter(k => rows[k].some(c => { const x = v73trKey(c); return !!x && sz.some(z => x === z || x.startsWith(z)); }));
+        if (L.length === 1)
+            return L[0];
+    }
+    return -1;
+}
+function v73trHints(d) {
+    const H = [];
+    const S = d && d.ship;
+    try {
+        if (S) {
+            if (S.sku)
+                H.push({ v: S.sku, k: "case" });
+            const pi = S.docRows && S.docRows.pi;
+            if (Array.isArray(pi) && pi.length === 1 && Array.isArray(pi[0]) && pi[0][0])
+                H.push({ v: pi[0][0], k: "case" });
+        }
+    }
+    catch (e) { }
+    if (d.sku)
+        H.push({ v: d.sku, k: "sku" });
+    if (d.item)
+        H.push({ v: d.item, k: "item" });
+    if (d.itemEn)
+        H.push({ v: d.itemEn, k: "item" });
+    return H;
+}
+function v73trDimPick() {
+    const d = v73trD();
+    if (!d)
+        return null;
+    const rows = v73trRows(d);
+    if (!v73trSkuTable(d, rows))
+        return null;
+    for (const h of v73trHints(d)) {
+        const i = v73trRowFor(rows, h.v);
+        if (i >= 0)
+            return { row: rows[i], i, label: String(rows[i][0]).trim(), how: h.k, n: rows.length };
+    }
+    return { row: rows[0], i: 0, label: String(rows[0][0]).trim(), how: "first", n: rows.length };
+}
+function v73trWithRow(fn, self, args) {
+    const P = v73trDimPick();
+    if (!P || P.how === "first")
+        return fn.apply(self, args);
+    const d = D, keep = d.dimRows;
+    d.dimRows = [P.row];
+    try {
+        return fn.apply(self, args);
+    }
+    finally {
+        d.dimRows = keep;
+    }
+}
+if (typeof v56shipCtnInfo === "function") {
+    const __ci73 = v56shipCtnInfo;
+    v56shipCtnInfo = function () { return v73trWithRow(__ci73, this, arguments); };
+}
+if (typeof v68trPackInfo === "function") {
+    const __pi73 = v68trPackInfo;
+    v68trPackInfo = function () { return v73trWithRow(__pi73, this, arguments); };
+}
+function v73trSkuNote(P, l) {
+    if (!P)
+        return "";
+    if (P.how !== "first")
+        return v73trM(`${P.label} の荷姿で計算`, `using the packing of ${P.label}`, `按 ${P.label} 的包装计算`, `con el embalaje de ${P.label}`, l);
+    return v73trM(`寸法表に SKU が${P.n}つあり、どれか決められないため1行目（${P.label}）の荷姿で計算。違うときは SKU を確かめてください`, `the dimensions table has ${P.n} SKUs and the SKU could not be identified, so row 1 (${P.label}) was used; check the SKU`, `尺寸表有${P.n}个SKU，无法确定，按第1行（${P.label}）计算，请确认SKU`, `la tabla tiene ${P.n} SKU y no se pudo identificar; se usó la fila 1 (${P.label}); verifique el SKU`, l);
+}
+if (typeof v56shipPack === "function") {
+    const __pk73 = v56shipPack;
+    v56shipPack = function (S) {
+        const r = __pk73.apply(this, arguments);
+        try {
+            const P = v73trDimPick();
+            if (r && P && r.ok && !r.v73sku) {
+                r.v73sku = P.label;
+                r.v73how = P.how;
+                r.txt = String(r.txt).replace(/^(\d+カートン（)/, `$1${P.label}：`);
+                r.calc = `${String(r.calc)}（${v73trSkuNote(P, "ja")}）`;
+            }
+        }
+        catch (e) {
+            v73trErr("pack", e);
+        }
+        return r;
+    };
+}
+if (typeof v68trPackNote === "function") {
+    const __pn73 = v68trPackNote;
+    v68trPackNote = function (S) {
+        let h = String(__pn73.apply(this, arguments));
+        try {
+            const P = v73trDimPick();
+            if (P) {
+                const n = v73trE(v73trSkuNote(P));
+                h = h.replace(/(寸法表の外装の情報から計算しています|calculated from the carton information in the dimensions table|根据尺寸表中的外箱信息计算|se calculan con los datos de la caja en la tabla de medidas)/, `$1（${n}）`);
+            }
+        }
+        catch (e) {
+            v73trErr("note", e);
+        }
+        return h;
+    };
+}
+function v73trMode(m) { m = String(m || "").toUpperCase(); return /COURIER/.test(m) ? "cr" : /AIR/.test(m) ? "air" : "sea"; }
+function v73trModeJa(m) { const k = v73trMode(m); return k === "cr" ? "クーリエ" : k === "air" ? "航空" : "海上"; }
+function v73trModeL(m, l) { const k = v73trMode(m); return k === "cr" ? v73trM("クーリエ", "courier", "快递", "courier", l) : k === "air" ? v73trM("航空", "air", "空运", "aéreo", l) : v73trM("海上", "ocean", "海运", "marítimo", l); }
+function v73trTtOf(tt, delay, mode) { const b = +tt; if (!(b > 0))
+    return null; const d = Math.max(0, +delay || 0); return { b, d, t: b + d, mode }; }
+function v73trBrk(x) { return `${v73trModeJa(x.mode)} 約${x.b}日＋情勢見込み ${x.d}日`; }
+function v73trTtTxt(x) { return x.d ? `約${x.t}日（${v73trBrk(x)}）` : `約${x.b}日`; }
+function v73trWhy(l) {
+    const W = Array.isArray(l && l.recWhy) ? l.recWhy : null;
+    if (!W)
+        return W;
+    const O = (l.offers || []);
+    const top = O[0];
+    const md = top && top.rate && top.rate.mode;
+    const tts = O.map(o => +(o && o.rate && o.rate.tt)).filter(x => x > 0);
+    const d = Math.max(0, +l.delay || 0);
+    return W.map(s => {
+        s = String(s);
+        s = s.replace(/所要 約(\d+)日＋情勢見込み(\d+)日/, (m, a, b) => `所要 約${+a + +b}日（${v73trModeJa(md)} 約${a}日＋情勢見込み ${b}日）`);
+        const m = s.match(/^参考：(.+?)までの海上の所要は約(\d+)日（船は買い手が手配）$/);
+        if (m && tts.length) {
+            const lo = Math.min(...tts), hi = Math.max(...tts);
+            const rng = lo === hi ? `約${lo}日` : `約${lo}〜${hi}日`, tot = lo === hi ? `約${lo + d}日` : `約${lo + d}〜${hi + d}日`;
+            s = `参考：${m[1]}までの海上の所要は、登録レートで${rng}${d ? `＋情勢見込み ${d}日＝${tot}` : ""}（各社の登録の幅・船は買い手が手配）`;
+        }
+        return s;
+    });
+}
+if (typeof fwdLegBuild === "function") {
+    const __lb73 = fwdLegBuild;
+    fwdLegBuild = function () {
+        const l = __lb73.apply(this, arguments);
+        try {
+            if (l && l.ok && Array.isArray(l.recWhy))
+                l.recWhy = v73trWhy(l);
+        }
+        catch (e) {
+            v73trErr("leg", e);
+        }
+        return l;
+    };
+}
+function v73trLegView(l) {
+    if (!l || !Array.isArray(l.offers))
+        return l;
+    const d = Math.max(0, +l.delay || 0);
+    return Object.assign({}, l, { delay: 0, v73d: d, recWhy: v73trWhy(l), offers: l.offers.map(o => {
+            if (!o || !o.rate)
+                return o;
+            const x = v73trTtOf(o.rate.tt, d, o.rate.mode);
+            if (!x)
+                return o;
+            return Object.assign({}, o, { rate: Object.assign({}, o.rate, { tt: x.t, v73b: x.b }) });
+        }) });
+}
+function v73trTtSpan(x) { return `<span class="v73tt" data-noi18n>${v73trE(v73trM(v73trBrk(x), `${v73trModeL(x.mode, "en")} approx. ${x.b} days + situation ${x.d} day${x.d > 1 ? "s" : ""}`, `${v73trModeL(x.mode, "zh")}约${x.b}天＋形势预计${x.d}天`, `${v73trModeL(x.mode, "es")} aprox. ${x.b} días + situación ${x.d} día${x.d > 1 ? "s" : ""}`))}</span>`; }
+if (typeof fwdRecHtml === "function") {
+    const __rh73 = fwdRecHtml;
+    fwdRecHtml = function (r, l) {
+        let v = l;
+        try {
+            v = v73trLegView(l);
+        }
+        catch (e) {
+            v = l;
+        }
+        let s = String(__rh73.call(this, r, v));
+        try {
+            const o = (l && l.offers || [])[0];
+            const x = o && o.rate && v73trTtOf(o.rate.tt, l.delay, o.rate.mode);
+            if (x && x.d) {
+                const k = `</span>・約${x.t}日`;
+                const i = s.indexOf(k, s.indexOf('class="fwdrec"'));
+                if (i >= 0)
+                    s = s.slice(0, i) + `</span>・${v73trE(v73trM(`所要 約${x.t}日`, `transit approx. ${x.t} days`, `所需约${x.t}天`, `tránsito aprox. ${x.t} días`))}（${v73trTtSpan(x)}）` + s.slice(i + k.length);
+            }
+            if (v && v.v73d) {
+                s = s.replace(/(<div class="v64rng">[^<]*<\/div>)/, `$1<div class="v64rng v73ttn">${v73trE(v73trM(`所要は、各社の登録の日数に情勢見込み +${v.v73d}日を足した日数です`, `Transit = each forwarder's registered days + situation ${v.v73d} day${v.v73d > 1 ? "s" : ""}`, `所需天数＝各公司登记天数＋形势预计 ${v.v73d}天`, `Tránsito = días registrados + situación ${v.v73d} día${v.v73d > 1 ? "s" : ""}`))}</div>`);
+            }
+        }
+        catch (e) {
+            v73trErr("rec", e);
+        }
+        return s;
+    };
+}
+if (typeof fwdCompareHtml === "function") {
+    const __cm73 = fwdCompareHtml;
+    fwdCompareHtml = function (r, l, opt) {
+        let v = l;
+        try {
+            v = v73trLegView(l);
+        }
+        catch (e) {
+            v = l;
+        }
+        let s = String(__cm73.call(this, r, v, opt));
+        try {
+            const d = (v && v.v73d) || 0;
+            if (d) {
+                const X = (l.offers || []).map(o => o && o.rate && v73trTtOf(o.rate.tt, d, o.rate.mode)).filter(Boolean);
+                let k = 0;
+                s = s.replace(/<td class="num">約(\d+)日<\/td>/g, (m, t) => { const x = X[k++]; return (x && x.t === +t) ? `<td class="num">約${t}日<br><span style="font-size:9.5px;color:var(--ink-3)">${v73trTtSpan(x)}</span></td>` : m; });
+            }
+        }
+        catch (e) {
+            v73trErr("cmp", e);
+        }
+        return s;
+    };
+}
+if (typeof fq17Summary === "function") {
+    const __fs73 = fq17Summary;
+    fq17Summary = function (r) {
+        let s = String(__fs73.apply(this, arguments));
+        try {
+            const L = ((r && r.legs) || []).filter(l => l && l.ok && l.quote);
+            let k = 0;
+            s = s.replace(/<td class="num">約([^<]*)日<\/td>/g, (m, t) => { const l = L[k++]; const x = l && v73trTtOf(l.quote.tt, l.delay, l.quote.mode); return (x && String(x.b) === String(t) && x.d) ? `<td class="num">約${x.t}日<br><span style="font-size:9.5px;color:var(--ink-3)">${v73trTtSpan(x)}</span></td>` : m; });
+        }
+        catch (e) {
+            v73trErr("fq", e);
+        }
+        return s;
+    };
+}
+if (typeof fwdLegLine === "function") {
+    const __ll73 = fwdLegLine;
+    fwdLegLine = function (l) {
+        let s = String(__ll73.apply(this, arguments));
+        try {
+            const q = l && l.ok && l.quote;
+            const x = q && v73trTtOf(q.tt, l.delay, q.mode);
+            if (x && x.d)
+                s = s.replace(`／約${x.b}日`, `／所要 ${v73trTtTxt(x)}`);
+        }
+        catch (e) { }
+        return s;
+    };
+}
+function v73trQuoteDom(id) {
+    if (typeof FWDB === "undefined" || !FWDB)
+        return;
+    const r = (FWDB.reqs || []).find(x => x && x.id === id);
+    const pn = document.getElementById("pn");
+    if (!r || !pn)
+        return;
+    const cards = [...pn.querySelectorAll(".fwdleg")];
+    (r.legs || []).forEach((l, i) => {
+        const c = cards[i];
+        const q = l && l.ok && l.quote;
+        const x = q && v73trTtOf(q.tt, l.delay, q.mode);
+        if (!c || !x || !x.d)
+            return;
+        const want = `${q.lane}・${q.mode}・約${x.b}日`;
+        [...c.querySelectorAll("span")].some(sp => {
+            if (sp.children.length || sp.textContent !== want)
+                return false;
+            sp.textContent = `${q.lane}・${q.mode}・`;
+            sp.insertAdjacentHTML("beforeend", `<span data-noi18n>${v73trE(v73trM(`所要 約${x.t}日`, `transit approx. ${x.t} days`, `所需约${x.t}天`, `tránsito aprox. ${x.t} días`))}</span>（${v73trTtSpan(x)}）`);
+            return true;
+        });
+    });
+}
+if (typeof openFwdQuote === "function") {
+    const __oq73 = openFwdQuote;
+    openFwdQuote = function (id) { const o = __oq73.apply(this, arguments); try {
+        v73trQuoteDom(id);
+    }
+    catch (e) {
+        v73trErr("dom", e);
+    } return o; };
+}
+if (typeof fwdPickOffer === "function") {
+    const __po73 = fwdPickOffer;
+    fwdPickOffer = function (id, cty) {
+        let n0 = -1, r = null;
+        try {
+            if (typeof FWDB !== "undefined" && FWDB) {
+                r = (FWDB.reqs || []).find(x => x && x.id === id);
+                n0 = r ? (r.msgs || []).length : -1;
+            }
+        }
+        catch (e) { }
+        const out = __po73.apply(this, arguments);
+        try {
+            r = (FWDB.reqs || []).find(x => x && x.id === id);
+            const l = r && (r.legs || []).find(x => x && x.cty === cty);
+            if (r && l && n0 >= 0 && (r.msgs || []).length > n0) {
+                let ch = 0;
+                r.msgs.slice(n0).forEach(m => { if (!m || typeof m.t !== "string")
+                    return; m.t = m.t.replace(/・約(\d+)日）/, (s, t) => { const x = v73trTtOf(t, l.delay, l.quote && l.quote.mode); if (!x || !x.d)
+                    return s; ch = 1; return `・所要 ${v73trTtTxt(x)}）`; }); });
+                if (ch) {
+                    try {
+                        fwdSave();
+                    }
+                    catch (e) { }
+                    try {
+                        v73trQuoteDom(id);
+                    }
+                    catch (e) { }
+                }
+            }
+        }
+        catch (e) {
+            v73trErr("pick", e);
+        }
+        return out;
+    };
+}
+if (typeof fwdRequoteForm === "function") {
+    const __rq73 = fwdRequoteForm;
+    fwdRequoteForm = function (id, cty) {
+        const out = __rq73.apply(this, arguments);
+        try {
+            const r = (FWDB.reqs || []).find(x => x && x.id === id);
+            const l = r && (r.legs || []).find(x => x && x.cty === cty);
+            const q = l && l.ok && l.quote;
+            const x = q && v73trTtOf(q.tt, l.delay, q.mode);
+            const box = document.getElementById("fwdrq");
+            const p = box && box.querySelector("p.nn");
+            if (x && x.d && p && p.firstChild && p.firstChild.nodeType === 3)
+                p.firstChild.data = p.firstChild.data.replace(`（約${x.b}日）`, `（${v73trTtTxt(x)}）`);
+        }
+        catch (e) { }
+        return out;
+    };
+}
+if (typeof fwdMsgsAI === "function") {
+    const __ma73 = fwdMsgsAI;
+    fwdMsgsAI = async function (req) { const keep = V73TR.fq; V73TR.fq = req || null; try {
+        return await __ma73.apply(this, arguments);
+    }
+    finally {
+        V73TR.fq = keep;
+    } };
+}
+if (typeof llmAsk === "function") {
+    const __la73 = llmAsk;
+    llmAsk = function (q, maxTok, opts) {
+        try {
+            const req = V73TR.fq;
+            if (req && typeof q === "string" && /^荷主側AI（AI商社マン）と物流会社側AI（AI物流マン）の見積交渉/.test(q)) {
+                const dl = (req.legs || []).filter(l => l && l.ok && +l.delay > 0).map(l => `${l.cty} +${l.delay}日`);
+                if (dl.length)
+                    q += `\n・所要日数：事実の「所要◯日」は各社の登録の日数。情勢見込み（${dl.join("・")}）を足した合計を書くときは「約◯日（海上 約◯日＋情勢見込み ◯日）」と内訳を添え、合計と内訳を合わせる。所要が未登録の会社には情勢見込みを書かない。`;
+            }
+            const rp = V73TR.rp;
+            if (rp && opts && opts.task === "rp" && typeof q === "string" && rp.lang)
+                q += `\n=== 返信の言語（厳守） ===\n返信の本文（draft）は ${rp.lang} で書く。相手の最新のメッセージの言語（${rp.lang}）に合わせる。これまでのやり取りの言語${rp.from && rp.from !== rp.lang ? "（" + rp.from + "）" : ""}ではない。summary・asks・facts・unknown・next は日本語のまま。`;
+        }
+        catch (e) { }
+        return __la73.apply(this, [q, maxTok, opts]);
+    };
+}
+const V73TR_LBL = { en: "English", es: "Español", fr: "Français", de: "Deutsch", pt: "Português", ko: "한국어", ar: "العربية（アラビア語）", th: "ไทย（タイ語）", vi: "Tiếng Việt", id: "Bahasa Indonesia", ja: "日本語" };
+const V73TR_TRAD = "們這價報請謝貨訂與為個來時會對說運關稅單據樣書費買賣號點產業務嗎麼發數給讓問題經見認證驗額週錢鐘", V73TR_SIMP = "们这价报请谢货订与为个来时会对说运关税单据样书费买卖号点产业务吗么发数给让问题经见认证验额周钱钟";
+function v73trCode(lbl) {
+    lbl = String(lbl || "").trim();
+    try {
+        if (typeof v61dlHint === "function") {
+            const c = v61dlHint(lbl);
+            if (c)
+                return c;
+        }
+    }
+    catch (e) { }
+    if (/中文/.test(lbl))
+        return "zh";
+    const k = Object.keys(V73TR_LBL).find(c => V73TR_LBL[c] === lbl);
+    return k || "";
+}
+function v73trZh(s, hint) {
+    let t = 0, x = 0;
+    for (const ch of String(s)) {
+        if (V73TR_TRAD.includes(ch))
+            t++;
+        else if (V73TR_SIMP.includes(ch))
+            x++;
+    }
+    if (t > x)
+        return "繁體中文";
+    if (x > t)
+        return "简体中文";
+    return /繁/.test(String(hint || "")) ? "繁體中文" : /简|簡/.test(String(hint || "")) ? "简体中文" : "简体中文";
+}
+function v73trPlain(h) {
+    let s = String(h || "");
+    try {
+        if (typeof v61dlPlain === "function")
+            s = v61dlPlain(h);
+        else
+            s = s.replace(/<[^>]+>/g, " ");
+    }
+    catch (e) {
+        s = s.replace(/<[^>]+>/g, " ");
+    }
+    const m = s.search(/\n\s*(?:>|On .{3,120}wrote:|-{2,}\s*(?:Original Message|原始邮件|原始郵件)|From:|Sent:|差出人[:：]|送信者[:：]|寄件者[:：]|發件人[:：]|发件人[:：]|在.{2,60}(?:写道|寫道)[:：])/i);
+    return m > 0 ? s.slice(0, m) : s;
+}
+function v73trDetect(text, threadLang) {
+    const s = v73trPlain(text).replace(/https?:\/\/\S+/g, " ").replace(/[\w.+-]+@[\w.-]+/g, " ").replace(/\b[A-Z]{2,}[-_]?[A-Z0-9-]*\d[A-Z0-9-]*\b/g, " ");
+    const n = re => (s.match(re) || []).length;
+    const kana = n(/[぀-ヿ]/g), han = n(/[㐀-鿿]/g), hang = n(/[가-힯]/g), ar = n(/[؀-ۿ]/g), th = n(/[฀-๿]/g), lat = n(/[A-Za-zÀ-ɏ]/g), words = (s.match(/[A-Za-zÀ-ɏ]{2,}/g) || []).length;
+    const hint = v73trCode(threadLang);
+    if (kana >= 2 && kana * 4 >= lat)
+        return { lbl: "日本語", code: "ja", strong: 1 };
+    const mx = Math.max(han, hang, ar, th);
+    if (mx >= 2 && mx * 2 >= lat) {
+        if (mx === hang)
+            return { lbl: V73TR_LBL.ko, code: "ko", strong: 1 };
+        if (mx === ar)
+            return { lbl: V73TR_LBL.ar, code: "ar", strong: 1 };
+        if (mx === th)
+            return { lbl: V73TR_LBL.th, code: "th", strong: 1 };
+        return { lbl: v73trZh(s, threadLang), code: "zh", strong: 1 };
+    }
+    if (lat < 6 || words < 2)
+        return null;
+    let c = "";
+    try {
+        if (typeof v61dlDetect === "function")
+            c = v61dlDetect(s, hint);
+    }
+    catch (e) { }
+    if (!c || /^(ja|zh|ko|ar|th)$/.test(c))
+        c = "en";
+    let sw = 0;
+    try {
+        if (typeof V61DL_SW !== "undefined" && V61DL_SW[c]) {
+            const set = new Set(V61DL_SW[c].split(" "));
+            sw = (s.toLowerCase().match(/[a-zà-ÿ]+/g) || []).filter(w => set.has(w)).length;
+        }
+    }
+    catch (e) { }
+    const strong = /^(ja|zh|ko|ar|th)$/.test(hint) || sw >= 2 || c === "vi" || (c === hint);
+    return { lbl: c === hint && threadLang ? String(threadLang) : (V73TR_LBL[c] || "English"), code: c, strong: strong ? 1 : 0 };
+}
+function v73trLastBy(th) { const ms = Array.isArray(th && th.msgs) ? th.msgs : []; for (let i = ms.length - 1; i >= 0; i--)
+    if (ms[i] && ms[i].w === "by")
+        return ms[i]; return null; }
+function v73trLangSync(th) {
+    const m = v73trLastBy(th);
+    if (!m)
+        return null;
+    const det = v73trDetect(m.body, th.lang);
+    if (!det)
+        return null;
+    const cur = String(th.lang || "English");
+    const same = det.lbl === cur || (det.code !== "zh" && det.code === v73trCode(cur));
+    if (!same && det.strong) {
+        th.v73lang = { from: cur, to: det.lbl, at: Date.now() };
+        th.lang = det.lbl;
+    }
+    return Object.assign({}, det, { same, cur });
+}
+if (typeof v72Prep === "function") {
+    const __pp73 = v72Prep;
+    v72Prep = async function (id) {
+        let th = null, det = null, from = "";
+        try {
+            th = (typeof v72Ths === "function" ? v72Ths() : {})[id];
+            if (th && !(typeof V72RP !== "undefined" && V72RP.busy[id])) {
+                from = String(th.lang || "English");
+                det = v73trLangSync(th);
+            }
+        }
+        catch (e) {
+            v73trErr("lang", e);
+        }
+        const keep = V73TR.rp;
+        V73TR.rp = th ? { lang: String(th.lang || "English"), from } : null;
+        let P;
+        try {
+            P = await __pp73.apply(this, arguments);
+        }
+        finally {
+            V73TR.rp = keep;
+        }
+        try {
+            if (th && P && !P.fail && th.v72 === P) {
+                const ai = P.how === "ai";
+                P.v73 = { msg: det ? det.lbl : "", from, to: String(th.lang || "English"), sw: from !== String(th.lang || "English") ? 1 : 0 };
+                if (!ai) {
+                    P.lang = "English";
+                    if (det && det.code !== "en")
+                        P.v73.tpl = det.lbl;
+                }
+                else {
+                    const dd = v73trDetect(String(P.draft || "").split(/--- Quotation[\s\S]*?\n---/).join(" "), P.lang);
+                    if (dd && dd.strong && dd.lbl !== P.lang && !(dd.code !== "zh" && dd.code === v73trCode(P.lang)))
+                        P.v73.bad = dd.lbl;
+                }
+                try {
+                    if (typeof v72Save === "function")
+                        v72Save();
+                }
+                catch (e) { }
+                try {
+                    if (typeof v72Paint === "function")
+                        v72Paint(id);
+                }
+                catch (e) { }
+            }
+        }
+        catch (e) {
+            v73trErr("prep", e);
+        }
+        return P;
+    };
+}
+function v73trLangNote(P) {
+    const x = P && P.v73;
+    if (!x)
+        return "";
+    const E = v73trE;
+    const L = [];
+    if (x.tpl)
+        L.push(`<p class="nn v72warn v73trlang">⚠ ${E(v73trM(`AI 未接続のため、返信案は英語の定型です（相手の最新のメッセージは ${x.tpl}）。AI を接続すると ${x.tpl} で作ります。`, `AI is not connected, so the draft is an English template (the buyer's latest message is in ${x.tpl}).`, `未连接AI，草稿为英文模板（对方最新消息为 ${x.tpl}）。`, `La IA no está conectada; el borrador es una plantilla en inglés (el último mensaje está en ${x.tpl}).`))}</p>`);
+    else if (x.sw)
+        L.push(`<p class="nn v73trlang">🌐 ${E(v73trM(`相手の最新のメッセージが ${x.to} なので、返信案も ${x.to} で作りました（このやり取りの言語を ${x.from} → ${x.to} に変えました）。`, `The buyer's latest message is in ${x.to}, so the draft is in ${x.to} (conversation language changed from ${x.from} to ${x.to}).`, `对方最新消息为 ${x.to}，草稿也用 ${x.to}（往来语言已由 ${x.from} 改为 ${x.to}）。`, `El último mensaje está en ${x.to}; el borrador también (idioma cambiado de ${x.from} a ${x.to}).`))}</p>`);
+    if (x.bad)
+        L.push(`<p class="nn v72warn v73trlang">⚠ ${E(v73trM(`返信案が ${x.bad} で書かれています（相手の最新のメッセージは ${P.lang}）。「作り直す」か、直してから送ってください。`, `The draft is written in ${x.bad} (the buyer wrote in ${P.lang}). Redo or edit it before sending.`, `草稿是用 ${x.bad} 写的（对方使用 ${P.lang}）。请重新生成或修改后发送。`, `El borrador está en ${x.bad} (el comprador escribió en ${P.lang}). Rehágalo o edítelo antes de enviar.`))}</p>`);
+    return L.join("");
+}
+if (typeof v72CardHtml === "function") {
+    const __ch73 = v72CardHtml;
+    v72CardHtml = function (th) {
+        let h = String(__ch73.apply(this, arguments));
+        try {
+            const P = th && th.v72;
+            if (P && !P.fail && !P.sent && P.v73) {
+                const note = v73trLangNote(P);
+                const k = '<p class="lbl v72lbl">';
+                if (note && h.indexOf(k) >= 0)
+                    h = h.replace(k, note + k);
+            }
+        }
+        catch (e) {
+            v73trErr("card", e);
+        }
+        return h;
+    };
+}
+if (typeof ppContext === "function") {
+    const __pc73 = ppContext;
+    ppContext = function () {
+        let s = String(__pc73.apply(this, arguments));
+        try {
+            if (s.indexOf("\n## 取引条件・基本情報") < 0) {
+                const i = s.search(/\nMOQ: /);
+                if (i >= 0) {
+                    const j = s.indexOf("\n## ", i + 1);
+                    const blk = (j >= 0 ? s.slice(i, j) : s.slice(i)).replace(/(MOQ|リードタイム|取引条件|支払|仕出港|産地|認証|賞味期限・保証|カートン入数|進出希望国): -(?=／|\n|$)/g, "$1: 未登録");
+                    s = s.slice(0, i) + "\n## 取引条件・基本情報（商品マスタの登録。MOQ・仕出港・取引条件はこの節と価格表の MOQ の列だけが登録の値）" + blk + (j >= 0 ? s.slice(j) : "");
+                }
+            }
+        }
+        catch (e) {
+            v73trErr("ctx", e);
+        }
+        return s;
+    };
+}
+const V73TR_RULE = `
+【MOQ・港・取引条件を断定しない（v21.73）】
+・MOQ（最低発注数量）・仕出港（出荷港・積み出し港）・取引条件（FOB・CIF など）は、社内データの「取引条件・基本情報」の節と、価格表の MOQ の列にある値だけを、登録の値として書いてください。書くときは「登録の MOQ」「登録の仕出港」のように出どころを添え、その節の番号を付けてください（価格表の番号を付けないでください）。
+・その値が「未登録」のときは、価格表の数量帯の始まり・見本の案件・タスク・商談の記録・強みの文から推し量って言い切らないでください。推し量って書くときは、その値のすぐ後に「（推定・要確認）」と書き、登録すると確かな答えになることを1行添えてください。`;
+if (typeof llmSysPrompt === "function") {
+    const __sp73 = llmSysPrompt;
+    llmSysPrompt = function () {
+        const s = String(__sp73.apply(this, arguments));
+        try {
+            if (typeof V33ANS !== "undefined" && V33ANS.chat && !v73trFwdOn() && s.indexOf("（v21.73）") < 0) {
+                const k = s.indexOf("\n【根拠の番号と");
+                return k >= 0 ? s.slice(0, k) + V73TR_RULE + s.slice(k) : s + "\n" + V73TR_RULE;
+            }
+        }
+        catch (e) { }
+        return s;
+    };
+}
+const V73TR_PORTS = [["横浜", "yokohama"], ["東京", "tokyo"], ["名古屋", "nagoya"], ["神戸", "kobe"], ["大阪", "osaka"], ["博多", "hakata", "fukuoka"], ["門司", "moji"], ["清水", "shimizu"], ["四日市", "yokkaichi"], ["仙台", "sendai"], ["新潟", "niigata"], ["北九州", "kitakyushu"], ["広島", "hiroshima"], ["千葉", "chiba"], ["川崎", "kawasaki"], ["那覇", "naha"], ["苫小牧", "tomakomai"], ["堺泉北", "sakai"], ["鹿児島", "kagoshima"], ["下関", "shimonoseki"], ["徳山", "tokuyama"], ["水島", "mizushima"], ["金沢", "kanazawa"], ["伏木富山", "fushiki"], ["富山", "toyama"], ["八戸", "hachinohe"], ["釧路", "kushiro"], ["小樽", "otaru"], ["室蘭", "muroran"], ["秋田", "akita"], ["酒田", "sakata"], ["小名浜", "onahama"], ["常陸那珂", "hitachinaka"], ["日立", "hitachi"], ["鹿島", "kashima"], ["三河", "mikawa"], ["衣浦", "kinuura"], ["和歌山", "wakayama"], ["姫路", "himeji"], ["松山", "matsuyama"], ["高松", "takamatsu"], ["高知", "kochi"], ["志布志", "shibushi"], ["大分", "oita"], ["熊本", "kumamoto"], ["長崎", "nagasaki"], ["伊万里", "imari"], ["成田", "narita"], ["羽田", "haneda"], ["関西", "kansai", "kix"], ["中部", "chubu", "centrair"]];
+const V73TR_PJA = V73TR_PORTS.map(p => p[0]).sort((a, b) => b.length - a.length).join("|"), V73TR_PEN = [].concat(...V73TR_PORTS.map(p => p.slice(1))).sort((a, b) => b.length - a.length).join("|");
+function v73trPortKey(s) { s = v73trN(s).toLowerCase().trim(); const p = V73TR_PORTS.find(x => s.startsWith(x[0]) || x.slice(1).some(e => s.startsWith(e))); return p ? p[0] : ""; }
+function v73trPortsIn(s) { const t = v73trN(s); const out = []; const re = new RegExp("(" + V73TR_PJA + ")|\\b(" + V73TR_PEN + ")\\b", "gi"); let m; while ((m = re.exec(t))) {
+    const k = v73trPortKey(m[0]);
+    if (k && !out.includes(k))
+        out.push(k);
+} return out; }
+function v73trReg() {
+    const d = v73trD() || {};
+    const moqs = [];
+    const add = v => { const n = v73trNum(v); if (n != null && n > 0 && !moqs.includes(n))
+        moqs.push(n); };
+    if (v73trHas(d.moq))
+        add(d.moq);
+    const pc = (d.priceCols || []).map(c => String(c == null ? "" : c));
+    const mi = pc.findIndex((c, i) => i > 0 && /moq|最小|最低/i.test(c));
+    if (mi > 0)
+        (d.priceRows || []).forEach(r => { if (Array.isArray(r) && v73trHas(r[mi]))
+            add(r[mi]); });
+    const pols = [], psrc = {};
+    const addP = (s, src) => v73trPortsIn(s).forEach(k => { if (!pols.includes(k)) {
+        pols.push(k);
+        psrc[k] = { src, txt: String(s) };
+    } });
+    if (v73trHas(d.pol))
+        addP(d.pol, "pol");
+    if (v73trHas(d.term))
+        addP(d.term, "term");
+    try {
+        const S = d.ship;
+        if (S && v73trHas(S.pol) && !/^（想定）/.test(String(S.buyer || "")))
+            addP(S.pol, "case");
+    }
+    catch (e) { }
+    return { moqs, moqTxt: v73trHas(d.moq) ? String(d.moq) : "", moqCol: mi > 0 ? pc[mi] : "", pols, psrc, polTxt: v73trHas(d.pol) ? String(d.pol) : "", caseNo: (d.ship && d.ship.no) || "" };
+}
+const V73TR_MOQ = /(?:MOQ|最低発注数量|最小発注数量|最低発注数|最小発注数|最低発注|最小発注|最小ロット|最低ロット|最低注文数量?|最小注文数量?|minimum order(?: quantity)?|min\.? order|最小起订量|起订量|最低订购量|cantidad m[ií]nima(?: de pedido)?|pedido m[ií]nimo)(?:[^0-9\n。.!?！？]{0,24}?)(\d[\d,]*(?:\.\d+)?)\s*(個|本|袋|台|枚|箱|セット|ケース|カートン|足|着|pcs?|pieces|units?|bottles?|sets?|cases?|cartons?|kg|件|个|瓶|套|unidades)?/gi;
+function v73trClaims(txt) {
+    const s = v73trN(String(txt || "").replace(/\[S?\d{1,3}\]/g, ""));
+    const out = [];
+    let m;
+    V73TR_MOQ.lastIndex = 0;
+    while ((m = V73TR_MOQ.exec(s))) {
+        const after = s.slice(m.index + m[0].length, m.index + m[0].length + 2);
+        if (/^\s*(?:%|％|日|円|ドル|か月|ヶ月|週)/.test(after))
+            continue;
+        const v = parseFloat(m[1].replace(/,/g, ""));
+        if (!(v > 0))
+            continue;
+        if (!out.some(x => x.k === "moq" && x.v === v))
+            out.push({ k: "moq", v, txt: m[1] + (m[2] || ""), raw: m[0] });
+    }
+    const P = "(?:(" + V73TR_PJA + ")(?:港|空港)?|\\b(" + V73TR_PEN + ")\\b)";
+    const RES = [new RegExp("(?:FOB|FAS|FCA|EXW)\\s*[（(]?\\s*" + P, "gi"), new RegExp("(" + V73TR_PJA + ")(?:港|空港)(?:から|発|渡し|で本船|で積|より|積み|で船積|出し|出荷)", "g"),
+        new RegExp("(?:仕出港|出荷港|積出港|積み出し港|積地|船積港|船積み港|port of loading|loading port|装运港|起运港|puerto de (?:carga|embarque))[^\\n。]{0,12}?" + P, "gi"),
+        new RegExp("\\b(?:from|ex)\\s+(?:the\\s+)?(?:port of\\s+)?(" + V73TR_PEN + ")\\b", "gi")];
+    RES.forEach(re => { let x; while ((x = re.exec(s))) {
+        const nm = x.slice(1).find(Boolean);
+        const k = v73trPortKey(nm);
+        if (k && !out.some(y => y.k === "pol" && y.v === k))
+            out.push({ k: "pol", v: k, txt: nm, raw: x[0] });
+    } });
+    return out;
+}
+function v73trCheck(txt) {
+    const R = v73trReg();
+    return v73trClaims(txt).map(c => {
+        if (c.k === "moq") {
+            const ok = R.moqs.some(x => Math.abs(x - c.v) < 0.5);
+            return Object.assign(c, { st: ok ? "ok" : R.moqs.length ? "diff" : "none", reg: R.moqTxt || (R.moqs.length ? R.moqs.map(n => n.toLocaleString()).join("・") : ""), src: R.moqTxt ? "moq" : "col", col: R.moqCol });
+        }
+        const ok = R.pols.includes(c.v), ps = ok ? R.psrc[c.v] : null;
+        return Object.assign(c, { st: ok ? "ok" : R.pols.length ? "diff" : "none", reg: ok ? ps.txt : (R.polTxt || R.pols.map(v73trPortJa).join("・")), psrc: ps ? ps.src : "", caseNo: R.caseNo });
+    });
+}
+function v73trSrcBox(L, ql) {
+    if (!L.length)
+        return "";
+    const E = v73trE, M = (a, b, c, d) => v73trM(a, b, c, d, ql);
+    const li = L.map(c => {
+        const what = c.k === "moq" ? `MOQ ${c.txt}` : (/[぀-ヿ一-鿿]/.test(c.txt) ? v73trPortJa(c.v) : c.txt);
+        if (c.st === "ok")
+            return `<li class="v73ok">✓ ${E(what)}：${E(c.k === "moq" ? (c.src === "moq" ? M(`登録の MOQ（商品マスタ「${c.reg}」）`, `registered MOQ (product master “${c.reg}”)`, `登记的MOQ（商品主数据“${c.reg}”）`, `MOQ registrado (ficha «${c.reg}»)`) : M(`登録の価格表の「${c.col}」の列`, `the “${c.col}” column of your price list`, `价格表的“${c.col}”列`, `la columna «${c.col}» de su lista`)) : (c.psrc === "term" ? M(`登録の取引条件（商品マスタ「${c.reg}」）`, `registered trade term (“${c.reg}”)`, `登记的贸易条件（“${c.reg}”）`, `condición registrada («${c.reg}»)`) : c.psrc === "case" ? M(`案件 ${c.caseNo} の仕出港「${c.reg}」`, `port of loading of case ${c.caseNo} (“${c.reg}”)`, `案件 ${c.caseNo} 的装运港（“${c.reg}”）`, `puerto de carga del caso ${c.caseNo} («${c.reg}»)`) : M(`登録の仕出港（商品マスタ「${c.reg}」）`, `registered port of loading (“${c.reg}”)`, `登记的装运港（“${c.reg}”）`, `puerto de carga registrado («${c.reg}»)`)))}</li>`;
+        if (c.st === "diff")
+            return `<li class="v73ng">⚠ ${E(what)}：${E(c.k === "moq" ? M(`登録と違います（登録の MOQ は「${c.reg}」）。推定・要確認`, `differs from your data (registered MOQ: “${c.reg}”). Estimate — to be confirmed`, `与登记不同（登记的MOQ为“${c.reg}”）。推定・需确认`, `no coincide (MOQ registrado: «${c.reg}»). Estimación por confirmar`) : M(`登録と違います（登録の仕出港は「${c.reg}」）。推定・要確認`, `differs from your data (registered port: “${c.reg}”). Estimate — to be confirmed`, `与登记不同（登记的装运港为“${c.reg}”）。推定・需确认`, `no coincide (puerto registrado: «${c.reg}»). Estimación por confirmar`))}</li>`;
+        return `<li class="v73ng">⚠ ${E(what)}：${E(c.k === "moq" ? M("MOQ の登録がありません。推定です（要確認）", "no MOQ is registered. Estimate — to be confirmed", "未登记MOQ。为推定（需确认）", "no hay MOQ registrado. Estimación (por confirmar)") : M("仕出港の登録がありません。推定です（要確認）", "no port of loading is registered. Estimate — to be confirmed", "未登记装运港。为推定（需确认）", "no hay puerto de carga registrado. Estimación (por confirmar)"))}</li>`;
+    }).join("");
+    const ng = L.some(c => c.st !== "ok");
+    return `<div class="v73trsrc" role="note" data-noi18n><b>${E(M("この回答の MOQ・出荷港の出どころ", "Where the MOQ / port in this answer come from", "本回答中MOQ・装运港的来源", "Origen del MOQ / puerto de esta respuesta"))}</b><ul>${li}</ul>${ng ? `<p>${E(M("推定の値は、使う前に確かめてください。正しい値を登録すると、次から AI商社マンはその値で答えます。", "Check estimated values before using them. Register the correct values and the AI will use them next time.", "推定值请在使用前确认。登记正确的值后，AI商社员下次会按该值回答。", "Verifique los valores estimados. Regístrelos y la IA los usará la próxima vez."))}</p><button class="btn g" type="button" data-v73trfill="1">${E(M("MOQ・仕出港を登録する（AIと埋める）", "Register MOQ / port (fill with AI)", "登记MOQ・装运港（与AI一起填写）", "Registrar MOQ / puerto (con IA)"))}</button>` : ""}</div>`;
+}
+function v73trMark(a, L, ql) {
+    let h = String(a);
+    const tag = v73trM("（推定・要確認）", " (estimate — to be confirmed)", "（推定・需确认）", " (estimación por confirmar)", ql);
+    L.filter(c => c.st !== "ok").forEach(c => {
+        const kw = String(c.raw || "").slice(0, 3);
+        const i0 = kw ? h.indexOf(kw) : -1;
+        let i = h.indexOf(c.txt, i0 >= 0 ? i0 : 0);
+        if (i < 0)
+            i = h.indexOf(c.txt);
+        if (i < 0)
+            return;
+        let e = i + c.txt.length;
+        const nx = h.slice(e, e + 2);
+        if (c.k === "pol") {
+            if (nx === "空港")
+                e += 2;
+            else if (nx[0] === "港")
+                e += 1;
+        }
+        if (h.slice(e, e + 30).indexOf('class="v73trest"') >= 0)
+            return;
+        h = h.slice(0, e) + `<span class="v73trest" data-noi18n>${v73trE(tag)}</span>` + h.slice(e);
+    });
+    return h;
+}
+function v73trPortJa(k) { return k + (/^(成田|羽田|関西|中部)$/.test(k) ? "空港" : "港"); }
+if (typeof v33AnsDecorate === "function") {
+    const __ad73 = v33AnsDecorate;
+    v33AnsDecorate = function (a, txt) {
+        let h = __ad73.apply(this, arguments);
+        try {
+            if (v73trFwdOn() || !(typeof V33ANS !== "undefined" && V33ANS.chat) || !v73trD())
+                return h;
+            const L = v73trCheck(txt);
+            if (!L.length)
+                return h;
+            const ql = (typeof V56ASK !== "undefined" && V56ASK.ql) || v73trUi();
+            h = v73trMark(h, L, ql);
+            const box = v73trSrcBox(L, ql);
+            const k = h.search(/<details class="v33refs"|<details class="v38steps"/);
+            h = k >= 0 ? h.slice(0, k) + box + h.slice(k) : h + box;
+            try {
+                if (typeof logU === "function")
+                    logU("ai", "MOQ・港の出どころ:" + L.map(c => c.k + "/" + c.st).join(","));
+            }
+            catch (e) { }
+        }
+        catch (e) {
+            v73trErr("ans", e);
+        }
+        return h;
+    };
+}
+document.addEventListener("click", e => {
+    try {
+        const b = e.target && e.target.closest && e.target.closest("[data-v73trfill]");
+        if (!b)
+            return;
+        e.preventDefault();
+        try {
+            closeDW();
+        }
+        catch (x) { }
+        cur = "up";
+        if (typeof buildNav === "function")
+            buildNav();
+        if (typeof FILL !== "undefined" && FILL && !FILL.on && typeof fillStart === "function")
+            fillStart();
+        else if (typeof render === "function")
+            render();
+        try {
+            scrollTo({ top: 0 });
+        }
+        catch (x) { }
+    }
+    catch (x) { }
+}, true);
+(function () {
+    try {
+        if (document.getElementById("v73trcss"))
+            return;
+        const st = document.createElement("style");
+        st.id = "v73trcss";
+        st.textContent = `
+.v73trsrc{margin:8px 0 4px;padding:8px 11px;border:1px solid var(--line);border-radius:var(--r2,8px);background:var(--surface-2);font-size:11.5px;line-height:1.65}
+.v73trsrc ul{margin:4px 0 0;padding-left:16px}.v73trsrc li.v73ok{color:var(--good,#1a7f37)}.v73trsrc li.v73ng{color:var(--crit)}
+.v73trsrc p{margin:5px 0 4px;font-size:11px;color:var(--ink-2)}.v73trsrc .btn{font-size:11px;padding:3px 10px}
+.v73trest{color:var(--crit);font-weight:700;font-size:.92em}.v73tt{white-space:nowrap}.v73trlang{margin-top:7px}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N)
+            return;
+        const R = [["参考", "Reference", "参考", "Referencia"]];
+        if (I18N.dict)
+            R.forEach(r => ["en", "zh", "es"].forEach((l, i) => { const d = I18N.dict[l]; if (d && r[i + 1] && !d[r[0]])
+                d[r[0]] = r[i + 1]; }));
+        if (Array.isArray(I18N.pat))
+            I18N.pat.unshift({ re: /^所要 約(\d+)日（(海上|航空|クーリエ) 約(\d+)日＋情勢見込み (\d+)日）(.*)$/, en: m => `Transit approx. ${m[1]} days (${({ "海上": "ocean", "航空": "air", "クーリエ": "courier" })[m[2]]} approx. ${m[3]} + situation ${m[4]} days)${m[5]}`, zh: m => `所需约${m[1]}天（${({ "海上": "海运", "航空": "空运", "クーリエ": "快递" })[m[2]]}约${m[3]}天＋形势预计${m[4]}天）${m[5]}`, es: m => `Tránsito aprox. ${m[1]} días (${({ "海上": "marítimo", "航空": "aéreo", "クーリエ": "courier" })[m[2]]} aprox. ${m[3]} + situación ${m[4]} días)${m[5]}` }, { re: /^参考：(.+?)までの海上の所要は、登録レートで約([\d〜]+)日(?:＋情勢見込み (\d+)日＝約([\d〜]+)日)?（各社の登録の幅・船は買い手が手配）$/, en: m => `Reference: ocean transit to ${m[1]} is approx. ${m[2].replace("〜", "–")} days in the registered rates${m[3] ? ` + situation ${m[3]} = approx. ${m[4].replace("〜", "–")} days` : ""} (range across forwarders; the buyer arranges the vessel)`, zh: m => `参考：到${m[1]}的海运所需，按登记运价约${m[2]}天${m[3] ? `＋形势预计${m[3]}天＝约${m[4]}天` : ""}（各公司登记的范围・船由买方安排）`, es: m => `Referencia: el tránsito marítimo a ${m[1]} es de aprox. ${m[2].replace("〜", "–")} días${m[3] ? ` + situación ${m[3]} = aprox. ${m[4].replace("〜", "–")} días` : ""} (rango de los transitarios; el comprador organiza el buque)` });
+    }
+    catch (e) { }
+})();
+var V73F = { raw: 0, pulled: 0, shown: 0, ldAt: 0, ldT: 0, first: 0, pre: null, bypass: "", re: {}, lg: "" };
+function v73fOn() { try {
+    return typeof FWDON !== "undefined" && !!FWDON;
+}
+catch (e) {
+    return false;
+} }
+function v73fE(s) { return (typeof esc === "function") ? esc(String(s == null ? "" : s)) : String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v73fM(ja, en, zh, es) { try {
+    const l = (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+    return l === "en" ? (en || ja) : l === "zh" ? (zh || ja) : l === "es" ? (es || ja) : ja;
+}
+catch (e) {
+    return ja;
+} }
+function v73fY(n) { return "¥" + Math.round(+n || 0).toLocaleString(); }
+function v73fMD(ms) { const d = new Date(+ms || 0); return (d.getMonth() + 1) + "/" + d.getDate(); }
+function v73fMe() { try {
+    return (typeof fwdCo === "function") ? fwdCo() : ((FWDB && FWDB.profile && FWDB.profile.co) || "");
+}
+catch (e) {
+    return "";
+} }
+function v73fReal() { try {
+    return typeof v45RealFwd === "function" && !!v45RealFwd();
+}
+catch (e) {
+    return false;
+} }
+function v73fToast(m) { try {
+    if (typeof toast === "function")
+        toast(m);
+}
+catch (e) { } }
+function v73fSt(r) { try {
+    return (typeof v33FwdState === "function") ? v33FwdState(r) : "none";
+}
+catch (e) {
+    return "none";
+} }
+function v73fFa(id) { try {
+    return (typeof v33FaOf === "function") ? (v33FaOf(id) || {}) : {};
+}
+catch (e) {
+    return {};
+} }
+function v73fAutoT(t) { return !!t && (t.auto === 1 || /自動|auto|自动/i.test(String(t.by || ""))); }
+function v73fManual(r) { const a = v73fFa(r && r.id); return !!(a.task && a.task.done && !v73fAutoT(a.task)); }
+function v73fBase(r) { V73F.raw++; try {
+    return typeof v33FwdNeeds === "function" && !!v33FwdNeeds(r);
+}
+catch (e) {
+    return false;
+}
+finally {
+    V73F.raw--;
+} }
+if (typeof v33FwdNeeds === "function") {
+    const __nd73f = v33FwdNeeds;
+    v33FwdNeeds = function (r) {
+        const o = __nd73f.apply(this, arguments);
+        try {
+            if (!o || V73F.raw || !r || !v73fOn())
+                return o;
+            if (v73fSt(r) === "done")
+                return false;
+            if (v73fManual(r))
+                return false;
+        }
+        catch (e) { }
+        return o;
+    };
+}
+function v73fSweep() {
+    try {
+        if (!v73fOn() || typeof FWDB === "undefined" || !FWDB || typeof v33FaSet !== "function")
+            return;
+        try {
+            if (typeof v33FwdTasks === "function")
+                v33FwdTasks();
+        }
+        catch (e) { }
+        const now = Date.now();
+        (FWDB.reqs || []).forEach(r => {
+            if (!r || !r.id)
+                return;
+            const a = v73fFa(r.id), t = a.task;
+            if (!t)
+                return;
+            let want = false;
+            try {
+                want = !!v33FwdNeeds(r);
+            }
+            catch (e) { }
+            if (want && t.done && v73fAutoT(t)) {
+                v33FaSet(r.id, { task: Object.assign({}, t, { done: 0, doneAt: 0, by: "", auto: 0, reAt: now }), v70rdy: null });
+                V73F.re[r.id] = now;
+                return;
+            }
+            if (!want && !t.done) {
+                const st = v73fSt(r), got = !!r.quote || (r.legs || []).some(l => l && l.ok);
+                let rd = null;
+                try {
+                    rd = (typeof v70fReady === "function") ? v70fReady(r) : null;
+                }
+                catch (e) { }
+                const why = st === "done" ? "完了にしたため" : got ? "見積が付いたため" : (rd && rd.all) ? "レート登録" : "要確認でなくなったため";
+                const p = { task: Object.assign({}, t, { done: 1, doneAt: now, by: "自動（" + why + "）", auto: 1 }) };
+                if (rd && rd.all && !a.v70rdy) {
+                    let dm = 0;
+                    try {
+                        dm = (typeof V57DEMO !== "undefined" && V57DEMO && V57DEMO.on) ? 1 : 0;
+                    }
+                    catch (e) { }
+                    p.v70rdy = { at: now, demo: dm };
+                }
+                v33FaSet(r.id, p);
+                delete V73F.re[r.id];
+            }
+        });
+    }
+    catch (e) { }
+}
+function v73fInbox(w) {
+    try {
+        const R = (FWDB && FWDB.reqs) || [];
+        w.querySelectorAll("table tbody tr").forEach(tr => {
+            const m = /RQ-[A-Za-z0-9]+/.exec(tr.textContent || "");
+            if (!m)
+                return;
+            const r = R.find(x => x.id === m[0]);
+            if (!r)
+                return;
+            const td = tr.querySelector("td.v33fwst");
+            if (!td || td.querySelector(".v73fck,.v73fren"))
+                return;
+            if (v73fSt(r) !== "done" && v73fManual(r) && v73fBase(r)) {
+                const a = v73fFa(r.id), t = a.task || {};
+                const by = [t.by && !v73fAutoT(t) ? t.by : "", t.doneAt ? v73fMD(t.doneAt) : ""].filter(Boolean).join("・");
+                td.insertAdjacentHTML("afterbegin", `<span class="v33lv v73fck" data-noi18n title="${v73fE(v73fM("「済み」にした依頼です（要確認の数に入りません）", "Marked done (not counted as needs check)", "已标记完成（不计入待确认）", "Marcada como hecha (no cuenta)"))}">${v73fE(v73fM("確認済み", "Checked", "已确认", "Revisada"))}${by ? "（" + v73fE(by) + "）" : ""}</span><button type="button" class="btn g v73fbtn" data-v73fre="${v73fE(r.id)}" data-noi18n>${v73fE(v73fM("要確認に戻す", "Back to needs check", "退回待确认", "Volver a revisar"))}</button>`);
+            }
+            else if (V73F.re[r.id] && Date.now() - V73F.re[r.id] < 30 * 60e3 && v33FwdNeeds(r))
+                td.insertAdjacentHTML("beforeend", `<span class="v73fren" data-noi18n>${v73fE(v73fM("登録したレートが無くなったため、要確認に戻しました", "The rate was removed, so this is back to needs check", "已登记的费率被删除，已退回待确认", "Se quitó la tarifa: vuelve a revisar"))}</span>`);
+        });
+        const tk = w.querySelector(".v33fwtask");
+        if (tk && !tk.querySelector(".v73fnote")) {
+            const p = tk.querySelector("p.v33mute") || tk.querySelector("h4");
+            if (p)
+                p.insertAdjacentHTML("afterend", `<p class="v73fnote" data-noi18n>${v73fE(v73fM("「済み」は、レートを登録せずに対応を終えたとき（別の方法で荷主に答えた・見積を出さない）に押します。押すと、全体の状況・タブ・ベルの「要確認」からも外れます（受信箱の行は「確認済み」。「要確認に戻す」で戻せます）。レートを登録して出せる状態になった依頼は自動で済みになり、そのレートを消すと要確認に戻ります。", "Press “Done” when you finished without registering a rate (answered the shipper another way, or not quoting). It is then removed from “Needs check” in the overview, tabs and bell (the row shows “Checked”; use “Back to needs check” to undo). Requests that became quotable with your rate are done automatically and return to needs check if that rate is deleted.", "未登记费率就结束处理时（用其他方式答复货主、或不报价）请按「完成」。按下后会从整体状况、标签和铃铛的「待确认」中移除（该行显示「已确认」，可用「退回待确认」恢复）。登记费率后可报价的请求会自动完成，删除该费率后会退回待确认。", "Pulse «Hecho» si terminó sin registrar tarifa. Se quita de «Revisar» en el resumen, pestañas y campana (la fila muestra «Revisada»; puede deshacerlo). Las solicitudes cotizables con su tarifa se cierran solas y vuelven si borra la tarifa."))}</p>`);
+        }
+    }
+    catch (e) { }
+}
+document.addEventListener("click", e => {
+    try {
+        const t = e.target;
+        if (!t || !t.closest || !v73fOn())
+            return;
+        const d = t.closest("[data-fwtd]");
+        if (d) {
+            const id = d.dataset.fwtd;
+            setTimeout(() => { v73fToast(v73fM(`${id} を要確認から外しました（全体の状況・タブ・ベルの数も同じように減ります。行の「要確認に戻す」で戻せます）`, `${id} removed from “Needs check” (the overview, tabs and bell count it the same way; undo with “Back to needs check”)`, `已将 ${id} 移出待确认（整体状况、标签和铃铛的数字同步减少；可用「退回待确认」恢复）`, `${id} quitada de «Revisar» (resumen, pestañas y campana igual; puede deshacerlo)`)); }, 0);
+            return;
+        }
+        const b = t.closest("[data-v73fre]");
+        if (b) {
+            e.preventDefault();
+            e.stopPropagation();
+            const id = b.dataset.v73fre, a = v73fFa(id);
+            if (a.task)
+                v33FaSet(id, { task: Object.assign({}, a.task, { done: 0, doneAt: 0, by: "", auto: 0, reAt: Date.now() }) });
+            try {
+                fwdRender();
+            }
+            catch (x) { }
+            v73fToast(v73fM(`${id} を要確認に戻しました`, `${id} is back to needs check`, `已将 ${id} 退回待确认`, `${id} vuelve a revisar`));
+            return;
+        }
+    }
+    catch (x) { }
+}, true);
+function v73fBellParts() {
+    const o = { n: 0, ev: 0, aq: 0, tk: 0, tkAll: 0, rv: 0 };
+    try {
+        const db = (typeof notifDB === "function") ? notifDB() : { seen: {} };
+        const L = (typeof v44Notifs === "function") ? (v44Notifs() || []) : [];
+        const cnt = x => (typeof v68fCnt === "function") ? v68fCnt(x) : 1;
+        const un = x => x && x.ex && !(db.seen || {})[x.key];
+        L.forEach(x => { const k = String(x && x.key || ""); if (/^f59:/.test(k) && un(x))
+            o.ev += 1;
+        else if (/^f44aq:/.test(k) && un(x))
+            o.aq += cnt(x);
+        else if (/^f44tk:/.test(k)) {
+            o.tkAll = +(k.split(":")[2]) || 0;
+            if (un(x))
+                o.tk += cnt(x);
+        } });
+        o.n = (typeof v68fBellNum === "function") ? v68fBellNum() : (o.ev + o.aq + o.tk);
+        const R = (FWDB && FWDB.reqs) || [];
+        o.rv = R.filter(r => { try {
+            return !!v33FwdNeeds(r);
+        }
+        catch (e) {
+            return false;
+        } }).length;
+    }
+    catch (e) { }
+    return o;
+}
+function v73fBellTitle() {
+    const p = v73fBellParts();
+    const lst = [];
+    lst.push(v73fM(`新しい見積依頼・仮押さえ・解除・取り消し ${p.ev}件`, `new requests/holds/releases/withdrawals ${p.ev}`, `新的报价请求・暂订・解除・撤回 ${p.ev}件`, `nuevas solicitudes/reservas ${p.ev}`));
+    lst.push(v73fM(`荷主の回答の確認待ち ${p.aq}件`, `shipper answers awaiting approval ${p.aq}`, `待确认的货主回答 ${p.aq}件`, `respuestas por aprobar ${p.aq}`));
+    lst.push(v73fM(`期限切れ・今日が期限の要確認 ${p.tk}件`, `needs-check items overdue or due today ${p.tk}`, `已过期或今天到期的待确认 ${p.tk}件`, `por revisar vencidas u hoy ${p.tk}`));
+    let s = v73fM(`通知（ベルの数字 ${p.n}＝まだ開いていない新しい知らせと急ぎのもの：${lst.join("＋")}）。要確認は「全体の状況」「要確認」タブと同じ依頼（いま ${p.rv}件）のうち、期限が来たものです。未担当の見積依頼と、期限前の要確認は数えません。`, `Notifications (bell number ${p.n} = unopened new and urgent notices: ${lst.join(" + ")}). “Needs check” is the same set as the overview and the “Needs check” tab (now ${p.rv}); only overdue ones or those due today are counted. Unassigned requests and items not yet due are not counted.`, `通知（铃铛数字 ${p.n}＝尚未打开的通知：${lst.join("＋")}）。待确认与「整体状况」「待确认」标签是同一批请求（现在 ${p.rv}件），只计已到期的。不计未分配的请求和未到期的待确认。`, `Avisos (número ${p.n} = avisos sin abrir: ${lst.join(" + ")}). «Revisar» es el mismo conjunto que el resumen y la pestaña (ahora ${p.rv}); solo cuentan las vencidas u hoy.`);
+    if (p.tkAll > 0 && p.tk === 0)
+        s += v73fM(`（期限が来た要確認 ${p.tkAll}件は、知らせを開いたため数えていません。件数が変わると、また数えます）`, ` (${p.tkAll} due items were opened, so they are not counted until the number changes)`, `（${p.tkAll}件已到期的待确认因已打开通知而不计，数量变化后会再计入）`, ` (${p.tkAll} vencidas ya abiertas no cuentan hasta que cambie el número)`);
+    return s;
+}
+if (typeof notifBadge === "function") {
+    const __nb73f = notifBadge;
+    notifBadge = function () {
+        const r = __nb73f.apply(this, arguments);
+        try {
+            if (v73fOn()) {
+                const bell = document.getElementById("bell");
+                if (bell) {
+                    const t = v73fBellTitle();
+                    bell.title = t;
+                    bell.setAttribute("aria-label", t);
+                    bell.dataset.v73f = "1";
+                }
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof v44Bell === "function") {
+    const __bl73f = v44Bell;
+    v44Bell = function () {
+        const r = __bl73f.apply(this, arguments);
+        try {
+            if (!v73fOn())
+                return r;
+            const pn = document.getElementById("pn") || document;
+            const sp = pn.querySelector("#v33ntbar > span");
+            if (sp && !pn.querySelector(".v73fbell")) {
+                const p = v73fBellParts();
+                sp.insertAdjacentHTML("beforeend", `<span class="v73fbell" data-noi18n>${v73fE(v73fM(`要確認は、全体の状況・受信箱の「要確認」（いま ${p.rv}件）と同じ依頼です。そのうち期限切れ・今日が期限のもの（${p.tkAll}件）だけを数えます。「済み」やレートの登録で要確認が減ると、この数字も減ります。`, `“Needs check” is the same set as the overview and inbox tab (now ${p.rv}); only the ${p.tkAll} overdue or due today are counted. Marking done or registering a rate lowers this number too.`, `待确认与整体状况、收件箱的「待确认」是同一批请求（现在 ${p.rv}件），只计已过期或今天到期的（${p.tkAll}件）。按「完成」或登记费率后，此数字也会减少。`, `«Revisar» es el mismo conjunto (ahora ${p.rv}); solo cuentan las ${p.tkAll} vencidas u hoy.`))}</span>`);
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+function v73fSyncOn() { try {
+    return typeof SYNC !== "undefined" && !!SYNC && typeof syncUrl === "function" && !!syncUrl();
+}
+catch (e) {
+    return false;
+} }
+function v73fGate() {
+    try {
+        if (!v73fOn() || !v73fSyncOn())
+            return "";
+        if (typeof FWDB !== "undefined" && FWDB && FWDB.f2l === 1)
+            return "";
+        if (V73F.pulled) {
+            const P = (typeof V69F !== "undefined" && V69F) ? V69F.pull : null;
+            return (P && !P.ok) ? "fail" : "";
+        }
+        return "load";
+    }
+    catch (e) {
+        return "";
+    }
+}
+function v73fPgName() {
+    const c = (typeof fwdCur !== "undefined" && fwdCur) || "finbox";
+    return c === "frates" ? v73fM("物流レート管理", "Rate management", "运费管理", "Tarifas") : c === "fagg" ? v73fM("相見積・AI推奨", "Comparison & AI pick", "比价・AI推荐", "Comparativa") : c === "fai" ? v73fM("AI物流マン", "AI logistics agent", "AI物流专员", "Agente logístico IA") : c === "fcase" ? v73fM("案件", "Cases", "案件", "Casos") : c === "frq" ? v73fM("依頼ページ", "Request pages", "请求页面", "Páginas de solicitud") : v73fM("見積受信箱", "Quote inbox", "报价收件箱", "Bandeja de cotizaciones");
+}
+function v73fLoadPanel(g) {
+    const w = document.getElementById("well");
+    if (!w)
+        return;
+    const gd = document.getElementById("guide");
+    if (gd)
+        gd.hidden = true;
+    if (!V73F.ldAt)
+        V73F.ldAt = Date.now();
+    const slow = Date.now() - V73F.ldAt > 15000;
+    let body;
+    if (g === "fail") {
+        let why = "";
+        try {
+            why = (typeof v69fWhyTxt === "function" && V69F && V69F.pull) ? v69fWhyTxt(V69F.pull.why) : "";
+        }
+        catch (e) { }
+        body = `<b>⚠ ${v73fE(v73fM("物流会社のデータを読み込めていません", "Could not load your forwarder data", "未能读取物流公司数据", "No se pudieron cargar los datos"))}</b><p>${v73fE(why)}${why ? "。" : ""}${v73fE(v73fM("読み込めるまで、件数（依頼・レート）は表示しません。", "Counts (requests, rates) are not shown until loaded.", "读取完成前不显示件数（请求・费率）。", "No se muestran cifras hasta cargar."))}</p>`;
+    }
+    else
+        body = `<b><span class="spin"></span> ${v73fE(v73fM("読み込み中です", "Loading…", "正在读取…", "Cargando…"))}</b><p>${v73fE(v73fM("同期サーバーから、この物流会社アカウントの依頼・レートを読み込んでいます（数秒）。読み込みが終わるまで、件数は表示しません。", "Loading this forwarder account's requests and rates from the sync server (a few seconds). Counts are not shown until loading finishes.", "正在从同步服务器读取此物流公司账户的请求和费率（数秒）。读取完成前不显示件数。", "Cargando solicitudes y tarifas desde el servidor (unos segundos). No se muestran cifras hasta terminar."))}</p>`
+            + (slow ? `<p>${v73fE(v73fM("時間がかかっています。通信を確かめて「今すぐ読み直す」を押してください。", "This is taking a while. Check the connection and press “Reload now”.", "耗时较长。请检查网络后按「立即重新读取」。", "Está tardando. Revise la conexión y pulse «Recargar ahora»."))}</p>` : "");
+    const btn = (g === "fail" || slow) ? `<button type="button" class="btn" data-v69repull>${v73fE(v73fM("今すぐ読み直す", "Reload now", "立即重新读取", "Recargar ahora"))}</button>` : "";
+    w.innerHTML = `<div class="ph"><div><h1>${v73fE(v73fPgName())}</h1></div></div><div class="c v73fload${g === "fail" ? " ng" : ""}" role="status" aria-live="polite" data-noi18n data-v73fload="${g}">${body}${btn}</div>`;
+    V73F.shown = 1;
+    if (!V73F.ldT)
+        V73F.ldT = setInterval(() => {
+            try {
+                if (!v73fOn()) {
+                    clearInterval(V73F.ldT);
+                    V73F.ldT = 0;
+                    V73F.shown = 0;
+                    return;
+                }
+                try {
+                    if (typeof FWDB !== "undefined" && FWDB && FWDB.f2l !== 1 && SYNC && SYNC.kid && typeof fwdLoad === "function")
+                        fwdLoad();
+                }
+                catch (e) { }
+                const g2 = v73fGate();
+                if (!g2 || g2 !== g || (g === "load" && Date.now() - V73F.ldAt > 15000 && !document.querySelector("#well [data-v69repull]"))) {
+                    if (!g2) {
+                        clearInterval(V73F.ldT);
+                        V73F.ldT = 0;
+                    }
+                    fwdRender();
+                }
+            }
+            catch (e) { }
+        }, 400);
+}
+if (typeof syncPullFwd === "function") {
+    const __pl73f = syncPullFwd;
+    syncPullFwd = function () {
+        const p = __pl73f.apply(this, arguments);
+        const after = () => {
+            try {
+                V73F.pulled = 1;
+                if (!v73fOn())
+                    return;
+                const first = !V73F.first;
+                V73F.first = 1;
+                if (V73F.shown || first)
+                    setTimeout(() => {
+                        try {
+                            if (!v73fOn())
+                                return;
+                            if (!V73F.shown) {
+                                const a = document.activeElement, w = document.getElementById("well");
+                                if (a && w && w.contains(a) && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))
+                                    return;
+                            }
+                            fwdRender();
+                        }
+                        catch (e) { }
+                    }, 0);
+            }
+            catch (e) { }
+        };
+        Promise.resolve(p).then(after, after);
+        return p;
+    };
+}
+function v73fLaneOfReq(r) {
+    const L = (r.legs || []).filter(l => l && !l.ok && !l.other && !l.lost);
+    const P = (typeof FWD_POD !== "undefined" && FWD_POD) || {};
+    return L.map(l => ({ cty: l.cty || "", pod: l.pod || P[l.cty] || l.cty || "", pol: r.pol || "", mode: String(r.mode || "LCL").toUpperCase() }));
+}
+document.addEventListener("click", e => {
+    try {
+        const t = e.target;
+        if (!t || !t.closest || !v73fOn())
+            return;
+        if (t.closest("#frAdd")) {
+            V73F.pre = null;
+            return;
+        }
+        const b = t.closest(".v33fwtask [data-fwgo=frates]");
+        if (!b)
+            return;
+        const li = b.closest("li");
+        const m = /RQ-[A-Za-z0-9]+/.exec((li && li.textContent) || "");
+        const r = m && ((FWDB && FWDB.reqs) || []).find(x => x.id === m[0]);
+        if (!r)
+            return;
+        const L = v73fLaneOfReq(r);
+        if (!L.length)
+            return;
+        V73F.pre = { id: r.id, lanes: L, at: Date.now(), filled: 0 };
+    }
+    catch (x) { }
+}, true);
+function v73fFill(w) {
+    try {
+        const P = V73F.pre;
+        if (!P)
+            return;
+        if (Date.now() - P.at > 30 * 60e3) {
+            V73F.pre = null;
+            return;
+        }
+        const pol = document.getElementById("frPol"), pod = document.getElementById("frPod"), md = document.getElementById("frMode");
+        if (!pol || !pod)
+            return;
+        const L = P.lanes[0];
+        if (!pol.value.trim() && !pod.value.trim()) {
+            pol.value = L.pol;
+            pod.value = L.pod;
+            if (md && [...md.options].some(o => o.value === L.mode || o.text === L.mode))
+                md.value = L.mode;
+            if (!P.filled) {
+                P.filled = 1;
+                const pr = document.getElementById("frPrice");
+                if (pr)
+                    setTimeout(() => { try {
+                        pr.focus();
+                    }
+                    catch (e) { } }, 30);
+            }
+        }
+        if (!w.querySelector(".v73fpre")) {
+            const lane = `${L.pol || "—"} → ${L.pod}${L.cty && L.cty !== L.pod ? "（" + L.cty + "）" : ""}・${L.mode}`;
+            const more = P.lanes.slice(1).map(x => `${x.pol || "—"} → ${x.pod}・${x.mode}`).join("／");
+            const box = `<div class="v73fpre" role="status" data-noi18n>${v73fE(v73fM(`要確認の依頼 ${P.id} の区間（${lane}）を入れました。運賃・所要日数・有効期限を入れて「追加」を押すと、この依頼は「貴社のレートで見積を出せる状態」になります。`, `Filled in the lane of ${P.id} (${lane}). Enter the rate, transit days and validity, then press “Add”.`, `已填入待确认请求 ${P.id} 的线路（${lane}）。填写运费、所需天数和有效期后按「添加」。`, `Se rellenó el trayecto de ${P.id} (${lane}). Introduzca tarifa, días y validez y pulse «Añadir».`))}${more ? v73fE(v73fM(`（この依頼のほかの区間：${more}）`, ` (other lanes: ${more})`, `（此请求的其他线路：${more}）`, ` (otros: ${more})`)) : ""}</div>`;
+            const anchor = pol.closest(".rw") || pol.parentElement;
+            if (anchor)
+                anchor.insertAdjacentHTML("beforebegin", box);
+        }
+    }
+    catch (e) { }
+}
+if (typeof fwdRender === "function") {
+    const __fr73f = fwdRender;
+    fwdRender = function () {
+        try {
+            if (v73fOn()) {
+                try {
+                    if (typeof FWDB !== "undefined" && FWDB && FWDB.f2l !== 1 && v73fSyncOn() && SYNC.kid && typeof fwdLoad === "function")
+                        fwdLoad();
+                }
+                catch (e) { }
+                const g = v73fGate();
+                if (g) {
+                    v73fLoadPanel(g);
+                    try {
+                        if (typeof v44Badges === "function")
+                            v44Badges();
+                    }
+                    catch (e) { }
+                    return;
+                }
+                if (V73F.shown) {
+                    V73F.shown = 0;
+                    V73F.ldAt = 0;
+                    if (V73F.ldT) {
+                        clearInterval(V73F.ldT);
+                        V73F.ldT = 0;
+                    }
+                }
+                v73fSweep();
+            }
+        }
+        catch (e) { }
+        const o = __fr73f.apply(this, arguments);
+        try {
+            if (!v73fOn())
+                return o;
+            const w = document.getElementById("well");
+            if (!w)
+                return o;
+            const pg = (typeof fwdCur !== "undefined" && fwdCur) || "finbox";
+            if (pg === "finbox")
+                v73fInbox(w);
+            if (pg === "frates")
+                v73fFill(w);
+            else if (V73F.pre && V73F.pre.filled)
+                V73F.pre = null;
+            try {
+                if (typeof notifBadge === "function")
+                    notifBadge();
+            }
+            catch (e) { }
+        }
+        catch (e) { }
+        return o;
+    };
+}
+function v73fLoginNote() {
+    try {
+        const s = document.getElementById("lgsync");
+        if (!s)
+            return;
+        const on = (typeof syncOn === "function") ? !!SYNC.on || !!syncUrl() : false;
+        let n = document.getElementById("v73flgdemo");
+        if (!on) {
+            if (n)
+                n.remove();
+            return;
+        }
+        const l = (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+        if (n && n.dataset.l === l)
+            return;
+        const t = v73fM("※お客様デモ用・体験用のアカウントは例外です：この PC での変更はサーバーに保存されず、ログアウトすると初期の状態に戻ります（別の PC・スマホには引き継がれません）。", "Note: customer demo / trial accounts are an exception — changes on this PC are not saved to the server and are reset when you log out (they do not carry over to other PCs or phones).", "※客户演示用・体验用账户除外：在此电脑上的更改不会保存到服务器，注销后恢复为初始状态（不会同步到其他电脑或手机）。", "Nota: las cuentas de demostración/prueba son una excepción: los cambios en este PC no se guardan y se restablecen al cerrar sesión.");
+        if (!n) {
+            n = document.createElement("p");
+            n.id = "v73flgdemo";
+            n.setAttribute("data-noi18n", "");
+            n.className = "v73flg";
+            s.insertAdjacentElement("afterend", n);
+        }
+        n.textContent = t;
+        n.dataset.l = l;
+    }
+    catch (e) { }
+}
+if (typeof syncLoginLine === "function") {
+    const __sl73f = syncLoginLine;
+    syncLoginLine = function () { const r = __sl73f.apply(this, arguments); try {
+        v73fLoginNote();
+    }
+    catch (e) { } return r; };
+}
+const V73F_LQ = /いくら|運賃|レート|料金|単価|価格|所要|日数|何日|リードタイム|有効期限|期限は|いつまで/;
+const V73F_LSKIP = /期限が(?:近|迫)|期限の近い|期限切れ|切れそう|まもなく|間もなく|以内に期限|相場|レンジ|価格帯|水準|妥当|適正|割高|割安|平均|推奨|おすすめ|お勧め|どの会社|どこが|最安|RQ-[A-Z0-9]|説明文|文面|メール|書いて|作って|考えて|まとめて|翻訳|英語で/i;
+const V73F_POLS = ["東京港", "横浜港", "名古屋港", "大阪港", "神戸港", "博多港", "新潟港", "清水港", "北九州港", "苫小牧港", "成田空港", "羽田空港", "関西空港", "中部空港"];
+function v73fLane(q) {
+    try {
+        const s = String(q || ""), F = FWDB || {}, P = (typeof FWD_POD !== "undefined" && FWD_POD) || {};
+        const pods = new Set(), ctys = new Set(Object.keys(P)), legPod = {};
+        (F.rates || []).forEach(r => { if (r && r.pod)
+            pods.add(r.pod); });
+        Object.values(P).forEach(p => pods.add(p));
+        (F.reqs || []).forEach(r => (r && r.legs || []).forEach(l => { if (l && l.pod)
+            pods.add(l.pod); if (l && l.cty) {
+            ctys.add(l.cty);
+            if (l.pod)
+                legPod[l.cty] = l.pod;
+        } }));
+        const long = (a, b) => b.length - a.length;
+        const podHit = [...pods].filter(p => p && p.length >= 2 && s.includes(p)).sort(long)[0] || "";
+        const ctyHit = [...ctys].filter(c => c && c.length >= 2 && s.includes(c)).sort(long)[0] || (s.includes("米国") ? "アメリカ" : "");
+        const pod = podHit || (ctyHit && (P[ctyHit] || legPod[ctyHit])) || "";
+        if (!pod)
+            return null;
+        const pols = new Set(V73F_POLS);
+        (F.rates || []).forEach(r => { if (r && r.pol)
+            pols.add(r.pol); });
+        (F.reqs || []).forEach(r => { if (r && r.pol)
+            pols.add(r.pol); });
+        const polHit = [...pols].filter(p => p && p !== pod && (s.includes(p) || (/(港|空港)$/.test(p) && p.replace(/(空港|港)$/, "").length >= 2 && s.includes(p.replace(/(空港|港)$/, "") + "から")))).sort(long)[0] || "";
+        const md = ((s.match(/FCL\s*40\s*HC|FCL\s*40|FCL\s*20|LCL|AIR|COURIER|クーリエ|航空|混載|20\s*ft|40\s*ft/i) || [""])[0]).toUpperCase().replace(/\s/g, "");
+        const mode = md === "混載" ? "LCL" : md === "航空" ? "AIR" : md === "クーリエ" ? "COURIER" : md === "20FT" ? "FCL20" : md === "40FT" ? "FCL40" : md;
+        return { pod, cty: ctyHit && ctyHit !== pod ? ctyHit : "", pol: polHit, mode };
+    }
+    catch (e) {
+        return null;
+    }
+}
+function v73fLaneData(q) {
+    if (typeof FWDB === "undefined" || !FWDB)
+        return null;
+    const L = v73fLane(q);
+    if (!L)
+        return null;
+    const me = v73fMe(), real = v73fReal(), M = x => String(x || "").toUpperCase();
+    const podOk = r => !!r && (r.pod === L.pod || String(r.pod || "").includes(L.pod)), modeOk = r => !L.mode || M(r.mode) === L.mode;
+    const valid = r => typeof fwdRateValid !== "function" || fwdRateValid(r), days = r => { try {
+        return (typeof fwdDays === "function") ? fwdDays(r.valid) : null;
+    }
+    catch (e) {
+        return null;
+    } };
+    const own = (FWDB.rates || []).filter(r => podOk(r) && modeOk(r) && (real || !r.co || r.co === me)).map(r => ({ r, ok: valid(r), d: days(r) }))
+        .sort((a, b) => (b.ok - a.ok) || ((typeof fwdRateJpy === "function" ? fwdRateJpy(a.r) - fwdRateJpy(b.r) : 0)));
+    const ownPol = L.pol ? own.filter(x => x.r.pol === L.pol) : own, ownOther = L.pol ? own.filter(x => x.r.pol !== L.pol) : [];
+    const modes = [...new Set((L.mode ? [L.mode] : []).concat(ownPol.concat(ownOther).map(x => M(x.r.mode))))];
+    if (!modes.length)
+        modes.push("LCL");
+    let agg = [];
+    try {
+        agg = (typeof fwdLaneAgg === "function") ? fwdLaneAgg().filter(x => x && (x.pod === L.pod || String(x.pod || "").includes(L.pod)) && modes.includes(M(x.mode))) : [];
+    }
+    catch (e) { }
+    const cmp = real ? ((FWDB.cmp && FWDB.cmp.lanes) || []).filter(y => y && (y.pod === L.pod) && modes.includes(M(y.mode))) : [];
+    const rank = (x) => {
+        if (real)
+            return 0;
+        const mine = ownPol.concat(ownOther).find(o => o.ok && M(o.r.mode) === M(x.mode));
+        if (!mine || typeof fwdRateJpy !== "function")
+            return 0;
+        const v = fwdRateJpy(mine.r), best = {};
+        (FWDB.rates || []).filter(r => podOk(r) && M(r.mode) === M(x.mode) && valid(r)).forEach(r => { const co = r.co || me; const j = fwdRateJpy(r); if (best[co] == null || j < best[co])
+            best[co] = j; });
+        return Object.values(best).filter(y => y < v).length + 1;
+    };
+    const pend = (FWDB.reqs || []).filter(r => { try {
+        return !!v33FwdNeeds(r) && v73fLaneOfReq(r).some(x => x.pod === L.pod || (L.cty && x.cty === L.cty));
+    }
+    catch (e) {
+        return false;
+    } }).map(r => r.id);
+    return { L, me, real, ownPol, ownOther, agg, cmp, rank, pend };
+}
+function v73fRateLine(x, me, real) {
+    const r = x.r, E = v73fE;
+    const tt = +r.tt > 0 ? v73fM("所要 約" + (+r.tt) + "日", "transit approx. " + (+r.tt) + " days", "所需约" + (+r.tt) + "天", "tránsito aprox. " + (+r.tt) + " días") : v73fM("所要 未登録", "transit not registered", "所需天数未登记", "tránsito sin registrar");
+    const st = !r.valid ? v73fM("有効期限の登録なし（要確認）", "no validity date (check)", "未登记有效期（需确认）", "sin fecha de validez") : !x.ok ? v73fM(`期限切れ・${x.d != null ? (-x.d) + "日前に終了・" : ""}見積に使われません`, `expired${x.d != null ? " " + (-x.d) + " days ago" : ""} — not used in quotes`, `已过期・不用于报价`, `vencida: no se usa`) : x.d != null ? (x.d === 0 ? v73fM("今日まで・有効", "valid until today", "今天到期・有效", "vence hoy") : v73fM(`あと${x.d}日・有効`, `${x.d} days left, valid`, `还有${x.d}天・有效`, `quedan ${x.d} días`)) : v73fM("有効", "valid", "有效", "vigente");
+    return `${E(r.pol || "—")} → ${E(r.pod)}（${E(r.mode)}）：<b>${E(r.cur || "¥")}${(+r.price || 0).toLocaleString()}${E(r.unit || "")}</b>・${E(tt)}・${E(v73fM("有効期限", "valid until", "有效期", "válida hasta"))} <b>${E(r.valid || "—")}</b>（${E(st)}）`;
+}
+function v73fLaneAns(q) {
+    const D = v73fLaneData(q);
+    if (!D)
+        return null;
+    const E = v73fE, L = D.L;
+    const head = `${L.pol ? E(L.pol) + " → " : ""}${E(L.pod)}${L.cty ? "（" + E(L.cty) + "）" : ""}${L.mode ? "・" + E(L.mode) : ""}`;
+    let today = "";
+    try {
+        today = (typeof fwdToday === "function") ? fwdToday() : new Date().toISOString().slice(0, 10);
+    }
+    catch (e) { }
+    let a = `<b>${head} の登録レート</b>（「物流レート管理」に登録された運賃・今日 ${E(today)} 時点）`;
+    const own = D.ownPol.concat(D.ownOther);
+    if (D.ownPol.length) {
+        a += `<br><b>自社${D.real ? "" : "（" + E(D.me) + "）"}</b>：` + D.ownPol.slice(0, 4).map(x => "<br>・" + v73fRateLine(x, D.me, D.real)).join("") + (D.ownPol.length > 4 ? `<br>　ほか ${D.ownPol.length - 4}本` : "");
+        const best = D.ownPol.find(x => x.ok);
+        if (best && typeof fwdQuoteCalc === "function") {
+            try {
+                const qq = fwdQuoteCalc(best.r, 2);
+                a += `<br>　見積の目安（${E(qq.basis || "標準2m³")}）：運賃 ${v73fY(qq.freight)}＋THC等諸掛 ${v73fY(qq.thc)}＋書類費 ${v73fY(qq.doc)}＝<b>${v73fY(qq.total)}</b>`;
+            }
+            catch (e) { }
+        }
+        else
+            a += `<br>　⚠ この区間の自社のレートは有効なものがありません（期限切れは見積に使われません）。「物流レート管理」で新しい期限のレートを登録すると置き換わります。`;
+    }
+    else
+        a += `<br><b>自社${D.real ? "" : "（" + E(D.me) + "）"}</b>：${L.pol ? E(L.pol) + " 発の" : "この区間の"}登録はありません。`;
+    if (D.ownOther.length)
+        a += `<br>　ほかの仕出港の自社の登録：` + D.ownOther.slice(0, 3).map(x => "<br>　・" + v73fRateLine(x, D.me, D.real)).join("") + (D.ownOther.length > 3 ? `<br>　ほか ${D.ownOther.length - 3}本` : "");
+    if (D.real)
+        a += D.cmp.length ? D.cmp.map(c => `<br>同じ区間（${E(c.pod)}・${E(c.mode)}）：登録 <b>${+c.n}社</b>（ほかの物流会社の社名・運賃は表示しません）${+c.n > 1 ? `／貴社は ${+c.n}社中 ${+c.rank}位` : ""}`).join("") : "";
+    else
+        D.agg.forEach(x => { const rk = D.rank(x); a += `<br>同じ区間（${E(x.pod)}・${E(x.mode)}）の登録：有効なレートの会社 <b>${+x.valid || 0}社</b>${x.valid ? `・運賃 ${v73fY(x.min)}${x.max !== x.min ? "〜" + v73fY(x.max) : ""}${E(x.unit || "")}` : ""}${rk && +x.valid > 1 ? `・貴社は ${+x.valid}社中 ${rk}番目に安い` : ""}（相見積・AI推奨の画面と同じ数。ほかの物流会社の個別の運賃は表示しません）`; });
+    if (!own.length && !D.agg.length && !D.cmp.length)
+        a += `<br>この区間のレートは、貿易クラウドにまだ登録がありません（運賃・所要日数・有効期限は判断できません＝要確認）。`;
+    if (D.pend.length)
+        a += `<br>この区間の要確認の依頼：${D.pend.slice(0, 5).map(E).join("・")}${D.pend.length > 5 ? " ほか" : ""}（受信箱の要確認のタスクの「レートを登録」から、区間を入れたまま登録できます）`;
+    if (!D.ownPol.some(x => x.ok))
+        a += `<br><span style="font-size:10.5px;color:var(--ink-3)">自社のレートは「物流レート管理」で登録します（同じ仕出港・仕向港・形態のレートは置き換わります）。</span>`;
+    const n = own.length;
+    let asof = "";
+    try {
+        asof = (typeof v68fAsOf === "function") ? v68fAsOf() : "";
+    }
+    catch (e) { }
+    return { a, c: `根拠：登録レート（質問の区間の自社の登録 ${n}本${D.agg.length || D.cmp.length ? "・区間の集計" : ""}）${asof ? "・" + E(asof) : ""}（内蔵の計算。実AIは使っていません）` };
+}
+if (typeof fwdAsk === "function") {
+    const __fa73f = fwdAsk;
+    fwdAsk = async function (v) {
+        const q = String(v || "").trim();
+        let a = null;
+        try {
+            if (q && q.length <= 160 && v73fOn() && typeof FWDB !== "undefined" && FWDB && V73F_LQ.test(q) && !V73F_LSKIP.test(q) && !(typeof V69F_OPS !== "undefined" && V69F_OPS.test(q)) && !(typeof v422Howto === "function" && v422Howto(q)))
+                a = v73fLaneAns(q);
+        }
+        catch (e) {
+            a = null;
+        }
+        if (!a)
+            return __fa73f.apply(this, arguments);
+        FWDB.chat = FWDB.chat || [];
+        FWDB.chat.push({ w: "u", t: (typeof mdU === "function" ? mdU(v73fE(q)) : v73fE(q)), ts: Date.now() });
+        FWDB.chat.push({ w: "a", t: a.a + `<div style="margin-top:6px;font-size:9.5px;color:var(--ink-3)">${a.c}</div>`, ts: Date.now() });
+        FWDB.chat = FWDB.chat.slice(-60);
+        try {
+            fwdSave();
+        }
+        catch (e) { }
+        try {
+            if (typeof logU === "function")
+                logU("fwd", "AI物流マンに質問（区間の登録レート）:" + q.slice(0, 30));
+        }
+        catch (e) { }
+        try {
+            fwdRender();
+        }
+        catch (e) { }
+    };
+}
+if (typeof fwdContext === "function") {
+    const __cx73f = fwdContext;
+    fwdContext = function () {
+        let s = String(__cx73f.apply(this, arguments));
+        try {
+            const q = (typeof V33ANS !== "undefined" && V33ANS && V33ANS.q) || "";
+            const D = q && v73fOn() ? v73fLaneData(q) : null;
+            if (D) {
+                const own = D.ownPol.concat(D.ownOther);
+                const t = x => `${x.r.pol}→${x.r.pod} ${x.r.mode} ${x.r.cur || "¥"}${(+x.r.price || 0).toLocaleString()}${x.r.unit || ""} 所要${+x.r.tt > 0 ? x.r.tt + "日" : "未登録"} 有効期限${x.r.valid || "未登録"}（${x.ok ? (x.d != null ? "あと" + x.d + "日・有効" : "有効") : "期限切れ・見積の対象外"}）`;
+                s += `\n## 質問の区間の自社の登録（${D.L.pol ? D.L.pol + "→" : ""}${D.L.pod}${D.L.mode ? " " + D.L.mode : ""}）\n` + (own.length ? own.slice(0, 8).map(t).join("\n") : "（この区間の自社の登録はありません）")
+                    + "\n※質問に区間（仕出港・仕向港）があるときは、この節のその区間の行から運賃・所要日数・有効期限を答える（有効期限が近いレートの一覧で代えない）";
+            }
+        }
+        catch (e) { }
+        return s;
+    };
+}
+function v73fCaseLeft(c, cid) {
+    const out = [];
+    try {
+        const cs = (typeof v33One === "function" ? v33One("cs", cid) : null) || {};
+        if (!String(cs.bl || "").trim())
+            out.push(v73fM("B/L 番号が未登録です", "The B/L number is not registered", "提单号未登记", "Falta el número de B/L"));
+        const nq = c.reqs.filter(r => v73fSt(r) !== "done" && v73fBase(r));
+        if (nq.length)
+            out.push(v73fM(`見積が付いていない依頼が ${nq.length}件あります（${nq.map(r => r.id).slice(0, 4).join("・")}）`, `${nq.length} request(s) have no quote`, `有 ${nq.length} 个请求尚无报价`, `${nq.length} solicitud(es) sin cotización`));
+    }
+    catch (e) { }
+    return out;
+}
+window.addEventListener("click", e => {
+    try {
+        const b = e.target && e.target.closest && e.target.closest("[data-v69fcsdone]");
+        if (!b || !v73fOn())
+            return;
+        const cid = b.dataset.v69fcsdone;
+        if (V73F.bypass === cid)
+            return;
+        const c = (typeof v33Cases === "function" ? v33Cases() : []).find(k => v33CsId(k.key) === cid);
+        if (!c)
+            return;
+        const left = v73fCaseLeft(c, cid);
+        if (!left.length)
+            return;
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        const E = v73fE;
+        const el = v33Sheet({ title: v73fM("案件を完了にする前に", "Before marking the case done", "将案件设为完成之前", "Antes de marcar el caso como hecho"),
+            html: `<div class="v73fcs" data-noi18n><p>${E(v73fM("この案件には、まだ終わっていないことがあります：", "This case still has open items:", "此案件仍有未完成事项：", "Este caso aún tiene pendientes:"))}</p><ul>${left.map(x => `<li>${E(x)}</li>`).join("")}</ul>
+      <p class="v33mute">${E(v73fM("B/L は完了の条件ではありません。完了にしても、あとから「B/L・出荷の情報を入れる」で入れられます。完了は「担当・状態を変える」で戻せます。完了にすると、受信箱の状態も「完了」になり、要確認の数から外れます。", "A B/L is not required to mark the case done. You can enter it later via “Enter B/L / shipment info”, and undo via “Change assignment / status”. Marking done also sets the inbox status to done and removes it from “Needs check”.", "提单不是完成的必要条件。完成后仍可在「填写提单・出货信息」中补填，并可通过「更改负责・状态」恢复。设为完成后，收件箱状态也变为完成，并从待确认中移除。", "El B/L no es obligatorio. Puede añadirlo después y deshacer con «Cambiar responsable/estado»."))}</p></div>`,
+            foot: `<button class="btn g" type="button" data-x>${E(v73fM("やめる", "Cancel", "取消", "Cancelar"))}</button><button class="btn g" type="button" data-v73fbl>${E(v73fM("B/L・出荷の情報を入れる", "Enter B/L / shipment info", "填写提单・出货信息", "Introducir B/L"))}</button><button class="btn" type="button" data-v73fok>${E(v73fM("このまま完了にする", "Mark done anyway", "仍然设为完成", "Marcar como hecho"))}</button>` });
+        if (!el)
+            return;
+        el.setAttribute("data-v73fcs", cid);
+        el.querySelector("[data-x]").onclick = () => { try {
+            v33SheetClose();
+        }
+        catch (x) { } };
+        el.querySelector("[data-v73fbl]").onclick = () => { try {
+            v33SheetClose();
+            if (typeof v33CaseEdit === "function")
+                v33CaseEdit(cid, c.key);
+        }
+        catch (x) { } };
+        el.querySelector("[data-v73fok]").onclick = () => { try {
+            v33SheetClose();
+            const b2 = document.querySelector(`[data-v69fcsdone="${(window.CSS && CSS.escape) ? CSS.escape(cid) : cid}"]`);
+            if (b2) {
+                V73F.bypass = cid;
+                try {
+                    b2.click();
+                }
+                finally {
+                    V73F.bypass = "";
+                }
+            }
+        }
+        catch (x) {
+            V73F.bypass = "";
+        } };
+    }
+    catch (x) { }
+}, true);
+(function () {
+    try {
+        const st = document.createElement("style");
+        st.id = "v73fcss";
+        st.textContent = `.v73fck{border:1px solid var(--line);color:var(--ink-2);background:var(--surface-2)}.v73fbtn{margin-left:4px;padding:2px 8px;font-size:10px}
+.v73fren{display:block;margin-top:3px;font-size:10px;color:var(--warn,#b45309)}.v73fnote{margin:4px 0 6px;font-size:10.5px;line-height:1.6;color:var(--ink-2)}
+.v73fbell{display:block;margin-top:4px;font-size:10.5px;color:var(--ink-2)}
+.v73fload{margin-top:10px;padding:14px 16px;font-size:12px;line-height:1.7}.v73fload p{margin:6px 0 0;color:var(--ink-2)}.v73fload .btn{margin-top:8px}.v73fload.ng{border-color:var(--warn,#b45309)}
+.v73fpre{margin:0 0 10px;padding:8px 12px;border:1px solid var(--bl);border-radius:var(--r2);background:var(--bl-soft);font-size:11.5px;line-height:1.65}
+.v73flg{font-size:10.5px;color:var(--ink-2);margin-top:6px;line-height:1.7;padding:6px 10px;border-left:3px solid var(--or);background:var(--surface-2);border-radius:6px}
+.v73fcs ul{margin:6px 0 8px;padding-left:18px;font-size:12px;line-height:1.7}.v73fcs p{margin:4px 0;font-size:12px;line-height:1.7}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+(function () {
+    const R = [["確認済み", "Checked", "已确认", "Revisada"], ["要確認に戻す", "Back to needs check", "退回待确认", "Volver a revisar"]];
+    try {
+        if (typeof I18N !== "undefined" && I18N && I18N.dict)
+            R.forEach(r => ["en", "zh", "es"].forEach((l, i) => { const d = I18N.dict[l]; if (d && r[i + 1] && !d[r[0]])
+                d[r[0]] = r[i + 1]; }));
+    }
+    catch (e) { }
+})();
+var V73ADM = { pullOk: 0, pullErr: 0, sesAt: null, histAll: 0, trGo: 0, trT: 0, trN: 0, airSig: "", fixed: [], skipN: 0 };
+function v73admLang() { try {
+    return (typeof I18N !== "undefined" && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v73admT(s) { try {
+    const L = v73admLang();
+    if (L === "ja")
+        return s;
+    const d = (I18N.dict || {})[L] || {};
+    if (d[s])
+        return d[s];
+    if (typeof i18nStr === "function") {
+        const t = i18nStr(s, d);
+        if (t != null)
+            return t;
+    }
+}
+catch (e) { } return s; }
+function v73admE(s) { s = String(s == null ? "" : s); return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v73admApply(el) { try {
+    if (el && typeof i18nApply === "function" && v73admLang() !== "ja")
+        i18nApply(el);
+}
+catch (e) { } }
+function v73admIsAdm() { try {
+    return typeof SES !== "undefined" && !!SES && SES.t === "admin";
+}
+catch (e) {
+    return false;
+} }
+function v73admMaster() { try {
+    return v73admIsAdm() && !(SES.v57 && SES.v57.role === "co");
+}
+catch (e) {
+    return false;
+} }
+function v73admSyncOn() { try {
+    return typeof syncOn === "function" && syncOn();
+}
+catch (e) {
+    return false;
+} }
+function v73admYmd(t) { const d = new Date(+t || 0); return d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate(); }
+function v73admHm(t) { const d = new Date(+t || 0); return (d.getMonth() + 1) + "/" + d.getDate() + " " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+function v73admDayKey(t) { const d = new Date(+t); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+const V73ADM_ROWS = [
+    ["Translate with AI (recorded in API costs)", "Translate with AI (recorded in API costs)", "用 AI 翻译（计入 API 费用）", "Traducir con IA (se registra en los costes de API)"],
+    ["管理者（画面のAI翻訳）", "Admin (on-screen AI translation)", "管理员（画面 AI 翻译）", "Administrador (traducción con IA en pantalla)"],
+    ["新しい12件だけにする", "Show only the newest 12", "只显示最新12条", "Mostrar solo los 12 más recientes"],
+    ["サーバー経由の AI（同期サーバーの日別の記録・全アカウント）", "AI via the server (daily record on the sync server · all accounts)", "经服务器的 AI（同步服务器的每日记录・全部账户）", "IA vía servidor (registro diario del servidor · todas las cuentas)"],
+    ["サーバー経由の AI の日別の記録を読み込んでいます…", "Loading the daily record of AI via the server…", "正在读取经服务器的 AI 的每日记录…", "Cargando el registro diario de IA vía servidor…"],
+    ["お客様の PC の AI商社マン・AI物流マンが、同期サーバーを通して AI に頼んだ回数です。同期サーバーは、この回数だけを日ごとに記録しています（上のグラフの AI質問 は内蔵エンジンの答えも含む累計の差なので、数は合いません）。", "Number of times the AI Trading Officer and AI Logistics Officer on customers' PCs asked the AI through the sync server. The sync server records only this count per day (the AI questions in the chart above are differences of totals that include built-in engine answers, so the numbers do not match).", "客户电脑上的 AI 商社员・AI 物流员通过同步服务器向 AI 提问的次数。同步服务器只按日记录这个次数（上图的 AI 提问是包含内置引擎回答在内的累计差，因此数字不一致）。", "Veces que el AI Trading Officer y el AI Logistics Officer de los PC de los clientes consultaron a la IA a través del servidor. El servidor solo registra este número por día (las preguntas a la IA del gráfico de arriba son diferencias de totales que incluyen respuestas del motor integrado, por eso no coinciden)."],
+    ["直近14日は、サーバー経由の AI はまだ使われていません（同期サーバーが日ごとに数えるのは、この回数だけです）。", "AI via the server has not been used in the last 14 days (this is the only count the sync server keeps per day).", "近14天尚未使用经服务器的 AI（同步服务器按日统计的只有这个次数）。", "La IA vía servidor no se ha usado en los últimos 14 días (es el único número que el servidor guarda por día)."],
+    ["利用の推移（直近14日・このアカウント）", "Usage trend (last 14 days · this account)", "使用趋势（近14天・此账户）", "Evolución del uso (últimos 14 días · esta cuenta)"],
+    ["ログイン", "Sign-ins", "登录", "Inicios de sesión"], ["解析", "Analyses", "解析", "Análisis"], ["AI質問", "AI questions", "AI 提问", "Preguntas a la IA"], ["Web検索", "Web searches", "网页搜索", "Búsquedas web"]
+];
+const V73ADM_PAT = [
+    { re: /^辞書に無い文言 (\d+)件は日本語のまま出しています。管理コンソールでは、見るだけで AI の費用がかからないよう、自動では AI 翻訳しません。$/,
+        en: "$1 phrases not in the dictionary are shown in Japanese. So that just viewing does not incur AI costs, the admin console does not translate them with AI automatically.",
+        zh: "词典中没有的 $1 条文字以日文显示。为避免仅浏览就产生 AI 费用，管理控制台不会自动用 AI 翻译。",
+        es: "$1 frases que no están en el diccionario se muestran en japonés. Para que solo mirar no genere costes de IA, la consola no las traduce con IA automáticamente." },
+    { re: /^台帳の変更履歴（サーバーに記録・新しい順・全(\d+)件）$/, en: "Ledger change history (recorded on the server · newest first · $1 in total)", zh: "台账变更记录（服务器记录・按时间倒序・共 $1 条）", es: "Historial de cambios del registro (en el servidor · más recientes primero · $1 en total)" },
+    { re: /^残りの(\d+)件も表示（全(\d+)件）$/, en: "Show the other $1 too ($2 in total)", zh: "也显示其余 $1 条（共 $2 条）", es: "Mostrar también los otros $1 ($2 en total)" },
+    { re: /^☁ 同期サーバーから最新の数を読み込んでいます…。いま出ている数は、この端末に控えた数です(（(.+) 時点）)?。$/,
+        en: (m) => "☁ Loading the latest numbers from the sync server… The numbers shown now are the copy kept on this device" + (m[2] ? " (as of " + m[2] + ")" : "") + ".",
+        zh: (m) => "☁ 正在从同步服务器读取最新数字…。现在显示的是此设备保存的数字" + (m[2] ? "（" + m[2] + " 时）" : "") + "。",
+        es: (m) => "☁ Cargando las cifras más recientes del servidor… Las cifras que ve ahora son la copia guardada en este dispositivo" + (m[2] ? " (a las " + m[2] + ")" : "") + "." },
+    { re: /^⚠ 同期サーバーから最新の数を読み込めませんでした。上の数は、この端末に控えた数です(（(.+) 時点）)?。$/,
+        en: (m) => "⚠ Could not load the latest numbers from the sync server. The numbers above are the copy kept on this device" + (m[2] ? " (as of " + m[2] + ")" : "") + ".",
+        zh: (m) => "⚠ 无法从同步服务器读取最新数字。上面的数字是此设备保存的数字" + (m[2] ? "（" + m[2] + " 时）" : "") + "。",
+        es: (m) => "⚠ No se pudieron cargar las cifras más recientes del servidor. Las cifras de arriba son la copia guardada en este dispositivo" + (m[2] ? " (a las " + m[2] + ")" : "") + "." },
+    { re: /^(.+) の会社名の「（無効化した例）」を「（見本）」に直しました（状態が「有効」のため。台帳の変更履歴に残ります）$/, en: "Changed “(deactivated example)” to “(sample)” in the company name of $1 (the account is active; recorded in the ledger change history)", zh: "已将 $1 公司名中的“（停用示例）”改为“（示例）”（因为状态为“有效”。会记录在台账变更记录中）", es: "Se cambió «(ejemplo desactivado)» por «(muestra)» en el nombre de $1 (la cuenta está activa; queda en el historial de cambios)" },
+    { re: /^累計（発行から）：ログイン (\d+)回・AI質問 (\d+)回・解析 (\d+)件・Web検索 (\d+)回。日別に分けられるのは、この端末で控え始めた (\d+\/\d+\/\d+) からの分だけです（同期サーバーは回数を累計だけで持っています）。$/,
+        en: "Totals (since issue): sign-ins $1 · AI questions $2 · analyses $3 · web searches $4. Only the part since $5, when this device started keeping records, can be split by day (the sync server keeps only totals).",
+        zh: "累计（自发放起）：登录 $1 次・AI 提问 $2 次・解析 $3 件・网页搜索 $4 次。能按日拆分的只有此设备自 $5 开始保存以来的部分（同步服务器只保存累计）。",
+        es: "Totales (desde la emisión): inicios de sesión $1 · preguntas a la IA $2 · análisis $3 · búsquedas web $4. Solo lo ocurrido desde el $5, cuando este dispositivo empezó a guardar registros, se puede dividir por día (el servidor solo guarda totales)." },
+    { re: /^直近14日 計 (\d+)回。$/, en: "Last 14 days: $1 in total.", zh: "近14天 共 $1 次。", es: "Últimos 14 días: $1 en total." },
+    { re: /^(\d+\/\d+) サーバー経由のAI (\d+)回$/, en: "$1 AI via server: $2", zh: "$1 经服务器的 AI $2 次", es: "$1 IA vía servidor: $2" },
+    { re: /^この14日間の記録 (\d+)件（このアカウント）。日ごとの数は、この端末で管理コンソールを開いた日の累計の差と、この端末の記録から出しています。$/,
+        en: "$1 records in the last 14 days (this account). Daily numbers come from differences in totals between the days the console was opened on this device and from this device's records.",
+        zh: "近14天的记录 $1 条（此账户）。每日数字来自在此设备打开管理控制台当天的累计差和此设备的记录。",
+        es: "$1 registros en los últimos 14 días (esta cuenta). Las cifras diarias salen de la diferencia de totales entre los días en que se abrió la consola en este dispositivo y de los registros de este dispositivo." },
+    { re: /^この14日間の記録 (\d+)件（このアカウント・同期サーバーの日別の記録）。$/, en: "$1 records in the last 14 days (this account · daily record on the sync server).", zh: "近14天的记录 $1 条（此账户・同步服务器的每日记录）。", es: "$1 registros en los últimos 14 días (esta cuenta · registro diario del servidor)." },
+    { re: /^日別の記録はまだありません。日ごとの数は、この端末で管理コンソールを開いた日の累計の差から出します（(\d+\/\d+\/\d+) から控えています）。累計（発行から）：ログイン (\d+)回・AI質問 (\d+)回・解析 (\d+)件・Web検索 (\d+)回。$/,
+        en: "No daily records yet. Daily numbers are calculated from differences in totals between the days the console is opened on this device (recording since $1). Totals (since issue): sign-ins $2 · AI questions $3 · analyses $4 · web searches $5.",
+        zh: "暂无每日记录。每日数字由在此设备打开管理控制台当天的累计差计算（自 $1 起记录）。累计（自发放起）：登录 $2 次・AI 提问 $3 次・解析 $4 件・网页搜索 $5 次。",
+        es: "Aún no hay registros diarios. Las cifras diarias se calculan con la diferencia de totales entre los días en que se abre la consola en este dispositivo (registrando desde el $1). Totales (desde la emisión): inicios de sesión $2 · preguntas a la IA $3 · análisis $4 · búsquedas web $5." },
+    { re: /^サーバー経由の AI：今日 (\d+)回（同期サーバーの記録。前の日の分はアカウントごとには残っていません）。$/,
+        en: "AI via the server: $1 today (sync server record; earlier days are not kept per account).",
+        zh: "经服务器的 AI：今天 $1 次（同步服务器的记录。之前的日子没有按账户保存）。",
+        es: "IA vía servidor: $1 hoy (registro del servidor; los días anteriores no se guardan por cuenta)." },
+    { re: /^(\d+\/\d+) (ログイン|解析|AI質問|Web検索) (\d+)$/, en: (m) => m[1] + " " + ({ "ログイン": "Sign-ins", "解析": "Analyses", "AI質問": "AI questions", "Web検索": "Web searches" }[m[2]]) + " " + m[3], zh: (m) => m[1] + " " + ({ "ログイン": "登录", "解析": "解析", "AI質問": "AI 提问", "Web検索": "网页搜索" }[m[2]]) + " " + m[3], es: (m) => m[1] + " " + ({ "ログイン": "Inicios de sesión", "解析": "Análisis", "AI質問": "Preguntas a la IA", "Web検索": "Búsquedas web" }[m[2]]) + " " + m[3] }
+];
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N)
+            return;
+        if (!I18N.dict)
+            I18N.dict = {};
+        V73ADM_ROWS.forEach(r => { ["en", "zh", "es"].forEach((l, i) => { if (!I18N.dict[l])
+            I18N.dict[l] = {}; if (r[i + 1] && !I18N.dict[l][r[0]])
+            I18N.dict[l][r[0]] = r[i + 1]; }); });
+        if (Array.isArray(I18N.pat))
+            V73ADM_PAT.slice().reverse().forEach(p => I18N.pat.unshift(p));
+    }
+    catch (e) { }
+})();
+(function () {
+    try {
+        const st = document.createElement("style");
+        st.id = "v73admcss";
+        st.textContent = `
+#admkpi.v73adm-stale .kv{opacity:.45}
+#v73admSync{margin:-4px 0 10px;font-size:11.5px}
+#v73admTr{position:fixed;left:12px;bottom:12px;z-index:65;max-width:min(420px,calc(100vw - 24px));box-sizing:border-box;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:var(--pop);padding:10px 12px;font-size:11.5px;line-height:1.6}
+#v73admTr .rw{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px;justify-content:flex-end}
+#v73admTr .btn{font-size:11px;padding:3px 10px;min-height:30px}
+#v73admHistAll{margin:6px 0 2px;font-size:11px;padding:3px 10px}
+.v73adm-air{margin-top:10px;padding-top:8px;border-top:1px dashed var(--line-2)}
+.v73adm-air .lbl{margin:0}
+#v73admDet{margin-top:13px}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+function v73admLsLlm() { try {
+    return JSON.parse(localStorage.getItem("bc20_llm_v1") || "null");
+}
+catch (e) {
+    return null;
+} }
+function v73admAirIn(o) { try {
+    return !!o && !!o.keys && Object.values(o.keys).some(v => String(v) === "@air");
+}
+catch (e) {
+    return false;
+} }
+function v73admLlmGuard() {
+    try {
+        if (typeof SES === "undefined" || !SES)
+            return false;
+        const st = v73admLsLlm();
+        if (SES.t === "admin") {
+            let sh = false;
+            try {
+                sh = localStorage.getItem("bc20_llm_shared") === "1";
+            }
+            catch (e) { }
+            if (v73admAirIn(st) || sh) {
+                V73ADM.skipN++;
+                return true;
+            }
+            return false;
+        }
+        if (SES.t === "trial" && typeof LLM !== "undefined" && v73admAirIn(LLM) && !v73admAirIn(st)) {
+            V73ADM.skipN++;
+            return true;
+        }
+    }
+    catch (e) { }
+    return false;
+}
+if (typeof llmSyncNow === "function") {
+    const __sn73adm = llmSyncNow;
+    llmSyncNow = function () { if (v73admLlmGuard())
+        return false; return __sn73adm.apply(this, arguments); };
+}
+function v73admTrPending() { try {
+    if (typeof ai18nNodes !== "function" || typeof ai18nLoad !== "function")
+        return 0;
+    const c = ai18nLoad(), s = new Set();
+    ai18nNodes().forEach(n => { const k = ai18nKeyOf(n.nodeValue); if (!c[k])
+        s.add(k); });
+    return s.size;
+}
+catch (e) {
+    return 0;
+} }
+function v73admTrNote() { clearTimeout(V73ADM.trT); V73ADM.trT = setTimeout(v73admTrPaint, 400); }
+function v73admTrPaint() {
+    try {
+        let el = document.getElementById("v73admTr");
+        const L = v73admLang();
+        let on = v73admIsAdm() && L !== "ja" && !V73ADM.trGo && !V73ADM.trHide;
+        try {
+            on = on && (typeof ai18nOn !== "function" || ai18nOn()) && (typeof ai18nOnline !== "function" || ai18nOnline());
+        }
+        catch (e) {
+            on = false;
+        }
+        const n = on ? v73admTrPending() : 0;
+        V73ADM.trN = n;
+        if (!on || !n) {
+            if (el)
+                el.remove();
+            return;
+        }
+        if (!el) {
+            el = document.createElement("div");
+            el.id = "v73admTr";
+            el.setAttribute("data-noi18n", "");
+            el.setAttribute("data-ai18n-skip", "");
+            el.setAttribute("role", "status");
+            document.body.appendChild(el);
+        }
+        const msg = v73admT("辞書に無い文言 " + n + "件は日本語のまま出しています。管理コンソールでは、見るだけで AI の費用がかからないよう、自動では AI 翻訳しません。");
+        const sig = L + "|" + n;
+        if (el.dataset.sig === sig)
+            return;
+        el.dataset.sig = sig;
+        el.innerHTML = `<span>${v73admE(msg)}</span><div class="rw"><button class="btn g" type="button" id="v73admTrX" aria-label="×">×</button><button class="btn" type="button" id="v73admTrGo">${v73admE(v73admT("Translate with AI (recorded in API costs)"))}</button></div>`;
+        document.getElementById("v73admTrX").onclick = () => { V73ADM.trHide = 1; el.remove(); };
+        document.getElementById("v73admTrGo").onclick = () => v73admTrRun();
+    }
+    catch (e) { }
+}
+async function v73admTrRun() {
+    if (V73ADM.trGo)
+        return;
+    V73ADM.trGo = 1;
+    try {
+        const el = document.getElementById("v73admTr");
+        if (el)
+            el.remove();
+    }
+    catch (e) { }
+    try {
+        if (typeof AI18N !== "undefined")
+            AI18N.fails = 0;
+        await (V73ADM.trRun || (async () => { }))();
+    }
+    catch (e) { }
+    finally {
+        V73ADM.trGo = 0;
+        v73admTrNote();
+    }
+}
+if (typeof ai18nRun === "function") {
+    const __rn73adm = ai18nRun;
+    V73ADM.trRun = function () { return __rn73adm.apply(this, arguments); };
+    ai18nRun = async function () { if (v73admIsAdm() && !V73ADM.trGo) {
+        v73admTrNote();
+        return;
+    } return __rn73adm.apply(this, arguments); };
+}
+if (typeof ai18nKick === "function") {
+    const __kk73adm = ai18nKick;
+    ai18nKick = function () { if (v73admIsAdm() && !V73ADM.trGo) {
+        v73admTrNote();
+        return;
+    } return __kk73adm.apply(this, arguments); };
+}
+if (typeof i18nSet === "function") {
+    const __is73adm = i18nSet;
+    i18nSet = function () { const r = __is73adm.apply(this, arguments); try {
+        V73ADM.trHide = 0;
+        v73admTrNote();
+        setTimeout(v73admHowCard, 0);
+    }
+    catch (e) { } return r; };
+}
+if (typeof costLog === "function") {
+    const __cl73adm = costLog;
+    costLog = function (prov, model, jr, x) {
+        const r = __cl73adm.apply(this, arguments);
+        try {
+            if (x && x.task === "translate" && typeof CDB !== "undefined" && CDB && Array.isArray(CDB.ev) && CDB.ev.length) {
+                const e = CDB.ev[CDB.ev.length - 1];
+                if (e && e[2] === prov && Date.now() - (+e[0] || 0) < 5000) {
+                    if (e[1] === "admin")
+                        e[1] = "admin:tr";
+                    e[8] = "🌐翻訳";
+                    if (typeof costSave === "function")
+                        costSave();
+                }
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof costUserNm === "function") {
+    const __un73adm = costUserNm;
+    costUserNm = function (code) { if (code === "admin:tr")
+        return "管理者（画面のAI翻訳）"; return __un73adm.apply(this, arguments); };
+}
+function v73admUseSig() { try {
+    return JSON.stringify(((typeof ADB !== "undefined" && ADB && ADB.accounts) || []).map(a => [a && a.code].concat(["logins", "uploads", "aiQ", "webQ", "lastActive"].map(k => +(((a && a.usage) || {})[k]) || 0)))) + "|" + (((typeof V214 !== "undefined" && V214 && V214.log) || []).length);
+}
+catch (e) {
+    return "";
+} }
+function v73admFixCo() {
+    if (!v73admMaster() || typeof ADB === "undefined" || !ADB)
+        return 0;
+    const L = [];
+    (ADB.accounts || []).forEach(a => { if (a && a.code && a.st === "active" && /^（無効化した例）/.test(String(a.co || ""))) {
+        a.co = String(a.co).replace(/^（無効化した例）\s*/, "（見本）");
+        L.push(a.code);
+    } });
+    if (!L.length)
+        return 0;
+    V73ADM.fixed = V73ADM.fixed.concat(L);
+    try {
+        asave();
+    }
+    catch (e) { }
+    try {
+        if (typeof toast === "function")
+            toast(v73admT(L.join("・") + " の会社名の「（無効化した例）」を「（見本）」に直しました（状態が「有効」のため。台帳の変更履歴に残ります）"));
+    }
+    catch (e) { }
+    return L.length;
+}
+function v73admSyncNote() {
+    try {
+        const k = document.getElementById("admkpi");
+        if (!k || !v73admIsAdm())
+            return;
+        let n = document.getElementById("v73admSync");
+        const wait = v73admSyncOn() && !V73ADM.pullOk;
+        if (!wait) {
+            if (n)
+                n.remove();
+            k.classList.remove("v73adm-stale");
+            return;
+        }
+        if (!n) {
+            n = document.createElement("p");
+            n.id = "v73admSync";
+            n.className = "nn";
+            n.setAttribute("role", "status");
+            k.insertAdjacentElement("afterend", n);
+        }
+        let at = 0;
+        try {
+            at = +localStorage.getItem("bc20_v73adm_pullAt") || 0;
+        }
+        catch (e) { }
+        const tm = at ? "（" + v73admHm(at) + " 時点）" : "";
+        const msg = V73ADM.pullErr ? "⚠ 同期サーバーから最新の数を読み込めませんでした。上の数は、この端末に控えた数です" + tm + "。" : "☁ 同期サーバーから最新の数を読み込んでいます…。いま出ている数は、この端末に控えた数です" + tm + "。";
+        n.textContent = v73admT(msg);
+        n.style.color = V73ADM.pullErr ? "var(--warn)" : "";
+        k.classList.add("v73adm-stale");
+    }
+    catch (e) { }
+}
+if (typeof v213AdmPull === "function") {
+    const __pl73adm = v213AdmPull;
+    v213AdmPull = async function () {
+        const s0 = v73admUseSig();
+        let x;
+        try {
+            x = await __pl73adm.apply(this, arguments);
+        }
+        catch (e) {
+            if (!V73ADM.pullOk) {
+                V73ADM.pullErr = 1;
+                v73admSyncNote();
+            }
+            throw e;
+        }
+        try {
+            if (x && x.r && x.r.ok) {
+                V73ADM.pullOk = Date.now();
+                V73ADM.pullErr = 0;
+                try {
+                    localStorage.setItem("bc20_v73adm_pullAt", String(Date.now()));
+                }
+                catch (e) { }
+                const fixed = v73admFixCo();
+                const moved = v73admUseSig() !== s0;
+                if (!x.ch && (fixed || moved) && typeof cur !== "undefined" && cur === "adm" && v73admIsAdm() && typeof renderAdmin === "function") {
+                    if (typeof v214AdmBusy === "function" && v214AdmBusy()) {
+                        try {
+                            V214.pend = 1;
+                        }
+                        catch (e) { }
+                        v73admSyncNote();
+                    }
+                    else
+                        setTimeout(() => { try {
+                            if (typeof cur !== "undefined" && cur === "adm" && v73admIsAdm()) {
+                                const y = window.scrollY;
+                                renderAdmin();
+                                try {
+                                    window.scrollTo(0, y);
+                                }
+                                catch (e) { }
+                            }
+                        }
+                        catch (e) { } }, 0);
+                }
+                else
+                    v73admSyncNote();
+            }
+        }
+        catch (e) { }
+        return x;
+    };
+}
+function v73admHist() {
+    try {
+        const el = document.getElementById("v214adm");
+        if (!el)
+            return;
+        const dt = el.querySelector("details");
+        if (!dt)
+            return;
+        const all = ((typeof V214 !== "undefined" && V214 && V214.log) || []);
+        const N = all.length;
+        if (!N)
+            return;
+        const sm = dt.querySelector("summary");
+        if (sm)
+            sm.textContent = v73admT("台帳の変更履歴（サーバーに記録・新しい順・全" + N + "件）");
+        const ul = dt.querySelector("ul");
+        if (ul && V73ADM.histAll && N > 12 && typeof v214LogText === "function") {
+            ul.innerHTML = all.slice().reverse().map(e => `<li>${v73admE(typeof v214Hm === "function" ? v214Hm(e.t) : v73admHm(e.t))}　${v73admE(e.by || "")}<br>${(e.ch || []).map(v214LogText).filter(Boolean).join("<br>")}</li>`).join("");
+            ul.style.maxHeight = "420px";
+            ul.style.overflow = "auto";
+        }
+        if (N > 12 && !document.getElementById("v73admHistAll")) {
+            const b = document.createElement("button");
+            b.type = "button";
+            b.className = "btn g";
+            b.id = "v73admHistAll";
+            b.textContent = v73admT(V73ADM.histAll ? "新しい12件だけにする" : "残りの" + (N - 12) + "件も表示（全" + N + "件）");
+            b.onclick = () => { V73ADM.histAll = V73ADM.histAll ? 0 : 1; try {
+                V214.histOpen = true;
+            }
+            catch (e) { } v214AdmLine(); };
+            dt.appendChild(b);
+        }
+        v73admApply(dt);
+    }
+    catch (e) { }
+}
+if (typeof v214AdmLine === "function") {
+    const __al73adm = v214AdmLine;
+    v214AdmLine = function () { const r = __al73adm.apply(this, arguments); try {
+        v73admHist();
+    }
+    catch (e) { } return r; };
+}
+const V73ADM_HOWH = /トライアル環境のしくみ|How the trial (environment )?works|试用环境的(机制|运作方式)|Cómo funciona (el entorno de )?(la )?prueba/;
+function v73admHowCard() {
+    try {
+        if (!v73admSyncOn() || !v73admIsAdm())
+            return;
+        const w = document.getElementById("well");
+        if (!w)
+            return;
+        const c = [...w.querySelectorAll(".c")].find(x => {
+            const h = x.querySelector("h3");
+            if (!h)
+                return false;
+            if (V73ADM_HOWH.test(h.textContent))
+                return true;
+            try {
+                if (I18N.orig && I18N.orig.get) {
+                    const tw = document.createTreeWalker(h, NodeFilter.SHOW_TEXT);
+                    let n;
+                    while ((n = tw.nextNode())) {
+                        const o = I18N.orig.get(n);
+                        if (o && /トライアル環境のしくみ/.test(o))
+                            return true;
+                    }
+                }
+            }
+            catch (e) { }
+            return false;
+        });
+        if (!c || c.__v70)
+            return;
+        const boxes = [...c.querySelectorAll(".g3 > div")];
+        if (boxes.length < 2)
+            return;
+        c.__v70 = 1;
+        const put = (bx, t, d) => { const b = bx.querySelector("b"), p = bx.querySelector("p"); if (b)
+            b.textContent = t; if (p)
+            p.textContent = d; };
+        put(boxes[0], "データは暗号化して同期サーバーへ", "お客様の商品・商談・書類・案件は、お客様の端末でアクセスコードの鍵で暗号化してから、同期サーバーに預けます。作業中の控えはその端末のブラウザに置き、ログアウトすると消えます。");
+        put(boxes[1], "アカウントは同期サーバーの台帳で管理", "発行したアカウント・利用状況は同期サーバーの台帳に置き、ほかの PC・スマホの管理コンソールでも同じ内容が見られます（この端末にも控えを置きます）。");
+        v73admApply(c);
+    }
+    catch (e) { }
+}
+function v73admAirR() { try {
+    return (typeof V63A !== "undefined" && V63A && V63A.adm && V63A.adm.ok !== false) ? V63A.adm : null;
+}
+catch (e) {
+    return null;
+} }
+function v73admDays14() { const out = []; const t0 = new Date(); t0.setHours(0, 0, 0, 0); for (let i = 13; i >= 0; i--) {
+    const d = new Date(t0.getTime() - i * 864e5);
+    out.push({ k: v73admDayKey(d), lbl: (d.getMonth() + 1) + "/" + d.getDate() });
+} return out; }
+function v73admAirHtml() {
+    if (!v73admMaster() || !v73admSyncOn())
+        return "";
+    const R = v73admAirR();
+    if (!R)
+        return `<div class="v73adm-air" id="v73admAir"><p class="lbl">${v73admE("サーバー経由の AI（同期サーバーの日別の記録・全アカウント）")}</p><p class="nn">${v73admE("サーバー経由の AI の日別の記録を読み込んでいます…")}</p></div>`;
+    const m = {};
+    (R.hist || []).forEach(h => { if (h && h.d)
+        m[h.d] = +h.all || 0; });
+    if (R.today && R.today.d)
+        m[R.today.d] = +R.today.all || 0;
+    const days = v73admDays14().map(d => Object.assign(d, { n: +m[d.k] || 0 }));
+    const tot = days.reduce((s, d) => s + d.n, 0);
+    const mx = Math.max(1, ...days.map(d => d.n)), W = days.length * 34, H = 44;
+    const bars = days.map((d, i) => { const x = i * 34 + 4; const hh = d.n / mx * (H - 14); return (d.n ? `<rect x="${x}" y="${(H - 8 - hh).toFixed(1)}" width="24" height="${hh.toFixed(1)}" rx="2" fill="var(--or)" opacity=".8"><title>${v73admE(d.lbl + " サーバー経由のAI " + d.n + "回")}</title></rect>` : "") + (i % 2 === 1 ? `<text x="${x + 12}" y="${H - 1}" text-anchor="middle" font-size="7" fill="var(--ink-3)">${d.lbl}</text>` : ""); }).join("");
+    return `<div class="v73adm-air" id="v73admAir"><p class="lbl">${v73admE("サーバー経由の AI（同期サーバーの日別の記録・全アカウント）")}</p>
+    ${tot ? `<p class="nn" style="margin-top:2px">${v73admE("直近14日 計 " + tot + "回。")}</p><div style="margin-top:4px;max-width:${W}px"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMin meet" style="width:100%;height:auto;display:block" role="img" aria-label="${v73admE("サーバー経由の AI（同期サーバーの日別の記録・全アカウント）")}">${bars}</svg></div>` : `<p class="nn" style="margin-top:2px">${v73admE("直近14日は、サーバー経由の AI はまだ使われていません（同期サーバーが日ごとに数えるのは、この回数だけです）。")}</p>`}
+    <p class="nn" style="margin-top:4px;font-size:11px">${v73admE("お客様の PC の AI商社マン・AI物流マンが、同期サーバーを通して AI に頼んだ回数です。同期サーバーは、この回数だけを日ごとに記録しています（上のグラフの AI質問 は内蔵エンジンの答えも含む累計の差なので、数は合いません）。")}</p></div>`;
+}
+function v73admCum(A) { return ["logins", "aiQ", "uploads", "webQ"].map(f => A.reduce((s, a) => s + (+(((a && a.usage) || {})[f]) || 0), 0)); }
+function v73admSrvDays() { try {
+    const U = (typeof V70ADM !== "undefined" && V70ADM && V70ADM.ag && V70ADM.ag.usage) || {};
+    return Object.keys(U).some(k => U[k] && U[k].days && typeof U[k].days === "object" && Object.keys(U[k].days).length > 0);
+}
+catch (e) {
+    return false;
+} }
+function v73admSince() { try {
+    const S = (typeof v70admSnapGet === "function") ? v70admSnapGet() : null;
+    return (S && S.since) || Date.now();
+}
+catch (e) {
+    return Date.now();
+} }
+if (typeof admSparkHtml === "function") {
+    const __sp73adm = admSparkHtml;
+    admSparkHtml = function () {
+        let h = __sp73adm.apply(this, arguments);
+        try {
+            if (!v73admIsAdm())
+                return h;
+            const A = (typeof ADB !== "undefined" && ADB && ADB.accounts) || [];
+            const c = v73admCum(A);
+            if (/この14日間の記録/.test(h) && c.some(x => x > 0) && !v73admSrvDays())
+                h = h.replace(/(<p class="nn"[^>]*>[\s\S]*?<\/p>)/, `$1<p class="nn" id="v73admGap" style="margin-top:2px">${v73admE("累計（発行から）：ログイン " + c[0] + "回・AI質問 " + c[1] + "回・解析 " + c[2] + "件・Web検索 " + c[3] + "回。日別に分けられるのは、この端末で控え始めた " + v73admYmd(v73admSince()) + " からの分だけです（同期サーバーは回数を累計だけで持っています）。")}</p>`);
+            h += v73admAirHtml();
+        }
+        catch (e) { }
+        return h;
+    };
+}
+function v73admSparkRefresh() {
+    try {
+        const sp = document.getElementById("admspark");
+        if (!sp || !v73admIsAdm())
+            return;
+        const R = v73admAirR();
+        const sig = R ? JSON.stringify([R.hist, R.today]) : "";
+        if (sig === V73ADM.airSig && document.getElementById("v73admAir"))
+            return;
+        V73ADM.airSig = sig;
+        sp.innerHTML = admSparkHtml();
+        v73admApply(sp);
+    }
+    catch (e) { }
+}
+if (typeof v63aPaint === "function") {
+    const __pa73adm = v63aPaint;
+    v63aPaint = function () { const r = __pa73adm.apply(this, arguments); try {
+        v73admSparkRefresh();
+    }
+    catch (e) { } return r; };
+}
+function v73admDet(code) {
+    const pn = document.getElementById("pn"), a = (typeof findAcct === "function") ? findAcct(code) : null;
+    if (!pn || !a || !document.getElementById("dw-tgl"))
+        return;
+    const old = document.getElementById("v73admDet");
+    if (old)
+        old.remove();
+    const days = v73admDays14().map(d => Object.assign(d, { v: [0, 0, 0, 0] }));
+    const idx = {};
+    days.forEach((d, i) => idx[d.k] = i);
+    let since = Date.now();
+    try {
+        const S = (typeof v70admSnapGet === "function") ? v70admSnapGet() : { d: {} };
+        since = S.since || since;
+        const ks = Object.keys(S.d || {}).sort();
+        for (let i = 1; i < ks.length; i++) {
+            const p = S.d[ks[i - 1]] && S.d[ks[i - 1]][a.code], c = S.d[ks[i]] && S.d[ks[i]][a.code], j = idx[ks[i]];
+            if (!p || !c || j == null)
+                continue;
+            for (let f = 0; f < 4; f++)
+                days[j].v[f] = Math.max(days[j].v[f], Math.max(0, (+c[f] || 0) - (+p[f] || 0)));
+        }
+    }
+    catch (e) { }
+    let srvDays = false;
+    try {
+        const G = (typeof V70ADM !== "undefined" && V70ADM) ? V70ADM.ag : null;
+        const x = G && (G.accounts || []).find(y => y && y.code === a.code);
+        const Dd = x && G.usage && G.usage[x.kid] && G.usage[x.kid].days;
+        if (Dd && typeof Dd === "object") {
+            srvDays = true;
+            days.forEach(d => { d.v = [0, 0, 0, 0]; });
+            Object.keys(Dd).forEach(k => { const j = idx[k]; if (j == null || !Array.isArray(Dd[k]))
+                return; for (let f = 0; f < 4; f++)
+                days[j].v[f] = Math.max(0, +Dd[k][f] || 0); });
+        }
+    }
+    catch (e) { }
+    try {
+        const ev = [0, 0, 0, 0].map(() => ({}));
+        ((a.usage && a.usage.events) || []).forEach(e => { const k = v73admDayKey(+e[0] || 0); if (idx[k] == null)
+            return; const f = { login: 0, upload: 1, ai: 2, web: 3 }[e[1]]; if (f == null)
+            return; ev[f][k] = (ev[f][k] || 0) + 1; });
+        days.forEach(d => { for (let f = 0; f < 4; f++)
+            d.v[f] = Math.max(d.v[f], ev[f][d.k] || 0); });
+    }
+    catch (e) { }
+    const tot = days.reduce((s, d) => s + d.v[0] + d.v[1] + d.v[2] + d.v[3], 0);
+    const u = a.usage || {}, cum = [+u.logins || 0, +u.aiQ || 0, +u.uploads || 0, +u.webQ || 0];
+    let airN = null;
+    try {
+        const R = v73admAirR();
+        const x = R && (R.accts || []).find(y => y && y.code === a.code);
+        if (x)
+            airN = +x.used || 0;
+    }
+    catch (e) { }
+    const mx = Math.max(1, ...days.map(d => d.v[0] + d.v[1] + d.v[2] + d.v[3])), W = days.length * 30, H = 56;
+    const NM = ["ログイン", "解析", "AI質問", "Web検索"], COL = ["var(--ink-3)", "var(--good)", "var(--or)", "var(--bl)"];
+    const bars = days.map((d, i) => {
+        const x = i * 30 + 4;
+        let y = H - 10;
+        let s = "";
+        for (let f = 0; f < 4; f++) {
+            const v = d.v[f];
+            if (!v)
+                continue;
+            const hh = v / mx * (H - 16);
+            y -= hh;
+            s += `<rect x="${x}" y="${y.toFixed(1)}" width="22" height="${hh.toFixed(1)}" rx="2" fill="${COL[f]}"><title>${v73admE(d.lbl + " " + NM[f] + " " + v)}</title></rect>`;
+        }
+        return s + (i % 2 === 1 ? `<text x="${x + 11}" y="${H - 1}" text-anchor="middle" font-size="8" fill="var(--ink-3)">${d.lbl}</text>` : "");
+    }).join("");
+    const msg = tot ? (srvDays ? "この14日間の記録 " + tot + "件（このアカウント・同期サーバーの日別の記録）。" : "この14日間の記録 " + tot + "件（このアカウント）。日ごとの数は、この端末で管理コンソールを開いた日の累計の差と、この端末の記録から出しています。")
+        : "日別の記録はまだありません。日ごとの数は、この端末で管理コンソールを開いた日の累計の差から出します（" + v73admYmd(since) + " から控えています）。累計（発行から）：ログイン " + cum[0] + "回・AI質問 " + cum[1] + "回・解析 " + cum[2] + "件・Web検索 " + cum[3] + "回。";
+    const box = document.createElement("div");
+    box.id = "v73admDet";
+    box.innerHTML = `<p class="lbl">${v73admE("利用の推移（直近14日・このアカウント）")}</p>
+    <div style="margin-top:5px;max-width:${W}px"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMin meet" style="width:100%;height:auto;display:block" role="img" aria-label="${v73admE("利用の推移（直近14日・このアカウント）")}">${bars}</svg></div>
+    <p class="nn" style="margin-top:3px;font-size:10px">${NM.map((n, f) => `<span style="color:${COL[f]}">■</span> ${v73admE(n)}`).join("　")}</p>
+    <p class="nn" style="margin-top:3px">${v73admE(msg)}</p>
+    ${tot && !srvDays ? `<p class="nn" style="margin-top:2px">${v73admE("累計（発行から）：ログイン " + cum[0] + "回・AI質問 " + cum[1] + "回・解析 " + cum[2] + "件・Web検索 " + cum[3] + "回。日別に分けられるのは、この端末で控え始めた " + v73admYmd(since) + " からの分だけです（同期サーバーは回数を累計だけで持っています）。")}</p>` : ""}
+    ${airN != null ? `<p class="nn" style="margin-top:2px">${v73admE("サーバー経由の AI：今日 " + airN + "回（同期サーバーの記録。前の日の分はアカウントごとには残っていません）。")}</p>` : ""}`;
+    const at = document.getElementById("v70admTl") || (document.getElementById("dw-tgl").closest(".rw"));
+    if (at)
+        at.insertAdjacentElement("beforebegin", box);
+    else
+        pn.appendChild(box);
+    v73admApply(box);
+}
+if (typeof admDetail === "function") {
+    const __ad73adm = admDetail;
+    admDetail = function (code) { const r = __ad73adm.apply(this, arguments); try {
+        v73admDet(code);
+    }
+    catch (e) { } return r; };
+}
+document.addEventListener("click", e => {
+    try {
+        const b = e.target && e.target.closest && e.target.closest("#lgv [data-t]");
+        if (!b)
+            return;
+        setTimeout(() => { try {
+            const el = document.activeElement;
+            if (el && /^(ad-id|lg-code)$/.test(el.id) && window.matchMedia && matchMedia("(pointer:coarse)").matches && el.scrollIntoView)
+                el.scrollIntoView({ block: "center", inline: "nearest", behavior: "auto" });
+        }
+        catch (x) { } }, 0);
+    }
+    catch (x) { }
+}, true);
+function v73admAfter() {
+    if (!v73admIsAdm())
+        return;
+    try {
+        const at = (typeof SES !== "undefined" && SES) ? (SES.at || SES.apw || 1) : 1;
+        if (V73ADM.sesAt !== at) {
+            V73ADM.sesAt = at;
+            V73ADM.pullOk = 0;
+            V73ADM.pullErr = 0;
+            try {
+                if (typeof V213 !== "undefined" && V213 && !V213.admBusy && V213.admPullAt) {
+                    V213.admPullAt = 0;
+                    if (typeof v213AdmAuto === "function")
+                        v213AdmAuto();
+                }
+            }
+            catch (e) { }
+        }
+    }
+    catch (e) { }
+    try {
+        v73admSyncNote();
+    }
+    catch (e) { }
+    try {
+        v73admHowCard();
+    }
+    catch (e) { }
+    try {
+        v73admHist();
+    }
+    catch (e) { }
+    try {
+        v73admTrNote();
+    }
+    catch (e) { }
+}
+if (typeof renderAdmin === "function") {
+    const __ra73adm = renderAdmin;
+    renderAdmin = function () { const r = __ra73adm.apply(this, arguments); try {
+        setTimeout(v73admAfter, 0);
+    }
+    catch (e) { } return r; };
+}
+try {
+    if (typeof S30_NEWS !== "undefined" && Array.isArray(S30_NEWS)) {
+        if (!S30_NEWS.some(x => x && x[1] === "v21.74"))
+            S30_NEWS.unshift(["2026-11", "v21.74", "数のそろえ方と、AI の答えの確かさ（UAT 28件の直し）",
+                ["出荷の容積と AI見積の条件は、案件の SKU の荷姿で計算する。AI見積の所要日数は「合計（海上＋情勢見込み）」で、内訳と合計が合う",
+                    "返信エージェントの返信案は、相手の最新のメッセージの言語で作る。AI商社マンの答えの MOQ・出荷港は、登録と照らして出どころ（推定・要確認）を示す",
+                    "成長レベルは何の値か（表示中の商品）を書き、件数の違うところには数え方を書いた。追加ヒアリングで「不明」と答えた気づきは「不明と回答」として残す",
+                    "物流会社の画面：要確認の数を全部の場所でそろえ、「レートを登録」で区間を引き継ぎ、AI物流マンは聞かれた区間の登録から答える。B/L 未登録で完了にする前に確かめる"]]);
     }
 }
 catch (e) { }
