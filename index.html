@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="09e4947c9abc";
+const BC20_BUILD="ebf4e58d38bb";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -12041,7 +12041,7 @@ function ansBuyer(q) {
     }
     const fb = D.fb || [];
     if (!fb.length)
-        return { a: `まだ商談記録がありません。<b>バイヤーネットワーク</b>で条件に合う相手を探し、<b>つなぐ依頼</b>を出すところから始められます（相手が承諾すると連絡先が開示されます）。`,
+        return { a: `まだ商談記録がありません。<b>AIバイヤー開拓</b>で商談になりやすい相手をリストにし、文面を送るところから始められます。`,
             c: "根拠：商談記録 0件" };
     const hot = (D.hotList || []).slice(0, 3);
     return { a: `いま記録があるのは<b>${new Set(fb.map(f => f.b)).size}社・${fb.length}件</b>です。<br><br>
@@ -13417,7 +13417,7 @@ function vLegal(p) {
       <button class="btn g" id="legwhich" ${on ? "" : "disabled"}>どの契約書が良いか相談する</button></div>
     <div id="legdraftout"></div>`
         : `<div style="margin-top:10px;padding:12px;border:1.5px dashed var(--line);border-radius:8px;font-size:12px;color:var(--ink-2)">
-      まだ直接メッセージでやり取り中のBuyerがいません。<br>まずは「AIバイヤー開拓・拠点」で「つなぐ依頼」を出すか、自社のバイヤーに直接連絡して、やり取りを始めてください。
+      まだ直接メッセージでやり取り中のBuyerがいません。<br>まずは「AIバイヤー開拓・拠点」の「AIバイヤー開拓」で相手に送るか、自社のバイヤーに直接連絡して、やり取りを始めてください。
       <div style="margin-top:8px"><button class="btn g" onclick="go('db')">AIバイヤー開拓・拠点を開く</button></div></div>`}
    </div>
    <div class="c" id="legdz">
@@ -37800,7 +37800,7 @@ function bmThreadsPaint() {
       <td><span class="nn">${esc(last.t || "")} ${last.w === "by" ? '<span class="p on">相手</span>' : '<span class="p or">自社</span>'}</span><br><span class="nn" style="color:var(--ink)">${esc(ex)}${bmTxt(last).length > 70 ? "…" : ""}</span></td>
       <td style="white-space:nowrap"><button class="btn g" data-dmopen="${esc(th.id)}" style="padding:4px 10px">開く</button></td></tr>`;
     }).join("")
-        : `<tr><td colspan="5" style="text-align:center;color:var(--ink-3);padding:16px">${all.length ? "条件に合うBuyerはいません" : "まだやり取り中のBuyerはいません。下の「相手を探す」から<b>直接連絡</b>を送ると、ここに並びます。"}</td></tr>`;
+        : `<tr><td colspan="5" style="text-align:center;color:var(--ink-3);padding:16px">${all.length ? "条件に合うBuyerはいません" : "まだやり取り中のBuyerはいません。「AIバイヤー開拓」やバイヤー一覧から<b>直接連絡</b>を送ると、ここに並びます。"}</td></tr>`;
     tb.querySelectorAll("[data-dmopen]").forEach(b => b.onclick = () => openDMThread(b.dataset.dmopen));
 }
 function bmThreadsMount() {
@@ -37863,7 +37863,7 @@ function bmNormId(s) { return String(s || "").replace(/\b([A-Za-z]{2})\s*[:：\-
 function bmCtx() {
     const L = bmThreadsAll().sort((a, b) => bmLastAt(b) - bmLastAt(a));
     if (!L.length)
-        return "\n=== バイヤーとの直接メッセージ（やり取り中のBuyer） ===\n（まだありません。自社のバイヤーへの直接連絡か、AIバイヤー開拓・拠点の「つなぐ依頼」で相手が承諾すると開始できる）";
+        return "\n=== バイヤーとの直接メッセージ（やり取り中のBuyer） ===\n（まだありません。自社のバイヤーへの直接連絡か、AIバイヤー開拓・拠点の「AIバイヤー開拓」で相手に送ると開始できる。STANDAGE のバイヤーへの「つなぐ依頼」は受け付けていない）";
     return "\n=== バイヤーとの直接メッセージ（やり取り中のBuyer：" + L.length + "件・交渉ステータスは7段階） ===\n" + L.map(th => { const last = (th.msgs || [])[th.msgs.length - 1] || {}; return `・ID ${th.id}｜${th.cty}の${th.biz}｜ステータス：${bmStOf(th)}（${th.statusBy || "未判定"}${th.statusWhy ? "・" + th.statusWhy : ""}）｜往復 ${(th.msgs || []).length}通（相手からの返信 ${(th.msgs || []).filter(m => m.w === "by").length}・未読 ${th.unread || 0}）｜宛先 ${th.to || "未開示"}${th.real ? "｜実メール" : ""}${(th.msgs || []).some(m => m.sim) ? "｜体験用の模擬返信を含む" : ""}｜最終 ${last.t || ""} ${last.w === "by" ? "相手" : "自社"}：「${bmTxt(last).replace(/\s+/g, " ").trim().slice(0, 80)}」`; }).join("\n") + "\n※「やり取りページを開いて」等の依頼は、貿易クラウド側でIDを指定して該当スレッドを開ける（AIが案内する場合はIDを示す）";
 }
 if (typeof ppContext === "function") {
@@ -37885,7 +37885,7 @@ function bmAsk(q) {
     if (!ids.length && !topic && !missing.length)
         return null;
     const stKey = BM_ST.find(st => s.includes(BM_STS[st])) || "";
-    const missNote = missing.length ? `<p class="nn" style="margin-bottom:6px">⚠ <b>ID ${missing.map(esc).join("・")}</b> の直接メッセージ（やり取り）は登録されていません。そのIDの相手には「AIバイヤー開拓・拠点」の「つなぐ依頼」を出し、相手が承諾するとやり取りを始められます。</p>` : "";
+    const missNote = missing.length ? `<p class="nn" style="margin-bottom:6px">⚠ <b>ID ${missing.map(esc).join("・")}</b> の直接メッセージ（やり取り）は登録されていません。その ID の相手とのやり取りはありません（STANDAGE のバイヤーへの社名つきのおつなぎは、おまかせ貿易をご契約のお客様向けです）。</p>` : "";
     const row = th => { const last = (th.msgs || [])[th.msgs.length - 1] || {}; return `<tr><td><b>${esc(th.cty)}の${esc(th.biz)}</b><br><span class="nn">ID ${esc(th.id)}${th.unread ? `・<span class="p no">📨 返信${th.unread}件</span>` : ""}</span></td><td>${bmStChip(th)}</td><td class="num">${(th.msgs || []).length}通</td><td><span class="nn">${esc(last.t || "")}</span><br>${esc(bmTxt(last).replace(/\s+/g, " ").trim().slice(0, 56))}</td><td><button class="q" data-bmopen="${esc(th.id)}">開く</button></td></tr>`; };
     const tbl = rows => `<div class="tw" style="margin-top:8px;max-height:300px"><table><thead><tr><th>相手</th><th>ステータス</th><th class="num">往復</th><th>最終</th><th></th></tr></thead><tbody>${rows.map(row).join("")}</tbody></table></div>`;
     if (ids.length) {
@@ -37902,7 +37902,7 @@ function bmAsk(q) {
     }
     const rows = (stKey ? L.filter(th => bmStOf(th) === stKey) : L).sort((a, b) => bmLastAt(b) - bmLastAt(a));
     if (!L.length)
-        return { a: missNote + `現在、<b>やり取り中のBuyerはまだありません</b>。自社のバイヤーに<b>直接連絡</b>を送るか、「AIバイヤー開拓・拠点」の<b>つなぐ依頼</b>で相手が承諾すると、返信を含めたやり取りがスレッドとして残り、ここから開けるようになります。`, c: "根拠：直接メッセージのスレッド 0件" };
+        return { a: missNote + `現在、<b>やり取り中のBuyerはまだありません</b>。自社のバイヤーに<b>直接連絡</b>を送るか、「AIバイヤー開拓・拠点」の<b>AIバイヤー開拓</b>で相手に送ると、返信を含めたやり取りがスレッドとして残り、ここから開けるようになります。`, c: "根拠：直接メッセージのスレッド 0件" };
     if (!rows.length)
         return { a: `「${esc(BM_STS[stKey] || stKey)}」のBuyerは現在ありません（やり取り中は全体で ${L.length}件）。` + tbl(L.slice(0, 10)), c: "根拠：直接メッセージのスレッド（交渉ステータス）" };
     if (rows.length === 1 && open) {
@@ -41933,7 +41933,7 @@ function vCty(p) {
     <div class="rw" style="margin-top:10px;gap:8px;flex-wrap:wrap;align-items:center">
       ${ch.length ? `<span class="p hi" style="font-size:12px;padding:6px 10px">✅ 確定：${ch.map(esc).join("・")}（進出希望国に反映済み）</span><button class="btn g" onclick="ctyUnconfirm()">選び直す</button>` : `<button class="btn" onclick="ctyConfirm()">✅ この3か国で確定（進出希望国・価格・物流・出荷に反映）</button><span class="nn">チェックで入れ替えできます（最大3か国）</span>`}</div></div>
     <div class="g2" style="align-items:start;gap:11px;margin-bottom:11px">${detail}</div>
-    <div class="c"><h3>③ 確定後の連動</h3><p class="nn" style="margin-top:4px">確定した3か国は「進出希望国」になり、<b>貿易実務（規制・関税・必要書類）</b>、<b>商品情報の価格設定（推奨FOB・DDP）</b>、<b>出荷を進める（物流AI見積の送り先）</b>、<b>AIバイヤー開拓・拠点（相手を探す・つなぐ依頼）</b>、<b>外国語営業資料</b>に反映されます。AI商社マンは、この3か国を前提に戦略・伴走・アドバイスを行います。</p>
+    <div class="c"><h3>③ 確定後の連動</h3><p class="nn" style="margin-top:4px">確定した3か国は「進出希望国」になり、<b>貿易実務（規制・関税・必要書類）</b>、<b>商品情報の価格設定（推奨FOB・DDP）</b>、<b>出荷を進める（物流AI見積の送り先）</b>、<b>AIバイヤー開拓・拠点（AIバイヤー開拓の国の候補）</b>、<b>外国語営業資料</b>に反映されます。AI商社マンは、この3か国を前提に戦略・伴走・アドバイスを行います。</p>
       <div class="rw" style="margin-top:8px;gap:6px;flex-wrap:wrap"><button class="btn g" onclick="opsTab='reg';go('ops')">規制を調べる →</button><button class="btn g" onclick="go('item')">価格設定へ →</button><button class="btn g" onclick="go('ship')">出荷・物流見積へ →</button><button class="btn g" onclick="go('db')">AIバイヤー開拓・拠点へ →</button></div></div>`;
     return head + cands + result;
 }
@@ -42011,7 +42011,7 @@ function ctySlides() {
             + shpText(556, 392, 340, 18, [{ t: "最初の一歩", sz: 11, b: 1, c: GOOD }], { ea }) + shpText(556, 412, 340, 50, [{ t: next, sz: fit(next, 340, [10.5, 9.5, 8.5], 3), c: INK }], { ea });
         S.push(bg(i + 4) + head(`RECOMMENDATION ${i + 1}`, `${r.c}　総合 ${r.sc.total}点${ch.includes(r.c) ? "（確定）" : ""}`) + left + right + foot());
     });
-    const links = [["貿易実務・書類・出荷", "規制・関税・必要書類は確定した国で表示。AIの規制詳細調査から着手"], ["商品情報（価格設定）", "推奨FOB・国別DDP価格を確定した国で算出"], ["出荷を進める", "物流AI見積の送り先＝確定した国。相見積からAI物流マンが推奨"], ["AIバイヤー開拓・拠点", "相手を探す・つなぐ依頼の対象を確定した国に絞る"], ["外国語 営業資料", "進出希望国として営業資料に反映"], ["AI商社マン", "この3か国を前提に戦略・伴走・アドバイス"]];
+    const links = [["貿易実務・書類・出荷", "規制・関税・必要書類は確定した国で表示。AIの規制詳細調査から着手"], ["商品情報（価格設定）", "推奨FOB・国別DDP価格を確定した国で算出"], ["出荷を進める", "物流AI見積の送り先＝確定した国。相見積からAI物流マンが推奨"], ["AIバイヤー開拓・拠点", "AIバイヤー開拓の国の候補に確定した国を出す（★）"], ["外国語 営業資料", "進出希望国として営業資料に反映"], ["AI商社マン", "この3か国を前提に戦略・伴走・アドバイス"]];
     S.push(bg(1) + head("NEXT STEPS", "確定後の連動と次の一歩") + links.map(([n, d], k) => { const x = 48 + (k % 2) * 440, y = 118 + Math.floor(k / 2) * 100; return dk2Card(x, y, 424, 88, "FFFFFF", { line: TN2, shadow: true }) + dk2Circle(x + 14, y + 22, 40, AC, String(k + 1), 13, "FFFFFF", ea) + shpText(x + 66, y + 14, 344, 66, [{ t: n, sz: 13, b: 1, c: INK }, { t: d, sz: 10, c: SUB }], { ea }); }).join("")
         + shpText(48, 428, 864, 60, [{ t: "免責：本レポートの統計・規制・バイヤー数は貿易クラウドのデータベースと通関統計に基づく概算です。最終判断の前に、規制の詳細調査（AI）・税関の事前教示・現地拠点への確認をお勧めします。", sz: 9.5, c: MUT }], { ea }) + foot());
     return S;
@@ -45352,7 +45352,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.76";
+const BC20_VER = "21.77";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -64829,7 +64829,7 @@ function ux32Setup() {
         ["fill", "足りない情報を埋める", "AIが必要なことだけ質問します", "ux32Fill()", !!(sc && !sc.missing.length)],
         ["cty", "販売先の国を決める", "AIが規制・市場・競合から3か国を提案", "go('cty')", !!(t.ctySel && Array.isArray(t.ctySel.chosen) && t.ctySel.chosen.length)],
         ["deck", "外国語の営業資料を作る", "登録した情報から5つの言語で", "go('deck')", !!(Array.isArray(t.deckGen) && t.deckGen.length)],
-        ["buyer", "バイヤーに連絡する", "バイヤーネットワークで「つなぐ依頼」、または自社のバイヤーを追加", "go('db')", !!(thr || (Array.isArray(t.outreach) && t.outreach.length) || (Array.isArray(t.myBuyers) && t.myBuyers.length) || (Array.isArray(t.netConnects) && t.netConnects.length))],
+        ["buyer", "バイヤーに連絡する", "AIバイヤー開拓で相手を探して送る、または自社のバイヤーを追加", "go('db')", !!(thr || (Array.isArray(t.outreach) && t.outreach.length) || (Array.isArray(t.myBuyers) && t.myBuyers.length) || (Array.isArray(t.netConnects) && t.netConnects.length))],
         ["fb", "商談を記録する", "相手の反応・価格・次の一手を残す", "go('deal')", !!((D0 && Array.isArray(D0.fb) && D0.fb.length) || (Array.isArray(t.fbx) && t.fbx.length))]
     ];
     try {
@@ -79102,7 +79102,7 @@ const V49G = [
         kw: [[/メール|mail|メッセージ|連絡|返信|コンタクト|DM/i, 2], [/バイヤー|相手|取引先|顧客|海外|輸入者/, 1]], need: /送|出|連絡|返信|書|作|やりとり|やり取り/,
         steps: ["「商談・バイヤー」の「👥 バイヤー一覧」で、相手の行を押して詳細を開きます。",
             "「✉ 直接連絡」を押し、言語・宛先メールアドレス・件名・本文を確かめて「送信する」を押します。貿易クラウドが中継して送り、相手の返信はこの画面のスレッドに届いて🔔でお知らせします。メールソフトで送るときは「メールソフトで送る」。",
-            "バイヤーネットワークの相手は、「つなぐ依頼」で相手が承諾すると連絡先が開示され、やりとりを始められます。"],
+            "まだ相手がいないときは、「AIバイヤー開拓・拠点」の「AIバイヤー開拓」で、公開の窓口あてに送れます（STANDAGE のバイヤーへの社名つきのおつなぎは、おまかせ貿易をご契約のお客様向けです）。"],
         tips: ["AI エンジンに接続しているときは、選んだ言語の文面を AI が作ります。"],
         acts: [{ t: "バイヤー一覧を開く", pg: "deal", pre: "deal:bx", f: "h:バイヤー一覧" }] },
     { id: "rq", g: "売り先・バイヤー", nm: "依頼ページで相手に答えてもらう（数量・条件・資料）", pg: "rqp", ex: "バイヤーに条件を答えてもらうには？",
@@ -138938,7 +138938,7 @@ function v70dealDmHtml() {
       <span class="th-m">${E(M("往復 ", "Messages ", "往来 ", "Mensajes "))}${(th.msgs || []).length}${th.unread ? ` <span class="th-un">${th.unread | 0}</span>` : ""}<br>${E(fmt(bmLastAt(th)))}</span></button>`;
     }).join("");
     return `<div class="c" id="v70dealdm" style="margin-bottom:10px"><h3>🤝 ${E(M("商談相手とのやり取り（直接連絡）", "Conversations with buyers (direct messages)", "与商谈对象的沟通（直接联系）", "Conversaciones con compradores (mensajes directos)"))} <span class="p on">${L.length}${E(M("件", "", "件", ""))}</span></h3>
-    <p class="nn">${E(M("バイヤーネットワーク・バイヤー一覧の「直接連絡」で送ったメールと返信です。押すと、その相手のスレッドが開きます。下は、この案件の社内・STANDAGE・LINE/WhatsApp のやりとりです。", "Emails and replies sent with “Direct message” from the buyer network and buyer list. Click to open the thread. Below: this project's internal, STANDAGE and LINE/WhatsApp messages.", "这是在买家网络・买家列表中用“直接联系”发送的邮件和回复。点击可打开该对象的话题。下方为本案件的内部・STANDAGE・LINE/WhatsApp 沟通。", "Correos y respuestas enviados con «Mensaje directo». Pulse para abrir el hilo. Abajo: mensajes internos, de STANDAGE y LINE/WhatsApp."))}</p>
+    <p class="nn">${E(M("AIバイヤー開拓・バイヤー一覧の「直接連絡」で送ったメールと返信です。押すと、その相手のスレッドが開きます。下は、この案件の社内・STANDAGE・LINE/WhatsApp のやりとりです。", "Emails and replies sent with “Direct message” from AI Buyer Prospecting and the buyer list. Click to open the thread. Below: this project's internal, STANDAGE and LINE/WhatsApp messages.", "这是在AI买家开拓・买家列表中用“直接联系”发送的邮件和回复。点击可打开该对象的话题。下方为本案件的内部・STANDAGE・LINE/WhatsApp 沟通。", "Correos y respuestas enviados con «Mensaje directo». Pulse para abrir el hilo. Abajo: mensajes internos, de STANDAGE y LINE/WhatsApp."))}</p>
     ${L.length ? `<div class="th-rowlist" style="margin-top:8px">${rows}</div>${L.length > 8 ? `<p class="nn" style="margin-top:6px"><a href="#" style="color:var(--bl)" onclick="event.preventDefault();go('db')">${E(M("すべて見る（AIバイヤー開拓・拠点）→", "See all (buyer network) →", "查看全部（买家网络）→", "Ver todo →"))}</a></p>` : ""}`
         : `<p class="nn" style="margin-top:6px">${E(M("まだ商談相手との直接連絡はありません。AIバイヤー開拓・拠点の「AIバイヤー開拓」やバイヤー一覧から連絡すると、ここに並びます。", "No direct messages with buyers yet. Contact a buyer from the buyer network or buyer list and it will appear here.", "还没有与商谈对象的直接联系。从买家网络或买家列表联系后会显示在这里。", "Aún no hay mensajes directos con compradores."))}</p>`}</div>`;
 }
@@ -149481,6 +149481,243 @@ try {
             S30_NEWS.unshift(["2026-11", "v21.76", "名前が「貿易クラウドAI商社マン」に変わりました",
                 ["「貿易クラウドAI商社マン」の名前を「貿易クラウドAI商社マン」に変えました（英語は Trade Cloud AI Agent、中国語は 贸易云AI专员）。左上とログイン画面のロゴ、画面・お知らせのメール・書き出す資料の名前も新しい名前になります",
                     "使い方・登録したデータ・ログインのしかた・URL は変わりません。貴社専用の AI「AI商社マン」の名前もそのままです"]]);
+    }
+}
+catch (e) { }
+function v77T(s) { try {
+    return typeof v30T === "function" ? v30T(s) : s;
+}
+catch (e) {
+    return s;
+} }
+function v77E(s) { try {
+    return esc(s);
+}
+catch (e) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+} }
+function v77Tr() {
+    try {
+        if (typeof v41Track === "function")
+            return v41Track();
+    }
+    catch (e) { }
+    return { buyers: (typeof BN_BASE !== "undefined" ? BN_BASE : 6745), companies: (typeof BN_COMPANIES !== "undefined" ? BN_COMPANIES : 7168), countries: (typeof BN_COUNTRIES !== "undefined" ? BN_COUNTRIES : 117), asof: (typeof BN_ASOF !== "undefined" ? BN_ASOF : "2026-08-30") };
+}
+function v77Asof() { const a = String(v77Tr().asof || ""); const m = a.match(/^(\d{4})-(\d{2})-(\d{2})$/); return m ? (+m[2]) + "/" + (+m[3]) : a; }
+function v77N(c) { try {
+    return typeof bnCtyBase === "function" ? (+bnCtyBase(c) || 0) : 0;
+}
+catch (e) {
+    return 0;
+} }
+function v77Top(k) { try {
+    return (typeof BN_CTY !== "undefined" ? BN_CTY : []).filter(x => x && x[0] !== "日本").slice(0, k || 8);
+}
+catch (e) {
+    return [];
+} }
+function v77My(c) { try {
+    const L = typeof myBuyers === "function" ? myBuyers() : [];
+    return c ? L.filter(b => b && b.cty === c).length : L.length;
+}
+catch (e) {
+    return 0;
+} }
+function v77Cty(q) {
+    q = String(q || "");
+    let c = "";
+    try {
+        if (typeof bnFindCty === "function")
+            c = bnFindCty(q) || "";
+    }
+    catch (e) { }
+    if (!c) {
+        try {
+            const L = [];
+            try {
+                if (typeof v71obCtys === "function")
+                    v71obCtys().list.forEach(x => L.push(x));
+            }
+            catch (e) { }
+            try {
+                if (typeof DM_LANG !== "undefined")
+                    Object.keys(DM_LANG).forEach(x => L.push(x));
+            }
+            catch (e) { }
+            c = L.filter(x => x && x !== "日本").sort((a, b) => b.length - a.length).find(x => q.indexOf(x) >= 0) || "";
+        }
+        catch (e) { }
+    }
+    return c;
+}
+function v77IsAsk(s) { s = String(s || ""); return /バイヤー|買い手|buyer/i.test(s) && /リスト|一覧|全て|すべて|何社|何名|何件|件数|教えて|探し|紹介|挙げて|あげて|いますか|います？|いる？|ありますか|ある？/.test(s) && !/やり取り中|やりとり中|スレッド/.test(s); }
+function v77Btn(c) { return `<div style="margin-top:8px"><button class="btn" data-v77ob="${v77E(c || "")}">🤖 ${v77E(v77T("AIバイヤー開拓を開く"))}${c ? `（${v77E(v77T(c))}）` : ""}</button></div>`; }
+function v77Open(c) {
+    try {
+        if (typeof V71OB !== "undefined" && V71OB) {
+            V71OB.f = Object.assign({ cty: "", biz: [], n: 10 }, V71OB.f || {});
+            if (c)
+                V71OB.f.cty = c;
+        }
+    }
+    catch (e) { }
+    try {
+        if (typeof closeDW === "function")
+            closeDW();
+    }
+    catch (e) { }
+    try {
+        go("db");
+    }
+    catch (e) { }
+    setTimeout(() => { try {
+        const e = document.getElementById("v71ob");
+        if (e)
+            e.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    catch (x) { } }, 300);
+}
+document.addEventListener("click", ev => { const b = ev.target && ev.target.closest && ev.target.closest("[data-v77ob]"); if (!b)
+    return; ev.preventDefault(); v77Open(b.dataset.v77ob || ""); });
+const V77_HOW = "新しいバイヤーを探すときは<b>「AIバイヤー開拓」</b>をお使いください。国と業態を選ぶと、AI商社マンが公開情報（会社の公式サイトなど）から商談になりやすい相手をリストにし、STANDAGE の一次情報（どの国のどの業態が反応したか）で並べて、文面の提案から送信・フォローまで進めます。";
+const V77_NONAME = "社名・担当者・連絡先はお出ししていません（STANDAGE のバイヤーへの社名つきのおつなぎは、おまかせ貿易をご契約のお客様向けです）。";
+if (typeof bnAsk === "function")
+    bnAsk = function (q) {
+        if (typeof V186 !== "undefined" && V186 && V186.skipBn)
+            return null;
+        const s = String(q || "");
+        if (!v77IsAsk(s))
+            return null;
+        const c = v77Cty(s), tr = v77Tr(), d = v77Asof();
+        let a;
+        if (c) {
+            const n = v77N(c), my = v77My(c);
+            a = `<b>${v77E(c)}のバイヤー</b>：${n ? `STANDAGE がおまかせ貿易で開拓・やりとりしたバイヤーは、${v77E(c)}で <b>${n.toLocaleString()}名</b>です（貿易クラウド Ver.1 の集計・${v77E(d)}時点）。` : `STANDAGE がおまかせ貿易で開拓・やりとりしたバイヤーの国ごとの集計に、${v77E(c)}は入っていません（貿易クラウド Ver.1 の集計・${v77E(d)}時点）。`}${V77_NONAME}<br>`
+                + (my ? `貴社のバイヤー一覧には、${v77E(c)}の相手が <b>${my}社</b>あります（「商談・バイヤー」）。<br>` : "") + V77_HOW + v77Btn(c);
+        }
+        else {
+            const my = v77My("");
+            a = `STANDAGE がおまかせ貿易で開拓・やりとりしたバイヤーは <b>${(+tr.buyers || 0).toLocaleString()}名・${tr.countries}か国</b>です（貿易クラウド Ver.1 の集計・${v77E(d)}時点）。多い国：${v77Top(8).map(([cc, n]) => `${v77E(cc)} ${(+n).toLocaleString()}名`).join("、")} ほか。${V77_NONAME}<br>`
+                + (my ? `貴社のバイヤー一覧には <b>${my}社</b>あります（「商談・バイヤー」）。<br>` : "") + V77_HOW + v77Btn("");
+        }
+        return { a, c: "根拠：貿易クラウド Ver.1 の集計（" + d + "時点・社名は出さない）／新しい相手は AIバイヤー開拓で" };
+    };
+if (typeof bnCtxFor === "function")
+    bnCtxFor = function (q) {
+        let s = "";
+        try {
+            const c = v77Cty(q);
+            if (c && /バイヤー|買い手|buyer|取引先|輸入|販路|開拓|卸|小売|商社/i.test(String(q))) {
+                const n = v77N(c);
+                s = `=== STANDAGE のバイヤーの実績：${c}（貿易クラウド Ver.1 の集計・${v77Tr().asof}） ===
+${c}で STANDAGE がおまかせ貿易で開拓・やりとりしたバイヤー：${n ? n + "名" : "国ごとの集計に入っていない"}（各社のプロジェクト専用。社名・担当者・連絡先・ID・商談の中身は持っていないので答えない）
+貴社のバイヤー一覧の${c}の相手：${v77My(c)}社`;
+            }
+            if (typeof V186 !== "undefined" && V186 && V186.buyer) {
+                if (!s)
+                    s = v186BuyerCtxNoCty();
+                if (s)
+                    s += "\n\n" + v186BuyerGuide();
+            }
+        }
+        catch (e) { }
+        return s;
+    };
+if (typeof v186BuyerCtxNoCty === "function")
+    v186BuyerCtxNoCty = function () {
+        try {
+            const tr = v77Tr();
+            return `=== STANDAGE のバイヤーの実績（国の指定なし・貿易クラウド Ver.1 の集計・${tr.asof}） ===
+開拓・やりとりしたバイヤー：${(+tr.buyers || 0).toLocaleString()}名・${tr.countries}か国（各社のプロジェクト専用。社名・担当者・連絡先・ID は答えない）
+多い国：${v77Top(8).map(([c, n]) => c + " " + n + "名").join("、")}
+貴社のバイヤー一覧：${v77My("")}社`;
+        }
+        catch (e) {
+            return "";
+        }
+    };
+if (typeof v186BuyerGuide === "function")
+    v186BuyerGuide = function () {
+        let prod = [];
+        try {
+            if (typeof D !== "undefined" && D) {
+                if (D.item)
+                    prod.push("商品：" + D.item);
+                if (D.cat)
+                    prod.push("カテゴリ：" + D.cat);
+                if (D.hs)
+                    prod.push("HS：" + D.hs);
+                const st = (D.strengths || []).slice(0, 3).map(x => x && x[0]).filter(Boolean);
+                if (st.length)
+                    prod.push("強み：" + st.join("／"));
+            }
+        }
+        catch (e) { }
+        return `=== 回答の指針（バイヤーの照会） ===
+自社商品：${prod.join("／") || "（未登録）"}
+・STANDAGE のバイヤーの会社名・担当者名・連絡先・ID は答えない（渡していない）。会社名・ID・連絡先・件数を作らない
+・「相手を探す」「つなぐ依頼」は今は無いので案内しない。STANDAGE のバイヤーへの社名つきのおつなぎは、おまかせ貿易をご契約のお客様向け
+・答えるのは、この国でこの商品を売るときに狙う業態（輸入商社・卸／小売チェーン・量販／EC・オンライン小売／飲食・ホテル／代理店・ディストリビューター／専門店）の優先順位と理由、最初の連絡で伝えること。STANDAGE の一次情報（参照した記録）があれば、その傾向を根拠にする
+・具体的な相手のリストは「AIバイヤー開拓・拠点」の「AIバイヤー開拓」で作るよう案内する（公開情報から実在の会社を挙げ、公式サイトで確かめる印・相手の言葉の文面・送信とフォローの記録がそろう）
+・最後に次の一手を1〜2行（AIバイヤー開拓で選ぶ国・業態・件数）`;
+    };
+if (typeof bnCtxDb === "function")
+    bnCtxDb = function () {
+        try {
+            const tr = v77Tr(), own = v77My("");
+            return `## AIバイヤー開拓・拠点（見える範囲の決まりつき）
+見える範囲は3つ：①公開情報（AIバイヤー開拓が会社の公式サイトなどから挙げる会社名・URL・公開の窓口。担当者個人の情報は含めない）②STANDAGE の一次情報（おまかせ貿易の現場の記録を匿名にしたもの。どの国のどの業態が反応したかの分析にだけ使い、社名は出さない）③貴社専用（貴社が登録・開拓したバイヤー。貴社だけが見られる）
+貴社専用のバイヤー：${own}社
+STANDAGEの実績（貿易クラウド Ver.1 の集計・基準日 ${tr.asof}）：各社のプロジェクトで開拓・やりとりしたバイヤー ${(+tr.buyers || 0).toLocaleString()}名・${(+tr.companies || 0).toLocaleString()}社・${tr.countries}か国。各社専用のため個々の相手は他社に開示しない
+答え方の決まり：
+・STANDAGE のバイヤーの会社名・担当者名・メール・電話・SNS・ID は答えない。社名つきのおつなぎは、おまかせ貿易をご契約のお客様向け
+・「相手を探す」「つなぐ依頼」は 21.71 でやめた。案内しない
+・バイヤーを探したい・アプローチしたいという相談には、画面「AIバイヤー開拓・拠点」の「AIバイヤー開拓」を案内する（国・業態を選ぶと、AI商社マンが STANDAGE の一次情報と公開情報から商談になりやすい相手をリストにし、文面を提案して、送信とフォローまで進める）
+・現地の STANDAGE の拠点に引き合いの開拓や商談の代行を頼むこともできる（別途費用・同じ画面の拠点の欄から）
+・貴社専用のバイヤーには「商談・バイヤー」から直接連絡できる`;
+        }
+        catch (e) {
+            return "";
+        }
+    };
+if (typeof brain === "function") {
+    const __br77 = brain;
+    brain = function (q, opts) {
+        const q0 = String((opts && opts.raw) || q || "").split("\n=== ")[0];
+        const r = __br77.apply(this, arguments);
+        const fx = x => { try {
+            if (x && typeof x.a === "string" && v77IsAsk(q0) && x.a.indexOf("data-v77ob") < 0)
+                x = Object.assign({}, x, { a: x.a + v77Btn(v77Cty(q0)) });
+        }
+        catch (e) { } return x; };
+        return (r && typeof r.then === "function") ? r.then(fx) : fx(r);
+    };
+}
+try {
+    if (typeof v30I18n === "function")
+        v30I18n([
+            ["AIバイヤー開拓を開く", "Open AI Buyer Prospecting", "打开AI买家开拓", "Abrir la prospección con IA"],
+            ["AIバイヤー開拓で相手を探して送る、または自社のバイヤーを追加", "Find and contact buyers with AI Buyer Prospecting, or add your own buyers", "用AI买家开拓寻找并联系对象，或添加自有买家", "Busque y contacte compradores con la prospección IA o añada los suyos"],
+            ["まずは「AIバイヤー開拓・拠点」の「AIバイヤー開拓」で相手に送るか、自社のバイヤーに直接連絡して、やり取りを始めてください。", "Start by contacting buyers with “AI Buyer Prospecting” in “AI Buyer Prospecting & Bases”, or contact one of your own buyers directly.", "请先在“AI买家开拓・据点”的“AI买家开拓”中联系对象，或直接联系自有买家，开始往来沟通。", "Empiece contactando compradores con la «Prospección de compradores con IA» o contacte directamente a uno de sus compradores."],
+            ["まだ相手がいないときは、「AIバイヤー開拓・拠点」の「AIバイヤー開拓」で、公開の窓口あてに送れます（STANDAGE のバイヤーへの社名つきのおつなぎは、おまかせ貿易をご契約のお客様向けです）。", "If you have no buyers yet, “AI Buyer Prospecting” lets you write to companies’ public contacts (named introductions to STANDAGE buyers are for Omakase Boueki clients).", "如果还没有对象，可在“AI买家开拓”中向公司的公开联系窗口发送（向STANDAGE买家的具名引荐仅面向“全托贸易”签约客户）。", "Si aún no tiene compradores, con la «Prospección de compradores con IA» puede escribir a los contactos públicos (las presentaciones nominales a compradores de STANDAGE son para clientes de Omakase Boueki)."],
+            ["AIバイヤー開拓の国の候補に確定した国を出す（★）", "Confirmed countries appear first (★) in AI Buyer Prospecting", "确定的国家在AI买家开拓中优先显示（★）", "Los países confirmados aparecen primero (★) en la prospección con IA"]
+        ]);
+}
+catch (e) { }
+try {
+    if (typeof v30I18nEl === "function")
+        v30I18nEl([
+            ["まだやり取り中のBuyerはいません。「AIバイヤー開拓」やバイヤー一覧から<b>直接連絡</b>を送ると、ここに並びます。", "No buyers in conversation yet. Send a <b>direct message</b> from “AI Buyer Prospecting” or the buyer list and they will appear here.", "尚无沟通中的买家。从“AI买家开拓”或买家列表发送<b>直接联系</b>后将显示于此。", "Aún no hay compradores en conversación. Envíe un <b>mensaje directo</b> desde la «Prospección de compradores con IA» o la lista de compradores y aparecerán aquí."]
+        ]);
+}
+catch (e) { }
+try {
+    if (typeof S30_NEWS !== "undefined" && Array.isArray(S30_NEWS)) {
+        if (!S30_NEWS.some(x => x && x[1] === "v21.77"))
+            S30_NEWS.unshift(["2026-11", "v21.77", "バイヤーの照会を「AIバイヤー開拓」の流れに",
+                ["AI商社マンに「◯◯のバイヤーを教えて」と聞いたときの答えを直しました。STANDAGE がやりとりしたバイヤーの国ごとの人数（貿易クラウド Ver.1 の集計）と、貴社のバイヤーの数をお伝えし、新しい相手は「AIバイヤー開拓」で探すよう案内します（ボタンで、その国を選んだ状態で開きます）",
+                    "前の版の「バイヤーネットワーク」の見本と「相手を探す」「つなぐ依頼」の案内を、チャット・今日やること・やり取り中のBuyer・契約書関連・使い方の答え・販売先国の画面から外しました。STANDAGE のバイヤーへの社名つきのおつなぎは、おまかせ貿易をご契約のお客様向けです"]]);
     }
 }
 catch (e) { }
