@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="4af0c9fc6efd";
+const BC20_BUILD="e94e457434d4";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -45352,7 +45352,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.74";
+const BC20_VER = "21.75";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -147682,6 +147682,1796 @@ try {
                     "返信エージェントの返信案は、相手の最新のメッセージの言語で作る。AI商社マンの答えの MOQ・出荷港は、登録と照らして出どころ（推定・要確認）を示す",
                     "成長レベルは何の値か（表示中の商品）を書き、件数の違うところには数え方を書いた。追加ヒアリングで「不明」と答えた気づきは「不明と回答」として残す",
                     "物流会社の画面：要確認の数を全部の場所でそろえ、「レートを登録」で区間を引き継ぎ、AI物流マンは聞かれた区間の登録から答える。B/L 未登録で完了にする前に確かめる"]]);
+    }
+}
+catch (e) { }
+var V75TC = { busy: {}, pend: null, poll: 0, pollAt: 0, srv: null, sim: {}, chat: {}, desk: { list: [], open: "", data: null, staff: [], filt: "all", at: 0, busy: 0, ask: [] }, adm: { list: [] }, landed: 0, tm: 0 };
+const V75TC_ASOF = "2026-11-02";
+const V75TC_RISK = { "checked": "2026-11-02", "jp": { "boj": { "rate": 1.25, "since": "2026-09-18", "source": "https://www.boj.or.jp/mopo/mpmdeci/mpr_2026/k261030a.pdf" }, "prime": { "rate": 2.375, "since": "2026-08-03", "source": "https://www.boj.or.jp/statistics/dl/loan/prime/prime.htm" } }, "us": { "fed": { "low": 3.75, "high": 4.0, "since": "2026-09-16", "source": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm" } }, "countries": { "シンガポール": { "en": "Singapore", "ccy": "SGD", "oecd": { "cat": 0, "calc": 0, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "A", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "name": "なし（為替政策）", "source": "https://www.mas.gov.sg/news/monetary-policy-statements/2026/mas-monetary-policy-statement-14oct26" } }, "タイ": { "en": "Thailand", "ccy": "THB", "oecd": { "cat": 3, "calc": 3, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "D", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 1.0, "name": "1-day repurchase rate", "since": "2026-02-25", "source": "https://www.bot.or.th/en/news-and-media/news/mpc/news-20261028-5FWvBPSf.html" } }, "ベトナム": { "en": "Vietnam", "ccy": "VND", "oecd": { "cat": 3, "calc": 3, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "D", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 4.5, "name": "refinancing rate（lãi suất tái cấp vốn）", "since": "2023-06-16", "source": "https://sbv.gov.vn/en/l%C3%A3i-su%E1%BA%A5t1" } }, "マレーシア": { "en": "Malaysia", "ccy": "MYR", "oecd": { "cat": 2, "calc": 2, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "C", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 2.75, "name": "Overnight Policy Rate (OPR)", "since": "2025-07-09", "source": "https://www.bnm.gov.my/monetary-stability/opr-decisions" } }, "インドネシア": { "en": "Indonesia", "ccy": "IDR", "oecd": { "cat": 3, "calc": 3, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "D", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 5.75, "name": "BI-Rate", "since": "2026-06-18", "source": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2823326.aspx" } }, "フィリピン": { "en": "Philippines", "ccy": "PHP", "oecd": { "cat": 3, "calc": 3, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "D", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 5.5, "name": "target reverse repurchase (RRP) rate", "since": "2026-10-22", "source": "https://www.bsp.gov.ph/statistics/keystat/sefi.pdf" } }, "香港": { "en": "Hong Kong", "ccy": "HKD", "oecd": { "cat": 2, "calc": 2, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "C", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 4.25, "name": "Base Rate", "since": "2026-09-17", "source": "https://www.hkma.gov.hk/eng/news-and-media/press-releases/2026/09/20260917-3/" } }, "台湾": { "en": "Taiwan", "ccy": "TWD", "oecd": { "cat": 2, "calc": 2, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "C", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 2.0, "name": "discount rate（重貼現率）", "since": "2024-03-21", "source": "https://www.cbc.gov.tw/tw/cp-971-192865-5f8ca-1.html" } }, "中国": { "en": "China", "ccy": "CNY", "oecd": { "cat": 2, "calc": 2, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "C", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 1.25, "name": "overnight reverse repo rate（公开市场隔夜逆回购操作利率）", "since": "2026-10-30", "source": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/125469/2026103016375865177/index.html" } }, "韓国": { "en": "South Korea", "ccy": "KRW", "oecd": { "cat": "not classified", "calc": 0, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "B", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 3.0, "name": "Base Rate", "since": "2026-08-27", "source": "https://www.bok.or.kr/eng/bbs/E0000634/view.do?nttId=11065825&searchCnd=1&searchKwd=&depth2=400417&depth3=400423&depth=400423&pageUnit=10&pageIndex=1&programType=newsDataEng&menuNo=400423&oldMenuNo=400423" } }, "マカオ": { "en": "Macau", "ccy": "MOP", "oecd": { "cat": "not classified", "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "C", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 4.25, "name": "Base Rate of the Discount Window（基本利率）", "since": "2026-09-17", "source": "https://www.amcm.gov.mo/en/financial-information/base-rate" } }, "UAE": { "en": "United Arab Emirates", "ccy": "AED", "oecd": { "cat": 2, "calc": 2, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "C", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 3.9, "name": "Base Rate (Overnight Deposit Facility)", "since": "2026-09-16", "source": "https://www.centralbank.ae/media/yi2pmbii/cbuae-maintains-the-base-rate-at-39-en.pdf" } }, "サウジアラビア": { "en": "Saudi Arabia", "ccy": "SAR", "oecd": { "cat": 2, "calc": 2, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "C", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 4.5, "name": "Repo rate", "since": "2026-09-16", "source": "https://www.sama.gov.sa/en-us/MediaCenter/News/Pages/news-1169.aspx" } }, "エジプト": { "en": "Egypt", "ccy": "EGP", "oecd": { "cat": 6, "calc": 6, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "G", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 20.0, "name": "Overnight deposit rate", "since": "2026-10-29", "source": "https://www.cbe.org.eg/en/news-publications/news/2026/10/29/13/08/mpc-press-release-29-october-2026" } }, "トルコ": { "en": "Turkey", "ccy": "TRY", "oecd": { "cat": 5, "calc": 5, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "F", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 36.0, "name": "One-week repo auction rate (policy rate)", "since": "2026-10-22", "source": "https://www.tcmb.gov.tr/wps/wcm/connect/EN/TCMB+EN/Main+Menu/Announcements/Press+Releases/2026/ANO2026-45" } }, "カタール": { "en": "Qatar", "ccy": "QAR", "oecd": { "cat": 2, "calc": 2, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "C", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 4.1, "name": "QCB deposit rate (QCBDR／公式サイトの表記は QMR deposit rate)", "since": "2026-09-16", "source": "https://www.qcb.gov.qa/en/Pages/default.aspx" } }, "アメリカ": { "en": "United States", "ccy": "USD", "oecd": { "cat": "not classified", "calc": 0, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "A", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 4.0, "name": "federal funds target range (upper bound)", "since": "2026-09-16", "source": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm" } }, "カナダ": { "en": "Canada", "ccy": "CAD", "oecd": { "cat": "not classified", "calc": 0, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "A", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 2.5, "name": "target for the overnight rate", "since": "2026-10-28", "source": "https://www.bankofcanada.ca/2026/10/fad-press-release-2026-10-28/" } }, "メキシコ": { "en": "Mexico", "ccy": "MXN", "oecd": { "cat": 3, "calc": 3, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "D", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 6.5, "name": "target for the overnight interbank interest rate", "since": "2026-05-07", "source": "https://www.banxico.org.mx/publicaciones-y-prensa/anuncios-de-las-decisiones-de-politica-monetaria/%7B7D0BDB6E-E519-9C69-04AA-ABD4D31E4850%7D.pdf" } }, "フランス": { "en": "France", "ccy": "EUR", "oecd": { "cat": "not classified", "calc": 0, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "A", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 2.5, "name": "ECB deposit facility rate", "since": "2026-09-10", "source": "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp261029~9a493adf17.en.html" } }, "ドイツ": { "en": "Germany", "ccy": "EUR", "oecd": { "cat": "not classified", "calc": 0, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "A", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 2.5, "name": "ECB deposit facility rate", "since": "2026-09-10", "source": "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp261029~9a493adf17.en.html" } }, "イギリス": { "en": "United Kingdom", "ccy": "GBP", "oecd": { "cat": "not classified", "calc": 0, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "A", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 3.75, "name": "Bank Rate", "since": "2025-12-18", "source": "https://www.bankofengland.co.uk/monetary-policy/the-interest-rate-bank-rate" } }, "イタリア": { "en": "Italy", "ccy": "EUR", "oecd": { "cat": "not classified", "calc": 0, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "A", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 2.5, "name": "ECB deposit facility rate", "since": "2026-09-10", "source": "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp261029~9a493adf17.en.html" } }, "オランダ": { "en": "Netherlands", "ccy": "EUR", "oecd": { "cat": "not classified", "calc": 0, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "A", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 2.5, "name": "ECB deposit facility rate", "since": "2026-09-10", "source": "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp261029~9a493adf17.en.html" } }, "スペイン": { "en": "Spain", "ccy": "EUR", "oecd": { "cat": "not classified", "calc": 0, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "B", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 2.5, "name": "ECB deposit facility rate", "since": "2026-09-10", "source": "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp261029~9a493adf17.en.html" } }, "オーストラリア": { "en": "Australia", "ccy": "AUD", "oecd": { "cat": "not classified", "calc": 0, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "A", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 4.6, "name": "cash rate target", "since": "2026-09-29", "source": "https://www.rba.gov.au/media-releases/2026/mr-26-27.html" } }, "ニュージーランド": { "en": "New Zealand", "ccy": "NZD", "oecd": { "cat": "not classified", "calc": 0, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "A", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 2.75, "name": "Official Cash Rate (OCR)", "since": "2026-09-02", "source": "https://www.rbnz.govt.nz/news-and-events/news/2026/10/ocr-held-at-2-75-percent" } }, "インド": { "en": "India", "ccy": "INR", "oecd": { "cat": 3, "calc": 3, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "D", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 5.5, "name": "Policy repo rate", "since": "2026-10-07", "source": "https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=63742" } }, "バングラデシュ": { "en": "Bangladesh", "ccy": "BDT", "oecd": { "cat": 6, "calc": 6, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "G", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 9.5, "name": "Policy rate (repo)", "since": "2026-07-30", "source": "https://www.bb.org.bd/monetaryactivity/mps/mps_q2fy27.pdf" } }, "パキスタン": { "en": "Pakistan", "ccy": "PKR", "oecd": { "cat": 7, "calc": 7, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "H", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 12.0, "name": "SBP policy rate", "since": "2026-10-26", "source": "https://www.sbp.org.pk/assets/document/publications/MPS-Oct-2026-Eng.pdf" } }, "スリランカ": { "en": "Sri Lanka", "ccy": "LKR", "oecd": { "cat": 7, "calc": 7, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "H", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 8.75, "name": "Overnight Policy Rate (OPR)", "since": "2026-05-25", "source": "https://www.cbsl.gov.lk/en/news/monetary-policy-review-no-5-of-2026" } }, "ナイジェリア": { "en": "Nigeria", "ccy": "NGN", "oecd": { "cat": 6, "calc": 6, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "G", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 23.0, "name": "Monetary Policy Rate (MPR)", "since": "2026-09-22", "source": "https://www.cbn.gov.ng/MonetaryPolicy/Decisions.html" } }, "ケニア": { "en": "Kenya", "ccy": "KES", "oecd": { "cat": 7, "calc": 7, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "H", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 8.75, "name": "Central Bank Rate (CBR)", "since": "2026-02-10", "source": "https://www.centralbank.go.ke/uploads/mpc_press_release/224745454_MPC%20Press%20Release%20-%20Meeting%20of%20October%207%202026.pdf" } }, "タンザニア": { "en": "Tanzania", "ccy": "TZS", "oecd": { "cat": 6, "calc": 6, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "G", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 6.25, "name": "Central Bank Rate (CBR)", "since": "2026-07-02", "source": "https://www.bot.go.tz/Adverts/PressRelease/en/2026100815530593.pdf" } }, "南アフリカ": { "en": "South Africa", "ccy": "ZAR", "oecd": { "cat": 4, "calc": 4, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "E", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 7.25, "name": "SARB policy rate (SPR, 旧称 repo rate)", "since": "2026-09-23", "source": "https://www.resbank.co.za/content/dam/sarb/publications/statements/monetary-policy-statements/2026/september/september-statement.pdf" } }, "ブラジル": { "en": "Brazil", "ccy": "BRL", "oecd": { "cat": 4, "calc": 4, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "E", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 13.75, "name": "Selic target (Copom)", "since": "2026-09-16", "source": "https://www.bcb.gov.br/controleinflacao/historicotaxasjuros" } }, "チリ": { "en": "Chile", "ccy": "CLP", "oecd": { "cat": "not classified", "calc": 0, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "C", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 4.5, "name": "monetary policy rate (TPM)", "since": "2025-12-16", "source": "https://www.bcentral.cl/en/content/-/detalle/prensa/comunicados-rpm/comunicado-reunion-de-politica-monetaria-octubre-2026" } }, "ペルー": { "en": "Peru", "ccy": "PEN", "oecd": { "cat": 3, "calc": 3, "asof": "2026-10-16", "source": "https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/country-risk-classification/cre-crc-current-english.pdf" }, "nexi": { "cat": "D", "asof": "2026-10-26", "source": "https://www.nexi.go.jp/cover/categorytable/" }, "policy": { "rate": 4.25, "name": "reference rate (tasa de referencia)", "since": "2025-09-11", "source": "https://www.bcrp.gob.pe/politica-monetaria/notas-informativas-del-programa-monetario.html" } } } };
+const V75TC_FEE = { base: 3.0, adv: 50, after: 30, prem: [0.8, 1.0, 1.4, 2.0, 2.8, 3.8, 5.0, 6.5], rate: [[3, 0], [6, 0.4], [10, 1.0], [20, 2.0], [1e9, 3.0]], fx: 1.0, fundSpread: 1.0, unknownCat: 4, warn: 9.0 };
+const V75TC_TRANSIT = { EastAsia: 7, ASEAN: 12, SouthAsia: 20, MiddleEast: 25, Oceania: 18, NorthAm: 21, Europe: 35, Africa: 35, LatAm: 40 };
+const V75TC_SC = [["prod", "商品情報（仕様・規格・認証・成分・荷姿）", 1], ["price", "価格表・見積・オファーの記録", 0], ["thread", "このバイヤーとのやり取り（全部・これから届く分も）", 1], ["buyer", "バイヤーの会社の情報とメモ", 0],
+    ["deal", "このバイヤーの商談の記録", 0], ["reg", "相手の国の規制の調べ", 0], ["ship", "出荷の条件（取引条件・港・荷姿）", 0], ["ai", "AI商社マンの判断の記録（商流・手数料の計算・まとまりの見込み）", 0], ["docs", "取り込んだ資料の一覧（ファイル名だけ）", 0]];
+const V75TC_EN = { "商流をそろそろ決めるタイミングです": "It's time to decide your trade route", "直接貿易": "Direct export", "間接貿易": "Indirect export (via trading company)", "AI商社マンに相談": "Ask the AI Trading Officer",
+    "直接貿易で進める": "Go with direct export", "間接貿易で進める": "Go with indirect export", "あとで": "Later", "商社手数料を含めたオファー": "Offer including trading fee", "承認してオファーを送る": "Approve and send the offer",
+    "STANDAGE に商社業務を任せますか？": "Entrust the trading work to STANDAGE?", "STANDAGE に任せる": "Entrust to STANDAGE", "権限を付けて依頼する": "Grant access and request", "権限を外す": "Revoke access",
+    "商社デスク（STANDAGE）": "Trading desk (STANDAGE)", "担当をアサイン": "Assign", "自分が担当する": "Assign to me", "引継ぎメモ": "Handover memo", "やりとりを開く": "Open messages" };
+function v75tcLang() { try {
+    return (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v75tcT(s) { const l = v75tcLang(); if (l === "ja" || s == null)
+    return s; if (V75TC_EN[s])
+    return V75TC_EN[s]; try {
+    return typeof v30T === "function" ? v30T(s) : s;
+}
+catch (e) {
+    return s;
+} }
+function v75tcF(s, o) { let t = v75tcT(s); Object.keys(o || {}).forEach(k => { t = t.split("{" + k + "}").join(String(o[k])); }); return t; }
+function v75tcE(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]); }
+function v75tcN(s) { return v75tcE(v75tcT(s)); }
+function v75tcToast(s) { try {
+    toast(s);
+}
+catch (e) { } }
+function v75tcAi() { try {
+    return typeof ppReady === "function" && !!ppReady();
+}
+catch (e) {
+    return false;
+} }
+function v75tcTen() { try {
+    return (typeof TEN !== "undefined" && TEN) || null;
+}
+catch (e) {
+    return null;
+} }
+function v75tcD() { try {
+    return (typeof D !== "undefined" && D) || {};
+}
+catch (e) {
+    return {};
+} }
+function v75tcThs() { try {
+    return typeof dmThreads === "function" ? (dmThreads() || {}) : {};
+}
+catch (e) {
+    return {};
+} }
+function v75tcSave() { try {
+    if (typeof syncTenant === "function")
+        syncTenant();
+}
+catch (e) { } try {
+    if (typeof saveTen === "function")
+        saveTen();
+}
+catch (e) { } }
+function v75tcStore() { const t = v75tcTen(); if (!t)
+    return { cases: {} }; t.v75tc = t.v75tc && typeof t.v75tc === "object" ? t.v75tc : { cases: {} }; if (!t.v75tc.cases || typeof t.v75tc.cases !== "object")
+    t.v75tc.cases = {}; return t.v75tc; }
+function v75tcCase(id, mk) { const S = v75tcStore(); let c = S.cases[id]; if (!c && mk) {
+    c = S.cases[id] = { id: String(id), at: Date.now(), log: [] };
+} return c || null; }
+function v75tcLog(c, t) { if (!c)
+    return; c.log = (Array.isArray(c.log) ? c.log : []).concat([{ at: Date.now(), t: String(t).slice(0, 200) }]).slice(-40); }
+function v75tcDay(ms) { try {
+    const d = new Date(ms);
+    return (d.getMonth() + 1) + "/" + d.getDate() + " " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+}
+catch (e) {
+    return "";
+} }
+function v75tcWho() { try {
+    return (typeof SES !== "undefined" && SES && SES.who) || "貴社担当";
+}
+catch (e) {
+    return "貴社担当";
+} }
+function v75tcRole() { try {
+    return (typeof SES !== "undefined" && SES && SES.role) || "";
+}
+catch (e) {
+    return "";
+} }
+function v75tcStaff() { return v75tcRole() === "stg"; }
+function v75tcAdmin() { try {
+    return typeof SES !== "undefined" && SES && SES.t === "admin";
+}
+catch (e) {
+    return false;
+} }
+function v75tcBuyer(id) { try {
+    const b = typeof myBuyers === "function" && myBuyers().find(x => x && x.id === id);
+    if (b)
+        return b;
+}
+catch (e) { } return null; }
+function v75tcBName(th) { const b = v75tcBuyer(th.id); return (b && b.co) || [th.cty, th.biz].filter(Boolean).join("の") || String(th.id || ""); }
+function v75tcCty(th) { const b = v75tcBuyer(th.id); let c = String((th && th.cty) || (b && b.cty) || "").trim(); try {
+    if (typeof CTY_ALIAS !== "undefined" && CTY_ALIAS[c])
+        c = CTY_ALIAS[c];
+}
+catch (e) { } return c; }
+function v75tcRegion(c) { try {
+    if (typeof CTY_REGION !== "undefined")
+        for (const k of Object.keys(CTY_REGION))
+            if ((CTY_REGION[k] || []).includes(c))
+                return k;
+}
+catch (e) { } return ""; }
+function v75tcSyncOn() { try {
+    return typeof SYNC !== "undefined" && SYNC && !!SYNC.url && typeof syncCall === "function" && (!!SYNC.kid || v75tcAdmin());
+}
+catch (e) {
+    return false;
+} }
+function v75tcDemoAcct() {
+    try {
+        if (typeof SES === "undefined" || !SES || SES.t !== "trial")
+            return true;
+        const kid = (typeof SYNC !== "undefined" && SYNC && SYNC.kid) || "";
+        const x = (typeof V61 !== "undefined" && V61 && V61.acct && kid) ? V61.acct[kid] : null;
+        if (x && (x.pub === 1 || x.demo === 1))
+            return true;
+        if (typeof V56AUTH !== "undefined" && V56AUTH && V56AUTH.pubKid && kid && V56AUTH.pubKid[kid] === 1)
+            return true;
+        return false;
+    }
+    catch (e) {
+        return true;
+    }
+}
+function v75tcBody(o) { const b = Object.assign({}, o || {}); try {
+    b.kid = SYNC.kid;
+}
+catch (e) { } try {
+    if (typeof syncDev === "function")
+        b.dev = syncDev();
+}
+catch (e) { } try {
+    if (typeof V62S !== "undefined" && V62S && V62S.st)
+        b.stok = V62S.st;
+}
+catch (e) { } try {
+    b.name = v75tcWho();
+}
+catch (e) { } return b; }
+async function v75tcCall(op, o, opt) {
+    if (!v75tcSyncOn())
+        return { ok: false, reason: "nosync" };
+    try {
+        const r = await syncCall(op, v75tcAdmin() ? Object.assign({ pw: SES.apw || "" }, o || {}) : v75tcBody(o), Object.assign({ timeout: 30000 }, opt || {}));
+        if (r && r.tc)
+            V75TC.srv = 1;
+        return r || { ok: false };
+    }
+    catch (e) {
+        const m = String((e && e.message) || e);
+        if (/unknown op/.test(m)) {
+            V75TC.srv = 0;
+            return { ok: false, reason: "old", msg: m };
+        }
+        return { ok: false, reason: "net", msg: m.slice(0, 80) };
+    }
+}
+function v75tcRisk(cty) { const r = V75TC_RISK && V75TC_RISK.countries && V75TC_RISK.countries[cty]; return r || null; }
+const V75TC_NEXI = { A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7 };
+function v75tcOecd(r) {
+    const o = r && r.oecd, nx = r && r.nexi && r.nexi.cat;
+    if (o && o.calc != null && isFinite(+o.calc))
+        return { cat: +o.calc, label: o.cat === "not classified" ? "分類の対象外（高所得国）" : "カテゴリー " + o.calc };
+    if (nx && V75TC_NEXI[nx] != null)
+        return { cat: V75TC_NEXI[nx], label: "分類の対象外（NEXI の国カテゴリー " + nx + " から推定）", est: 1 };
+    return { cat: null, label: "要確認" };
+}
+function v75tcPolicy(r) { const p = r && r.policy; return p && p.rate != null && isFinite(+p.rate) ? +p.rate : null; }
+function v75tcNoPolicy(r) { const p = r && r.policy; return !!p && p.rate == null && /なし/.test(String(p.name || "")); }
+function v75tcFund(cur) {
+    const R = V75TC_RISK || {};
+    const jp = R.jp || {};
+    if (jp.prime && jp.prime.rate != null)
+        return { rate: +jp.prime.rate, label: "日本の短期プライムレート " + jp.prime.rate + "%", src: jp.prime.source || "", since: jp.prime.since || "" };
+    if (jp.boj && jp.boj.rate != null)
+        return { rate: +jp.boj.rate + V75TC_FEE.fundSpread, label: "日本銀行の政策金利 " + jp.boj.rate + "%＋" + V75TC_FEE.fundSpread + "%", src: jp.boj.source || "", since: jp.boj.since || "" };
+    return { rate: 2.5, label: "資金の金利（目安 2.5%・要確認）", src: "", since: "" };
+}
+function v75tcFee(cty, cur, adv) {
+    adv = adv == null ? V75TC_FEE.adv : adv;
+    const ex = Math.max(0, Math.min(100, 100 - adv)) / 100;
+    const r = v75tcRisk(cty), oc = v75tcOecd(r), cat = oc.cat == null ? V75TC_FEE.unknownCat : oc.cat, pr = v75tcPolicy(r), reg = v75tcRegion(cty);
+    const days = (V75TC_TRANSIT[reg] || 30) + V75TC_FEE.after, fund = v75tcFund(cur);
+    const nop = v75tcNoPolicy(r), rp = nop ? 0 : (V75TC_FEE.rate.find(x => (pr == null ? 6.5 : pr) <= x[0]) || [0, 0])[1];
+    const L = [{ k: "base", t: "商社の基本手数料（輸出者としての書類・通関・入金の管理）", v: V75TC_FEE.base },
+        { k: "risk", t: "カントリーリスク（OECD " + oc.label + "）×未回収になりうる残金 " + Math.round(ex * 100) + "%", v: V75TC_FEE.prem[Math.max(0, Math.min(7, cat))] * ex },
+        { k: "rate", t: "金利の情勢（" + (nop ? "政策金利なし（為替で運営）" : pr == null ? "政策金利 要確認" : "政策金利 " + pr + "%") + "）×残金 " + Math.round(ex * 100) + "%", v: rp * ex },
+        { k: "fund", t: "資金の立替（" + fund.label + "×" + days + "日〔輸送の目安 " + (days - V75TC_FEE.after) + "日＋納品後 " + V75TC_FEE.after + "日〕×残金 " + Math.round(ex * 100) + "%）", v: fund.rate * days / 365 * ex },
+        { k: "fx", t: "為替の備え（外貨建て×残金 " + Math.round(ex * 100) + "%）", v: /JPY/.test(cur || "") ? 0 : V75TC_FEE.fx * ex }];
+    L.forEach(x => { x.v = Math.round(x.v * 100) / 100; });
+    const total = Math.round(L.reduce((s, x) => s + x.v, 0) * 10) / 10;
+    return { cty, cur, adv, after: V75TC_FEE.after, ex, cat, oc, pr, nop, days, fund, lines: L, rate: total, unknown: oc.cat == null || (pr == null && !nop), src: r || null, asof: V75TC_ASOF };
+}
+function v75tcGross(p, rate, cur) { const jp = /JPY/.test(cur || ""), k = jp ? 1 : 100; return Math.ceil((p / (1 - rate / 100)) * k - 1e-7) / k; }
+function v75tcMoney(cur, v) { try {
+    if (typeof v72Money === "function")
+        return v72Money(cur, v);
+}
+catch (e) { } return (cur || "US$") + (+v).toFixed(2); }
+function v75tcPayEn(F) { return F.adv >= 100 ? "100% advance payment with order" : F.adv + "% advance payment with order, " + (100 - F.adv) + "% within " + F.after + " days after delivery"; }
+function v75tcPayJa(F) { return F.adv >= 100 ? "前金 100%（発注時）" : "前金 " + F.adv + "%（発注時）・残金 " + (100 - F.adv) + "%（納品の" + (F.after === 30 ? "1か月" : F.after + "日") + "後）"; }
+const V75TC_RE = {
+    quote: /quot|price ?list|pricing|best price|your price|unit price|offer|proforma|\bPI\b|\bMOQ\b|minimum order|lead time|payment terms?|\bFOB\b|\bCIF\b|\bCFR\b|\bDDP\b|\bcost\b|見積|価格|単価|报价|報價|價格|价格|起订量|付款|cotiza|precio|condiciones de pago/i,
+    close: /\baccept|we agree|agreed|\bconfirm(?:ed)?\b|go ahead|proceed|place (?:an|the|our|a trial|an initial) order|purchase order|\bP\.?O\.?\b|proforma|\bPI\b|contract|deposit|advance payment|bank (?:details|account)|trial order|initial order|first order|we (?:will|would like to) order|ok with (?:the|your) (?:price|terms|offer)|下单|订单|訂單|确认|確認|合同|同意|接受|定金|预付|預付|pedido|orden de compra|aceptamos|confirmamos|contrato|anticipo/i,
+    strong: /purchase order|\bP\.?O\.?\b|proforma|\bPI\b|contract|deposit|advance payment|bank (?:details|account)|订单|訂單|合同|定金|预付|預付|orden de compra|contrato|anticipo/i,
+    neg: /too (?:high|expensive)|expensive|discount|lower (?:the )?price|cheaper|better price|reduce|太贵|太貴|便宜|降价|降價|descuento|caro|más barato/i,
+    qty: /(\d[\d,]*)\s*(pcs|pieces|units?|bags?|boxes|cartons?|ctns?|cases?|kg|bottles?|cans?|sets?|packs?|個|袋|箱|本|台|枚|缶|瓶|套|个|件|unidades|cajas)/i,
+    sentQ: /--- (?:Quotation|Offer)/
+};
+function v75tcDeals(th) { try {
+    const nm = String(v75tcBName(th) || "").toLowerCase();
+    if (!nm)
+        return [];
+    return ((v75tcD().fb) || []).filter(r => r && String(r.b || "").toLowerCase() === nm);
+}
+catch (e) {
+    return [];
+} }
+function v75tcStage(th) {
+    const ms = Array.isArray(th && th.msgs) ? th.msgs : [];
+    const by = ms.filter(m => m && m.w === "by");
+    const c = v75tcCase(th.id, false) || {};
+    const why = [];
+    let quote = false, near = false;
+    const bst = String((th && th.status) || "");
+    if (bst === "失注")
+        return { quote: false, near: false, why: ["交渉ステータスが「失注」です"], sentAt: 0, score: 0, cwhy: [], closing: false, nBy: by.length, lost: 1 };
+    if (bst === "見積提示") {
+        quote = true;
+        why.push("交渉ステータスが「見積提示」です");
+    }
+    if (th.v72 && th.v72.kind === "quote") {
+        quote = true;
+        why.push("返信エージェントが、相手の返事を「見積依頼」と読みました");
+    }
+    const qm = by.find(m => V75TC_RE.quote.test(String(m.body || "") + " " + String(m.subj || "")));
+    if (qm) {
+        quote = true;
+        why.push("相手が価格・見積・取引条件のことを聞いています");
+    }
+    const dl = v75tcDeals(th);
+    if (dl.some(r => /見積提示|サンプル発送|受注/.test(String(r.st || "")))) {
+        quote = true;
+        why.push("商談の記録が「" + (dl.find(r => /見積提示|サンプル発送|受注/.test(String(r.st || ""))).st) + "」です");
+    }
+    if (!quote && by.length >= 2) {
+        near = true;
+        why.push("相手から返事が " + by.length + " 回届いています（次は見積の話になりやすい段階です）");
+    }
+    let sentAt = 0;
+    ms.forEach(m => { if (m && m.w === "me" && V75TC_RE.sentQ.test(String(m.body || "")))
+        sentAt = Math.max(sentAt, +m.at || Date.parse(String(m.t || "").replace(" ", "T")) || 1); });
+    if (th.v72 && th.v72.sent && th.v72.quote)
+        sentAt = Math.max(sentAt, +th.v72.sent.at || 1);
+    if (c.offer && c.offer.sentAt)
+        sentAt = Math.max(sentAt, +c.offer.sentAt);
+    let after = by;
+    if (sentAt) {
+        const idx = ms.map((m, i) => m && m.w === "me" && V75TC_RE.sentQ.test(String(m.body || "")) ? i : -1).filter(i => i >= 0).pop();
+        if (idx != null && idx >= 0)
+            after = ms.slice(idx + 1).filter(m => m && m.w === "by");
+    }
+    const txt = after.map(m => String(m.subj || "") + " " + String(m.body || "")).join("\n");
+    let score = 0;
+    const cw = [];
+    if (sentAt) {
+        score += 35;
+        cw.push("見積・オファーを送っています");
+    }
+    if (V75TC_RE.close.test(txt)) {
+        score += 40;
+        cw.push("相手の返事に、承諾・確認・発注の言葉があります");
+    }
+    if (V75TC_RE.strong.test(txt)) {
+        score += 20;
+        cw.push("PI（見積送り状）・発注書・契約・前金の話が出ています");
+    }
+    if (V75TC_RE.qty.test(txt)) {
+        score += 5;
+        cw.push("数量の話が出ています");
+    }
+    if (V75TC_RE.neg.test(txt)) {
+        score -= 25;
+        cw.push("値下げ・価格の高さの話が出ています（まだ交渉中）");
+    }
+    if (dl.some(r => r.st === "受注")) {
+        score = Math.max(score, 80);
+        cw.push("商談の記録が「受注」です");
+    }
+    if (bst === "契約交渉") {
+        score = Math.max(score + 30, 65);
+        cw.push("交渉ステータスが「契約交渉」です");
+    }
+    if (bst === "取引中") {
+        score = Math.max(score, 80);
+        cw.push("交渉ステータスが「取引中」です");
+    }
+    score = Math.max(0, Math.min(100, score));
+    const closing = score >= 60 && (after.length > 0 || dl.some(r => r.st === "受注") || bst === "契約交渉" || bst === "取引中");
+    return { quote: quote || near, near: !quote && near, why, sentAt, score, cwhy: cw, closing, nBy: by.length };
+}
+function v75tcBuyerQty(th) { const by = ((th && th.msgs) || []).filter(m => m && m.w === "by"); for (let i = by.length - 1; i >= 0; i--) {
+    const m = String(by[i].body || "").match(V75TC_RE.qty);
+    if (m)
+        return { qty: parseInt(m[1].replace(/,/g, ""), 10), unit: m[2] };
+} return { qty: null, unit: "" }; }
+function v75tcOffer(th, qty) {
+    const F = v75tcFee(v75tcCty(th), "", V75TC_FEE.adv);
+    let Q = null;
+    const bq = v75tcBuyerQty(th);
+    try {
+        if (typeof v72Quote === "function")
+            Q = v72Quote({ items: [{ sku: "", qty: qty || bq.qty || null, unit: bq.unit || "" }], term: "", port: "" });
+    }
+    catch (e) {
+        Q = null;
+    }
+    if (!Q || Q.none || !Q.lines || !Q.lines.length)
+        return { F, none: 1, unknown: (Q && Q.unknown) || ["価格表（商品情報に登録がありません）"] };
+    const F2 = v75tcFee(v75tcCty(th), Q.cur, V75TC_FEE.adv);
+    v75tcMark(Q, F2);
+    return { F: F2, Q };
+}
+function v75tcMark(Q, F) {
+    if (!Q || !Q.lines || Q.v75)
+        return Q;
+    Q.lines.forEach(l => {
+        (l.tiers || []).forEach(t => { t.base = t.n; t.n = v75tcGross(t.n, F.rate, t.cur || Q.cur); });
+        if (l.hit && l.hit.base == null && l.tiers && !l.tiers.includes(l.hit)) {
+            l.hit.base = l.hit.n;
+            l.hit.n = v75tcGross(l.hit.n, F.rate, l.hit.cur || Q.cur);
+        }
+        if (l.hit && l.qty != null)
+            l.amount = Math.round(l.hit.n * l.qty * 100) / 100;
+    });
+    if (Q.lines.every(l => l.amount != null))
+        Q.total = Math.round(Q.lines.reduce((s, l) => s + l.amount, 0) * 100) / 100;
+    Q.payEn = v75tcPayEn(F);
+    Q.v75 = { rate: F.rate, adv: F.adv, after: F.after };
+    return Q;
+}
+function v75tcOfferText(O, th) {
+    const Q = O.Q;
+    let t = "";
+    try {
+        t = typeof v72QuoteText === "function" ? v72QuoteText(Q) : "";
+    }
+    catch (e) {
+        t = "";
+    }
+    t = t.replace("--- Quotation (valid until", "--- Offer (valid until");
+    const b = (typeof dmBrief === "function") ? (dmBrief() || {}) : {};
+    return ["Dear Purchasing Team,", "", "Thank you for your interest. Please find our offer below.", "", t, "", "If the terms suit you, we will send the proforma invoice for your confirmation.", "", "Best regards,", b.co || "Export Team"].join("\n");
+}
+function v75tcAllow(O) { const out = []; try {
+    ((O && O.Q && O.Q.lines) || []).forEach(l => { (l.tiers || []).forEach(t => { out.push(t.n); if (t.base != null)
+        out.push(t.base); }); if (l.hit)
+        out.push(l.hit.n); if (l.amount != null)
+        out.push(l.amount); });
+    if (O && O.Q && O.Q.total != null)
+        out.push(O.Q.total);
+}
+catch (e) { } return out.concat([O && O.F ? O.F.adv : 50, 100 - (O && O.F ? O.F.adv : 50), 30]); }
+function v75tcFacts(th) {
+    const c = v75tcCase(th.id, false) || {}, st = v75tcStage(th), cty = v75tcCty(th), F = v75tcFee(cty, "", V75TC_FEE.adv), F100 = v75tcFee(cty, "", 100), d = v75tcD(), r = v75tcRisk(cty);
+    return { buyer: v75tcBName(th), cty, biz: th.biz || "", item: d.item || "", co: d.co || "", pay: d.pay || "", term: [d.term, d.pol].filter(Boolean).join(" "), route: c.route && c.route.k || "", stage: st, fee: F, fee100: F100, risk: r, nBy: st.nBy,
+        offer: c.offer && c.offer.lines ? c.offer : null, exp: (d.exp || d.export || "") };
+}
+function v75tcTplAnswer(q, th, kind) {
+    const f = v75tcFacts(th), F = f.fee, src = f.risk;
+    const riskTxt = f.risk ? ("OECD のカントリーリスクは" + F.oc.label + (f.risk.nexi && f.risk.nexi.cat ? "・NEXI の国カテゴリーは " + f.risk.nexi.cat : "") + (F.pr != null ? "・政策金利は " + F.pr + "%" : "") + "（" + V75TC_ASOF + " に確かめた公表値）") : "この国のカントリーリスクの公表値はまだ登録がありません（要確認）";
+    const s = String(q || "");
+    if (kind === "stg" || /STANDAGE|任せ|頼む|商社に/.test(s))
+        return ["STANDAGE に任せると、次の3つの理由で早く・安く・安全に進められます。",
+            "・早い：" + f.buyer + " とのやり取り（相手の返事 " + f.nBy + " 回）・見積・商品情報が貿易クラウドに全部あるので、引継ぎの資料づくりはほぼ要りません。権限を付けた翌日から STANDAGE が商社業務を引き受けます。",
+            "・安い：貿易クラウドの収益基盤があるため、商社手数料を抑えています（この相手なら暫定 " + F.rate + "%・支払条件 " + v75tcPayJa(F) + "）。",
+            "・安全：独自の決済の仕組みがあり、大手保険会社や物流会社から出資を受けています。代金の回収・書類・通関は STANDAGE が輸出者として持ちます。",
+            "迷うときは「自社で進める（直接貿易）」も選べます。その場合は、前金の割合を上げる・L/C を使うなど、代金の回収を守る条件をおすすめします。"].join("\n");
+    if (/手取り|いくら|手数料|マージン|減る/.test(s))
+        return ["間接貿易の暫定の商社手数料は売値の " + F.rate + "% です（内訳：" + F.lines.filter(x => x.v > 0).map(x => x.t.replace(/（.*$/, "") + " " + x.v + "%").join("・") + "）。",
+            "貴社の受け取りは価格表どおり（国内の取引・円）で、手数料は Buyer へのオファー価格に上乗せします。前金 100% にできれば " + f.fee100.rate + "% まで下がります。", riskTxt].join("\n");
+    if (/リスク|回収|未払|焦げ|危ない|安全/.test(s))
+        return [riskTxt + "。",
+            "直接貿易で「" + v75tcPayJa(F) + "」にすると、残金 " + Math.round(F.ex * 100) + "%（約 " + (F.days) + " 日分）が未回収になりうる金額です。",
+            "間接貿易なら、STANDAGE が輸出者として回収の手間とリスクを持つので、貴社は国内の取引で完結します。"].join("\n");
+    const rec = v75tcRecommend(f);
+    return ["AI商社マンのおすすめ：" + rec.k + "。", rec.why.join("\n"), riskTxt, "（AI につながっていないため、登録データと計算から答えています。自由な質問は、AI につなぐと答えます）"].join("\n");
+}
+function v75tcRecommend(f) {
+    const F = f.fee, why = [];
+    let k = "間接貿易";
+    const hi = F.cat >= 4 || (F.pr != null && F.pr > 10) || F.unknown;
+    if (hi)
+        why.push("・相手の国のカントリーリスク・金利の情勢が高めです（" + F.oc.label + (F.pr != null ? "・政策金利 " + F.pr + "%" : "") + "）。代金の回収を STANDAGE に任せる方が安全です。");
+    if (!f.exp)
+        why.push("・輸出の実績・書類・通関の体制が登録されていません。最初の取引は商社に任せると、書類と通関でつまずきません。");
+    if (F.cat <= 1 && !F.unknown && f.exp) {
+        k = "直接貿易";
+        why.push("・相手の国のリスクは低く（" + F.oc.label + "）、輸出の体制もあります。前金の割合を高めにすれば、利益を最大にできます。");
+    }
+    if (!why.length)
+        why.push("・初めての相手との取引は、代金の未回収のリスクを避けるため、間接貿易から始めるのが安全です。慣れたら直接貿易に切り替えられます。");
+    return { k, why };
+}
+async function v75tcAsk(th, q, kind) {
+    const f = v75tcFacts(th);
+    if (!v75tcAi())
+        return { a: v75tcTplAnswer(q, th, kind), how: "tpl" };
+    const sys = "あなたは AI商社マン（日本の輸出企業の Chief AI Trading Officer）。お客様の商流（直接貿易／間接貿易）と、STANDAGE に商社業務を任せるかの相談に、事実と計算に基づいて日本語で短く答える。登録データと下の数字に無い事実は作らない。手数料・金額は下の計算の数字だけを使う。";
+    const ctx = `=== 案件 ===\n商品：${f.item}（${f.co}）／相手：${f.buyer}（${f.cty}・${f.biz}）／相手の返事 ${f.nBy} 回／決めた商流：${f.route || "未定"}
+=== 段階（自動の読み取り）===\n見積の段階：${f.stage.quote ? "はい" : "いいえ"}（${f.stage.why.join("・") || "—"}）／まとまりの見込み ${f.stage.score} 点（${f.stage.cwhy.join("・") || "—"}）
+=== 直接貿易と間接貿易 ===\n直接貿易：自社が輸出者。利益は最大。代金の未回収のリスク・書類・通関・為替を自社で持つ。\n間接貿易：商社が輸出者。国内の取引（円）で完結。商社の手数料がかかる。
+=== 間接貿易の暫定の商社手数料（STANDAGE・売値に占める割合）===\n合計 ${f.fee.rate}%（支払条件 ${v75tcPayJa(f.fee)}）\n${f.fee.lines.map(x => "・" + x.t + "：" + x.v + "%").join("\n")}\n前金 100% なら ${f.fee100.rate}%
+=== 相手の国の公表値（${V75TC_ASOF} に確かめた）===\n${JSON.stringify(f.risk || { note: "登録なし（要確認）" }).slice(0, 900)}
+=== STANDAGE に任せる理由 ===\n早い：案件の概要・交渉の経過が貿易クラウドに全部残っているので、そのまま引き継げる（引継ぎはほぼ不要・翌日から）\n安い：貿易クラウドの収益基盤があるため、商社手数料を抑えられる\n安全：独自の決済の仕組み・大手保険会社や物流会社からの出資・強固なサポート体制
+=== 登録データ ===\n${(typeof ppContext === "function" ? String(ppContext() || "") : "").slice(0, 3500)}`;
+    try {
+        const r = await llmAsk(`${ctx}\n\n=== お客様の質問 ===\n${q}\n\n答え方：結論を1行目に。理由は3つまで。数字は上の計算だけ。最後に次の一手を1つ。300字以内。`, 900, { sys, noWeb: 1, timeout: 90000, task: "tc" });
+        const a = String((r && r.txt) || "").trim();
+        if (!a)
+            throw new Error("空の答え");
+        return { a, how: "ai" };
+    }
+    catch (e) {
+        return { a: v75tcTplAnswer(q, th, kind), how: "tpl", err: String((e && e.message) || e).slice(0, 60) };
+    }
+}
+function v75tcClip(s, n) { return String(s == null ? "" : s).slice(0, n || 2000); }
+function v75tcPkg(th, sc) {
+    const d = v75tcD(), c = v75tcCase(th.id, true), st = v75tcStage(th), b = v75tcBuyer(th.id) || {}, cty = v75tcCty(th);
+    const P = { v: 1, at: Date.now(), app: "21.75", co: v75tcClip(d.co, 80), coEn: v75tcClip(d.coEn, 80), item: v75tcClip(d.item, 80), itemEn: v75tcClip(d.itemEn, 80), sku: v75tcClip(d.sku, 40), cat: v75tcClip(d.cat, 40),
+        buyer: { name: v75tcBName(th), cty, biz: v75tcClip(th.biz, 40) }, route: c.route ? { k: c.route.k, at: c.route.at, why: v75tcClip(c.route.why, 300) } : null, sc: Object.assign({}, sc) };
+    if (sc.prod)
+        P.prod = { hs: v75tcClip(d.hs, 20), origin: v75tcClip(d.origin || d.city, 40), moq: v75tcClip(d.moq, 60), lead: v75tcClip(d.lead, 60), term: v75tcClip(d.term, 40), pol: v75tcClip(d.pol, 40), pay: v75tcClip(d.pay, 80),
+            cert: v75tcClip(d.cert, 200), shelf: v75tcClip(d.shelf, 60), strengths: (d.strengths || []).slice(0, 6).map(s => [v75tcClip(s && s[0], 80), v75tcClip(s && s[1], 200)]),
+            dims: { cols: (d.dimCols || []).slice(0, 12).map(x => v75tcClip(x, 40)), rows: (d.dimRows || []).slice(0, 40).map(r => (r || []).slice(0, 12).map(x => v75tcClip(x, 80))) },
+            comp: { title: v75tcClip(d.compTitle, 40), cols: (d.compCols || []).slice(0, 10).map(x => v75tcClip(x, 40)), rows: (d.compRows || []).slice(0, 60).map(r => (r || []).slice(0, 10).map(x => v75tcClip(x, 80))) } };
+    if (sc.price)
+        P.price = { cols: (d.priceCols || []).slice(0, 12).map(x => v75tcClip(x, 40)), rows: (d.priceRows || []).slice(0, 60).map(r => (r || []).slice(0, 12).map(x => v75tcClip(x, 60))),
+            offer: c.offer ? { at: c.offer.at, sentAt: c.offer.sentAt || 0, rate: c.offer.rate, pay: c.offer.pay, cur: c.offer.cur, lines: (c.offer.lines || []).slice(0, 10), total: c.offer.total } : null,
+            quote: th.v72 && th.v72.quote ? { kind: th.v72.kind, sent: th.v72.sent ? th.v72.sent.at : 0, total: th.v72.quote.total, cur: th.v72.quote.cur, basis: th.v72.quote.basis, v75: th.v72.v75 || null } : null };
+    if (sc.thread)
+        P.thread = { lang: v75tcClip(th.lang, 20), n: (th.msgs || []).length, msgs: (th.msgs || []).slice(-200).map(m => ({ w: m.w === "by" ? "by" : "me", t: v75tcClip(m.t, 20), at: +m.at || 0, subj: v75tcClip(m.subj, 160), body: v75tcClip(m.body, 4000), tr: typeof m.tr === "string" ? v75tcClip(m.tr, 3000) : "" })) };
+    if (sc.buyer) {
+        const o = {};
+        Object.keys(b).forEach(k => { const v = b[k]; if (v == null || typeof v === "function")
+            return; if (typeof v === "object") {
+            try {
+                o[k] = JSON.parse(JSON.stringify(v).slice(0, 1500));
+            }
+            catch (e) { }
+        }
+        else
+            o[k] = v75tcClip(v, 600); });
+        P.buyerInfo = o;
+    }
+    if (sc.deal)
+        P.deals = v75tcDeals(th).slice(0, 20).map(r => ({ d: r.d, st: r.st, price: v75tcClip(r.price, 40), lot: v75tcClip(r.lot, 40), term: v75tcClip(r.term, 40), react: r.react, note: v75tcClip(r.note, 600), why: v75tcClip(r.why, 200) }));
+    if (sc.reg) {
+        try {
+            const R = (d.regs || {})[cty];
+            if (R)
+                P.reg = { cty, data: JSON.parse(JSON.stringify(R).slice(0, 8000)) };
+        }
+        catch (e) {
+            P.reg = { cty, note: "読み取れませんでした" };
+        }
+    }
+    if (sc.ship)
+        P.ship = { term: v75tcClip(d.term, 40), pol: v75tcClip(d.pol, 40), pay: v75tcClip(d.pay, 80), lead: v75tcClip(d.lead, 60), moq: v75tcClip(d.moq, 60) };
+    if (sc.ai) {
+        const F = v75tcFee(cty, (c.offer && c.offer.cur) || "", V75TC_FEE.adv);
+        P.ai = { stage: { quote: st.quote, why: st.why, score: st.score, cwhy: st.cwhy }, fee: { rate: F.rate, lines: F.lines, pay: v75tcPayJa(F), oecd: F.oc.label, policy: F.pr, asof: V75TC_ASOF }, log: (c.log || []).slice(-30) };
+    }
+    if (sc.docs) {
+        try {
+            const L = [];
+            ((d.docs || []).concat((v75tcTen() || {}).xdocs || [])).slice(0, 80).forEach(r => { if (Array.isArray(r))
+                L.push(v75tcClip(r[0], 120)); });
+            P.docs = L;
+        }
+        catch (e) {
+            P.docs = [];
+        }
+    }
+    P.memo = v75tcMemo(P);
+    return P;
+}
+function v75tcMemo(P) {
+    const L = [], B = P.buyer || {};
+    L.push("■ 要点：" + [P.co, P.item].filter(Boolean).join("／") + " → " + [B.name, B.cty, B.biz].filter(Boolean).join("・") + "。商流は" + (P.route ? (P.route.k === "direct" ? "直接貿易（相談）" : "間接貿易（STANDAGE が輸出者）") : "未定") + "。");
+    if (P.thread) {
+        const by = P.thread.msgs.filter(m => m.w === "by"), last = by[by.length - 1];
+        L.push("■ 経過：やり取り " + P.thread.n + " 件（相手の返事 " + by.length + " 回）。" + (last ? "相手の最新の返事（" + last.t + "）：" + String(last.body).replace(/\s+/g, " ").slice(0, 160) : ""));
+    }
+    if (P.price && P.price.offer && P.price.offer.lines)
+        L.push("■ オファー：" + P.price.offer.lines.map(l => l.sku + " " + l.price).join("・") + "（手数料 " + P.price.offer.rate + "%・" + P.price.offer.pay + (P.price.offer.sentAt ? "・送付済み" : "・未送付") + "）");
+    else if (P.price && P.price.quote)
+        L.push("■ 見積：返信エージェントの見積 " + (P.price.quote.total != null ? P.price.quote.cur + P.price.quote.total : "") + (P.price.quote.sent ? "（送付済み）" : ""));
+    if (P.ai && P.ai.stage)
+        L.push("■ まとまりの見込み：" + P.ai.stage.score + " 点（" + (P.ai.stage.cwhy || []).join("・") + "）");
+    L.push("■ 次の一手：①お客様に担当のごあいさつ ②国内の売買（お客様→STANDAGE）の条件をすり合わせる ③輸出者として PI・契約・前金の受け取りの段取り ④相手の信用の確かめ ⑤物流の手配");
+    return L.join("\n");
+}
+function v75tcSimOn() { return !v75tcSyncOn() || v75tcDemoAcct(); }
+async function v75tcSend(th, sc, first) {
+    const c = v75tcCase(th.id, true), P = v75tcPkg(th, sc);
+    if (v75tcSimOn())
+        return v75tcSimSend(th, c, P, first);
+    const r = await v75tcCall("tc_put", { req: { id: c.req && c.req.st !== "revoked" ? c.req.id : "", item: P.item, buyer: { co: P.buyer.name, cty: P.buyer.cty, biz: P.buyer.biz }, route: c.route && c.route.k || "indirect", sc, pkg: P, first: first || "" } });
+    if (r && r.reason === "demo")
+        return v75tcSimSend(th, c, P, first);
+    if (r && r.reason === "old")
+        return v75tcWaitSend(th, c, P, first);
+    if (!r || !r.ok)
+        return r || { ok: false };
+    const wasWait = !!(c.req && c.req.local), root0 = wasWait ? c.req.root : "";
+    const isNew = !c.req || c.req.id !== r.id;
+    c.req = Object.assign(isNew ? { msgs: [], since: 0 } : (c.req || {}), { id: r.id, st: r.st, asg: r.asg || null, at: isNew ? Date.now() : (c.req.at || Date.now()), upd: Date.now(), sig: v75tcSig(th) });
+    if (wasWait) {
+        delete c.req.local;
+        c.req.root = root0;
+        v75tcLog(c, "同期サーバーの準備ができたので、商社デスクに届けた（" + r.id + "）");
+        v75tcSave();
+        return r;
+    }
+    if (r.first)
+        c.req.mine = (c.req.mine || []).concat([r.first]);
+    if (isNew) {
+        v75tcLog(c, "STANDAGE に依頼（" + r.id + "）");
+        v75tcRoot(th, c, first);
+    }
+    v75tcSave();
+    return r;
+}
+function v75tcSig(th) { const ms = (th && th.msgs) || []; const m = ms[ms.length - 1]; return ms.length + "|" + (m ? (+m.at || 0) + String(m.body || "").slice(0, 20) : ""); }
+function v75tcSimSend(th, c, P, first) {
+    const id = (c.req && c.req.sim && c.req.id) || ("TC-SIM-" + Math.random().toString(36).slice(2, 8).toUpperCase());
+    const isNew = !c.req || c.req.id !== id;
+    V75TC.sim[id] = { pkg: P, th: th.id };
+    c.req = Object.assign(isNew ? { msgs: [], since: 0 } : c.req, { id, st: c.req && c.req.asg ? "assigned" : "open", sim: 1, at: isNew ? Date.now() : c.req.at, upd: Date.now(), sig: v75tcSig(th) });
+    if (isNew) {
+        v75tcLog(c, "STANDAGE に依頼（見本 " + id + "）");
+        v75tcRoot(th, c, first);
+        setTimeout(() => {
+            try {
+                const c2 = v75tcCase(th.id, false);
+                if (!c2 || !c2.req || c2.req.id !== id || c2.req.asg)
+                    return;
+                c2.req.asg = { name: "見本 担当（架空）", at: Date.now() };
+                c2.req.st = "assigned";
+                v75tcMirror(c2, [{ id: "sim1" + id, at: Date.now(), by: "sys", name: "STANDAGE", t: "担当：見本 担当（架空）" }, { id: "sim2" + id, at: Date.now() + 1, by: "s", name: "見本 担当（架空）", t: "（見本）STANDAGE の商社デスクです。" + P.buyer.name + " との案件を拝見しました。やり取りと見積の経過はすべて読めていますので、引継ぎの資料は不要です。明日から輸出者として PI・契約・前金の段取りを進めます。国内のお取引の条件（納品の日・場所・お支払い）をこのスレッドでご相談させてください。\n※体験用のアカウントのため、実際の STANDAGE には届いていません。" }]);
+                v75tcSave();
+                v75tcRepaint(th.id);
+                v75tcToast("🏢 STANDAGE の担当が決まりました（見本）。「やりとり」で話せます");
+            }
+            catch (e) { }
+        }, 2500);
+    }
+    v75tcSave();
+    return { ok: true, id, sim: 1, isNew: isNew ? 1 : 0 };
+}
+function v75tcWaitSend(th, c, P, first) {
+    const id = (c.req && c.req.local && c.req.id) || ("TC-WAIT-" + Math.random().toString(36).slice(2, 8).toUpperCase());
+    const isNew = !c.req || c.req.id !== id;
+    c.req = Object.assign(isNew ? { msgs: [], since: 0 } : c.req, { id, st: "wait", local: 1, at: isNew ? Date.now() : c.req.at, upd: Date.now(), sig: v75tcSig(th), tryAt: Date.now() });
+    if (isNew) {
+        v75tcLog(c, "STANDAGE に依頼（やりとり経由・" + id + "）");
+        v75tcRoot(th, c, (first ? first + "\n\n" : "") + "【引継ぎメモ】\n" + P.memo + "\n\n（同期サーバーの準備中のため、この「やりとり」で STANDAGE の担当がご連絡します。準備ができると、自動で STANDAGE の商社デスクに届きます）");
+    }
+    v75tcSave();
+    return { ok: true, id, local: 1, isNew: isNew ? 1 : 0 };
+}
+function v75tcRootKey(c) { return (c.req && c.req.root) || "tc_root_" + String(c.req && c.req.id || ""); }
+function v75tcRoot(th, c, first) {
+    try {
+        const st = typeof msgStore === "function" ? msgStore() : null;
+        if (!st)
+            return;
+        const k = v75tcRootKey(c);
+        if (st.some(m => m && m.id === k))
+            return;
+        const nm = v75tcBName(th), who = v75tcWho(), tstr = (typeof TODAYS !== "undefined" ? TODAYS : new Date().toISOString().slice(0, 10)) + " " + new Date().toTimeString().slice(0, 5);
+        st.push({ id: k, at: Date.now(), who, org: v75tcD().co || "", t: tstr, scope: "共有", read: 1, readBy: [who], mention: ["STANDAGE"],
+            body: v75tcE("🏢 STANDAGE に商社業務を依頼しました：" + nm + "（" + (c.req.sim ? "見本・" : "") + "依頼番号 " + c.req.id + "）") + "<br>" + v75tcE(first || "担当が決まると、このスレッドで STANDAGE の担当と話せます。").replace(/\n/g, "<br>") });
+        try {
+            if (typeof thSetMeta === "function")
+                thSetMeta(k, { title: "🏢 STANDAGE 商社業務：" + nm }, true);
+        }
+        catch (e) { }
+        c.req.root = k;
+    }
+    catch (e) {
+        console.warn("v75 root", e);
+    }
+}
+function v75tcMirror(c, msgs) {
+    try {
+        const st = typeof msgStore === "function" ? msgStore() : null;
+        if (!st || !c || !c.req)
+            return 0;
+        const k = v75tcRootKey(c);
+        let n = 0;
+        if (!st.some(m => m && m.id === k))
+            return 0;
+        (msgs || []).forEach(m => {
+            if (!m || !m.id)
+                return;
+            const id = "tc_" + m.id;
+            if (st.some(x => x && x.id === id))
+                return;
+            if (m.by === "c" && (c.req.mine || []).includes(m.id))
+                return;
+            const who = m.by === "s" ? "STANDAGE 商社担当 " + m.name : m.by === "sys" ? "STANDAGE" : m.name;
+            st.push({ id, at: +m.at || Date.now(), re: k, who, org: m.by === "c" ? (v75tcD().co || "") : "STANDAGE", t: v75tcDay(+m.at || Date.now()), scope: "共有", read: m.by === "c" ? 1 : 0, readBy: m.by === "c" ? [v75tcWho()] : [], mention: [],
+                body: v75tcE(m.t).replace(/\n/g, "<br>"), tc: 1 });
+            n++;
+        });
+        if (n) {
+            c.req.lastMsg = Math.max(+c.req.lastMsg || 0, ...msgs.map(m => +m.at || 0));
+        }
+        return n;
+    }
+    catch (e) {
+        console.warn("v75 mirror", e);
+        return 0;
+    }
+}
+async function v75tcPushReply(k) {
+    const S = v75tcStore();
+    const c = Object.values(S.cases).find(x => x && x.req && v75tcRootKey(x) === k);
+    if (!c)
+        return;
+    const st = typeof msgStore === "function" ? msgStore() : [];
+    const L = st.filter(m => m && m.re === k && !m.tc && !m.v75sent);
+    if (!L.length)
+        return;
+    for (const m of L) {
+        const txt = String(m.body || "").replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&").trim();
+        if (!txt) {
+            m.v75sent = 1;
+            continue;
+        }
+        if (c.req.local) {
+            m.v75sent = 1;
+            continue;
+        }
+        if (c.req.sim) {
+            m.v75sent = 1;
+            setTimeout(() => { try {
+                v75tcMirror(c, [{ id: "simr" + Date.now().toString(36), at: Date.now(), by: "s", name: "見本 担当（架空）", t: "（見本）承知しました。実際の運用では、STANDAGE の担当がこのスレッドでお返事します。" }]);
+                v75tcSave();
+                v75tcRepaintMsg();
+            }
+            catch (e) { } }, 1500);
+            continue;
+        }
+        const r = await v75tcCall("tc_msg", { id: c.req.id, t: txt.slice(0, 4000) });
+        if (r && r.ok && r.msg) {
+            m.v75sent = 1;
+            m.tcId = r.msg.id;
+            c.req.mine = (c.req.mine || []).concat([r.msg.id]).slice(-200);
+        }
+        else {
+            v75tcToast("STANDAGE へ送れませんでした（" + ((r && r.msg) || "通信") + "）。あとでもう一度送ります");
+            break;
+        }
+    }
+    v75tcSave();
+}
+async function v75tcPoll(force) {
+    if (V75TC.poll)
+        return;
+    const S = v75tcStore();
+    const L = Object.values(S.cases).filter(c => c && c.req && c.req.st !== "revoked" && !c.req.sim);
+    if (!L.length || !v75tcSyncOn())
+        return;
+    if (!force && Date.now() - V75TC.pollAt < 55000)
+        return;
+    V75TC.poll = 1;
+    V75TC.pollAt = Date.now();
+    let n = 0, ch = false;
+    try {
+        for (const c of L) {
+            if (c.req.local) {
+                const th0 = v75tcThs()[c.id];
+                if (th0 && c.grant && !c.grant.revokedAt && (force || Date.now() - (+c.req.tryAt || 0) > 5 * 60000)) {
+                    c.req.tryAt = Date.now();
+                    const r0 = await v75tcSend(th0, c.grant.sc, "");
+                    if (r0 && r0.ok && !r0.local)
+                        ch = true;
+                }
+                continue;
+            }
+            const r = await v75tcCall("tc_get", { id: c.req.id, since: +c.req.since || 0 });
+            if (!r || !r.ok)
+                continue;
+            if (JSON.stringify(r.asg || null) !== JSON.stringify(c.req.asg || null) || r.st !== c.req.st) {
+                c.req.asg = r.asg || null;
+                c.req.st = r.st;
+                ch = true;
+            }
+            c.req.views = (r.views || []).slice(-10);
+            if (r.msgs && r.msgs.length) {
+                n += v75tcMirror(c, r.msgs);
+                c.req.since = Math.max(+c.req.since || 0, ...r.msgs.map(m => +m.at || 0));
+                ch = true;
+            }
+            const th = v75tcThs()[c.id];
+            if (th && c.grant && !c.grant.revokedAt && c.req.sig !== v75tcSig(th)) {
+                await v75tcSend(th, c.grant.sc, "");
+                ch = true;
+            }
+        }
+    }
+    finally {
+        V75TC.poll = 0;
+    }
+    if (ch)
+        v75tcSave();
+    if (n) {
+        v75tcToast("🏢 STANDAGE の担当から新しいメッセージ " + n + " 件（やりとり）");
+        v75tcRepaintMsg();
+    }
+    return n;
+}
+async function v75tcRevoke(th) {
+    const c = v75tcCase(th.id, false);
+    if (!c || !c.req)
+        return;
+    if (!c.req.sim && !c.req.local) {
+        const r = await v75tcCall("tc_revoke", { id: c.req.id });
+        if (!r || !r.ok) {
+            v75tcToast("権限を外せませんでした（" + ((r && r.msg) || "通信") + "）");
+            return;
+        }
+    }
+    c.req.st = "revoked";
+    if (c.grant)
+        c.grant.revokedAt = Date.now();
+    v75tcLog(c, "STANDAGE の権限を外す");
+    if (c.req.sim)
+        delete V75TC.sim[c.req.id];
+    v75tcMirror(c, [{ id: "rv" + Date.now().toString(36), at: Date.now(), by: "sys", name: "STANDAGE", t: "権限を外しました（案件の情報は STANDAGE の画面から消えました）" }]);
+    v75tcSave();
+    v75tcRepaint(th.id);
+    v75tcToast("STANDAGE の権限を外しました");
+}
+function v75tcHead(t, tone) { return `<div class="v75hd"><b>🤖 ${v75tcN(t)}</b>${tone ? `<span class="p ${tone}">${v75tcN(tone === "hi" ? "AI商社マンの提案" : "STANDAGE")}</span>` : ""}</div>`; }
+function v75tcChip(c) { if (!c || !c.route)
+    return ""; const k = c.route.k; return `<span class="v75chip v75-${k}">${v75tcN(k === "direct" ? "商流：直接貿易" : "商流：間接貿易")}</span>`; }
+function v75tcCmpHtml(f) {
+    const F = f.fee;
+    return `<table class="v75cmp"><thead><tr><th></th><th>${v75tcN("直接貿易")}</th><th>${v75tcN("間接貿易")}</th></tr></thead><tbody>
+  <tr><td>${v75tcN("輸出者")}</td><td>${v75tcN("貴社")}</td><td>${v75tcN("商社（STANDAGE など）")}</td></tr>
+  <tr><td>${v75tcN("利益")}</td><td>${v75tcN("最大（商社の手数料なし）")}</td><td>${v75tcF("商社の手数料（この相手なら暫定 {r}%）を Buyer への価格に上乗せ", { r: F.rate })}</td></tr>
+  <tr><td>${v75tcN("代金の回収")}</td><td>${v75tcN("貴社が未回収のリスクを負う")}</td><td>${v75tcN("国内の取引で完結（円で受け取り）")}</td></tr>
+  <tr><td>${v75tcN("書類・通関・為替")}</td><td>${v75tcN("貴社で手配")}</td><td>${v75tcN("商社が手配")}</td></tr></tbody></table>`;
+}
+function v75tcRiskHtml(f) {
+    const F = f.fee, r = f.risk;
+    return `<p class="nn v75sub">🌐 ${v75tcE(f.cty || "—")}：${v75tcE(F.oc.label)}${r && r.nexi && r.nexi.cat ? `・NEXI 国カテゴリー ${v75tcE(r.nexi.cat)}` : ""}${F.nop ? `・${v75tcN("政策金利なし（為替で運営）")}` : F.pr != null ? `・<span title="${v75tcE((r && r.policy && r.policy.name) || "")}">${v75tcN("政策金利")} ${v75tcE(F.pr)}%</span>` : `・${v75tcN("政策金利 要確認")}`}
+  ${r ? `（${v75tcN("出どころ")}：${[r.oecd && r.oecd.source ? `<a href="${v75tcE(r.oecd.source)}" target="_blank" rel="noopener">OECD</a>` : "", r.nexi && r.nexi.source ? `<a href="${v75tcE(r.nexi.source)}" target="_blank" rel="noopener">NEXI</a>` : "", r.policy && r.policy.source ? `<a href="${v75tcE(r.policy.source)}" target="_blank" rel="noopener">${v75tcN("中央銀行")}</a>` : ""].filter(Boolean).join("・")}・${v75tcE(V75TC_ASOF)} ${v75tcN("に確かめた")}）` : `（${v75tcN("公表値の登録なし＝要確認")}）`}</p>`;
+}
+function v75tcFeeHtml(F) {
+    return `<table class="v75fee"><tbody>${F.lines.map(x => `<tr><td>${v75tcE(x.t)}</td><td class="n">${x.v.toFixed(2)}%</td></tr>`).join("")}
+  <tr class="v75tot"><td>${v75tcN("商社手数料（売値に占める割合・暫定）")}</td><td class="n">${F.rate.toFixed(1)}%</td></tr></tbody></table>`;
+}
+function v75tcChatHtml(id, kind) {
+    const L = V75TC.chat[id + "|" + kind] || [];
+    const sug = kind === "stg" ? ["STANDAGE に任せるとどうなる？", "手数料はいくら？手取りは？", "自社で進める場合のリスクは？"] : ["うちはどちらが向いている？", "間接貿易だと手取りはいくら減る？", "代金が回収できないリスクは？"];
+    return `<div class="v75chat" data-v75chat="${v75tcE(kind)}">${L.map(m => `<div class="v75m v75m-${m.w}">${m.w === "u" ? "" : "🤖 "}${v75tcE(m.t).replace(/\n/g, "<br>")}${m.how === "tpl" && m.w === "a" ? `<span class="v75sub"> ${v75tcN("（定型）")}</span>` : ""}</div>`).join("")}
+    ${V75TC.busy["ask|" + id] ? `<p class="nn"><span class="spin"></span> ${v75tcN("AI商社マンが考えています…")}</p>` : ""}
+    <div class="v75sug">${sug.map(s => `<button class="q" type="button" data-v75q="${v75tcE(s)}">${v75tcN(s)}</button>`).join("")}</div>
+    <div class="rw v75ask"><input class="sel" id="v75q-${v75tcE(kind)}" placeholder="${v75tcE(v75tcT("AI商社マンに相談（例：前金を100%にしたら？）"))}"><button class="btn g" type="button" data-v75go="${v75tcE(kind)}">${v75tcN("相談する")}</button></div></div>`;
+}
+function v75tcCardHtml(th) {
+    const ms = Array.isArray(th.msgs) ? th.msgs : [];
+    if (!ms.length)
+        return "";
+    const c = v75tcCase(th.id, false), st = v75tcStage(th), f = v75tcFacts(th), F = f.fee, nm = v75tcBName(th);
+    const snooze = x => x && x.until && Date.now() < x.until;
+    if (c && c.req && c.req.st !== "revoked") {
+        const asg = c.req.asg;
+        const v = (c.req.views || []).slice(-3);
+        return v75tcHead("STANDAGE に商社業務を依頼しています", "") + `<p class="nn">${v75tcChip(c)} ${v75tcF("依頼番号 {i}{s}", { i: c.req.id, s: c.req.sim ? "（見本＝体験用のため STANDAGE には届いていません）" : "" })}</p>
+      <p class="nn">${c.req.local ? `📮 ${v75tcN("「やりとり」で STANDAGE に知らせました（同期サーバーの準備中）。準備ができると、自動で STANDAGE の商社デスクに届きます。")}` : asg ? `✓ ${v75tcF("担当：{n}（{d}）", { n: asg.name, d: v75tcDay(asg.at) })}` : `⏳ ${v75tcN("担当を決めています（決まると「やりとり」にスレッドができます）")}`}</p>
+      ${v.length ? `<p class="nn v75sub">👀 ${v75tcN("STANDAGE が見た記録")}：${v.map(x => v75tcE(x.name + " " + v75tcDay(x.at))).join("／")}</p>` : ""}
+      <p class="nn v75sub">${v75tcF("見せている範囲：{s}", { s: V75TC_SC.filter(x => c.grant && c.grant.sc && c.grant.sc[x[0]]).map(x => v75tcT(x[1].replace(/（.*$/, ""))).join("・") || "—" })}。${v75tcN("権限がある間は、新しいやり取りも自動で渡します。")}</p>
+      <div class="rw v75acts"><button class="btn" type="button" data-v75="openmsg">💬 ${v75tcN("やりとりを開く")}</button>${c.req.sim ? `<button class="btn g" type="button" data-v75="peek">👁 ${v75tcN("STANDAGE 側の画面（見本）")}</button>` : ""}<button class="btn g" type="button" data-v75="revoke">🔒 ${v75tcN("権限を外す")}</button></div>`;
+    }
+    if (c && c.stg && c.stg.k === "yes" && (!c.req || c.req.st === "revoked")) {
+        const sc = (c.grant && c.grant.sc) || {};
+        const def = x => sc[x[0]] != null ? !!sc[x[0]] : true;
+        return v75tcHead("STANDAGE に見せる範囲（権限の設定）", "") + `<p class="nn">${v75tcF("{b} との案件について、STANDAGE の社員（商社デスクの権限があるアカウント）に見せる情報を選んでください。ほかの商品・ほかのバイヤーの情報は渡しません。", { b: nm })}</p>
+      <div class="v75sc">${V75TC_SC.map(x => `<label><input type="checkbox" data-v75sc="${x[0]}" ${def(x) ? "checked" : ""} ${x[2] ? "disabled" : ""}> ${v75tcN(x[1])}${x[2] ? ` <span class="p mid">${v75tcN("必須")}</span>` : ""}</label>`).join("")}</div>
+      <p class="lbl">${v75tcN("STANDAGE へのひと言（任意）")}</p><textarea class="sel" id="v75first" rows="2" placeholder="${v75tcE(v75tcT("例：初めての輸出です。国内の納品は千葉の工場からになります。"))}"></textarea>
+      <p class="nn v75sub">🔒 ${v75tcN("見えるのは STANDAGE の社員だけです。いつでも外せます（外すと STANDAGE の画面から案件の情報が消えます）。STANDAGE がいつ見たかは、この画面に出ます。")}</p>
+      <div class="rw v75acts"><button class="btn" type="button" data-v75="grant">✓ ${v75tcN("この範囲で権限を付けて依頼する")}</button><button class="btn g" type="button" data-v75="stgback">${v75tcN("やめる")}</button></div>`;
+    }
+    if (st.closing && !(c && c.stg && c.stg.k) && !snooze(c && c.closeAsk)) {
+        const ind = c && c.route && c.route.k === "indirect";
+        return v75tcHead("条件がまとまりかけています。STANDAGE に商社業務を任せますか？", "hi") + `<p class="nn">${v75tcChip(c)} ${v75tcF("まとまりの見込み {s} 点：{w}", { s: st.score, w: st.cwhy.join("・") })}</p>
+      <ul class="v75why"><li><b>${v75tcN("早い")}</b>：${v75tcF("{b} とのやり取り（相手の返事 {n} 回）・見積・商品情報がそのまま引き継げます。引継ぎの資料づくりはほぼ不要で、翌日から STANDAGE が商社業務を引き受けます。", { b: nm, n: st.nBy })}</li>
+        <li><b>${v75tcN("安い")}</b>：${v75tcF("貿易クラウドの収益基盤があるため、商社手数料を抑えています（この相手なら暫定 {r}%）。", { r: F.rate })}</li>
+        <li><b>${v75tcN("安全")}</b>：${v75tcN("独自の決済の仕組みがあり、大手保険会社や物流会社から出資を受けています。代金の回収・書類・通関は STANDAGE が輸出者として持ちます。")}</li></ul>
+      ${ind ? "" : `<p class="nn v75sub">${v75tcN("直接貿易で進めている場合も、ここから間接貿易（STANDAGE が輸出者）に切り替えられます。")}</p>`}
+      <div class="rw v75acts"><button class="btn" type="button" data-v75="stgyes">🏢 ${v75tcN("STANDAGE に任せる（権限の設定へ）")}</button><button class="btn g" type="button" data-v75="chat:stg">🤖 ${v75tcN("AI商社マンに相談")}</button>
+        <button class="btn g" type="button" data-v75="stgself">${v75tcN("自社で進める")}</button><button class="btn g" type="button" data-v75="stgother">${v75tcN("ほかの商社に頼む")}</button><button class="btn g" type="button" data-v75="closelater">${v75tcN("あとで")}</button></div>
+      ${V75TC.chat[th.id + "|stg"] ? v75tcChatHtml(th.id, "stg") : ""}`;
+    }
+    if (c && c.route && c.route.k === "indirect" && !(c.offer && c.offer.sentAt) && !(th.v72 && th.v72.v75 && th.v72.sent)) {
+        const O = v75tcOffer(th, c.qty || null);
+        const tbl = O.none ? `<p class="nn v75warn">⚠ ${v75tcN("価格表が無いので、オファー価格を計算できません。商品情報に価格表を登録してください。")}</p>` :
+            `<table class="v72qt v75ot"><thead><tr><th>${v75tcN("品目")}</th><th>${v75tcN("貴社の価格（価格表）")}</th><th>${v75tcN("オファー価格（手数料込み）")}</th><th>${v75tcN("金額")}</th></tr></thead><tbody>
+      ${O.Q.lines.map(l => `<tr><td data-noi18n><b>${v75tcE(l.sku)}</b></td><td class="n" data-noi18n>${l.hit && l.qty != null ? v75tcE(v75tcMoney(l.hit.cur, l.hit.base != null ? l.hit.base : l.hit.n)) : l.tiers.slice(0, 4).map(t => `<span class="v72tier">${v75tcE(t.label)}：${v75tcE(v75tcMoney(t.cur, t.base))}</span>`).join("")}</td>
+        <td class="n" data-noi18n><b>${l.hit && l.qty != null ? v75tcE(v75tcMoney(l.hit.cur, l.hit.n)) : l.tiers.slice(0, 4).map(t => `<span class="v72tier">${v75tcE(t.label)}：${v75tcE(v75tcMoney(t.cur, t.n))}</span>`).join("")}</b></td><td class="n">${l.amount != null ? v75tcE(v75tcMoney(l.hit.cur, l.amount)) : "—"}</td></tr>`).join("")}</tbody></table>`;
+        return v75tcHead("商社手数料を含めたオファー", "hi") + `<p class="nn">${v75tcChip(c)} ${v75tcF("相手の国のカントリーリスクと金利の情勢を見て、暫定の支払条件「{p}」で、商社手数料を含めた価格を計算しました。貴社の受け取りは価格表どおり（国内の取引・円）です。", { p: v75tcPayJa(O.F) })}</p>
+      ${v75tcFeeHtml(O.F)}${v75tcRiskHtml(f)}
+      ${O.F.rate >= V75TC_FEE.warn ? `<p class="nn v75warn">⚠ ${v75tcF("手数料が高めです。前金 100% にできれば {r}% まで下がります。L/C（信用状）も相談できます。", { r: f.fee100.rate })}</p>` : `<p class="nn v75sub">${v75tcF("前金 100% にできれば {r}% まで下がります。", { r: f.fee100.rate })}</p>`}
+      <div class="rw v75qty"><span class="lbl">${v75tcN("数量（任意）")}</span><input class="sel" id="v75qty" inputmode="numeric" value="${c.qty ? v75tcE(c.qty) : v75tcBuyerQty(th).qty ? v75tcE(v75tcBuyerQty(th).qty) : ""}" placeholder="${v75tcE(v75tcT("例：600"))}"><button class="btn g" type="button" data-v75="qty">${v75tcN("計算し直す")}</button></div>
+      ${tbl}
+      <p class="nn v75sub">${v75tcN("正式な手数料は、STANDAGE の担当が相手の信用と物流を確かめて確定します。オファーは承認してから送ります（自動では送りません）。")}</p>
+      <div class="rw v75acts">${O.none ? "" : `<button class="btn" type="button" data-v75="offer">✓ ${v75tcN("承認してオファーを送る")}</button><button class="btn g" type="button" data-v75="offerins">↓ ${v75tcN("返信欄に入れて直す")}</button>`}<button class="btn g" type="button" data-v75="chat:route">🤖 ${v75tcN("AI商社マンに相談")}</button><button class="btn g" type="button" data-v75="reroute">${v75tcN("商流を選び直す")}</button></div>
+      ${V75TC.chat[th.id + "|route"] ? v75tcChatHtml(th.id, "route") : ""}`;
+    }
+    if (st.quote && !(c && c.route) && !snooze(c && c.routeAsk)) {
+        const rec = v75tcRecommend(f);
+        return v75tcHead("商流をそろそろ決めるタイミングです", "hi") + `<p class="nn">${v75tcE(st.why.join("。"))}。${v75tcN("見積を出す前に、直接貿易か間接貿易かを決めましょう（見積の価格と支払条件が変わります）。")}</p>
+      ${v75tcCmpHtml(f)}${v75tcRiskHtml(f)}
+      <div class="v75rec"><b>🤖 ${v75tcF("AI商社マンのおすすめ：{k}", { k: v75tcT(rec.k) })}</b><br><span data-noi18n>${rec.why.map(v75tcE).join("<br>")}</span></div>
+      <div class="rw v75acts"><button class="btn" type="button" data-v75="route:indirect">${v75tcN("間接貿易で進める")}</button><button class="btn g" type="button" data-v75="route:direct">${v75tcN("直接貿易で進める")}</button>
+        <button class="btn g" type="button" data-v75="chat:route">🤖 ${v75tcN("AI商社マンに相談")}</button><button class="btn g" type="button" data-v75="routelater">${v75tcN("あとで")}</button></div>
+      ${V75TC.chat[th.id + "|route"] ? v75tcChatHtml(th.id, "route") : ""}`;
+    }
+    if (c && c.route)
+        return `<p class="nn v75mini">${v75tcChip(c)} ${c.stg && c.stg.k === "self" ? v75tcN("自社で進める（STANDAGE には任せない）") : c.stg && c.stg.k === "other" ? v75tcN("ほかの商社に頼む") : c.offer && c.offer.sentAt ? v75tcF("オファーを送りました（{d}・手数料 {r}%）", { d: v75tcDay(c.offer.sentAt), r: c.offer.rate }) : ""} <button class="btn g v75sm" type="button" data-v75="reroute">${v75tcN("商流を選び直す")}</button>${c.stg && c.stg.k ? ` <button class="btn g v75sm" type="button" data-v75="stgagain">🏢 ${v75tcN("STANDAGE に任せる")}</button>` : ""}</p>`;
+    return "";
+}
+function v75tcPaint(id) {
+    const pn = document.getElementById("pn");
+    if (!pn || String(pn.dataset.dmid || "") !== String(id) || !document.getElementById("dmThread"))
+        return;
+    const th = v75tcThs()[id];
+    if (!th)
+        return;
+    let box = document.getElementById("v75tc");
+    let html = "";
+    try {
+        html = v75tcCardHtml(th);
+    }
+    catch (e) {
+        console.warn("v75 card", e);
+        html = "";
+    }
+    if (!html) {
+        if (box)
+            box.remove();
+        return;
+    }
+    if (!box) {
+        const anchor = document.getElementById("v72rp") || document.getElementById("bmAI") || pn.querySelector(".composer");
+        if (!anchor)
+            return;
+        anchor.insertAdjacentHTML("beforebegin", `<div class="c v75tc" id="v75tc"></div>`);
+        box = document.getElementById("v75tc");
+    }
+    box.innerHTML = html;
+    v75tcBind(id);
+}
+function v75tcRepaint(id) { try {
+    v75tcPaint(id);
+}
+catch (e) { } try {
+    if (typeof v72Paint === "function")
+        v72Paint(id);
+}
+catch (e) { } }
+function v75tcRepaintMsg() { try {
+    if (typeof cur !== "undefined" && cur === "msg" && typeof render === "function")
+        render();
+}
+catch (e) { } try {
+    if (typeof notifBadge === "function")
+        notifBadge();
+}
+catch (e) { } }
+function v75tcBind(id) {
+    const th = v75tcThs()[id];
+    if (!th)
+        return;
+    const box = document.getElementById("v75tc");
+    if (!box)
+        return;
+    const C = () => v75tcCase(id, true);
+    box.querySelectorAll("[data-v75]").forEach(b => b.onclick = async () => {
+        const a = b.dataset.v75, c = C();
+        if (a.indexOf("route:") === 0) {
+            const k = a.slice(6);
+            c.route = { k, at: Date.now(), by: v75tcWho(), why: k === "indirect" ? "国内の取引で完結・代金の回収は商社" : "自社が輸出者・利益を最大に" };
+            v75tcLog(c, "商流を決定：" + (k === "direct" ? "直接貿易" : "間接貿易"));
+            try {
+                if (typeof V73GROW !== "undefined" && V73GROW && V73GROW.log)
+                    V73GROW.log("tc", "商流を決めた：" + v75tcBName(th) + "＝" + (k === "direct" ? "直接貿易" : "間接貿易"));
+            }
+            catch (e) { }
+            if (k === "indirect" && th.v72 && th.v72.quote && !th.v72.sent)
+                v75tcApplyV72(th);
+            v75tcSave();
+            v75tcRepaint(id);
+            v75tcToast(k === "direct" ? "直接貿易で進めます" : "間接貿易で進めます。商社手数料を含めたオファーを用意しました");
+            return;
+        }
+        if (a === "routelater") {
+            c.routeAsk = { at: Date.now(), until: Date.now() + 3 * 864e5 };
+            v75tcSave();
+            v75tcRepaint(id);
+            v75tcToast("3日後にもう一度お聞きします");
+            return;
+        }
+        if (a === "closelater") {
+            c.closeAsk = { at: Date.now(), until: Date.now() + 2 * 864e5 };
+            v75tcSave();
+            v75tcRepaint(id);
+            v75tcToast("2日後にもう一度お聞きします");
+            return;
+        }
+        if (a === "reroute") {
+            c.route = null;
+            c.offer = null;
+            c.routeAsk = null;
+            v75tcLog(c, "商流を選び直す");
+            v75tcSave();
+            v75tcRepaint(id);
+            return;
+        }
+        if (a.indexOf("chat:") === 0) {
+            const k = a.slice(5);
+            const key = id + "|" + k;
+            if (!V75TC.chat[key])
+                V75TC.chat[key] = [];
+            v75tcPaint(id);
+            const q = document.getElementById("v75q-" + k);
+            if (q)
+                try {
+                    q.focus();
+                }
+                catch (e) { }
+            return;
+        }
+        if (a === "qty") {
+            const v = parseInt(String((document.getElementById("v75qty") || {}).value || "").replace(/[^\d]/g, ""), 10);
+            c.qty = v > 0 ? v : null;
+            v75tcSave();
+            v75tcPaint(id);
+            return;
+        }
+        if (a === "offer" || a === "offerins") {
+            const O = v75tcOffer(th, c.qty || null);
+            if (O.none)
+                return;
+            const body = v75tcOfferText(O, th);
+            c.offer = { at: Date.now(), rate: O.F.rate, pay: v75tcPayJa(O.F), cur: O.Q.cur, qty: c.qty || null, lines: O.Q.lines.map(l => ({ sku: l.sku, base: l.hit && l.qty != null ? v75tcMoney(l.hit.cur, l.hit.base != null ? l.hit.base : l.hit.n) : l.tiers.map(t => t.label + " " + v75tcMoney(t.cur, t.base)).join(" / "), price: l.hit && l.qty != null ? v75tcMoney(l.hit.cur, l.hit.n) : l.tiers.map(t => t.label + " " + v75tcMoney(t.cur, t.n)).join(" / ") })), total: O.Q.total };
+            V75TC.pend = { id: String(id), body, at: Date.now(), allow: v75tcAllow(O) };
+            v75tcSave();
+            const r = document.getElementById("dmR");
+            if (!r)
+                return;
+            r.value = body;
+            try {
+                r.dispatchEvent(new Event("input"));
+            }
+            catch (e) { }
+            if (a === "offer") {
+                const g = document.getElementById("dmRgo");
+                if (g)
+                    g.click();
+            }
+            else {
+                try {
+                    r.focus();
+                }
+                catch (e) { }
+                v75tcToast("返信欄に入れました。直してから送信してください");
+            }
+            return;
+        }
+        if (a === "stgyes" || a === "stgagain") {
+            c.stg = { k: "yes", at: Date.now(), by: v75tcWho() };
+            if (!c.route || c.route.k !== "indirect")
+                c.route = { k: "indirect", at: Date.now(), by: v75tcWho(), why: "STANDAGE に商社業務を任せる" };
+            v75tcLog(c, "STANDAGE に任せると決定");
+            v75tcSave();
+            v75tcRepaint(id);
+            return;
+        }
+        if (a === "stgback") {
+            c.stg = null;
+            v75tcSave();
+            v75tcRepaint(id);
+            return;
+        }
+        if (a === "stgself") {
+            c.stg = { k: "self", at: Date.now(), by: v75tcWho() };
+            v75tcLog(c, "自社で進める（STANDAGE に任せない）");
+            v75tcSave();
+            v75tcRepaint(id);
+            return;
+        }
+        if (a === "stgother") {
+            c.stg = { k: "other", at: Date.now(), by: v75tcWho() };
+            v75tcLog(c, "ほかの商社に頼む");
+            v75tcSave();
+            v75tcRepaint(id);
+            return;
+        }
+        if (a === "grant") {
+            const sc = {};
+            box.querySelectorAll("[data-v75sc]").forEach(x => { sc[x.dataset.v75sc] = x.checked ? 1 : 0; });
+            sc.prod = 1;
+            sc.thread = 1;
+            const first = String((document.getElementById("v75first") || {}).value || "").trim().slice(0, 1000);
+            b.disabled = true;
+            b.textContent = v75tcT("依頼しています…");
+            c.grant = { sc, at: Date.now(), by: v75tcWho() };
+            let r = null;
+            try {
+                r = await v75tcSend(th, sc, first);
+            }
+            catch (e) {
+                r = { ok: false, msg: String(e && e.message || e) };
+            }
+            if (!r || !r.ok) {
+                c.grant = null;
+                v75tcSave();
+                v75tcRepaint(id);
+                v75tcToast(r && r.reason === "old" ? "サーバーの準備ができていないため、まだ STANDAGE に送れません（STANDAGE にお問い合わせください）" : "STANDAGE に送れませんでした（" + ((r && r.msg) || "通信") + "）");
+                return;
+            }
+            v75tcLog(c, "権限を付与：" + Object.keys(sc).filter(k => sc[k]).join(","));
+            v75tcSave();
+            v75tcRepaint(id);
+            v75tcToast(r.sim ? "🏢 STANDAGE に依頼しました（見本）" : r.local ? "🏢 STANDAGE に「やりとり」で知らせました（担当からご連絡します）" : "🏢 STANDAGE に依頼しました（依頼番号 " + r.id + "）。担当が決まると「やりとり」で話せます");
+            return;
+        }
+        if (a === "revoke") {
+            if (!confirm(v75tcT("STANDAGE の権限を外しますか？（案件の情報は STANDAGE の画面から消えます。やり取りの記録は残ります）")))
+                return;
+            await v75tcRevoke(th);
+            return;
+        }
+        if (a === "openmsg") {
+            try {
+                if (typeof closeDW === "function")
+                    closeDW();
+                go("msg");
+                setTimeout(() => { try {
+                    const k = v75tcRootKey(c);
+                    if (typeof thOpen === "function")
+                        thOpen(k);
+                }
+                catch (e) { } }, 300);
+            }
+            catch (e) { }
+            return;
+        }
+        if (a === "peek") {
+            v75tcPeek(c);
+            return;
+        }
+    });
+    box.querySelectorAll("[data-v75q]").forEach(b => b.onclick = () => v75tcAskRun(id, b.closest("[data-v75chat]").dataset.v75chat, b.dataset.v75q));
+    box.querySelectorAll("[data-v75go]").forEach(b => b.onclick = () => { const k = b.dataset.v75go, q = document.getElementById("v75q-" + k); const v = String((q && q.value) || "").trim(); if (v)
+        v75tcAskRun(id, k, v); });
+    box.querySelectorAll(".v75ask input").forEach(i => i.onkeydown = e => { if (e.key === "Enter") {
+        e.preventDefault();
+        const k = i.id.replace("v75q-", "");
+        const v = String(i.value || "").trim();
+        if (v)
+            v75tcAskRun(id, k, v);
+    } });
+}
+async function v75tcAskRun(id, kind, q) {
+    const th = v75tcThs()[id];
+    if (!th)
+        return;
+    const key = id + "|" + kind;
+    V75TC.chat[key] = (V75TC.chat[key] || []).concat([{ w: "u", t: q }]).slice(-12);
+    V75TC.busy["ask|" + id] = 1;
+    v75tcPaint(id);
+    let r;
+    try {
+        r = await v75tcAsk(th, q, kind);
+    }
+    finally {
+        delete V75TC.busy["ask|" + id];
+    }
+    V75TC.chat[key].push({ w: "a", t: r.a, how: r.how });
+    const c = v75tcCase(id, true);
+    v75tcLog(c, "AI商社マンに相談：" + q.slice(0, 60));
+    v75tcSave();
+    v75tcPaint(id);
+    try {
+        if (typeof logU === "function")
+            logU("ai", "商流の相談:" + kind + "/" + r.how);
+    }
+    catch (e) { }
+}
+function v75tcApplyV72(th) {
+    try {
+        const P = th && th.v72;
+        if (!P || !P.quote || P.sent || P.v75)
+            return false;
+        const c = v75tcCase(th.id, false);
+        if (!c || !c.route || c.route.k !== "indirect")
+            return false;
+        const old = typeof v72QuoteText === "function" ? v72QuoteText(P.quote) : "";
+        const F = v75tcFee(v75tcCty(th), P.quote.cur, V75TC_FEE.adv);
+        v75tcMark(P.quote, F);
+        const nw = typeof v72QuoteText === "function" ? v72QuoteText(P.quote) : "";
+        if (old && nw && P.draft.indexOf(old) >= 0)
+            P.draft = P.draft.replace(old, nw);
+        else if (nw)
+            P.draft = P.draft.replace(/--- Quotation[\s\S]*?\n---/, nw.replace(/\n$/, ""));
+        P.v75 = { rate: F.rate, adv: F.adv, after: F.after, at: Date.now() };
+        try {
+            if (typeof v72Leak === "function")
+                P.leak = v72Leak(P.draft, P.quote);
+        }
+        catch (e) { }
+        v75tcSave();
+        return true;
+    }
+    catch (e) {
+        console.warn("v75 v72", e);
+        return false;
+    }
+}
+function v75tcPeek(c) {
+    const S = V75TC.sim[c.req.id];
+    const th = v75tcThs()[c.id];
+    const P = (S && S.pkg) || (th ? v75tcPkg(th, (c.grant && c.grant.sc) || { prod: 1, thread: 1 }) : null);
+    if (!P)
+        return;
+    V75TC.desk.data = { id: c.req.id, st: c.req.st, asg: c.req.asg, co: P.co, who: v75tcWho(), item: P.item, buyer: { co: P.buyer.name, cty: P.buyer.cty, biz: P.buyer.biz }, route: P.route && P.route.k, at: c.req.at, pkg: P, msgs: [], views: [], sim: 1 };
+    try {
+        openDW(`<div class="v75peek"><h3>👁 ${v75tcN("STANDAGE 側の画面（見本）")}</h3><p class="nn">${v75tcN("STANDAGE の社員のアカウントでは、商社デスクでこの案件をこう読めます（体験用の見本・実際には届いていません）。")}</p>${v75tcDetailHtml(V75TC.desk.data, true)}</div>`);
+        if (typeof dwChrome === "function")
+            dwChrome();
+    }
+    catch (e) {
+        console.warn("v75 peek", e);
+    }
+}
+function v75tcDeskPage() { return { id: "tcd", ly: "⑥", nm: "商社デスク（STANDAGE）", grp: "STANDAGE", nw: 1, free: 1, ic: '<path d="M3 21h18M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6M9 10h.01M15 10h.01"/>' }; }
+function v75tcDeskEnsure() { try {
+    if (typeof PAGES === "undefined" || !Array.isArray(PAGES))
+        return;
+    let p = PAGES.find(x => x && x.id === "tcd");
+    if (!p) {
+        p = v75tcDeskPage();
+        PAGES.push(p);
+    }
+    p.hide = v75tcStaff() ? 0 : 1;
+}
+catch (e) { } }
+function v75tcDeskHtml(p) {
+    const K = V75TC.desk;
+    const me = v75tcWho();
+    const L = (K.list || []).filter(r => K.filt === "all" || (K.filt === "mine" && r.mine) || (K.filt === "open" && r.st === "open"));
+    const head = (typeof ph === "function") ? ph(p, "<b>この画面でできること：</b>お客様が「STANDAGE に任せる」と決めて権限を付けた案件の一覧です。案件の情報（商品・価格・バイヤーとのやり取り・AI商社マンの判断）を読み、担当を割り当てると、お客様の「やりとり」で話せます。社員側の AI商社マンは、開いた依頼の情報を全部読んで答えます。", "") : `<h1>${v75tcN("商社デスク（STANDAGE）")}</h1>`;
+    return head + `<div class="v75desk"><div class="c v75list"><div class="rw" style="justify-content:space-between;gap:6px;flex-wrap:wrap"><h3>🏢 ${v75tcN("商社業務の依頼")} <span class="p on">${(K.list || []).length}</span></h3>
+      <div class="th-seg">${[["all", "すべて"], ["open", "担当待ち"], ["mine", "自分の担当"]].map(x => `<button type="button" data-v75f="${x[0]}" aria-pressed="${K.filt === x[0]}">${v75tcN(x[1])}</button>`).join("")}</div>
+      <button class="btn g v75sm" type="button" id="v75dRef">🔄 ${v75tcN("最新にする")}</button></div>
+    ${K.err ? `<p class="nn v75warn">⚠ ${v75tcE(K.err)}</p>` : ""}${K.busy ? `<p class="nn"><span class="spin"></span> ${v75tcN("読み込んでいます…")}</p>` : ""}
+    <div class="v75rows">${L.map(r => `<button type="button" class="v75row ${K.open === r.id ? "on" : ""}" data-v75open="${v75tcE(r.id)}"><b>${v75tcE(r.co)}</b><span>${v75tcE(r.item || "")}</span>
+      <span>${v75tcE([r.buyer && r.buyer.cty, r.buyer && r.buyer.biz].filter(Boolean).join("・"))}${r.buyer && r.buyer.co ? "（" + v75tcE(r.buyer.co) + "）" : ""}</span>
+      <span class="v75st v75st-${v75tcE(r.st)}">${v75tcN(r.st === "open" ? "担当待ち" : r.st === "assigned" ? "担当：" + ((r.asg && r.asg.name) || "") : r.st === "revoked" ? "権限が外された" : r.st)}</span>
+      <span class="v75sub">${v75tcE(r.id)}・${v75tcE(v75tcDay(r.at))}${r.last ? "・" + v75tcN("最新") + " " + v75tcE(v75tcDay(r.last.at)) : ""}</span></button>`).join("") || `<p class="nn">${v75tcN(K.busy ? "" : "依頼はまだありません。お客様が「STANDAGE に任せる」と決めると、ここに届きます。")}</p>`}</div></div>
+    <div class="c v75det" id="v75det">${K.data ? v75tcDetailHtml(K.data, false) : `<p class="nn">${v75tcN("左の一覧から依頼を開いてください。")}</p>`}</div></div>`;
+}
+function v75tcDetailHtml(R, peek) {
+    const P = R.pkg || null, B = R.buyer || {};
+    const sec = (t, h) => h ? `<details class="v75sec" open><summary>${v75tcN(t)}</summary>${h}</details>` : "";
+    const kv = (o) => `<table class="v75kv"><tbody>${o.filter(x => x[1] != null && String(x[1]).trim() !== "").map(x => `<tr><th>${v75tcN(x[0])}</th><td data-noi18n>${v75tcE(x[1])}</td></tr>`).join("")}</tbody></table>`;
+    const tbl = (cols, rows) => cols && cols.length ? `<div class="tw"><table><thead><tr>${cols.map(c => `<th>${v75tcE(c)}</th>`).join("")}</tr></thead><tbody>${(rows || []).map(r => `<tr>${(r || []).map(v => `<td data-noi18n>${v75tcE(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>` : "";
+    const staff = V75TC.desk.staff || [];
+    let h = `<div class="rw" style="justify-content:space-between;gap:6px;flex-wrap:wrap"><h3>${v75tcE(R.co)}／${v75tcE(R.item || "")}</h3><span class="p on">${v75tcE(R.id)}</span></div>
+    <p class="nn">${v75tcE([B.co, B.cty, B.biz].filter(Boolean).join("・"))}｜${v75tcN(R.route === "direct" ? "直接貿易（相談）" : "間接貿易（STANDAGE が輸出者）")}｜${v75tcE(v75tcF("依頼 {d}（{w}）", { d: v75tcDay(R.at), w: R.who || "" }))}</p>`;
+    if (R.st === "revoked")
+        return h + `<p class="nn v75warn">🔒 ${v75tcN("お客様が権限を外したため、案件の情報は読めません（やり取りの記録だけ残っています）。")}</p>` + v75tcDeskMsgs(R, true);
+    if (!peek)
+        h += `<div class="rw v75acts v75asg"><span class="lbl">${v75tcN("担当")}：</span><b>${v75tcE((R.asg && R.asg.name) || v75tcT("未定"))}</b>
+      <button class="btn" type="button" data-v75d="self">🙋 ${v75tcN("自分が担当する")}</button>
+      ${staff.length ? `<select class="sel" id="v75dTo"><option value="">${v75tcN("社員を選ぶ")}</option>${staff.map(s => `<option value="${v75tcE(s.kid)}">${v75tcE(s.name)}</option>`).join("")}</select><button class="btn g" type="button" data-v75d="to">${v75tcN("担当をアサイン")}</button>` : ""}</div>`;
+    if (!P)
+        return h + `<p class="nn">${v75tcN("案件の情報を読み込んでいます…")}</p>`;
+    h += sec("🤖 引継ぎメモ", `<pre class="v75memo" data-noi18n>${v75tcE(R.aiMemo || P.memo || "")}</pre>${peek ? "" : `<div class="rw v75acts"><button class="btn g" type="button" data-v75d="memo">🤖 ${v75tcN(R.aiMemo ? "AI商社マンに作り直させる" : "AI商社マンに引継ぎメモを作らせる")}</button></div>`}`);
+    h += sec("🤖 この案件について AI商社マンに聞く", `${(V75TC.desk.ask || []).filter(x => x.id === R.id).map(m => `<div class="v75m v75m-${m.w}">${m.w === "u" ? "" : "🤖 "}${v75tcE(m.t).replace(/\n/g, "<br>")}</div>`).join("")}
+    ${V75TC.desk.asking ? `<p class="nn"><span class="spin"></span> ${v75tcN("AI商社マンが案件の情報を読んでいます…")}</p>` : ""}
+    <div class="v75sug">${["合意しかけている条件は？", "まだ決まっていないことは？", "相手が気にしていることは？", "PI を出す前に確かめることは？"].map(s => `<button class="q" type="button" data-v75dq="${v75tcE(s)}">${v75tcN(s)}</button>`).join("")}</div>
+    <div class="rw v75ask"><input class="sel" id="v75dQ" placeholder="${v75tcE(v75tcT("例：相手の希望する数量と納期は？"))}"><button class="btn g" type="button" data-v75d="ask">${v75tcN("聞く")}</button></div>`);
+    if (P.thread)
+        h += sec(v75tcF("バイヤーとのやり取り（{n}件）", { n: P.thread.n }), `<div class="v75thr">${P.thread.msgs.map(m => `<div class="v75b v75b-${m.w}"><span class="v75sub">${v75tcN(m.w === "by" ? "Buyer" : "お客様")}・${v75tcE(m.t || "")}</span>${m.subj ? `<b data-noi18n>${v75tcE(m.subj)}</b><br>` : ""}<span data-noi18n>${v75tcE(m.body).replace(/\n/g, "<br>")}</span>${m.tr ? `<div class="v75sub" data-noi18n>🌐 ${v75tcE(m.tr)}</div>` : ""}</div>`).join("")}</div>`);
+    if (P.price)
+        h += sec("価格表・見積・オファー", tbl(P.price.cols, P.price.rows) + (P.price.offer ? kv([["オファー（手数料込み）", (P.price.offer.lines || []).map(l => l.sku + "：" + l.price + "（価格表 " + l.base + "）").join("／")], ["商社手数料（暫定）", P.price.offer.rate + "%"], ["支払条件", P.price.offer.pay], ["送付", P.price.offer.sentAt ? v75tcDay(P.price.offer.sentAt) : "未送付"]]) : "") + (P.price.quote ? kv([["返信エージェントの見積", (P.price.quote.total != null ? P.price.quote.cur + P.price.quote.total : "") + "（" + (P.price.quote.basis || "") + (P.price.quote.v75 ? "・手数料 " + P.price.quote.v75.rate + "% 込み" : "") + "）"], ["送付", P.price.quote.sent ? v75tcDay(P.price.quote.sent) : "未送付"]]) : ""));
+    if (P.prod)
+        h += sec("商品情報", kv([["HS コード", P.prod.hs], ["産地", P.prod.origin], ["MOQ", P.prod.moq], ["リードタイム", P.prod.lead], ["取引条件", [P.prod.term, P.prod.pol].filter(Boolean).join(" ")], ["支払条件（登録）", P.prod.pay], ["認証", P.prod.cert], ["賞味期限", P.prod.shelf], ["強み", (P.prod.strengths || []).map(s => s[0]).filter(Boolean).join("・")]]) + tbl(P.prod.dims && P.prod.dims.cols, P.prod.dims && P.prod.dims.rows) + tbl(P.prod.comp && P.prod.comp.cols, P.prod.comp && P.prod.comp.rows));
+    if (P.buyerInfo)
+        h += sec("バイヤーの情報", kv(Object.keys(P.buyerInfo).filter(k => typeof P.buyerInfo[k] !== "object").slice(0, 20).map(k => [k, P.buyerInfo[k]])));
+    if (P.deals && P.deals.length)
+        h += sec("商談の記録", tbl(["日付", "状況", "価格", "数量", "条件", "メモ"], P.deals.map(r => [r.d, r.st, r.price, r.lot, r.term, r.note])));
+    if (P.reg)
+        h += sec("規制の調べ", `<pre class="v75memo" data-noi18n>${v75tcE(JSON.stringify(P.reg.data || P.reg, null, 1).slice(0, 4000))}</pre>`);
+    if (P.ship)
+        h += sec("出荷の条件", kv([["取引条件", P.ship.term], ["港", P.ship.pol], ["支払条件", P.ship.pay], ["リードタイム", P.ship.lead], ["MOQ", P.ship.moq]]));
+    if (P.ai)
+        h += sec("AI商社マンの判断の記録", kv([["まとまりの見込み", P.ai.stage.score + " 点（" + (P.ai.stage.cwhy || []).join("・") + "）"], ["商社手数料（暫定）", P.ai.fee.rate + "%（" + P.ai.fee.pay + "・OECD " + P.ai.fee.oecd + "・政策金利 " + (P.ai.fee.policy == null ? "要確認" : P.ai.fee.policy + "%") + "・" + P.ai.fee.asof + "）"]]) + `<ul class="v75log">${(P.ai.log || []).map(x => `<li>${v75tcE(v75tcDay(x.at))}　${v75tcE(x.t)}</li>`).join("")}</ul>`);
+    if (P.docs && P.docs.length)
+        h += sec("取り込んだ資料（ファイル名）", `<p class="nn" data-noi18n>${P.docs.map(v75tcE).join("／")}</p>`);
+    h += v75tcDeskMsgs(R, peek);
+    return h;
+}
+function v75tcDeskMsgs(R, ro) {
+    const M = R.msgs || [];
+    return `<details class="v75sec" open><summary>💬 ${v75tcN("お客様とのやりとり")}（${M.length}）</summary>
+  <div class="v75thr">${M.map(m => `<div class="v75b v75b-${m.by === "s" ? "me" : m.by === "sys" ? "sys" : "by"}"><span class="v75sub">${v75tcE(m.by === "s" ? "STANDAGE " + m.name : m.by === "sys" ? "STANDAGE" : m.name)}・${v75tcE(v75tcDay(m.at))}</span><span data-noi18n>${v75tcE(m.t).replace(/\n/g, "<br>")}</span></div>`).join("") || `<p class="nn">${v75tcN(R.asg ? "まだやり取りはありません。" : "担当を割り当てると、お客様の「やりとり」にスレッドができます。")}</p>`}</div>
+  ${ro ? "" : `<div class="rw v75ask"><textarea class="sel" id="v75dMsg" rows="2" placeholder="${v75tcE(v75tcT("お客様へのメッセージ（お客様の「やりとり」に届きます）"))}"></textarea><button class="btn" type="button" data-v75d="send">${v75tcN("送る")}</button></div>`}</details>`;
+}
+async function v75tcDeskLoad(force) {
+    const K = V75TC.desk;
+    if (K.busy)
+        return;
+    if (!force && Date.now() - K.at < 25000)
+        return;
+    K.busy = 1;
+    K.at = Date.now();
+    v75tcDeskPaint();
+    try {
+        const r = await v75tcCall("tc_list", {});
+        if (r && r.ok) {
+            K.list = r.reqs || [];
+            K.err = "";
+        }
+        else
+            K.err = r && r.reason === "old" ? v75tcT("同期サーバーが古いため、依頼を読めません（v2.28 が要ります）") : (r && r.msg) || v75tcT("読み込めませんでした");
+        if (!K.staff.length) {
+            const s = await v75tcCall("tc_staff", {});
+            if (s && s.ok)
+                K.staff = s.staff || [];
+        }
+        if (K.open)
+            await v75tcDeskOpen(K.open, true);
+    }
+    finally {
+        K.busy = 0;
+    }
+    v75tcDeskPaint();
+}
+async function v75tcDeskOpen(id, quiet) {
+    const K = V75TC.desk;
+    K.open = id;
+    if (!quiet)
+        v75tcDeskPaint();
+    const keep = K.data && K.data.id === id ? K.data : null;
+    const r = await v75tcCall("tc_get", { id, pkg: 1, view: 1 });
+    if (!r || !r.ok) {
+        K.err = (r && r.msg) || v75tcT("読み込めませんでした");
+        v75tcDeskPaint();
+        return;
+    }
+    K.data = Object.assign({}, r, { aiMemo: keep && keep.aiMemo || "" });
+    v75tcDeskPaint();
+}
+function v75tcDeskPaint() {
+    if (typeof cur === "undefined" || cur !== "tcd")
+        return;
+    const w = document.getElementById("well");
+    if (!w)
+        return;
+    const p = (typeof PAGES !== "undefined" && PAGES.find(x => x.id === "tcd")) || v75tcDeskPage();
+    const y = window.scrollY;
+    w.innerHTML = v75tcDeskHtml(p);
+    v75tcDeskBind();
+    try {
+        window.scrollTo(0, y);
+    }
+    catch (e) { }
+}
+function v75tcDeskBind() {
+    const K = V75TC.desk, w = document.getElementById("well");
+    if (!w)
+        return;
+    w.querySelectorAll("[data-v75f]").forEach(b => b.onclick = () => { K.filt = b.dataset.v75f; v75tcDeskPaint(); });
+    const rf = document.getElementById("v75dRef");
+    if (rf)
+        rf.onclick = () => v75tcDeskLoad(true);
+    w.querySelectorAll("[data-v75open]").forEach(b => b.onclick = () => v75tcDeskOpen(b.dataset.v75open));
+    w.querySelectorAll("[data-v75dq]").forEach(b => b.onclick = () => v75tcDeskAsk(b.dataset.v75dq));
+    w.querySelectorAll("[data-v75d]").forEach(b => b.onclick = async () => {
+        const a = b.dataset.v75d, R = K.data;
+        if (!R)
+            return;
+        if (a === "self" || a === "to") {
+            const to = a === "to" ? String((document.getElementById("v75dTo") || {}).value || "") : "";
+            if (a === "to" && !to) {
+                v75tcToast("社員を選んでください");
+                return;
+            }
+            const r = await v75tcCall("tc_assign", a === "self" ? { id: R.id, self: 1 } : { id: R.id, to });
+            if (!r || !r.ok) {
+                v75tcToast("割り当てられませんでした（" + ((r && r.msg) || "通信") + "）");
+                return;
+            }
+            v75tcToast("担当を割り当てました：" + ((r.asg && r.asg.name) || ""));
+            await v75tcDeskOpen(R.id, true);
+            v75tcDeskLoad(true);
+            return;
+        }
+        if (a === "send") {
+            const ta = document.getElementById("v75dMsg");
+            const t = String((ta && ta.value) || "").trim();
+            if (!t)
+                return;
+            b.disabled = true;
+            const r = await v75tcCall("tc_msg", { id: R.id, t });
+            b.disabled = false;
+            if (!r || !r.ok) {
+                v75tcToast("送れませんでした（" + ((r && r.msg) || "通信") + "）");
+                return;
+            }
+            if (ta)
+                ta.value = "";
+            R.msgs = (R.msgs || []).concat([r.msg]);
+            v75tcDeskPaint();
+            v75tcToast("お客様の「やりとり」に送りました");
+            return;
+        }
+        if (a === "ask") {
+            const q = String((document.getElementById("v75dQ") || {}).value || "").trim();
+            if (q)
+                v75tcDeskAsk(q);
+            return;
+        }
+        if (a === "memo") {
+            b.disabled = true;
+            b.textContent = v75tcT("作っています…");
+            R.aiMemo = await v75tcDeskMemoAi(R);
+            v75tcDeskPaint();
+            return;
+        }
+    });
+    const q = document.getElementById("v75dQ");
+    if (q)
+        q.onkeydown = e => { if (e.key === "Enter") {
+            e.preventDefault();
+            const v = String(q.value || "").trim();
+            if (v)
+                v75tcDeskAsk(v);
+        } };
+}
+function v75tcPkgText(P, n) { try {
+    const o = Object.assign({}, P);
+    return JSON.stringify(o).slice(0, n || 14000);
+}
+catch (e) {
+    return "";
+} }
+async function v75tcDeskMemoAi(R) {
+    const P = R.pkg;
+    if (!P)
+        return "";
+    if (!v75tcAi())
+        return P.memo;
+    try {
+        const r = await llmAsk(`お客様から STANDAGE が商社業務（間接貿易の輸出者）を引き継ぐ案件です。下の案件の情報だけを根拠に、STANDAGE の担当者向けの引継ぎメモを日本語で作ってください。
+見出し：■要点（3行）■交渉の経緯（日付つき）■合意しかけている条件（価格・数量・取引条件・支払条件・納期）■まだ決まっていないこと■相手が気にしていること■リスク（国・代金の回収・規制・物流）■次の一手（5つ・担当がすぐ動ける形）
+案件の情報に無いことは書かない（分からないことは「不明」）。金額は案件の情報の数字だけ。
+=== 案件の情報（JSON）===\n${v75tcPkgText(P, 16000)}`, 2200, { sys: "あなたは STANDAGE 社内の AI商社マン。お客様から引き継いだ案件の情報を全部読み、担当者が翌日から動けるように整理する。事実は案件の情報だけ。", noWeb: 1, timeout: 120000, task: "tcdesk" });
+        const t = String((r && r.txt) || "").trim();
+        return t || P.memo;
+    }
+    catch (e) {
+        v75tcToast("AI で作れなかったので、定型のメモを出しています");
+        return P.memo;
+    }
+}
+async function v75tcDeskAsk(q) {
+    const K = V75TC.desk, R = K.data;
+    if (!R || !R.pkg)
+        return;
+    K.ask = (K.ask || []).concat([{ id: R.id, w: "u", t: q }]).slice(-30);
+    K.asking = 1;
+    v75tcDeskPaint();
+    let a = "";
+    try {
+        if (v75tcAi()) {
+            const r = await llmAsk(`=== 案件の情報（お客様が STANDAGE に見せた範囲・JSON）===\n${v75tcPkgText(R.pkg, 16000)}\n=== お客様とのやりとり ===\n${(R.msgs || []).slice(-20).map(m => (m.by === "s" ? "[STANDAGE] " : m.by === "sys" ? "[記録] " : "[お客様] ") + m.t).join("\n").slice(0, 3000)}\n\n=== 質問 ===\n${q}\n\n案件の情報だけを根拠に、日本語で短く答える。無いことは「案件の情報にありません」と書く。`, 1200, { sys: "あなたは STANDAGE 社内の AI商社マン。お客様から引き継いだ案件の情報を全部読み、担当者の質問に事実だけで答える。", noWeb: 1, timeout: 90000, task: "tcdesk" });
+            a = String((r && r.txt) || "").trim();
+        }
+    }
+    catch (e) {
+        a = "";
+    }
+    if (!a)
+        a = v75tcDeskTpl(q, R);
+    K.ask.push({ id: R.id, w: "a", t: a });
+    K.asking = 0;
+    v75tcDeskPaint();
+}
+function v75tcDeskTpl(q, R) {
+    const P = R.pkg || {}, msgs = (P.thread && P.thread.msgs) || [];
+    const words = String(q).replace(/[？?。、は が を に の と で も]/g, " ").split(/\s+/).filter(x => x.length >= 2);
+    const hit = msgs.filter(m => words.some(w => String(m.body || "").toLowerCase().includes(w.toLowerCase()))).slice(-3);
+    return P.memo + "\n\n" + (hit.length ? "関係しそうなやり取り：\n" + hit.map(m => "・" + (m.w === "by" ? "Buyer" : "お客様") + "（" + m.t + "）：" + String(m.body).replace(/\s+/g, " ").slice(0, 200)).join("\n") : "") + "\n（AI につながっていないため、引継ぎメモとやり取りの検索で答えています）";
+}
+function v75tcAdmInject() {
+    try {
+        const sel = document.getElementById("nrole");
+        if (sel && !sel.querySelector('option[value="stg"]')) {
+            sel.insertAdjacentHTML("beforeend", `<option value="stg">🏢 STANDAGE 社員（商社デスク）</option>`);
+            sel.title = "物流会社を選ぶと、レート管理・AI物流マンの見積対応画面になります。STANDAGE 社員は、お客様が任せた商社業務の依頼（商社デスク）を読めます";
+        }
+        document.querySelectorAll("#accounts td b").forEach(b => { const tr = b.closest("tr"); if (!tr || tr.dataset.v75)
+            return; tr.dataset.v75 = 1; });
+        if (!document.getElementById("v75adm")) {
+            const acc = document.getElementById("accounts");
+            const anchor = document.getElementById("v16adm") || acc;
+            if (!anchor)
+                return;
+            anchor.insertAdjacentHTML("beforebegin", `<div class="c" id="v75adm" style="margin-bottom:11px"><div class="rw" style="justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:flex-start"><div><h3>🏢 商社業務の依頼（STANDAGE 商社デスク） <span class="nt">21.75</span></h3>
+      <p class="nn">お客様が「STANDAGE に任せる」と決めて権限を付けた案件です。社員のアカウント（種類「STANDAGE 社員（商社デスク）」で発行）でも同じ一覧を読み、担当を割り当てられます。同期サーバー v2.28 が要ります。</p></div>
+      <button class="btn" type="button" id="v75admGo">🔄 一覧を取得</button></div><div id="v75admOut" style="margin-top:8px"></div></div>`);
+            const go = document.getElementById("v75admGo");
+            if (go)
+                go.onclick = v75tcAdmLoad;
+            v75tcAdmPaint();
+        }
+    }
+    catch (e) {
+        console.warn("v75 adm", e);
+    }
+}
+async function v75tcAdmLoad() {
+    const A = V75TC.adm;
+    A.busy = 1;
+    A.err = "";
+    v75tcAdmPaint();
+    try {
+        const r = await v75tcCall("tc_list", {});
+        if (!r || !r.ok) {
+            A.err = r && r.reason === "old" ? "同期サーバーが v2.28 ではありません（tc_list がありません）" : (r && r.msg) || "読めませんでした";
+            return;
+        }
+        const s = await v75tcCall("tc_staff", {});
+        A.staff = (s && s.ok && s.staff) || [];
+        A.list = r.reqs || [];
+        A.at = Date.now();
+    }
+    finally {
+        A.busy = 0;
+        v75tcAdmPaint();
+    }
+}
+function v75tcAdmPaint() {
+    const out = document.getElementById("v75admOut");
+    if (!out)
+        return;
+    const A = V75TC.adm, staff = A.staff || [];
+    if (A.busy) {
+        out.innerHTML = `<p class="nn">取得中…</p>`;
+        return;
+    }
+    if (A.err) {
+        out.innerHTML = `<p class="nn" style="color:var(--crit)">${v75tcE(A.err)}</p>`;
+        return;
+    }
+    if (!A.at) {
+        out.innerHTML = "";
+        return;
+    }
+    out.innerHTML = `<div class="tw" style="max-height:none"><table><thead><tr><th>依頼番号</th><th>お客様</th><th>商品</th><th>相手</th><th>状態</th><th>担当</th><th>やり取り</th><th></th></tr></thead><tbody>
+    ${(A.list || []).map(x => `<tr><td><code style="font-size:10px">${v75tcE(x.id)}</code><br><span style="font-size:10px;color:var(--ink-3)">${v75tcE(v75tcDay(x.at))}</span></td><td><b>${v75tcE(x.co)}</b><br><span style="font-size:10px">${v75tcE(x.who)}</span></td><td>${v75tcE(x.item || "")}</td>
+      <td>${v75tcE([x.buyer && x.buyer.cty, x.buyer && x.buyer.biz].filter(Boolean).join("・"))}</td><td>${v75tcE(x.st === "open" ? "担当待ち" : x.st === "assigned" ? "担当あり" : x.st === "revoked" ? "権限が外された" : x.st)}</td>
+      <td>${x.st === "revoked" ? "—" : `<select class="sel" data-v75aa="${v75tcE(x.id)}" style="font-size:11px;padding:3px 6px"><option value="">${v75tcE((x.asg && x.asg.name) || "未定")}</option>${staff.map(m => `<option value="${v75tcE(m.kid)}">${v75tcE(m.name)}</option>`).join("")}</select>`}</td>
+      <td class="num">${x.nmsg || 0}</td><td>${x.st === "revoked" ? "" : `<button class="btn g" type="button" style="padding:2px 8px;font-size:10px" data-v75av="${v75tcE(x.id)}">中身を見る</button>`}</td></tr>`).join("") || '<tr><td colspan="8" style="text-align:center;color:var(--ink-3);padding:14px">依頼はまだありません</td></tr>'}</tbody></table></div>
+    <p class="nn" style="margin-top:6px">社員のアカウント ${staff.length} 件（${staff.map(m => v75tcE(m.name)).join("・") || "なし"}）。新しい依頼は NOTIFY_TC_TO（無ければ FS の通知先）へメールで知らせます（中身は書きません）。取得 ${new Date(A.at).toLocaleTimeString()}</p>`;
+    out.querySelectorAll("[data-v75aa]").forEach(sl => sl.onchange = async () => { if (!sl.value)
+        return; const r2 = await v75tcCall("tc_assign", { id: sl.dataset.v75aa, to: sl.value }); v75tcToast(r2 && r2.ok ? "担当を割り当てました：" + ((r2.asg && r2.asg.name) || "") : "割り当てられませんでした（" + ((r2 && r2.msg) || "通信") + "）"); v75tcAdmLoad(); });
+    out.querySelectorAll("[data-v75av]").forEach(b => b.onclick = async () => {
+        const g = await v75tcCall("tc_get", { id: b.dataset.v75av, pkg: 1 });
+        if (!g || !g.ok) {
+            v75tcToast("読めませんでした");
+            return;
+        }
+        try {
+            openDW(`<div class="v75peek"><h3>🏢 ${v75tcE(g.co)}／${v75tcE(g.item || "")}</h3>${v75tcDetailHtml(Object.assign({}, g), true)}</div>`);
+            if (typeof dwChrome === "function")
+                dwChrome();
+        }
+        catch (e) { }
+    });
+}
+(function () {
+    try {
+        const st = document.createElement("style");
+        st.textContent = `
+.v75tc{border:1px solid var(--or);background:linear-gradient(0deg,var(--surface),var(--or-soft));margin-top:9px}
+.v75hd{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:6px}.v75hd b{font-size:13.5px}
+.v75chip{display:inline-block;border-radius:999px;padding:1px 9px;font-size:11px;font-weight:700;border:1px solid var(--line)}.v75-indirect{background:var(--bl-soft)}.v75-direct{background:var(--or-soft)}
+.v75cmp,.v75fee,.v75kv{width:100%;border-collapse:collapse;font-size:11.5px;margin:6px 0}.v75cmp th,.v75cmp td,.v75fee td,.v75kv th,.v75kv td{border-bottom:1px solid var(--line-2);padding:4px 6px;text-align:left;vertical-align:top}
+.v75cmp thead th{background:var(--sunk)}.v75fee .n{text-align:right;white-space:nowrap}.v75fee .v75tot td{font-weight:800;border-top:2px solid var(--ink)}.v75kv th{width:30%;color:var(--ink-2);font-weight:600}
+.v75rec{border-left:3px solid var(--or);padding:6px 9px;margin:7px 0;font-size:12px;background:var(--surface)}
+.v75acts{gap:6px;flex-wrap:wrap;margin-top:8px}.v75sm{padding:2px 9px;font-size:11px}.v75sub{color:var(--ink-3);font-size:10.5px}.v75warn{color:var(--crit)}.v75mini{margin:6px 0 0}
+.v75why{margin:6px 0 4px 18px;font-size:12px;line-height:1.7}.v75sc{display:grid;gap:4px;margin:6px 0;font-size:12px}.v75qty{gap:6px;align-items:center;margin:6px 0}.v75qty input{width:110px}
+.v75chat{border-top:1px dashed var(--line-2);margin-top:8px;padding-top:6px}.v75m{font-size:12px;line-height:1.7;padding:6px 9px;border-radius:9px;margin:4px 0}.v75m-u{background:var(--sunk);margin-left:18%}.v75m-a{background:var(--surface);border:1px solid var(--line-2)}
+.v75sug{display:flex;flex-wrap:wrap;gap:5px;margin:5px 0}.v75ask{gap:6px;margin-top:5px}.v75ask input,.v75ask textarea{flex:1;min-width:0}
+.v75desk{display:grid;grid-template-columns:minmax(260px,1fr) 2.2fr;gap:11px;align-items:start}@media (max-width:900px){.v75desk{grid-template-columns:1fr}}
+.v75rows{display:grid;gap:6px;margin-top:8px}.v75row{display:grid;gap:2px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:var(--r2);padding:8px 10px;font:inherit;font-size:12px;cursor:pointer;color:var(--ink)}.v75row.on{border-color:var(--or);box-shadow:0 0 0 2px var(--or-soft)}
+.v75st{font-size:11px;font-weight:700}.v75st-open{color:var(--crit)}.v75st-assigned{color:var(--ok,#2e7d32)}.v75st-revoked{color:var(--ink-3)}
+.v75sec{border-top:1px solid var(--line-2);padding:6px 0}.v75sec summary{cursor:pointer;font-weight:700;font-size:12.5px;margin-bottom:5px}.v75memo{white-space:pre-wrap;font:inherit;font-size:12px;line-height:1.7;background:var(--sunk);padding:8px 10px;border-radius:8px;max-height:420px;overflow:auto}
+.v75thr{display:grid;gap:6px;max-height:420px;overflow:auto}.v75b{font-size:12px;line-height:1.65;padding:6px 9px;border-radius:9px;display:grid;gap:2px}.v75b-by{background:var(--bl-soft)}.v75b-me{background:var(--or-soft)}.v75b-sys{background:var(--sunk)}
+.v75tc table{max-width:100%}.v75ot,.v75cmp,.v75fee{width:100%;table-layout:fixed}.v75ot th,.v75ot td,.v75cmp th,.v75cmp td,.v75fee td{overflow-wrap:anywhere;word-break:break-word;white-space:normal!important}.v75ot th,.v75ot td{font-size:11px}.v75fee td.n{width:4.6em}
+.v75asg{align-items:center}.v75log{font-size:11px;margin:4px 0 0 16px}.v75peek .v75sec{max-width:100%}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+if (typeof openDMThread === "function") {
+    const __odt75 = openDMThread;
+    openDMThread = function (id) { const r = __odt75.apply(this, arguments); try {
+        const th = v75tcThs()[id];
+        if (th && th.v72 && !th.v72.sent)
+            v75tcApplyV72(th);
+        v75tcPaint(id);
+    }
+    catch (e) {
+        console.warn("v75 open", e);
+    } try {
+        v75tcPoll(false);
+    }
+    catch (e) { } return r; };
+}
+if (typeof v72Prep === "function") {
+    const __pr75 = v72Prep;
+    v72Prep = async function (id) { const r = await __pr75.apply(this, arguments); try {
+        const th = v75tcThs()[id];
+        if (th && v75tcApplyV72(th) && typeof v72Paint === "function")
+            v72Paint(id);
+        v75tcPaint(id);
+    }
+    catch (e) { } return r; };
+}
+if (typeof v72CardHtml === "function") {
+    const __ch75 = v72CardHtml;
+    v72CardHtml = function (th) {
+        let h = __ch75.apply(this, arguments);
+        try {
+            if (h && th && th.v72 && th.v72.v75 && th.v72.quote) {
+                const F = th.v72.v75;
+                h = h.replace(/(<div class="v72qbox"><b>[^<]*<\/b>)/, `$1<p class="nn v75note">🏢 ${v75tcF("間接貿易：商社手数料（暫定 {r}%）を含めた価格です。貴社の受け取りは価格表どおり。支払条件は前金 {a}%・残金 {b}% は納品の1か月後", { r: F.rate, a: F.adv, b: 100 - F.adv })}</p>`);
+            }
+        }
+        catch (e) { }
+        return h;
+    };
+}
+if (typeof v72QuoteText === "function") {
+    const __qt75 = v72QuoteText;
+    v72QuoteText = function (Q) {
+        try {
+            const d = v75tcD(), asc = x => !!String(x || "").trim() && !/[^\x20-\x7E]/.test(String(x));
+            if (Q && Array.isArray(Q.lines) && Q.lines.some(l => l && !asc(l.sku))) {
+                const en = asc(d.itemEn) ? String(d.itemEn) : asc(d.sku) ? String(d.sku) : "";
+                if (en) {
+                    const Q2 = Object.assign({}, Q, { lines: Q.lines.map((l, i) => asc(l.sku) ? l : Object.assign({}, l, { sku: Q.lines.length > 1 ? en + " (item " + (i + 1) + ")" : en, desc: asc(l.desc) ? l.desc : "" })) });
+                    return __qt75.call(this, Q2);
+                }
+            }
+        }
+        catch (e) { }
+        return __qt75.apply(this, arguments);
+    };
+}
+if (typeof bmSend === "function") {
+    const __bms75 = bmSend;
+    bmSend = function (id) {
+        const r = __bms75.apply(this, arguments);
+        try {
+            const pd = V75TC.pend;
+            if (pd && pd.id === String(id) && Date.now() - pd.at < 30 * 60000) {
+                V75TC.pend = null;
+                const c = v75tcCase(id, false);
+                if (c && c.offer) {
+                    c.offer.sentAt = Date.now();
+                    v75tcLog(c, "オファーを送付（手数料 " + c.offer.rate + "%）");
+                }
+                try {
+                    if (typeof v33AuLog === "function")
+                        v33AuLog("quote_send", "オファー（間接貿易・手数料込み）：" + v75tcBName(v75tcThs()[id] || { id }), c && c.offer && c.offer.total != null ? v75tcMoney(c.offer.cur, c.offer.total) : "");
+                }
+                catch (e) { }
+                v75tcSave();
+            }
+            const c2 = v75tcCase(id, false);
+            if (c2 && c2.grant && !c2.grant.revokedAt && c2.req && c2.req.st !== "revoked")
+                setTimeout(() => { try {
+                    v75tcPoll(true);
+                }
+                catch (e) { } }, 1500);
+            setTimeout(() => { try {
+                v75tcPaint(id);
+            }
+            catch (e) { } }, 300);
+        }
+        catch (e) {
+            console.warn("v75 send", e);
+        }
+        return r;
+    };
+}
+if (typeof v33CkPriceNums === "function") {
+    const __pn75 = v33CkPriceNums;
+    v33CkPriceNums = function () { const r = __pn75.apply(this, arguments); try {
+        const pd = V75TC.pend;
+        if (pd && Date.now() - pd.at < 30 * 60000 && Array.isArray(pd.allow) && Array.isArray(r))
+            pd.allow.forEach(v => { if (v > 0)
+                r.push(v); });
+    }
+    catch (e) { } return r; };
+}
+if (typeof dmNotify === "function") {
+    const __dn75 = dmNotify;
+    dmNotify = function (th) { const r = __dn75.apply(this, arguments); try {
+        clearTimeout(V75TC.tm);
+        V75TC.tm = setTimeout(() => { try {
+            const pn = document.getElementById("pn");
+            if (pn && pn.dataset.dmid)
+                v75tcPaint(pn.dataset.dmid);
+            v75tcPoll(true);
+        }
+        catch (e) { } }, 600);
+    }
+    catch (e) { } return r; };
+}
+if (typeof thReply === "function") {
+    const __tr75 = thReply;
+    thReply = function (k) { const r = __tr75.apply(this, arguments); try {
+        if (String(k || "").indexOf("tc_root_") === 0)
+            v75tcPushReply(String(k));
+    }
+    catch (e) { } return r; };
+}
+if (typeof notifCalc === "function") {
+    const __nc75 = notifCalc;
+    notifCalc = function () {
+        const out = __nc75.apply(this, arguments);
+        try {
+            if (!v75tcStaff() && !v75tcAdmin()) {
+                const ths = v75tcThs();
+                Object.keys(ths).slice(0, 60).forEach(id => {
+                    const th = ths[id];
+                    if (!th || !Array.isArray(th.msgs) || !th.msgs.length)
+                        return;
+                    const c = v75tcCase(id, false), st = v75tcStage(th), nm = v75tcBName(th);
+                    const sn = x => x && x.until && Date.now() < x.until;
+                    if (st.closing && !(c && c.stg && c.stg.k) && !sn(c && c.closeAsk))
+                        out.unshift({ cat: "msg", icon: "🏢", t: v75tcF("{b}：条件がまとまりかけています", { b: nm }), d: v75tcT("STANDAGE に商社業務を任せるかを決めましょう（AI商社マンに相談できます）"), act: { dm: id }, key: "v75close:" + id });
+                    else if (st.quote && !(c && c.route) && !sn(c && c.routeAsk))
+                        out.unshift({ cat: "msg", icon: "🤖", t: v75tcF("{b}：商流をそろそろ決めるタイミングです", { b: nm }), d: v75tcT("見積を出す前に、直接貿易か間接貿易かを決めましょう"), act: { dm: id }, key: "v75route:" + id });
+                });
+            }
+        }
+        catch (e) { }
+        return out;
+    };
+}
+if (typeof ppContext === "function") {
+    const __pc75 = ppContext;
+    ppContext = function () {
+        let s = "";
+        try {
+            s = __pc75.apply(this, arguments);
+        }
+        catch (e) {
+            if (!v75tcStaff())
+                throw e;
+        }
+        try {
+            if (v75tcStaff() && V75TC.desk.data && V75TC.desk.data.pkg) {
+                s = String(s || "") + "\n\n=== STANDAGE 商社デスク：開いている依頼（お客様が見せた範囲）===\n" + v75tcPkgText(V75TC.desk.data.pkg, 9000);
+            }
+            else {
+                const S = v75tcStore(), L = Object.values(S.cases || {}).filter(c => c && (c.route || c.req));
+                if (L.length)
+                    s = String(s || "") + "\n\n=== 商流と STANDAGE への依頼 ===\n" + L.slice(0, 12).map(c => { const th = v75tcThs()[c.id]; return "・" + (th ? v75tcBName(th) : c.id) + "：" + (c.route ? (c.route.k === "direct" ? "直接貿易" : "間接貿易") : "商流は未定") + (c.offer ? "／オファー 手数料 " + c.offer.rate + "%（" + c.offer.pay + "）" + (c.offer.sentAt ? "送付済み" : "未送付") : "") + (c.req ? "／STANDAGE に依頼 " + c.req.id + "（" + (c.req.st === "revoked" ? "権限を外した" : c.req.asg ? "担当 " + c.req.asg.name : "担当待ち") + "）" : ""); }).join("\n");
+            }
+        }
+        catch (e) { }
+        return s;
+    };
+}
+if (typeof buildNav === "function") {
+    const __bn75 = buildNav;
+    buildNav = function () { v75tcDeskEnsure(); return __bn75.apply(this, arguments); };
+}
+if (typeof render === "function") {
+    const __r75 = render;
+    render = function () {
+        try {
+            v75tcDeskEnsure();
+            if (v75tcStaff() && !V75TC.landed && typeof cur !== "undefined" && (cur === "up" || cur === "dash") && !(typeof PID !== "undefined" && PID)) {
+                V75TC.landed = 1;
+                cur = "tcd";
+                try {
+                    buildNav();
+                }
+                catch (e) { }
+            }
+        }
+        catch (e) { }
+        if (typeof cur !== "undefined" && cur === "tcd") {
+            if (!v75tcStaff()) {
+                cur = "dash";
+                return __r75.apply(this, arguments);
+            }
+            try {
+                document.body.classList.remove("dashv");
+            }
+            catch (e) { }
+            const p = (PAGES.find(x => x.id === "tcd")) || v75tcDeskPage();
+            well.innerHTML = v75tcDeskHtml(p);
+            v75tcDeskBind();
+            v75tcDeskLoad(false);
+            return;
+        }
+        const r = __r75.apply(this, arguments);
+        try {
+            if (typeof cur !== "undefined" && cur === "msg")
+                v75tcPoll(false);
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof renderAdmin === "function") {
+    const __ra75 = renderAdmin;
+    renderAdmin = function () { const r = __ra75.apply(this, arguments); try {
+        v75tcAdmInject();
+    }
+    catch (e) { } return r; };
+}
+setInterval(() => { try {
+    if (document.hidden)
+        return;
+    if (v75tcStaff()) {
+        if (typeof cur !== "undefined" && cur === "tcd")
+            v75tcDeskLoad(false);
+    }
+    else if (!v75tcAdmin())
+        v75tcPoll(false);
+}
+catch (e) { } }, 30000);
+try {
+    if (typeof S30_NEWS !== "undefined" && Array.isArray(S30_NEWS)) {
+        if (!S30_NEWS.some(x => x && x[1] === "v21.75"))
+            S30_NEWS.unshift(["2026-11", "v21.75", "商流の相談と、STANDAGE への商社業務の依頼",
+                ["バイヤーとのやり取りが見積の段階になりそうなとき、AI商社マンが「商流をそろそろ決めるタイミングです」と知らせ、直接貿易と間接貿易を比べて相談にのる",
+                    "間接貿易を選ぶと、相手の国のカントリーリスク（OECD・NEXI）と金利の情勢を見て、暫定の支払条件（前金50%・残金50%は納品の1か月後）で商社手数料を含めたオファー価格を計算する。送るのは承認してから",
+                    "相手の返事から条件がまとまりかけたと読めたら、STANDAGE に商社業務を任せるかを決められる（早い・安い・安全の理由と、AI商社マンへの相談つき）",
+                    "任せるときは、STANDAGE に見せる範囲（商品情報・やり取り・価格とオファーなど）を選んで権限を付ける。いつでも外せる。担当が決まると「やりとり」で STANDAGE の担当と話せる"]]);
     }
 }
 catch (e) { }
