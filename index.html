@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="ebf4e58d38bb";
+const BC20_BUILD="af7e3e8268c9";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -41729,7 +41729,7 @@ async function ctyAnalyzeAI(rec) {
     catch (e) { }
     const r = await llmAsk(`=== 目的 ===
 「${(D && D.item) || ""}」（${(D && D.cat) || ""}・HS ${(D && D.hs) || "未確定"}）の販売先国を、候補${rec.length}か国から3か国に絞り込む。
-=== 候補国ごとの事実（貿易クラウドの規制DB・通関統計＝日本からの輸出・バイヤーネットワーク（社数）・STANDAGE拠点。score は内蔵ロジックの暫定点＝規制25／市場性35／競合20／拠点20） ===
+=== 候補国ごとの事実（貿易クラウドの規制DB・通関統計＝日本からの輸出・STANDAGE が商談したバイヤー（社数）・STANDAGE拠点。score は内蔵ロジックの暫定点＝規制25／市場性35／競合20／拠点20） ===
 ${JSON.stringify(facts)}
 === 商品・会社の登録データ ===
 ${String(ctx).slice(0, 6000)}
@@ -41904,7 +41904,7 @@ function vCty(p) {
       <input class="sel" id="ctyin" placeholder="一覧に無い国名を入力（例：メキシコ）" style="min-width:200px">
       <button class="btn g" id="ctyadd">＋ 追加</button>
       <button class="btn" onclick="ctyRun(false)" ${busy || !s.cands.length ? "disabled" : ""} style="margin-left:auto">🔎 この候補で分析（4つの観点）</button></div>
-    <p class="nn" style="margin-top:7px">評価の配点：市場性 ${CTY_W.mkt}／規制 ${CTY_W.reg}／競合 ${CTY_W.comp}／STANDAGE拠点 ${CTY_W.base}（100点満点。データの無い観点は「未評価」として配点から外し、残りの観点で100点満点に割り戻します）。根拠：規制DB・通関統計（${S ? "HS " + esc(S.hs) + "・" + esc(String(S.latest && S.latest.y || "")) + "年・日本からの輸出" : "HS未一致のため統計なし"}）・バイヤーネットワーク（自社カテゴリに関心のある社数）・STANDAGE拠点。${online ? "接続AIが商品特性に照らして最終判断します" : "⚠ AI未接続：内蔵ロジックの採点だけで並べます（接続すると商品特性に合わせた判断と理由が付きます）"}</p>
+    <p class="nn" style="margin-top:7px">評価の配点：市場性 ${CTY_W.mkt}／規制 ${CTY_W.reg}／競合 ${CTY_W.comp}／STANDAGE拠点 ${CTY_W.base}（100点満点。データの無い観点は「未評価」として配点から外し、残りの観点で100点満点に割り戻します）。根拠：規制DB・通関統計（${S ? "HS " + esc(S.hs) + "・" + esc(String(S.latest && S.latest.y || "")) + "年・日本からの輸出" : "HS未一致のため統計なし"}）・STANDAGE が商談したバイヤー（自社と同じカテゴリ）・STANDAGE拠点。${online ? "接続AIが商品特性に照らして最終判断します" : "⚠ AI未接続：内蔵ロジックの採点だけで並べます（接続すると商品特性に合わせた判断と理由が付きます）"}</p>
     ${busy ? `<p class="nn" style="margin-top:8px"><span class="spin"></span> AI商社マンが分析しています…（規制DB・通関統計・AIバイヤー開拓・拠点 → 接続AIの判断。30秒〜2分半）</p>` : ""}</div>`;
     if (!s.rec)
         return head + cands + `<div class="c"><h3>② 分析結果と推奨3か国</h3><p class="nn">候補を決めて「分析」を押すと、ここに国ごとの評価（4つの観点）・推奨3か国・理由・リスク・最初の一歩が出ます。PPTXレポートも出力できます。</p></div>`;
@@ -41973,7 +41973,7 @@ function ctySlides() {
         + shpText(60, 180, 840, 70, [{ t: "販売先国 選定レポート", sz: 44, b: 1, c: TT }], { ea }) + shpText(60, 252, 840, 30, [{ t: `${item}${co ? "　｜　" + co : ""}`, sz: fit(`${item}　｜　${co}`, 840, [20, 17, 14, 12]), c: INK }], { ea })
         + shpText(60, 300, 840, 44, [{ t: "AI商社マンが「規制・競合・市場性・STANDAGE拠点」の4つの観点で候補国を評価し、推奨3か国と理由をまとめました。", sz: 13, c: SUB }], { ea })
         + top.map((c, i) => dk2Card(60 + i * 270, 368, 250, 64, "FFFFFF", { line: AC, lw: 1.2, shadow: true }) + dk2Circle(74, 382, 36, AC, String(i + 1), 15, "FFFFFF", ea) + shpText(120, 378, 180, 44, [{ t: c, sz: fit(c, 180, [20, 16, 13]), b: 1, c: INK }, { t: "推奨" + (ch.includes(c) ? "（確定）" : ""), sz: 10, c: OR }], { ea })).join("")
-        + shpText(60, 470, 840, 16, [{ t: `作成日 ${today}　·　根拠：規制DB・通関統計（日本からの輸出）・バイヤーネットワーク（社数）・STANDAGE拠点${s.ai ? "　·　AI商社マンが商品の特性も見て判断" : "　·　貿易クラウドの採点（AI未接続）"}`, sz: 10, c: MUT }], { ea }));
+        + shpText(60, 470, 840, 16, [{ t: `作成日 ${today}　·　根拠：規制DB・通関統計（日本からの輸出）・STANDAGE が商談したバイヤー（社数）・STANDAGE拠点${s.ai ? "　·　AI商社マンが商品の特性も見て判断" : "　·　貿易クラウドの採点（AI未接続）"}`, sz: 10, c: MUT }], { ea }));
     const topRec = rec.filter(r => top.includes(r.c));
     S.push(bg(1) + head("EXECUTIVE SUMMARY", "推奨3か国と総評")
         + topRec.map((r, i) => {
@@ -41983,7 +41983,7 @@ function ctySlides() {
                 + shpText(x + 16, 186, 240, 34, [{ t: `市場性 ${v56priceCNum(r.sc.mkt, 1)}　規制 ${r.sc.reg}　競合 ${v56priceCNum(r.sc.comp, 1)}　拠点 ${r.sc.base}`, sz: 9.5, c: MUT }], { ea }) + shpText(x + 16, 206, 240, 150, [{ t: why, sz: fit(why, 240, [11, 10, 9], 7), c: INK }], { ea });
         }).join("")
         + dk2Card(48, 384, 864, 108, TN, {}) + shpText(64, 394, 832, 90, [{ t: "AI商社マンの総評", sz: 11, b: 1, c: AC }, { t: cap(s.ai && s.ai.summary || "（AI未接続のため、内蔵ロジックの採点で並べています。接続すると商品特性に合わせた総評が入ります）").slice(0, 330), sz: fit(cap(s.ai && s.ai.summary || "").slice(0, 330), 832, [12, 11, 10], 4), c: INK }], { ea }) + foot());
-    const axes = [["市場性", CTY_W.mkt, "通関統計＝日本からその国への輸出額・シェア・前年比、バイヤーネットワークで自社カテゴリに関心のある社数（STANDAGEを通じて紹介を受けることに同意したバイヤー）", OR], ["規制", CTY_W.reg, "規制DB＝関税率・通関日数・必要書類・注意点。AI詳細調査を反映済みなら加点", GOOD], ["競合", CTY_W.comp, "日本勢の輸出シェア（集中度）と市場平均単価に対する当社価格の位置。点数が高いほど競合が少なく有利。通関統計に相手国の数字が無い国は「未評価」", AC], ["STANDAGE拠点", CTY_W.base, "拠点の開設の状況（開設済み100／2027年度に開設予定60／2028〜29年度に開設予定45／近隣の拠点60〜35／なし25）", "9B6BD6"]];
+    const axes = [["市場性", CTY_W.mkt, "通関統計＝日本からその国への輸出額・シェア・前年比、STANDAGE が同じカテゴリの商品で商談したバイヤーの社数（貿易クラウド Ver.1 の商談記録）", OR], ["規制", CTY_W.reg, "規制DB＝関税率・通関日数・必要書類・注意点。AI詳細調査を反映済みなら加点", GOOD], ["競合", CTY_W.comp, "日本勢の輸出シェア（集中度）と市場平均単価に対する当社価格の位置。点数が高いほど競合が少なく有利。通関統計に相手国の数字が無い国は「未評価」", AC], ["STANDAGE拠点", CTY_W.base, "拠点の開設の状況（開設済み100／2027年度に開設予定60／2028〜29年度に開設予定45／近隣の拠点60〜35／なし25）", "9B6BD6"]];
     S.push(bg(2) + head("METHODOLOGY", "4つの観点と配点（100点満点）")
         + axes.map(([n, w, d, c], i) => { const y = 118 + i * 90; return dk2Card(48, y, 864, 78, "FFFFFF", { line: TN2 }) + dk2Circle(64, y + 17, 44, c, String(w), 14, "FFFFFF", ea) + shpText(122, y + 12, 760, 56, [{ t: n, sz: 15, b: 1, c: INK }, { t: d, sz: 11, c: SUB }], { ea }); }).join("")
         + shpText(48, 472, 864, 30, [{ t: "データの無い観点は「未評価」として配点から外し、残りの観点の配点で100点満点に割り戻しています。統計・データベースは概算です。関税・規制の正式な確認は税関の事前教示および規制の詳細調査で行ってください。", sz: 9, c: MUT }], { ea }) + foot());
@@ -42141,7 +42141,7 @@ if (typeof brain === "function") {
                     a += `AI商社マンの推奨は <b>${(s.top || []).map(esc).join("・")}</b>。画面で理由を確認し、「この3か国で確定」を押すと規制・価格・物流・出荷に反映されます。`;
                 else
                     a += `候補国を最大${CTY_MAX}か国選ぶか、「🤖 AI商社マンにおまかせ」を押すと、規制・競合・市場性・STANDAGE拠点の4点から推奨3か国と理由のレポートを作ります（PPTX出力可）。`;
-                return { a, c: "根拠：販売先国の選定（規制DB・通関統計・バイヤーネットワーク（社数）・STANDAGE拠点）" };
+                return { a, c: "根拠：販売先国の選定（規制DB・通関統計・STANDAGE が商談したバイヤー（社数）・STANDAGE拠点）" };
             }
         }
         catch (e) { }
@@ -42278,11 +42278,11 @@ function ctyDeepLocal(c) {
         competition: { players: [], shareNote: b.exportUsd ? `日本からの輸出シェア${Math.round(b.share * 100)}%（${b.share > 0.25 ? "日本勢の競合が多い" : b.share > 0.08 ? "一定の競合あり" : "競合は少なめ"}）` : "通関統計に実績なし（開拓型）", position: q, differentiation: b.strengths.slice(0, 3) },
         channels: { online: (ch ? ch.online : [q]).map(x => ({ platform: x, note: "一般的なチャネル（要確認）" })), live: { platform: ch ? ch.live : q, note: "" }, offline: (ch ? ch.offline : [q]).map(x => ({ channel: x, note: "一般的なチャネル（要確認）" })), importer: "現地の正規輸入者（要選定）", notes: "" },
         pricing: { retail: q, retailJpy: "", position: q, vs: q, online: { platformFee: "15〜20%", logistics: "10〜12%", payment: "2〜3%", net: "約65〜70%" }, offline: { retailMargin: "35〜40%", distributor: "10〜15%", importer: "10〜15%", net: "約30〜35%" }, tax: { duty: b.duty, vat: q, deMinimis: q }, rationale: "標準的な流通マージンの配分（要確認）。当社の推奨FOB・DDP価格を算出すると金額入りで裏付けできます" },
-        roadmap: [{ phase: "Phase 1", period: "0〜3ヶ月", actions: ["規制・表示の確認と必要書類の準備", "サンプル・見積の提示（越境EC／輸入者）", "現地拠点・バイヤーネットワークで候補先を選定"] }, { phase: "Phase 2", period: "3〜9ヶ月", actions: ["正規輸入者との契約・登録手続き", "初回出荷・店頭／ECでの販売開始", "実績のモニタリング"] }, { phase: "Phase 3", period: "9ヶ月〜", actions: ["チャネル拡大・SKU追加", "定期取引化・現地マーケティング", "近隣国への横展開"] }],
+        roadmap: [{ phase: "Phase 1", period: "0〜3ヶ月", actions: ["規制・表示の確認と必要書類の準備", "サンプル・見積の提示（越境EC／輸入者）", "AIバイヤー開拓で候補先をリストにし、現地拠点と絞り込む"] }, { phase: "Phase 2", period: "3〜9ヶ月", actions: ["正規輸入者との契約・登録手続き", "初回出荷・店頭／ECでの販売開始", "実績のモニタリング"] }, { phase: "Phase 3", period: "9ヶ月〜", actions: ["チャネル拡大・SKU追加", "定期取引化・現地マーケティング", "近隣国への横展開"] }],
         kpi: [{ gate: "6ヶ月", items: ["初回受注・出荷の完了", "商談5件以上", "レビュー／反応の蓄積"] }, { gate: "12ヶ月", items: ["限界利益 ±0以上", "リピート発注の発生", "正規ルートの確立"] }, { gate: "18ヶ月", items: ["取扱店舗・チャネルの拡大", "近隣国への展開判断"] }],
         risks: [{ risk: "規制・表示の不適合", mitigation: "事前のリーガルチェック・AI詳細調査・現地拠点の確認" }, { risk: "価格競争", mitigation: "強み・エビデンスで差別化し正規ルートで価格を維持" }, { risk: "物流・リードタイム", mitigation: "小ロットの初回出荷・AI物流見積で複数社比較" }, { risk: "代金回収", mitigation: "前払い／L/C・信用調査" }],
         standage: { base: v56priceCBaseTxt(b.base, 0, 1), members: (b.base.staff || []).slice(0, 3).map(x => `${x.n}（${x.r}・${x.sp || ""}）`), support: ["規制・表示の調査と書類作成", "バイヤー開拓・商談代行（拠点に依頼）", "物流AI見積・出荷手続き", "越境EC／ライブコマースの設計"] },
-        sources: [{ title: "貿易クラウド 規制DB", url: "" }, { title: "通関統計（日本からの輸出）", url: "" }, { title: "バイヤーネットワーク・STANDAGE拠点", url: "" }]
+        sources: [{ title: "貿易クラウド 規制DB", url: "" }, { title: "通関統計（日本からの輸出）", url: "" }, { title: "STANDAGE の商談記録・拠点", url: "" }]
     };
     return { at: ctyNow(), eng: "", web: false, cits: [], conf: "low", local: true, d };
 }
@@ -42519,7 +42519,7 @@ function ctyDeepSlides(c, P, ctx) {
     const { AC, TT, TN, TN2, INK, SUB, MUT, OR, GOOD, ea, bg, foot, head, fit, cap, DKc } = ctx;
     const S = [];
     const clip = (t, n) => cap(t).slice(0, n);
-    const src = (d.sources || []).slice(0, 4).map(x => x.title || x.url).join("／") || "貿易クラウド 規制DB・通関統計・バイヤーネットワーク";
+    const src = (d.sources || []).slice(0, 4).map(x => x.title || x.url).join("／") || "貿易クラウド 規制DB・通関統計・STANDAGE の商談記録";
     const srcLine = () => shpText(48, 490, 864, 14, [{ t: "出典：" + clip(src, 150) + (DP.web ? "（Web検索・" + DP.eng + "）" : DP.local ? "（内蔵データの骨組み・要確認）" : "（" + DP.eng + "・Web検索なし）"), sz: 8, c: MUT }], { ea });
     const list = (x, y, w, h, items, sz) => shpText(x, y, w, h, items.slice(0, 6).map(t => ({ t: "• " + clip(t, 90), sz: sz || 9.5, c: INK })), { ea });
     const tiles = [["市場規模", d.overview.marketSize], ["CAGR", d.overview.cagr], ["規制当局", d.overview.regulator], ["区分", d.overview.classification], ["参入期間", d.overview.entryPeriod], ["登録費用", d.overview.regCost]];
@@ -45352,7 +45352,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.77";
+const BC20_VER = "21.78";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -88024,7 +88024,7 @@ if (typeof ctyFacts === "function") {
         try {
             const n = v54ctyNet(c);
             if (n && f) {
-                f.bdef = "net";
+                f.bdef = "v1fb";
                 f.buyers = n.cat;
                 f.buyersAll = n.all;
                 f.bcat = n.catNm;
@@ -88036,15 +88036,15 @@ if (typeof ctyFacts === "function") {
 }
 function v54ctyBuyers(f) {
     f = f || {};
-    if (f.bdef === "net")
-        return f.bcat ? v54ctyF("バイヤーネットワーク {cat}に関心 {n}社（この国 計{all}社）", { cat: v54ctyT(f.bcat), n: f.buyers || 0, all: f.buyersAll || 0 })
-            : v54ctyF("バイヤーネットワーク {n}社（この国の参加）", { n: f.buyers || 0 });
+    if (f.bdef === "v1fb")
+        return f.bcat ? v54ctyF("STANDAGE が{cat}の商品で商談したバイヤー {n}社（この国で商談 計{all}社）", { cat: v54ctyT(f.bcat), n: f.buyers || 0, all: f.buyersAll || 0 })
+            : v54ctyF("STANDAGE が商談したバイヤー {n}社（この国）", { n: f.buyers || 0 });
     return v54ctyF("STANDAGEの実績 バイヤー約{n}社（同カテゴリ換算・全{all}名）", { n: f.buyers || 0, all: f.buyersAll || 0 });
 }
 function v54ctyBuyersDeep(b, c) {
     b = b || {};
-    if (b.bdef === "net")
-        return `バイヤーネットワーク：${c} 計 ${b.buyersAll || 0}社（${b.bcat ? b.bcat + "に関心 " : ""}${b.buyers || 0}社。STANDAGEを通じて紹介を受けることに同意したバイヤー）`;
+    if (b.bdef === "v1fb")
+        return `STANDAGE が商談したバイヤー：${c} 計 ${b.buyersAll || 0}社（${b.bcat ? b.bcat + "の商品で " : ""}${b.buyers || 0}社。貿易クラウド Ver.1 の商談記録・2026-11-02 時点・社名は持っていない）`;
     return `STANDAGEの実績：${c} バイヤー ${b.buyersAll || 0}名（同カテゴリ換算 約${b.buyers || 0}社・各社専用）`;
 }
 if (typeof ctyDeepBase === "function") {
@@ -88074,7 +88074,7 @@ function v54ctyPrompt(q) {
     const rule = `=== 点数の向き・数の意味（必ずこの意味で読む） ===
 score の reg・mkt・comp・base・total は、どれも 0〜100 点で「高いほど有利」。
 comp（競合）は「日本からの競合の少なさ」の点数：高い＝日本勢の競合が少なく参入しやすい、低い＝競合が多く厳しい。競合の点数に触れるときは、この向きで書く（「競合の点数が高い＝競争が厳しい」とは書かない）。
-buyersInDb は、STANDAGEのバイヤーネットワーク（STANDAGEを通じて紹介を受けることに同意したバイヤー）のうち、この商品のカテゴリに関心のある社数。
+buyersInDb は、STANDAGE がおまかせ貿易でこの国のバイヤーと、この商品と同じカテゴリの商品の商談をした社数（貿易クラウド Ver.1 の商談記録・2026-11-02 時点。社名は持っていない）。
 `;
     const k = "=== 商品・会社の登録データ ===";
     if (q.indexOf(k) >= 0 && q.indexOf("=== 点数の向き") < 0)
@@ -88148,9 +88148,9 @@ if (typeof ctyCtx === "function") {
             if (!s)
                 return s;
             const rec = (ctyStore().rec) || [];
-            const net = rec.length && rec.every(r => r && r.facts && r.facts.bdef === "net");
-            const buy = !rec.length ? "" : net ? "バイヤー数はバイヤーネットワーク（自社カテゴリに関心のある社数）。"
-                : "この分析のバイヤー数は以前の数え方（STANDAGEの実績からの換算）で、バイヤーネットワークの社数とは数え方が違う（「再分析」でそろう）。";
+            const net = rec.length && rec.every(r => r && r.facts && r.facts.bdef === "v1fb");
+            const buy = !rec.length ? "" : net ? "バイヤー数は、STANDAGE が自社と同じカテゴリの商品で商談したバイヤーの数（貿易クラウド Ver.1 の商談記録）。"
+                : "この分析のバイヤー数は以前の数え方で、いまの数え方（STANDAGE が商談したバイヤーの数）とは違う（「再分析」でそろう）。";
             return s + "点数の向き：すべて0〜100点で高いほど有利（競合＝日本からの競合の少なさ。高いほど競争がゆるい）。" + buy + "\n";
         }
         catch (e) { }
@@ -88233,7 +88233,7 @@ function v54ctyLegend(s) {
     const ai = !!(s && s.ai);
     return `<p class="v54leg" id="v54ctyleg">${v54ctyE(v54ctyT("点数はすべて0〜100点で、高いほど有利です。「競合」は日本からの競合の少なさで、高いほど競争がゆるく、参入しやすい国です。表は総合点（目安）の高い順です。"))}
     ${v54ctyE(v54ctyT(ai ? "推奨（色の付いた行）は、AI商社マンが総合点に加えて商品の特性も見て決めています。" : "推奨（色の付いた行）は、総合点の上位3か国です（内蔵ロジック）。"))}</p>
-    <p class="nn" id="v54ctybuy">${v54ctyE(v54ctyT("バイヤー数は、AI商社マンの答えや「AIバイヤー開拓・拠点」と同じ数え方です（STANDAGEを通じて紹介を受けることに同意したバイヤーのうち、貴社のカテゴリに関心のある社数。トライアルでは見本の数です）。"))}</p>`;
+    <p class="nn" id="v54ctybuy">${v54ctyE(v54ctyT("バイヤー数は、STANDAGE がおまかせ貿易でその国のバイヤーと商談した社数です（貿易クラウド Ver.1 の商談記録・2026年11月2日時点。貴社と同じカテゴリの商品の商談の数と、この国の合計。社名はお出ししません）。"))}</p>`;
 }
 function v54ctyDecorate(h, s) {
     const rec = s.rec || [];
@@ -88246,8 +88246,8 @@ function v54ctyDecorate(h, s) {
     let add = "";
     if (O)
         add += v54ctyOrderBox(s, O);
-    if (typeof v41Pool === "function" && rec.length && rec.some(r => r && r.facts && r.facts.bdef !== "net"))
-        add += `<p class="v54old" id="v54ctyold">${v54ctyE(v54ctyT("この分析のバイヤー数は、以前の数え方（STANDAGEの実績からの換算）です。「🔄 再分析」を押すと、AI商社マンや「AIバイヤー開拓・拠点」と同じ数え方（バイヤーネットワークの社数）にそろいます。"))}</p>`;
+    if (typeof v41Pool === "function" && rec.length && rec.some(r => r && r.facts && r.facts.bdef !== "v1fb"))
+        add += `<p class="v54old" id="v54ctyold">${v54ctyE(v54ctyT("この分析のバイヤー数は、以前の数え方です。「🔄 再分析」を押すと、いまの数え方（STANDAGE が商談したバイヤーの数・貿易クラウド Ver.1 の商談記録）にそろいます。"))}</p>`;
     if (add) {
         const e = '</tbody></table></div>';
         const j = h.indexOf(e, i);
@@ -137748,10 +137748,10 @@ if (typeof v54ctyBuyers === "function") {
     const __bu70 = v54ctyBuyers;
     v54ctyBuyers = function (f) {
         try {
-            if (f && f.bdef !== "net" && f.c && typeof v54ctyNet === "function") {
+            if (f && f.bdef !== "v1fb" && f.c && typeof v54ctyNet === "function") {
                 const n = v54ctyNet(f.c);
                 if (n)
-                    return __bu70.call(this, Object.assign({}, f, { bdef: "net", buyers: n.cat, buyersAll: n.all, bcat: n.catNm }));
+                    return __bu70.call(this, Object.assign({}, f, { bdef: "v1fb", buyers: n.cat, buyersAll: n.all, bcat: n.catNm }));
             }
         }
         catch (e) { }
@@ -137762,10 +137762,10 @@ if (typeof v54ctyBuyersDeep === "function") {
     const __bd70 = v54ctyBuyersDeep;
     v54ctyBuyersDeep = function (b, c) {
         try {
-            if (b && b.bdef !== "net" && c && typeof v54ctyNet === "function") {
+            if (b && b.bdef !== "v1fb" && c && typeof v54ctyNet === "function") {
                 const n = v54ctyNet(c);
                 if (n)
-                    return __bd70.call(this, Object.assign({}, b, { bdef: "net", buyers: n.cat, buyersAll: n.all, bcat: n.catNm }), c);
+                    return __bd70.call(this, Object.assign({}, b, { bdef: "v1fb", buyers: n.cat, buyersAll: n.all, bcat: n.catNm }), c);
             }
         }
         catch (e) { }
@@ -137777,7 +137777,7 @@ function v70mktNetTxt(c) { try {
     const n = typeof v54ctyNet === "function" ? v54ctyNet(c) : null;
     if (!n)
         return "";
-    return typeof v54ctyBuyers === "function" ? v54ctyBuyers({ bdef: "net", buyers: n.cat, buyersAll: n.all, bcat: n.catNm }) : "";
+    return typeof v54ctyBuyers === "function" ? v54ctyBuyers({ bdef: "v1fb", buyers: n.cat, buyersAll: n.all, bcat: n.catNm }) : "";
 }
 catch (e) {
     return "";
@@ -137808,7 +137808,7 @@ if (typeof vCty === "function") {
                     r.why = keep[i]; });
         }
         try {
-            h = h.replace(/<p class="v54old" id="v54ctyold">[\s\S]*?<\/p>/, `<p class="v54old" id="v54ctyold">${v70mktE(v70mktT("バイヤー数は、いまの数え方（バイヤーネットワークの社数）で出しています。この分析の点数は以前の数え方で付けたため、「🔄 再分析」を押すと点数もそろいます。"))}</p>`);
+            h = h.replace(/<p class="v54old" id="v54ctyold">[\s\S]*?<\/p>/, `<p class="v54old" id="v54ctyold">${v70mktE(v70mktT("バイヤー数は、いまの数え方（STANDAGE が商談したバイヤーの数）で出しています。この分析の点数は以前の数え方で付けたため、「🔄 再分析」を押すと点数もそろいます。"))}</p>`);
         }
         catch (e) { }
         return h;
@@ -137907,13 +137907,13 @@ async function v70mktPart(part, inner) {
                 const n = v54ctyNet(c);
                 if (!n) {
                     unk = 1;
-                    L.push(`${c}：分かりません（バイヤーネットワークのデータを読めませんでした）`);
+                    L.push(`${c}：分かりません（商談記録の集計を読めませんでした）`);
                     return;
                 }
-                L.push(n.catNm ? `${c}：${n.catNm}に関心のあるバイヤー ${n.cat}社（この国の参加 計${n.all}社）` : `${c}：バイヤー ${n.all}社（この国の参加）`);
+                L.push(n.catNm ? `${c}：${n.catNm}の商品で商談したバイヤー ${n.cat}社（この国で商談 計${n.all}社）` : `${c}：商談したバイヤー ${n.all}社（この国）`);
                 K.push(String(n.catNm ? n.cat : n.all) + "社");
             });
-            const t = L.join("／") + "。数は「AIバイヤー開拓・拠点」と同じ数え方です（STANDAGEを通じて紹介を受けることに同意したバイヤー。トライアルでは見本の数）。";
+            const t = L.join("／") + "。数は、STANDAGE がおまかせ貿易で商談したバイヤーの数です（貿易クラウド Ver.1 の商談記録・2026年11月2日時点・社名は出さない）。";
             return { h: v70mktE(t), t, unk, keys: K };
         }
     }
@@ -137983,11 +137983,11 @@ ${A.map((a, i) => V70MKT_NUM[i] + " " + String(a.t || "").slice(0, 700)).join("\
                 return !/分から|わから|不明|確認でき/.test(txt); return k.length ? !k.some(s => txt.indexOf(String(s).replace(/\s/g, "")) >= 0 || txt.indexOf(s) >= 0) : false; });
             if (miss.length)
                 a += `<div class="v70mkt-sup" style="margin-top:10px;border-top:1px dashed var(--bd,#ccc);padding-top:8px"><b>${v70mktE(v70mktT("答えに足りなかった問い（貿易クラウドの登録データから）"))}</b>` + miss.map(o => `<div style="margin-top:6px"><b>${V70MKT_NUM[o.i]} ${v70mktE(P[o.i])}</b><br>${o.x.h}</div>`).join("") + `</div>`;
-            return { a, c: "回答：問いを分けて、貿易クラウドの登録データ（販売先国の選定・バイヤーネットワーク・価格表など）を根拠にAIが回答" + (r.provNm ? "（" + r.provNm + "）" : ""), v70mkt: { parts: P, miss: miss.map(o => o.i) } };
+            return { a, c: "回答：問いを分けて、貿易クラウドの登録データ（販売先国の選定・STANDAGE の商談記録の集計・価格表など）を根拠にAIが回答" + (r.provNm ? "（" + r.provNm + "）" : ""), v70mkt: { parts: P, miss: miss.map(o => o.i) } };
         }
     }
     const a = `<b>${v70mktE(v70mktT(head))}</b>` + A.map((x, i) => `<div class="v70mkt-q" style="margin-top:9px"><b>${V70MKT_NUM[i]} ${v70mktE(P[i])}</b><div>${x.h}</div></div>`).join("");
-    return { a, c: "根拠：問いごとに、販売先国の選定・バイヤーネットワーク・価格表などの登録データ（内蔵の照会）", v70mkt: { parts: P } };
+    return { a, c: "根拠：問いごとに、販売先国の選定・STANDAGE の商談記録の集計・価格表などの登録データ（内蔵の照会）", v70mkt: { parts: P } };
 }
 if (typeof brain === "function") {
     const __br70m = brain;
@@ -149718,6 +149718,47 @@ try {
             S30_NEWS.unshift(["2026-11", "v21.77", "バイヤーの照会を「AIバイヤー開拓」の流れに",
                 ["AI商社マンに「◯◯のバイヤーを教えて」と聞いたときの答えを直しました。STANDAGE がやりとりしたバイヤーの国ごとの人数（貿易クラウド Ver.1 の集計）と、貴社のバイヤーの数をお伝えし、新しい相手は「AIバイヤー開拓」で探すよう案内します（ボタンで、その国を選んだ状態で開きます）",
                     "前の版の「バイヤーネットワーク」の見本と「相手を探す」「つなぐ依頼」の案内を、チャット・今日やること・やり取り中のBuyer・契約書関連・使い方の答え・販売先国の画面から外しました。STANDAGE のバイヤーへの社名つきのおつなぎは、おまかせ貿易をご契約のお客様向けです"]]);
+    }
+}
+catch (e) { }
+const V78FB = { "asof": "2026-11-02", "src": "貿易クラウド Ver.1 の商談記録（承認済み 5454 件）", "t": { "アメリカ": 327, "香港": 302, "UAE": 285, "ナイジェリア": 236, "シンガポール": 217, "フランス": 182, "エジプト": 163, "台湾": 131, "日本": 104, "イギリス": 100, "ドイツ": 87, "マレーシア": 86, "タイ": 86, "インド": 83, "ベトナム": 68, "韓国": 54, "オーストラリア": 50, "サウジアラビア": 50, "インドネシア": 41, "中国": 40, "カナダ": 30, "カタール": 25, "フィリピン": 24, "スイス": 22, "イタリア": 22, "マカオ": 21, "ケニア": 17, "スリランカ": 17, "オランダ": 16, "バーレーン": 15, "オマーン": 14, "スペイン": 13, "ポーランド": 13, "タンザニア": 12, "ブラジル": 12, "クウェート": 11, "チェコ": 11, "フィンランド": 11, "ロシア": 10, "ウガンダ": 9, "カンボジア": 9, "パキスタン": 8, "ギリシャ": 6, "トルコ": 6, "ベルギー": 5, "オーストリア": 5, "アイルランド": 4, "キプロス": 4, "イラン": 4, "南アフリカ": 4, "スウェーデン": 4, "ウズベキスタン": 4, "コロンビア": 4, "リトアニア": 3, "デンマーク": 3, "モロッコ": 3, "ニュージーランド": 3, "ジョージア": 2, "英領インド洋地域": 2, "ギニア": 2, "パプアニューギニア": 2, "アルジェリア": 2, "モンゴル": 2, "メキシコ": 2, "ケイマン諸島": 2, "ガーナ": 2, "ウクライナ": 2, "ポルトガル": 1, "ルクセンブルク": 1, "カザフスタン": 1, "ヨルダン": 1, "チュニジア": 1, "オーランド諸島": 1, "キルギススタン": 1, "レバノン": 1, "トーゴ": 1, "コンゴ共和国": 1, "セネガル": 1, "エクアドル": 1, "ウルグアイ": 1, "ブルネイ": 1, "イスラエル": 1, "リビア": 1, "セルビア": 1, "アンゴラ": 1, "ルーマニア": 1, "トリニダード・トバゴ": 1, "ペルー": 1, "バングラデシュ": 1, "チリ": 1, "ルワンダ": 1, "ノルウェー": 1, "スロベニア": 1, "モナコ": 1, "フィジー": 1 }, "k": { "アメリカ": { "apparel": 7, "car": 2, "cosme": 13, "daily": 97, "food": 102, "other": 43, "parts": 88 }, "マレーシア": { "car": 1, "cosme": 13, "daily": 10, "food": 57, "liquor": 2, "other": 2, "parts": 4 }, "クウェート": { "cosme": 4, "daily": 3, "food": 3, "parts": 1 }, "ベトナム": { "cosme": 12, "daily": 6, "food": 24, "other": 1, "parts": 23 }, "香港": { "apparel": 1, "cosme": 94, "daily": 28, "food": 174, "liquor": 1, "medical": 1, "other": 3, "parts": 5 }, "フランス": { "cosme": 8, "daily": 61, "food": 69, "liquor": 1, "medical": 1, "other": 36, "parts": 6 }, "台湾": { "car": 1, "cosme": 28, "daily": 26, "food": 64, "other": 2, "parts": 8 }, "タイ": { "car": 1, "cosme": 13, "daily": 28, "food": 31, "other": 2, "parts": 12 }, "日本": { "apparel": 1, "cosme": 9, "daily": 22, "food": 39, "other": 5, "parts": 28 }, "中国": { "cosme": 1, "daily": 8, "food": 17, "other": 1, "parts": 13 }, "ケニア": { "car": 10, "food": 2, "medical": 2, "parts": 3 }, "UAE": { "apparel": 5, "car": 11, "cosme": 36, "daily": 48, "food": 104, "medical": 1, "other": 2, "parts": 79 }, "タンザニア": { "car": 11, "food": 1 }, "ナイジェリア": { "car": 14, "daily": 31, "food": 86, "medical": 3, "parts": 103 }, "オランダ": { "daily": 1, "food": 7, "other": 4, "parts": 4 }, "ジョージア": { "food": 1, "other": 1 }, "スイス": { "cosme": 3, "daily": 7, "food": 4, "other": 5, "parts": 3 }, "シンガポール": { "cosme": 59, "daily": 34, "food": 111, "liquor": 8, "medical": 4, "other": 5, "parts": 7 }, "アイルランド": { "daily": 2, "other": 1, "parts": 1 }, "リトアニア": { "daily": 1, "food": 1, "other": 1 }, "ギリシャ": { "daily": 3, "other": 2, "parts": 1 }, "スペイン": { "daily": 1, "food": 7, "other": 3, "parts": 2 }, "ポルトガル": { "other": 1 }, "イタリア": { "apparel": 2, "daily": 5, "food": 7, "liquor": 1, "other": 3, "parts": 5 }, "イギリス": { "car": 7, "cosme": 9, "daily": 15, "food": 53, "liquor": 7, "medical": 3, "other": 7, "parts": 4 }, "ルクセンブルク": { "other": 1 }, "インド": { "car": 1, "cosme": 8, "daily": 7, "food": 34, "liquor": 1, "medical": 4, "other": 1, "parts": 27 }, "フィリピン": { "daily": 1, "food": 21, "parts": 2 }, "スリランカ": { "car": 9, "food": 7, "medical": 1 }, "バーレーン": { "cosme": 1, "daily": 5, "food": 7, "parts": 2 }, "韓国": { "apparel": 1, "daily": 4, "food": 33, "liquor": 2, "other": 1, "parts": 9 }, "カナダ": { "apparel": 1, "daily": 4, "food": 16, "medical": 1, "other": 3, "parts": 4 }, "ベルギー": { "daily": 1, "food": 2, "other": 2 }, "オーストラリア": { "apparel": 1, "car": 5, "daily": 14, "food": 22, "other": 5, "parts": 4 }, "ブラジル": { "daily": 1, "food": 5, "other": 4, "parts": 2 }, "ドイツ": { "cosme": 2, "daily": 30, "food": 13, "liquor": 2, "medical": 1, "other": 14, "parts": 30 }, "カザフスタン": { "daily": 1 }, "デンマーク": { "daily": 3 }, "エジプト": { "car": 17, "cosme": 1, "daily": 17, "food": 57, "medical": 22, "other": 2, "parts": 44 }, "キプロス": { "food": 4 }, "イラン": { "car": 2, "food": 1, "parts": 1 }, "サウジアラビア": { "car": 1, "cosme": 5, "daily": 13, "food": 16, "medical": 1, "parts": 14 }, "パキスタン": { "car": 4, "food": 3, "parts": 1 }, "英領インド洋地域": { "food": 2 }, "ヨルダン": { "food": 1 }, "インドネシア": { "car": 1, "cosme": 4, "daily": 1, "food": 8, "other": 1, "parts": 25 }, "ロシア": { "daily": 1, "food": 9 }, "オマーン": { "cosme": 3, "daily": 3, "food": 4, "parts": 4 }, "ギニア": { "car": 2 }, "南アフリカ": { "cosme": 1, "daily": 2, "food": 1 }, "チュニジア": { "food": 1 }, "スウェーデン": { "daily": 2, "food": 1, "parts": 1 }, "ポーランド": { "cosme": 1, "daily": 3, "food": 5, "other": 2, "parts": 2 }, "オーランド諸島": { "food": 1 }, "トルコ": { "daily": 3, "other": 1, "parts": 2 }, "パプアニューギニア": { "car": 2 }, "モロッコ": { "daily": 1, "food": 1, "parts": 1 }, "オーストリア": { "apparel": 1, "daily": 3, "food": 1 }, "キルギススタン": { "daily": 1 }, "アルジェリア": { "daily": 1, "food": 1 }, "ウズベキスタン": { "cosme": 1, "food": 2, "parts": 2 }, "レバノン": { "food": 1 }, "ウガンダ": { "car": 3, "food": 2, "parts": 4 }, "カタール": { "cosme": 3, "daily": 10, "food": 4, "other": 1, "parts": 7 }, "コロンビア": { "food": 4 }, "トーゴ": { "parts": 1 }, "ニュージーランド": { "daily": 1, "food": 1, "parts": 1 }, "チェコ": { "food": 11 }, "コンゴ共和国": { "car": 1 }, "セネガル": { "car": 1 }, "モンゴル": { "food": 2 }, "エクアドル": { "parts": 1 }, "ウルグアイ": { "parts": 1 }, "メキシコ": { "daily": 1, "parts": 1 }, "ブルネイ": { "food": 1 }, "カンボジア": { "cosme": 4, "daily": 1, "food": 2, "medical": 1, "parts": 1 }, "マカオ": { "food": 19 }, "イスラエル": { "daily": 1 }, "ケイマン諸島": { "food": 2 }, "リビア": { "medical": 1 }, "セルビア": { "food": 1 }, "ガーナ": { "car": 1, "food": 1 }, "アンゴラ": { "other": 1 }, "ルーマニア": { "other": 1 }, "トリニダード・トバゴ": { "daily": 1 }, "ペルー": { "food": 1 }, "バングラデシュ": { "parts": 1 }, "チリ": { "food": 1 }, "ウクライナ": { "food": 1, "parts": 1 }, "フィンランド": { "apparel": 1, "cosme": 1, "daily": 9, "medical": 1, "other": 4 }, "ルワンダ": { "parts": 1 }, "ノルウェー": { "daily": 1, "food": 1 }, "スロベニア": { "food": 1 }, "モナコ": { "food": 1 }, "フィジー": { "car": 1 } } };
+function v54ctyNet(c) {
+    try {
+        const D = V78FB;
+        c = String(c || "");
+        let k = c;
+        try {
+            if (typeof ctyNorm === "function")
+                k = ctyNorm(c) || c;
+        }
+        catch (e) { }
+        const all = +(D.t[k] || D.t[c] || 0), K = D.k[k] || D.k[c] || {};
+        const my = (typeof v41MyCat === "function") ? (v41MyCat() || "") : "";
+        return { all, cat: my ? +(K[my] || 0) : all, catNm: my && typeof v41CatNm === "function" ? v41CatNm(my) : "", asof: D.asof };
+    }
+    catch (e) {
+        return null;
+    }
+}
+try {
+    if (typeof v30I18n === "function")
+        v30I18n([
+            ["STANDAGE が{cat}の商品で商談したバイヤー {n}社（この国で商談 計{all}社）", "STANDAGE negotiated with {n} buyers for {cat} products ({all} in this country in total)", "STANDAGE就{cat}商品洽谈过的买家 {n}家（该国共洽谈{all}家）", "STANDAGE negoció con {n} compradores de productos de {cat} ({all} en total en este país)"],
+            ["STANDAGE が商談したバイヤー {n}社（この国）", "STANDAGE negotiated with {n} buyers in this country", "STANDAGE在该国洽谈过的买家 {n}家", "STANDAGE negoció con {n} compradores en este país"],
+            ["バイヤー数は、STANDAGE がおまかせ貿易でその国のバイヤーと商談した社数です（貿易クラウド Ver.1 の商談記録・2026年11月2日時点。貴社と同じカテゴリの商品の商談の数と、この国の合計。社名はお出ししません）。", "Buyer counts are the number of buyers in each country that STANDAGE has negotiated with through Omakase Boueki (Trade Cloud Ver.1 meeting records, as of 2 Nov 2026: negotiations for products in your category, and the country total; company names are not shown).", "买家数为STANDAGE通过“全托贸易”与该国买家洽谈过的家数（贸易云Ver.1的商谈记录・截至2026年11月2日：与贵公司同类商品的洽谈数及该国合计，不公开公司名）。", "El número de compradores es la cantidad de compradores de cada país con los que STANDAGE ha negociado en Omakase Boueki (registros de Trade Cloud Ver.1 al 2 de noviembre de 2026: negociaciones de productos de su categoría y total del país; no se muestran nombres)."],
+            ["この分析のバイヤー数は、以前の数え方です。「🔄 再分析」を押すと、いまの数え方（STANDAGE が商談したバイヤーの数・貿易クラウド Ver.1 の商談記録）にそろいます。", "Buyer counts in this analysis use the old definition. Press “🔄 Re-analyze” to use the current one (buyers STANDAGE has negotiated with, from Trade Cloud Ver.1 meeting records).", "此分析的买家数为旧口径。点击“🔄 重新分析”即可统一为现行口径（STANDAGE洽谈过的买家数・贸易云Ver.1的商谈记录）。", "Los compradores de este análisis usan el criterio anterior. Pulse «🔄 Volver a analizar» para usar el actual (compradores con los que STANDAGE negoció, según Trade Cloud Ver.1)."],
+            ["バイヤー数は、いまの数え方（STANDAGE が商談したバイヤーの数）で出しています。この分析の点数は以前の数え方で付けたため、「🔄 再分析」を押すと点数もそろいます。", "Buyer numbers use the current definition (buyers STANDAGE has negotiated with). The scores in this analysis were made with the old one, so press “🔄 Re-analyze” to align them.", "买家数按现行口径（STANDAGE洽谈过的买家数）显示。此分析的得分按旧口径计算，点击“🔄 重新分析”即可统一。", "Los compradores usan el criterio actual (compradores con los que STANDAGE negoció). Las puntuaciones usan el anterior: pulse «🔄 Volver a analizar» para alinearlas."],
+            ["AIバイヤー開拓で候補先をリストにし、現地拠点と絞り込む", "List candidates with AI Buyer Prospecting and narrow them down with the local base", "用AI买家开拓列出候选，并与当地据点一起筛选", "Liste candidatos con la prospección IA y acótelos con la base local"],
+            ["STANDAGE の商談記録・拠点", "STANDAGE meeting records and bases", "STANDAGE商谈记录・据点", "Registros de reuniones y bases de STANDAGE"]
+        ]);
+}
+catch (e) { }
+try {
+    if (typeof S30_NEWS !== "undefined" && Array.isArray(S30_NEWS)) {
+        if (!S30_NEWS.some(x => x && x[1] === "v21.78"))
+            S30_NEWS.unshift(["2026-11", "v21.78", "販売先国の選定のバイヤー数を、STANDAGE が商談した数に",
+                ["販売先国の選定の表・点数・国別レポート・PowerPoint・AI商社マンの答えに出るバイヤー数を、STANDAGE がおまかせ貿易でその国のバイヤーと商談した社数（貿易クラウド Ver.1 の商談記録・2026年11月2日時点。貴社と同じカテゴリの商品の商談の数と、この国の合計）に変えました。社名はお出ししません",
+                    "前の版で分析した結果は「以前の数え方」と表示します。「🔄 再分析」を押すと、点数も新しい数でそろいます"]]);
     }
 }
 catch (e) { }
