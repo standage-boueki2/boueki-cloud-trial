@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="ffd87529c230";
+const BC20_BUILD="0cdb56ae9e7e";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -45352,7 +45352,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.80";
+const BC20_VER = "21.80.1";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -157723,6 +157723,1754 @@ try {
 catch (e) { }
 try {
     v80admLgWatch();
+}
+catch (e) { }
+var v801p801S = { v: "21.80.1", mem: {}, ls: null, disp: null, sw: null, obs: null, tst: null, nav: 0 };
+const v801p801LS = "bc20_v801lv";
+function v801p801L() { try {
+    return (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v801p801M(ja, en, zh, es) { const l = v801p801L(); return l === "en" ? (en || ja) : l === "zh" ? (zh || en || ja) : l === "es" ? (es || en || ja) : ja; }
+function v801p801E(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v801p801Tr(x) { x = String(x == null ? "" : x); try {
+    const l = v801p801L();
+    if (l === "ja" || typeof i18nStr !== "function" || typeof I18N === "undefined" || !I18N.dict || !I18N.dict[l])
+        return x;
+    const r = i18nStr(x, I18N.dict[l]);
+    return r == null ? x : String(r);
+}
+catch (e) {
+    return x;
+} }
+function v801p801H(s) { let h = 0; s = String(s == null ? "" : s); for (let i = 0; i < s.length; i++)
+    h = (h * 31 + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
+function v801p801R1(n) { return Math.round((+n || 0) * 10) / 10; }
+function v801p801Sg(n) { n = v801p801R1(n); return (n > 0 ? "+" : n < 0 ? "−" : "±") + Math.abs(n); }
+function v801p801Css() {
+    if (document.getElementById("v801p801css"))
+        return;
+    const s = document.createElement("style");
+    s.id = "v801p801css";
+    s.textContent = `
+#gai .v801lvd{margin-left:5px;font-size:11px;font-weight:800;padding:0 6px;border-radius:999px;background:#e9f7ef;color:#17633a;white-space:nowrap}
+#gai .v801lvd.dn{background:#fdecec;color:#9b1c1c}
+.v801lvchg{margin:10px 0 2px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r2,8px);background:var(--surface-2);font-size:12.5px;line-height:1.7}
+.v801lvchg p{margin:0}.v801lvchg ul{margin:4px 0 0;padding-left:1.2em}.v801lvchg li{margin:1px 0}
+.v801lvchg .up{color:#17633a}.v801lvchg .dn{color:#9b1c1c}
+.v801lvchg details{margin-top:6px}.v801lvchg summary{cursor:pointer;font-weight:700}
+.v801lvtb{width:100%;border-collapse:collapse;margin-top:4px;font-size:12px}.v801lvtb th,.v801lvtb td{padding:3px 6px;border-bottom:1px dashed var(--line-2,var(--line));text-align:left}
+.v801lvtb td.n,.v801lvtb th.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.v801nt{margin-bottom:11px;padding:10px 14px}.v801nt .rw{gap:8px;flex-wrap:wrap;align-items:center}.v801nt p.nn{margin:4px 0 0}
+[data-v68notes].v801hl{outline:2px solid var(--or,#e8843a);outline-offset:4px;border-radius:6px}
+.v801cs{margin-top:6px}`;
+    document.head.appendChild(s);
+}
+function v801p801Persist() { try {
+    return typeof SES !== "undefined" && !!SES && SES.t === "trial" && !!SES.code;
+}
+catch (e) {
+    return false;
+} }
+function v801p801Acct() { try {
+    return v801p801H((typeof SES !== "undefined" && SES && SES.code) || "-");
+}
+catch (e) {
+    return "-";
+} }
+function v801p801All() {
+    if (!v801p801Persist())
+        return v801p801S.mem;
+    if (v801p801S.ls)
+        return v801p801S.ls;
+    let o = {};
+    try {
+        o = JSON.parse(localStorage.getItem(v801p801LS) || "{}") || {};
+    }
+    catch (e) {
+        o = {};
+    }
+    if (!o || typeof o !== "object" || Array.isArray(o))
+        o = {};
+    v801p801S.ls = o;
+    return o;
+}
+function v801p801Save() {
+    if (!v801p801Persist())
+        return;
+    try {
+        const o = v801p801S.ls || {};
+        const ks = Object.keys(o);
+        if (ks.length > 24)
+            ks.sort((a, b) => ((o[a] && o[a].u) || 0) - ((o[b] && o[b].u) || 0)).slice(0, ks.length - 24).forEach(k => { delete o[k]; });
+        localStorage.setItem(v801p801LS, JSON.stringify(o));
+    }
+    catch (e) { }
+}
+function v801p801Disp() {
+    try {
+        if (typeof D === "undefined" || !D)
+            return null;
+        const t = (typeof TEN !== "undefined" && TEN) || null;
+        const mine = !!(t && typeof PID !== "undefined" && PID === "custom" && String(t.item || "") === String(D.item || "") && String(t.co || "") === String(D.co || ""));
+        const id = mine ? ("t|" + (t.uid || "") + "|" + (t.co || "") + "|" + (t.item || "")) : ("d|" + ((typeof PID !== "undefined" && PID) || "") + "|" + (D.co || "") + "|" + (D.item || ""));
+        let lab = "";
+        try {
+            if (typeof v73dashOpenLabel === "function")
+                lab = v73dashOpenLabel();
+        }
+        catch (e) { }
+        if (!lab)
+            lab = String(D.item || "");
+        return { id, lab };
+    }
+    catch (e) {
+        return null;
+    }
+}
+function v801p801Snap(L) {
+    const c = {};
+    const sc = !!(L && L.scope !== undefined && (+L.n || 1) > 1);
+    (L && Array.isArray(L.cats) ? L.cats : []).forEach(x => {
+        if (!x || !x.k)
+            return;
+        c[x.k] = [v801p801R1(x.pct), +x.w || 0, sc ? "" : String(x.detail || "").replace(/<[^>]*>/g, "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").slice(0, 260), String(x.nm || x.k)];
+    });
+    const G = L && L.gp;
+    const it = G && Array.isArray(G.items) ? G.items : null;
+    return { v: +L.pct || 0, lv: +L.lv || 0, st: String(L.stage || ""), n: +L.n || 1, c, p: G ? String(G.key || "") : "",
+        ok: it ? it.filter(x => x && x.ok).map(x => String(x.id)) : null, g: G && G.gated ? 1 : 0 };
+}
+const v801p801NUM = /[-−]?\d[\d,]*(?:\.\d+)?/g;
+function v801p801Toks(s) {
+    const P = String(s || "").split(/([／・])/);
+    const out = [];
+    let pre = "";
+    for (let i = 0; i < P.length; i += 2) {
+        const x = String(P[i] || "").trim();
+        if (!x)
+            continue;
+        const sep = P[i + 1] || "";
+        if (!/\d/.test(x) && sep === "・" && i + 2 < P.length) {
+            pre += x + "・";
+            continue;
+        }
+        out.push(pre + x);
+        pre = "";
+    }
+    if (pre)
+        out.push(pre.replace(/・$/, ""));
+    return out;
+}
+function v801p801TokDiff(da, db) {
+    const A = {}, B = {};
+    const lab = x => x.replace(v801p801NUM, "#");
+    v801p801Toks(da).forEach(x => { A[lab(x)] = x; });
+    v801p801Toks(db).forEach(x => { B[lab(x)] = x; });
+    const out = [];
+    Object.keys(B).forEach(k => {
+        const b = B[k], a = A[k];
+        if (a === undefined) {
+            if (/\d/.test(b))
+                out.push({ s: "＋" + b, nw: 1 });
+            return;
+        }
+        if (a === b)
+            return;
+        const na = a.match(v801p801NUM) || [], nb = b.match(v801p801NUM) || [];
+        let i = 0;
+        while (i < na.length && i < nb.length && na[i] === nb[i])
+            i++;
+        if (i < na.length && i < nb.length) {
+            let j = -1;
+            const s = b.replace(v801p801NUM, m => { j++; return j === i ? (na[i] + "→" + m) : m; });
+            out.push({ s, a: +String(na[i]).replace(/[,−]/g, m => m === "−" ? "-" : ""), b: +String(nb[i]).replace(/[,−]/g, m => m === "−" ? "-" : "") });
+        }
+        else
+            out.push({ s: a + " → " + b });
+    });
+    Object.keys(A).forEach(k => { if (B[k] === undefined && /\d/.test(A[k]))
+        out.push({ s: A[k] + " → " + v801p801M("なし", "none", "无", "ninguno"), gone: 1 }); });
+    return out;
+}
+const v801p801USE = /AI商社マンへの質問|Web検索|使った画面|アップロード|通関統計・価格分析/;
+function v801p801Why(a, b, L) {
+    const W = { from: a.v, to: b.v, d: b.v - a.v, prof: null, gate: null, items: [], cats: [], rows: [], n: null, usage: 0 };
+    if (a.p && b.p && a.p !== b.p)
+        W.prof = [a.p, b.p];
+    if (a.g !== b.g && a.ok && b.ok)
+        W.gate = b.g ? 1 : -1;
+    if ((a.n || 1) !== (b.n || 1))
+        W.n = [a.n || 1, b.n || 1];
+    const it = (L && L.gp && Array.isArray(L.gp.items)) ? L.gp.items : [];
+    if (a.ok && b.ok && !W.prof) {
+        const A = new Set(a.ok), B = new Set(b.ok);
+        it.forEach(x => {
+            const id = String(x.id);
+            const nm = (typeof v73T === "function") ? v73T(x.nm) : (Array.isArray(x.nm) ? x.nm[0] : String(x.nm || id));
+            if (B.has(id) && !A.has(id))
+                W.items.push({ nm, ok: 1, m: x.p === "m" ? 1 : 0 });
+            else if (!B.has(id) && A.has(id))
+                W.items.push({ nm, ok: 0, m: x.p === "m" ? 1 : 0 });
+        });
+    }
+    const ks = [...new Set(Object.keys(a.c || {}).concat(Object.keys(b.c || {})))];
+    ks.forEach(k => {
+        const x = (a.c || {})[k] || [0, 0, "", k], y = (b.c || {})[k] || [0, 0, "", k];
+        const pa = x[0] * x[1] / 100, pb = y[0] * y[1] / 100;
+        W.rows.push({ k, nm: y[3] || x[3], a: v801p801R1(pa), b: v801p801R1(pb), pa: x[0], pb: y[0] });
+        const dp = pb - pa;
+        const toks = v801p801TokDiff(x[2], y[2]);
+        if (Math.abs(dp) < 0.05)
+            return;
+        const usage = toks.some(t => v801p801USE.test(t.s));
+        if (usage)
+            W.usage = 1;
+        const roll = toks.some(t => /通関統計・価格分析/.test(t.s) && t.a != null && t.b < t.a);
+        W.cats.push({ k, nm: y[3] || x[3], dp: v801p801R1(dp), toks: toks.slice(0, 4).map(t => t.s), roll: roll ? 1 : 0 });
+    });
+    W.cats.sort((p, q) => Math.abs(q.dp) - Math.abs(p.dp));
+    W.items = W.items.slice(0, 6);
+    return W;
+}
+function v801p801Track(key, L) {
+    if (!key || !L)
+        return null;
+    const all = v801p801All();
+    const K = v801p801Acct() + "|" + v801p801H(key.id);
+    const now = v801p801Snap(L);
+    let e = all[K];
+    const at = Date.now();
+    let dirty = false;
+    if (!e || typeof e !== "object") {
+        all[K] = { u: at, last: now };
+        v801p801Save();
+        return null;
+    }
+    const last = e.last;
+    if (e.chg && !e.chg.ack && at - (+e.chg.at || 0) > 864e5) {
+        e.chg.ack = 1;
+        delete e.chg.f;
+        dirty = true;
+    }
+    if (last && last.v !== now.v) {
+        const base = (e.chg && !e.chg.ack && e.chg.f) ? e.chg.f : last;
+        if (base.v === now.v) {
+            delete e.chg;
+        }
+        else
+            e.chg = { f: base, fv: base.v, tv: now.v, at, ack: 0, w: v801p801Why(base, now, L), lab: key.lab };
+        dirty = true;
+    }
+    if (!last || JSON.stringify(last) !== JSON.stringify(now)) {
+        e.last = now;
+        dirty = true;
+    }
+    if (dirty) {
+        e.u = at;
+        all[K] = e;
+        v801p801Save();
+    }
+    return e.chg || null;
+}
+function v801p801Ack(key) {
+    try {
+        const all = v801p801All();
+        const K = v801p801Acct() + "|" + v801p801H(key.id);
+        const e = all[K];
+        if (e && e.chg && !e.chg.ack) {
+            e.chg.ack = 1;
+            delete e.chg.f;
+            v801p801Save();
+        }
+    }
+    catch (e) { }
+}
+if (typeof go === "function") {
+    const __go801 = go;
+    go = function (id) { try {
+        if (typeof cur === "undefined" || id !== cur)
+            v801p801S.nav++;
+    }
+    catch (e) { } return __go801.apply(this, arguments); };
+}
+function v801p801Sw(key, L) {
+    try {
+        if (!key || /^s\|/.test(key.id))
+            return;
+        const D0 = v801p801S.disp;
+        if (D0 && D0.id !== key.id)
+            v801p801S.sw = { fl: D0.lab, fv: D0.v, tl: key.lab, tv: +L.pct || 0, to: key.id, at: Date.now() };
+        v801p801S.disp = { id: key.id, lab: key.lab, v: +L.pct || 0 };
+    }
+    catch (e) { }
+}
+function v801p801ProfNm(k) { try {
+    if (typeof V73_PROF !== "undefined" && V73_PROF[k])
+        return (typeof v73T === "function") ? v73T(V73_PROF[k].nm) : V73_PROF[k].nm[0];
+}
+catch (e) { } return String(k || ""); }
+function v801p801Hm(ts) { const d = new Date(+ts || Date.now()); return (d.getMonth() + 1) + "/" + d.getDate() + " " + d.getHours() + ":" + String(d.getMinutes()).padStart(2, "0"); }
+function v801p801WhyLines(W) {
+    const L = [];
+    if (W.prof)
+        L.push(v801p801M(`物差し（商材の種類）が「${v801p801ProfNm(W.prof[0])}」から「${v801p801ProfNm(W.prof[1])}」に変わりました（分野の配点と、吸収すべき情報が変わります）`, `The yardstick (product type) changed from “${v801p801ProfNm(W.prof[0])}” to “${v801p801ProfNm(W.prof[1])}” (weights and items change)`, `尺度（商品类型）从“${v801p801ProfNm(W.prof[0])}”变为“${v801p801ProfNm(W.prof[1])}”（各领域配分和需吸收的信息随之变化）`, `La vara de medir (tipo de producto) cambió de «${v801p801ProfNm(W.prof[0])}» a «${v801p801ProfNm(W.prof[1])}» (cambian los pesos y los datos)`));
+    if (W.n)
+        L.push(v801p801M(`集計範囲の商品の数が ${W.n[0]} → ${W.n[1]} に変わりました（平均する商品が変わります）`, `The number of products in the scope changed ${W.n[0]} → ${W.n[1]}`, `统计范围内的商品数 ${W.n[0]} → ${W.n[1]}`, `Productos en el ámbito: ${W.n[0]} → ${W.n[1]}`));
+    if (W.gate === -1)
+        L.push(v801p801M("必須の情報がすべてそろいました（一人前の条件の1つ）", "All must-have items are now done (one condition of full competence)", "必须信息已全部齐备（成为独当一面的条件之一）", "Ya están todos los datos obligatorios (una condición para la plena competencia)"));
+    if (W.gate === 1)
+        L.push(v801p801M("必須の情報に足りないものが出ました（90%以上でも一人前にしません）", "A must-have item is now missing (not fully competent even at 90%+)", "出现了缺少的必须信息（即使90%以上也不算独当一面）", "Falta un dato obligatorio (no es plena competencia aunque supere el 90%)"));
+    W.items.forEach(x => {
+        const m = x.m ? v801p801M("（必須）", " (must)", "（必须）", " (obligatorio)") : "";
+        L.push(x.ok ? v801p801M(`「${x.nm}」がそろいました${m}`, `“${x.nm}” is now in place${m}`, `“${x.nm}”已齐备${m}`, `«${x.nm}» ya está${m}`)
+            : v801p801M(`「${x.nm}」が外れました${m}`, `“${x.nm}” is no longer met${m}`, `“${x.nm}”不再满足${m}`, `«${x.nm}» ya no se cumple${m}`));
+    });
+    W.cats.forEach(c => {
+        const tk = c.toks.length ? "：" + c.toks.map(v801p801Tr).join("・") : "";
+        L.push(`${v801p801Tr(c.nm)} ${v801p801Sg(c.dp)}${v801p801M("点", "pt", "分", "pt")}${tk}` + (c.roll ? v801p801M("（通関統計・価格分析の回数は、直近80件の操作の記録から数えるため、ほかの操作が増えて古い記録が外れると減ります）", " (statistics/pricing uses are counted from the last 80 actions, so the count drops when older actions roll off)", "（通关统计・价格分析的次数按最近80条操作记录计算，旧记录被挤出后会减少）", " (los usos de estadísticas se cuentan sobre las últimas 80 acciones; bajan cuando salen las antiguas)") : ""));
+    });
+    return L;
+}
+function v801p801Rows(W) {
+    return `<table class="v801lvtb"><thead><tr><th>${v801p801E(v801p801M("分野", "Area", "领域", "Área"))}</th><th class="n">${v801p801E(v801p801M("前に見たとき", "Before", "之前", "Antes"))}</th><th class="n">${v801p801E(v801p801M("いま", "Now", "现在", "Ahora"))}</th><th class="n">${v801p801E(v801p801M("差", "Change", "差", "Cambio"))}</th></tr></thead><tbody>` +
+        W.rows.map(r => `<tr data-v801k="${v801p801E(r.k)}"><td>${v801p801E(v801p801Tr(r.nm))}</td><td class="n">${r.a}${v801p801E(v801p801M("点", "pt", "分", "pt"))}（${r.pa}%）</td><td class="n">${r.b}${v801p801E(v801p801M("点", "pt", "分", "pt"))}（${r.pb}%）</td><td class="n">${v801p801E(v801p801Sg(r.b - r.a))}</td></tr>`).join("") +
+        `</tbody></table><p class="nn" style="margin-top:4px">${v801p801E(v801p801M("成長レベルは、6分野の点数（達成率×配点）の合計を四捨五入した値です。", "The growth level is the rounded total of the six areas (achievement × weight).", "成长等级是6个领域分数（达成率×配分）合计的四舍五入值。", "El nivel es el total redondeado de las seis áreas (logro × peso)."))}</p>`;
+}
+function v801p801ChgHtml(key, chg) {
+    v801p801Css();
+    const sw = v801p801S.sw;
+    const swOn = !!(sw && (!sw.ack || sw.ack === v801p801S.nav) && sw.to === key.id && Date.now() - sw.at < 30 * 60e3);
+    const swH = swOn ? `<p data-v801sw>${v801p801E(v801p801M(`表示中の商品が「${sw.fl}」（${sw.fv}%）から「${sw.tl}」（${sw.tv}%）に変わりました。成長レベルは商品ごとに数えます。`, `The product you are viewing changed from “${sw.fl}” (${sw.fv}%) to “${sw.tl}” (${sw.tv}%). The level is counted per product.`, `当前商品从“${sw.fl}”（${sw.fv}%）切换为“${sw.tl}”（${sw.tv}%）。成长等级按商品计算。`, `El producto cambió de «${sw.fl}» (${sw.fv}%) a «${sw.tl}» (${sw.tv}%). El nivel se cuenta por producto.`))}</p>` : "";
+    if (!chg || !chg.w)
+        return swH ? `<div class="v801lvchg" id="v801lvchg" data-noi18n>${swH}</div>` : "";
+    const W = chg.w;
+    const d = W.to - W.from;
+    const up = d > 0;
+    const lines = v801p801WhyLines(W);
+    const head = `<p><b class="${up ? "up" : "dn"}">${up ? "📈" : "📉"} ${v801p801E(v801p801M(`前に見たときから ${up ? "+" : "−"}${Math.abs(d)}点`, `${up ? "+" : "−"}${Math.abs(d)} pt since you last looked`, `比上次查看时 ${up ? "+" : "−"}${Math.abs(d)} 分`, `${up ? "+" : "−"}${Math.abs(d)} pt desde la última vez`))}</b>（${W.from}% → ${W.to}%・${v801p801E(v801p801Hm(chg.at))}）</p>`;
+    const ul = lines.length ? `<ul data-v801why>${lines.map(s => `<li>${v801p801E(s)}</li>`).join("")}</ul>`
+        : `<p data-v801why="0">${v801p801E(v801p801M("計算の材料が変わりました（下の内訳で、分野ごとの点数の前といまを比べられます）。", "The inputs of the calculation changed (compare each area below).", "计算的材料发生了变化（可在下方明细中比较各领域的分数）。", "Cambiaron los datos del cálculo (compare cada área abajo)."))}</p>`;
+    const use = W.usage ? `<p class="nn">${v801p801E(v801p801M("質問・Web検索・使った画面・アップロード・通関統計の利用の回数は、アカウント全体の利用です（どの商品にも同じように入ります）。", "Questions, web searches, screens used, uploads and statistics uses are account-wide (they count for every product).", "提问・网络搜索・使用的画面・上传・通关统计的使用次数是账户整体的使用（计入每个商品）。", "Preguntas, búsquedas, pantallas, cargas y usos de estadísticas son de toda la cuenta (cuentan para todos los productos)."))}</p>` : "";
+    return `<div class="v801lvchg" id="v801lvchg" data-noi18n data-v801from="${W.from}" data-v801to="${W.to}">${swH}${head}${ul}${use}
+    <details${lines.length ? "" : " open"}><summary>${v801p801E(v801p801M("計算の材料が変わりました（内訳）", "What changed in the calculation (breakdown)", "计算材料的变化（明细）", "Qué cambió en el cálculo (desglose)"))}</summary>${v801p801Rows(W)}</details></div>`;
+}
+if (typeof aiLevelChipBtn === "function") {
+    const __lc801 = aiLevelChipBtn;
+    aiLevelChipBtn = function () {
+        let h = String(__lc801.apply(this, arguments) || "");
+        try {
+            if (h.indexOf('id="gai"') < 0)
+                return h;
+            let L = null, key = null;
+            const Ls = (typeof aiLevelScope === "function") ? aiLevelScope() : null;
+            if (Ls) {
+                L = Ls;
+                key = { id: "s|" + String(Ls.scope || ""), lab: String(Ls.scope || "") };
+            }
+            else {
+                L = aiLevel();
+                key = v801p801Disp();
+            }
+            if (!L || !key)
+                return h;
+            v801p801Sw(key, L);
+            const chg = v801p801Track(key, L);
+            if (chg && !chg.ack && chg.w) {
+                v801p801Css();
+                const d = chg.tv - chg.fv;
+                const up = d > 0;
+                const lines = v801p801WhyLines(chg.w);
+                const badge = `<span class="v801lvd ${up ? "up" : "dn"}" data-v801lvd="${up ? "+" : "-"}${Math.abs(d)}" data-noi18n>${up ? "▲" : "▼"}${Math.abs(d)}</span>`;
+                const k = h.indexOf('<span class="lv">');
+                const e = k >= 0 ? h.indexOf("</span>", k) : -1;
+                if (e >= 0)
+                    h = h.slice(0, e + 7) + badge + h.slice(e + 7);
+                else {
+                    const z = h.lastIndexOf("</button>");
+                    if (z >= 0)
+                        h = h.slice(0, z) + badge + h.slice(z);
+                }
+                const add = v801p801M(` 前に見たとき ${chg.fv}% → いま ${chg.tv}%（${up ? "+" : "−"}${Math.abs(d)}）：`, ` Before ${chg.fv}% → now ${chg.tv}% (${up ? "+" : "−"}${Math.abs(d)}): `, ` 上次 ${chg.fv}% → 现在 ${chg.tv}%（${up ? "+" : "−"}${Math.abs(d)}）：`, ` Antes ${chg.fv}% → ahora ${chg.tv}% (${up ? "+" : "−"}${Math.abs(d)}): `) +
+                    (lines.length ? lines.slice(0, 2).join("／") + (lines.length > 2 ? v801p801M(" ほか", " and more", " 等", " y más") : "") : v801p801M("計算の材料が変わりました", "the inputs changed", "计算材料发生变化", "cambiaron los datos")) +
+                    v801p801M("。くわしくは AI商社マンの画面で", ". Details on the AI screen", "。详情见AI商社专员画面", ". Detalles en la pantalla del agente");
+                h = h.replace(/title="([^"]*)"/, (m0, a) => `title="${a}${v801p801E(add)}"`);
+            }
+        }
+        catch (e) {
+            try {
+                console.warn("v801p801 chip", e);
+            }
+            catch (x) { }
+        }
+        return h;
+    };
+}
+if (typeof aiLevelCard === "function") {
+    const __alc801 = aiLevelCard;
+    aiLevelCard = function () {
+        let h = String(__alc801.apply(this, arguments) || "");
+        try {
+            if (h.indexOf('id="v801lvchg"') >= 0)
+                return h;
+            const L = aiLevel();
+            const key = v801p801Disp();
+            if (!L || !key)
+                return h;
+            v801p801Sw(key, L);
+            const chg = v801p801Track(key, L);
+            const fresh = chg && chg.w && (Date.now() - (+chg.at || 0) < 7 * 864e5);
+            const blk = v801p801ChgHtml(key, fresh ? chg : null);
+            if (blk) {
+                const k = h.indexOf('<div class="growwrap">');
+                if (k >= 0)
+                    h = h.slice(0, k) + blk + h.slice(k);
+            }
+            if (typeof cur === "undefined" || cur === "ai") {
+                if (chg && !chg.ack)
+                    v801p801Ack(key);
+                const sw = v801p801S.sw;
+                if (sw && !sw.ack && sw.to === key.id && blk.indexOf("data-v801sw") >= 0)
+                    sw.ack = v801p801S.nav;
+            }
+        }
+        catch (e) {
+            try {
+                console.warn("v801p801 card", e);
+            }
+            catch (x) { }
+        }
+        return h;
+    };
+}
+function v801p801NoteSum() {
+    try {
+        const t = (typeof v68pTen === "function") ? v68pTen() : null;
+        const mine = !!(t && typeof D !== "undefined" && D && (D.src === "upload" || D.src === "sample2") && typeof PID !== "undefined" && PID === "custom");
+        if (!mine)
+            return { n: 0, done: 0, unk: 0, open: 0, mine: false };
+        if (typeof v73prodNoteSum === "function")
+            return Object.assign({ mine: true }, v73prodNoteSum(t));
+        const L = (typeof v68pNotes === "function") ? v68pNotes(t) : [];
+        const o = { n: L.length, done: 0, unk: 0, open: 0, mine: true };
+        L.forEach(x => { if (x.done)
+            o.done++;
+        else if (x.st === "unk")
+            o.unk++;
+        else
+            o.open++; });
+        return o;
+    }
+    catch (e) {
+        return { n: 0, done: 0, unk: 0, open: 0, mine: false };
+    }
+}
+function v801p801NoteHtml() {
+    v801p801Css();
+    const o = v801p801NoteSum();
+    const cnt = o.n ? (o.unk ? v801p801M(`未解決 ${o.open}件・「不明」と回答 ${o.unk}件・解決済み ${o.done}件`, `${o.open} open · ${o.unk} answered “unknown” · ${o.done} resolved`, `未解决 ${o.open} 条・回答“不明” ${o.unk} 条・已解决 ${o.done} 条`, `${o.open} pendientes · ${o.unk} «no sé» · ${o.done} resueltas`)
+        : v801p801M(`未解決 ${o.open}件・解決済み ${o.done}件`, `${o.open} open · ${o.done} resolved`, `未解决 ${o.open} 条・已解决 ${o.done} 条`, `${o.open} pendientes · ${o.done} resueltas`))
+        : v801p801M("ありません", "none", "无", "ninguna");
+    const cls = o.n ? (o.open ? "or" : o.unk ? "bl" : "hi") : "hi";
+    const btn = o.n ? `<button class="btn g" type="button" onclick="v801p801NoteGo()" data-v801ntgo>${v801p801E(v801p801M("気づきを見る ↓", "See the notes ↓", "查看发现 ↓", "Ver las notas ↓"))}</button>` : "";
+    const sub = o.n ? v801p801M(`資料を AI で読んだときと、AI追加ヒアリングで、AI が気づいた点（確かめたいこと）です。一覧はこの画面のいちばん下（「AIはこの資料をこう理解しました」）にあります。数え方は、追加ヒアリングの完了の知らせと同じです。`, `Points the AI noticed when reading your files and in the AI follow-up questions. The list is at the bottom of this page (“How the AI understood your files”), counted the same way as the follow-up completion message.`, `AI读取资料时和AI追加询问中发现的点（需确认的事项）。列表在本画面最下方（“AI这样理解了资料”），计数方式与追加询问完成通知相同。`, `Puntos que la IA notó al leer sus archivos y en las preguntas de seguimiento. La lista está al final de esta página, contada igual que el aviso de fin del seguimiento.`)
+        : v801p801M(`AIの気づきはありません。資料を AI で読み込んだときと、「商品情報を登録」の AI追加ヒアリング（AIエンジンにつないだとき）で、AI が気づいた点（確かめたいこと）がここに出ます。`, `No AI notes. Points the AI notices when reading your files with AI and in the AI follow-up questions on “Register product info” (with an AI engine connected) appear here.`, `没有AI的发现。用AI读取资料时，以及在“登记商品信息”的AI追加询问（连接AI引擎时）中，AI发现的点会显示在这里。`, `No hay notas de la IA. Aparecen aquí los puntos que la IA nota al leer sus archivos y en las preguntas de seguimiento de «Registrar producto» (con un motor de IA conectado).`);
+    return `<div class="c v801nt" id="v801nt" data-v801nt="${o.done}/${o.unk}/${o.open}" data-v801ntn="${o.n}" data-noi18n><div class="rw"><b>🤖 ${v801p801E(v801p801M("AIの気づき", "AI notes", "AI的发现", "Notas de la IA"))}</b><span class="p ${cls}">${v801p801E(cnt)}</span>${btn}</div><p class="nn">${v801p801E(sub)}</p></div>`;
+}
+function v801p801NoteGo() {
+    try {
+        const el = document.querySelector("[data-v68notes]");
+        if (!el)
+            return;
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.classList.add("v801hl");
+        el.setAttribute("tabindex", "-1");
+        try {
+            el.focus({ preventScroll: true });
+        }
+        catch (x) { }
+        setTimeout(() => { try {
+            el.classList.remove("v801hl");
+        }
+        catch (x) { } }, 2400);
+    }
+    catch (e) { }
+}
+if (typeof vItem === "function") {
+    const __vi801 = vItem;
+    vItem = function () {
+        let h = String(__vi801.apply(this, arguments));
+        try {
+            if (h.indexOf('id="v801nt"') < 0) {
+                const blk = v801p801NoteHtml();
+                const k = h.indexOf("<h3>① ");
+                const s = k >= 0 ? h.lastIndexOf('<div class="c"', k) : -1;
+                if (s >= 0)
+                    h = h.slice(0, s) + blk + h.slice(s);
+                else {
+                    const k2 = h.indexOf('<div class="c"');
+                    h = k2 >= 0 ? h.slice(0, k2) + blk + h.slice(k2) : h + blk;
+                }
+            }
+        }
+        catch (e) {
+            try {
+                console.warn("v801p801 item", e);
+            }
+            catch (x) { }
+        }
+        return h;
+    };
+}
+function v801p801YL(y) { y = String(y == null ? "" : y); return /H1$/.test(y) ? v801p801M(y.replace("H1", "年上期"), y.replace("H1", " H1"), y.replace("H1", "年上半年"), y.replace("H1", " 1.er sem.")) : /H2$/.test(y) ? v801p801M(y.replace("H2", "年下期"), y.replace("H2", " H2"), y.replace("H2", "年下半年"), y.replace("H2", " 2.º sem.")) : v801p801M(y + "年", y, y + "年", y); }
+function v801p801Span(ys) { ys = (ys || []).slice().sort(); if (!ys.length)
+    return ""; if (ys.length === 1)
+    return v801p801YL(ys[0]); return ys.every(y => /^\d{4}$/.test(y)) ? v801p801M(`${ys[0]}〜${ys[ys.length - 1]}年`, `${ys[0]}–${ys[ys.length - 1]}`, `${ys[0]}〜${ys[ys.length - 1]}年`, `${ys[0]}–${ys[ys.length - 1]}`) : ys.map(v801p801YL).join("・"); }
+let v801p801CsMemo = null;
+function v801p801CsRange(hs6) {
+    const C = (typeof csData === "function") ? csData() : null;
+    if (!C || !C.raw)
+        return null;
+    if (!v801p801CsMemo || v801p801CsMemo.raw !== C.raw) {
+        let n = 0;
+        const ys = new Set(), an = new Set();
+        Object.keys(C.raw).forEach(k => { const d = C.raw[k] || {}; const pk = Object.keys(d.partners || {}); if (pk.length) {
+            n++;
+            pk.forEach(y => ys.add(y));
+        } Object.keys(d.annual || {}).forEach(y => an.add(y)); });
+        const py = [...ys].sort();
+        v801p801CsMemo = { raw: C.raw, n, tot: Object.keys(C.raw).length, py, half: [...an].sort().filter(y => /H\d$/.test(y) && !ys.has(y)) };
+    }
+    const M = v801p801CsMemo;
+    const o = { n: M.n, tot: M.tot, py: M.py, half: M.half, hs: hs6 || "", me: null, vn: [], ja: "" };
+    if (hs6 && C.raw[hs6]) {
+        const P = C.raw[hs6].partners || {};
+        o.me = Object.keys(P).sort();
+        o.vn = o.me.filter(y => (P[y] || []).some(r => Array.isArray(r) && r[0] === 704));
+    }
+    try {
+        o.ja = ((C.meta || {})[hs6] || {}).ja || "";
+    }
+    catch (e) { }
+    return o;
+}
+function v801p801HsFmt(h) { h = String(h || ""); return h.length === 6 ? h.slice(0, 4) + "." + h.slice(4) : h; }
+function v801p801CsTxt(R) {
+    if (!R)
+        return "";
+    const rng = v801p801M(`内蔵の通関統計で相手国別（ベトナムなど）の明細があるのは、${R.tot}品目のうち ${R.n}品目・${v801p801Span(R.py)}だけです${R.half.length ? `（${R.half.map(v801p801YL).join("・")}は、どの品目も世界の合計だけ）` : ""}。`, `In the built-in customs statistics, country details (e.g. Vietnam) exist only for ${R.n} of ${R.tot} items and ${v801p801Span(R.py)}${R.half.length ? ` (${R.half.map(v801p801YL).join(", ")}: world totals only)` : ""}.`, `内置通关统计中有按国家（如越南）明细的，仅为 ${R.tot} 个品目中的 ${R.n} 个・${v801p801Span(R.py)}${R.half.length ? `（${R.half.map(v801p801YL).join("・")}所有品目只有世界合计）` : ""}。`, `En las estadísticas integradas, el detalle por país (p. ej. Vietnam) solo existe para ${R.n} de ${R.tot} partidas y ${v801p801Span(R.py)}${R.half.length ? ` (${R.half.map(v801p801YL).join(", ")}: solo totales mundiales)` : ""}.`);
+    let me = "";
+    if (R.hs && R.me) {
+        const hs = v801p801HsFmt(R.hs);
+        me = R.me.length ? (R.vn.length ? v801p801M(`この品目（HS ${hs}）の国別の明細は ${v801p801Span(R.me)}で、ベトナムは ${v801p801Span(R.vn)}にあります。`, `This item (HS ${hs}) has country details for ${v801p801Span(R.me)}; Vietnam in ${v801p801Span(R.vn)}.`, `本品目（HS ${hs}）的国家明细为 ${v801p801Span(R.me)}，越南在 ${v801p801Span(R.vn)}。`, `Esta partida (HS ${hs}) tiene detalle por país en ${v801p801Span(R.me)}; Vietnam en ${v801p801Span(R.vn)}.`)
+            : v801p801M(`この品目（HS ${hs}）の国別の明細は ${v801p801Span(R.me)}で、ベトナムの行はありません。`, `This item (HS ${hs}) has country details for ${v801p801Span(R.me)}, without a Vietnam row.`, `本品目（HS ${hs}）的国家明细为 ${v801p801Span(R.me)}，没有越南的行。`, `Esta partida (HS ${hs}) tiene detalle por país en ${v801p801Span(R.me)}, sin fila de Vietnam.`))
+            : v801p801M(`この品目（HS ${hs}）は、国別の明細が1年もありません（世界の合計だけ）。`, `This item (HS ${hs}) has no country details in any year (world totals only).`, `本品目（HS ${hs}）没有任何年份的国家明细（只有世界合计）。`, `Esta partida (HS ${hs}) no tiene detalle por país en ningún año (solo totales mundiales).`);
+    }
+    else if (R.hs)
+        me = v801p801M(`この品目（HS ${v801p801HsFmt(R.hs)}）は、内蔵の通関統計にありません。`, `This item (HS ${v801p801HsFmt(R.hs)}) is not in the built-in statistics.`, `本品目（HS ${v801p801HsFmt(R.hs)}）不在内置统计中。`, `Esta partida (HS ${v801p801HsFmt(R.hs)}) no está en las estadísticas integradas.`);
+    return me + rng;
+}
+function v801p801Hs() { try {
+    const h = (typeof csHs6 === "function") ? csHs6((typeof D !== "undefined" && D && D.hs) || "") : "";
+    if (!h)
+        return "";
+    const f = (typeof csFind === "function") ? csFind(h) : null;
+    return (f && f.hs) || h;
+}
+catch (e) {
+    return "";
+} }
+function v801p801Check() {
+    let rows = [];
+    try {
+        rows = (typeof benchRows === "function" ? benchRows() : []) || [];
+    }
+    catch (e) {
+        rows = [];
+    }
+    const ok = rows.filter(x => x && x.v56tariffRow && x.v56tariffRow.K && !x.v56tariffRow.ng);
+    if (!ok.length)
+        return "";
+    const x = ok.find(r => /ベトナム|Vietnam|越南/i.test(String(r.c || ""))) || ok[0];
+    const V = x.v56tariffRow, K = V.K, s = V.sym || "";
+    const m = n => (typeof v56tariffMoney === "function") ? v56tariffMoney(s, n) : (s + n);
+    const parts = [`${v801p801M("卸単価", "Unit price", "批发单价", "Precio")} ${m(V.fob)}`];
+    if (K.fiKnown)
+        parts.push(`${v801p801M("運賃・保険", "Freight & insurance", "运费・保险", "Flete y seguro")} ${m(K.fi)}`);
+    const tl = (K.lines || []).map(l => `${l.nm} ${m(l.amt)}`).join(" ＋ ");
+    parts.push(`${v801p801M("税の合計", "Total tax", "税合计", "Total de impuestos")} ${m(K.tax)}${tl ? `（${tl}）` : ""}`);
+    return `<p class="nn v801cs" data-v801chk="${v801p801E(String(x.c || ""))}" data-noi18n>🧮 <b>${v801p801E(v801p801M(`検算（${x.c}）`, `Check (${x.c})`, `验算（${x.c}）`, `Comprobación (${x.c})`))}</b>：${v801p801E(parts.join(" ＋ "))} ＝ ${v801p801E(v801p801M("関税込み概算", "Estimate incl. duty", "含关税概算", "Estimado con aranceles"))} <b>${v801p801E(m(K.landed))}</b>${K.lower ? v801p801E(v801p801M("以上", " or more", "以上", " o más")) : ""}。${v801p801E(v801p801M("税の各行は表示の単位（$100 未満はセント）で丸めた値で、合計はその和です。", "Each tax line is rounded to the shown unit (cents below $100) and the totals are the sums of the shown values.", "各税行按显示单位（$100以下到美分）四舍五入，合计为其和。", "Cada línea se redondea a la unidad mostrada (centavos por debajo de $100) y los totales son la suma de lo mostrado."))}</p>`;
+}
+if (typeof vItemBench === "function") {
+    const __vib801 = vItemBench;
+    vItemBench = function () {
+        let h = String(__vib801.apply(this, arguments));
+        try {
+            if (h.indexOf("data-v801chk") < 0 && h.indexOf("data-v801csr") < 0) {
+                v801p801Css();
+                const R = v801p801CsRange(v801p801Hs());
+                const rng = R ? `<p class="nn v801cs" data-v801csr="${R.me && R.me.length ? 1 : 0}" data-noi18n>📊 ${v801p801E(v801p801M("通関統計エクスプローラーの国別の明細", "Country details in the statistics explorer", "通关统计浏览器的国家明细", "Detalle por país en el explorador"))}：${v801p801E(v801p801CsTxt(R))}${v801p801E(v801p801M("関税込み概算は統計ではなく、この表の課税価格と税の各行で確かめられます。", "The estimate incl. duty is checked with the taxable value and tax lines in this table, not with the statistics.", "含关税概算不靠统计，可用本表的课税价格和各税行验算。", "El estimado con aranceles se comprueba con el valor imponible y las líneas de impuestos de esta tabla, no con las estadísticas."))}</p>` : "";
+                const note = v801p801Check() + rng;
+                if (note) {
+                    const i = h.indexOf('<p class="nn v56tariff-basep">');
+                    h = i >= 0 ? h.slice(0, i) + note + h.slice(i) : h.replace(/(<div id="benchout")/, note + "$1");
+                }
+            }
+        }
+        catch (e) {
+            try {
+                console.warn("v801p801 bench", e);
+            }
+            catch (x) { }
+        }
+        return h;
+    };
+}
+if (typeof csExplorer === "function") {
+    const __cx801 = csExplorer;
+    csExplorer = function (hs) {
+        const r = __cx801.apply(this, arguments);
+        try {
+            const pn = document.getElementById("pn");
+            const body = pn && pn.querySelector(".dwbody");
+            if (body && !body.querySelector("[data-v801csn]")) {
+                const h6 = hs || ((typeof csFind === "function" && typeof csHs6 === "function") ? csFind(csHs6((typeof D !== "undefined" && D && D.hs) || "")).hs : "");
+                const R = v801p801CsRange(h6);
+                if (R) {
+                    const ps = body.querySelectorAll(":scope > p.nn");
+                    const after = ps.length ? ps[ps.length - 1] : null;
+                    const p = document.createElement("p");
+                    p.className = "nn";
+                    p.dataset.v801csn = (R.me && R.me.length) ? "1" : "0";
+                    p.setAttribute("data-noi18n", "");
+                    p.style.cssText = "margin:0 0 6px;flex:none";
+                    p.textContent = "📊 " + v801p801CsTxt(R) + v801p801M("関税込み概算の検算は、商品情報の「通関統計コネクト」の表（課税価格と税の各行・合計）でできます。", "Check the estimate incl. duty in the “Customs statistics connect” table on the product page (taxable value, tax lines, totals).", "含关税概算可在商品信息“通关统计连接”的表中验算（课税价格・各税行・合计）。", "Compruebe el estimado con aranceles en la tabla de la ficha (valor imponible, impuestos, totales).");
+                    if (after)
+                        after.insertAdjacentElement("afterend", p);
+                    else
+                        body.insertBefore(p, body.firstChild);
+                }
+            }
+        }
+        catch (e) {
+            try {
+                console.warn("v801p801 cs", e);
+            }
+            catch (x) { }
+        }
+        return r;
+    };
+}
+const v801p801CsHook = '<script>/*__v801cs*/(function(){try{' +
+    'var YL=function(y){y=String(y);return /H1$/.test(y)?y.replace("H1","年上期（1-6月）"):/H2$/.test(y)?y.replace("H2","年下期（7-12月）"):y+"年";};' +
+    'var R=null;function rng(){if(R)return R;var n=0,ys={},an={},tot=0;try{for(var k in RAW_DATA){tot++;var d=RAW_DATA[k]||{};var pk=Object.keys(d.partners||{});if(pk.length){n++;pk.forEach(function(y){ys[y]=1;});}Object.keys(d.annual||{}).forEach(function(y){an[y]=1;});}}catch(e){}' +
+    'var py=Object.keys(ys).sort();var half=Object.keys(an).sort().filter(function(y){return /H\\d$/.test(y)&&!ys[y];});R={n:n,tot:tot,py:py,half:half};return R;}' +
+    'function span(a){return !a.length?"":a.length===1?YL(a[0]):(a.every(function(y){return /^\\d{4}$/.test(y);})?a[0]+"〜"+a[a.length-1]+"年":a.map(YL).join("・"));}' +
+    'function why(){var r=rng();var d=(typeof curHs!=="undefined"&&curHs&&RAW_DATA[curHs])||{};var pk=Object.keys(d.partners||{}).sort();var hs=(typeof curHs!=="undefined"&&curHs)?String(curHs):"";var hf=hs.length===6?hs.slice(0,4)+"."+hs.slice(4):hs;' +
+    'var me=pk.length?"この品目の国別の明細は "+span(pk)+" だけです。":"この品目（HS "+hf+"）は、国別の明細が1年もありません（世界の合計だけ）。";' +
+    'return me+"（内蔵の統計の範囲：国別の明細があるのは "+r.tot+"品目のうち "+r.n+"品目・"+span(r.py)+(r.half.length?"。"+r.half.map(YL).join("・")+"はどの品目も世界の合計だけ":"")+"）";}' +
+    'function fx(id,what,long){var w=document.getElementById(id);if(!w)return;var nd=w.querySelector(".nodata");if(!nd||nd.getAttribute("data-v801"))return;var y=(typeof year!=="undefined")?year:"";nd.textContent=YL(y)+"の"+what+"はありません。"+(long?why():"");nd.setAttribute("data-v801","1");}' +
+    'function fxT(){var tb=document.getElementById("tableBody");if(!tb)return;var td=tb.querySelector("td[colspan]");if(!td||td.getAttribute("data-v801")||!/明細はありません/.test(td.textContent))return;var y=(typeof year!=="undefined")?year:"";td.textContent=YL(y)+"の相手国別（ベトナムなど）の明細はありません。"+why();td.setAttribute("data-v801","1");}' +
+    'function all(){try{fx("countryWrap","相手国別（ベトナムなど）の明細",1);fx("priceWrap","相手国別の単価",0);fx("worldWrap","世界概況（国別）",0);fxT();}catch(e){}}' +
+    '["renderCountry","renderPrice","renderWorld","renderTable"].forEach(function(f){try{var o=window[f];if(typeof o!=="function")return;window[f]=function(){var r=o.apply(this,arguments);all();return r;};}catch(e){}});' +
+    'window.__v801csFix=all;all();}catch(e){}})();<\/script>';
+if (typeof csPrep === "function") {
+    const __cp801 = csPrep;
+    csPrep = function (h) {
+        let r = __cp801.apply(this, arguments);
+        try {
+            if (r && String(r).indexOf("__v801cs") < 0) {
+                r = String(r);
+                const i = r.lastIndexOf("</body>");
+                r = i >= 0 ? r.slice(0, i) + v801p801CsHook + r.slice(i) : r + v801p801CsHook;
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+function v801p801TstSync(e) {
+    try {
+        e = e || document.getElementById("tst");
+        if (!e)
+            return;
+        const hid = e.style.opacity !== "1";
+        if (hid) {
+            if (e.getAttribute("aria-hidden") !== "true")
+                e.setAttribute("aria-hidden", "true");
+            if (!e.hasAttribute("inert"))
+                e.setAttribute("inert", "");
+        }
+        else {
+            if (e.hasAttribute("aria-hidden"))
+                e.removeAttribute("aria-hidden");
+            if (e.hasAttribute("inert"))
+                e.removeAttribute("inert");
+        }
+    }
+    catch (x) { }
+}
+function v801p801TstHook() {
+    try {
+        const e = document.getElementById("tst");
+        if (!e || e === v801p801S.tst)
+            return;
+        v801p801S.tst = e;
+        if (!v801p801S.obs)
+            v801p801S.obs = new MutationObserver(() => { try {
+                v801p801TstSync();
+            }
+            catch (x) { } });
+        v801p801S.obs.disconnect();
+        v801p801S.obs.observe(e, { attributes: true, attributeFilter: ["style"] });
+        v801p801TstSync(e);
+    }
+    catch (x) { }
+}
+if (typeof toast === "function") {
+    const __to801 = toast;
+    toast = function () {
+        try {
+            const e = document.getElementById("tst");
+            if (e) {
+                e.removeAttribute("aria-hidden");
+                e.removeAttribute("inert");
+            }
+        }
+        catch (x) { }
+        const r = __to801.apply(this, arguments);
+        try {
+            v801p801TstHook();
+            v801p801TstSync();
+        }
+        catch (x) { }
+        return r;
+    };
+}
+(function () { try {
+    v801p801TstHook();
+    new MutationObserver(() => { try {
+        v801p801TstHook();
+    }
+    catch (x) { } }).observe(document.body, { childList: true });
+}
+catch (e) { } })();
+var V801F = { reg: null, blk: null, tag: null, kidP: {}, kidLog: null, adm: { t0: 0, tm: 0, give: 0, pend: 0 } };
+function v801fE(s) { return (typeof esc === "function") ? esc(String(s == null ? "" : s)) : String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v801fLang() { try {
+    return (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v801fM(ja, en, zh, es) { const l = v801fLang(); return l === "en" ? (en || ja) : l === "zh" ? (zh || ja) : l === "es" ? (es || ja) : ja; }
+function v801fToast(m) { try {
+    if (typeof toast === "function")
+        toast(m);
+}
+catch (e) { } }
+function v801fFwdOn() { try {
+    return typeof FWDON !== "undefined" && !!FWDON;
+}
+catch (e) {
+    return false;
+} }
+const V801F_REGX = /^(EU|欧州|ヨーロッパ|西欧|東欧|北欧|南欧|中欧|アジア|東アジア|東南アジア|南アジア|中央アジア|西アジア|アジア各国|アジア圏|中東|北米|南米|中南米|中米|南アメリカ|北アメリカ|ラテンアメリカ|アメリカ大陸|アフリカ|北アフリカ|東アフリカ|西アフリカ|南部アフリカ|オセアニア|大洋州|ASEAN|アセアン|GCC|中華圏|全世界|世界|海外|各国|欧米|英語圏|Europe|Asia|South ?East Asia|Middle East|North America|South America|Latin America|Africa|Oceania)$/i;
+function v801fRegCore(s) {
+    try {
+        let x = String(s == null ? "" : s).normalize("NFKC").trim();
+        if (!x)
+            return "";
+        x = x.replace(/[(（][^)）]*[)）]\s*$/, "").trim();
+        x = x.replace(/(全域|全土|各国|諸国|方面|向け|地域|エリア|主要港|の港|域内)$/, "").trim();
+        return V801F_REGX.test(x) ? x : "";
+    }
+    catch (e) {
+        return "";
+    }
+}
+const V801F_RCTY = { Europe: ["ドイツ", "オランダ", "ベルギー", "フランス", "イギリス", "イタリア", "スペイン"], ASEAN: ["シンガポール", "タイ", "ベトナム", "マレーシア", "インドネシア", "フィリピン"],
+    EastAsia: ["中国", "韓国", "台湾", "香港"], SouthAsia: ["インド", "スリランカ", "バングラデシュ", "パキスタン"], MiddleEast: ["UAE", "サウジアラビア", "カタール", "トルコ"],
+    NorthAm: ["アメリカ", "カナダ", "メキシコ"], LatAm: ["ブラジル", "チリ", "ペルー", "アルゼンチン", "コロンビア"], Africa: ["南アフリカ", "ケニア", "ナイジェリア", "タンザニア", "エジプト"], Oceania: ["オーストラリア", "ニュージーランド"] };
+const V801F_RMAP = [[/^(EU|欧州|ヨーロッパ|西欧|東欧|北欧|南欧|中欧|Europe)$/i, ["Europe"]], [/^(東南アジア|ASEAN|アセアン|South ?East Asia)$/i, ["ASEAN"]], [/^(東アジア|中華圏)$/, ["EastAsia"]],
+    [/^(アジア|アジア各国|アジア圏|Asia)$/i, ["EastAsia", "ASEAN", "SouthAsia"]], [/^南アジア$/, ["SouthAsia"]], [/^(中東|西アジア|GCC|Middle East)$/i, ["MiddleEast"]], [/^(北米|北アメリカ|North America)$/i, ["NorthAm"]],
+    [/^(南米|中南米|中米|南アメリカ|ラテンアメリカ|South America|Latin America)$/i, ["LatAm"]], [/^アメリカ大陸$/, ["NorthAm", "LatAm"]], [/^(アフリカ|北アフリカ|東アフリカ|西アフリカ|南部アフリカ|Africa)$/i, ["Africa"]],
+    [/^(オセアニア|大洋州|Oceania)$/i, ["Oceania"]], [/^欧米$/, ["Europe", "NorthAm"]]];
+function v801fRegCtys(core) {
+    const keys = (V801F_RMAP.find(x => x[0].test(core)) || [null, []])[1];
+    const out = [];
+    keys.forEach(k => { (V801F_RCTY[k] || []).forEach(c => { if (!out.includes(c))
+        out.push(c); }); try {
+        if (typeof CTY_REGION !== "undefined" && CTY_REGION[k])
+            CTY_REGION[k].forEach(c => { if (!out.includes(c))
+                out.push(c); });
+    }
+    catch (e) { } });
+    return out;
+}
+function v801fPortsOf(c) {
+    const L = [];
+    const add = p => { p = String(p || "").trim(); if (!p || /経由/.test(p))
+        return; const k = p.replace(/[・\s]/g, ""); if (!L.some(x => x.replace(/[・\s]/g, "") === k))
+        L.push(p); };
+    try {
+        if (typeof FWD_POD !== "undefined" && FWD_POD[c])
+            add(FWD_POD[c]);
+    }
+    catch (e) { }
+    try {
+        if (typeof DDP_CITY !== "undefined")
+            DDP_CITY.forEach(r => { if (r && r[0] === c)
+                add(r[3]); });
+    }
+    catch (e) { }
+    try {
+        if (typeof DFW_DEST !== "undefined")
+            DFW_DEST.forEach(r => { if (r && r[0] === c)
+                add(r[1]); });
+    }
+    catch (e) { }
+    return L;
+}
+function v801fCtyOfPort(p) {
+    p = String(p || "").trim();
+    if (!p)
+        return "";
+    const k = p.replace(/[・\s]/g, "");
+    try {
+        if (typeof FWD_POD !== "undefined") {
+            const c = Object.keys(FWD_POD).find(x => String(FWD_POD[x]).replace(/[・\s]/g, "") === k);
+            if (c)
+                return c;
+        }
+    }
+    catch (e) { }
+    try {
+        if (typeof DDP_CITY !== "undefined") {
+            const r = DDP_CITY.find(x => x && (String(x[3]).replace(/[・\s]/g, "") === k || String(x[1]).replace(/[・\s]/g, "") === k));
+            if (r)
+                return r[0];
+        }
+    }
+    catch (e) { }
+    try {
+        if (typeof DFW_DEST !== "undefined") {
+            const r = DFW_DEST.find(x => x && String(x[1]).replace(/[・\s]/g, "") === k);
+            if (r)
+                return r[0];
+        }
+    }
+    catch (e) { }
+    return "";
+}
+function v801fMe() { try {
+    return (typeof fwdCo === "function") ? fwdCo() : ((FWDB && FWDB.profile && FWDB.profile.co) || "");
+}
+catch (e) {
+    return "";
+} }
+function v801fReal() { try {
+    return typeof v45RealFwd === "function" && !!v45RealFwd();
+}
+catch (e) {
+    return false;
+} }
+function v801fCands(core) {
+    const ctys = v801fRegCtys(core);
+    if (!ctys.length)
+        return [];
+    const out = [], seen = new Set();
+    const me = v801fMe(), real = v801fReal();
+    const push = (p, c, own) => { const k = String(p).replace(/[・\s]/g, ""); if (!p || seen.has(k) || out.length >= 10)
+        return; seen.add(k); out.push({ p, c, own: own ? 1 : 0 }); };
+    try {
+        ((typeof FWDB !== "undefined" && FWDB && FWDB.rates) || []).forEach(r => { if (!r || r.dfw || !(real || !r.co || r.co === me))
+            return; const c = v801fCtyOfPort(r.pod); if (c && ctys.includes(c))
+            push(String(r.pod).trim(), c, 1); });
+    }
+    catch (e) { }
+    const P = ctys.map(c => ({ c, L: v801fPortsOf(c) }));
+    P.forEach(x => { if (x.L[0])
+        push(x.L[0], x.c, 0); });
+    P.forEach(x => { if (x.L[1])
+        push(x.L[1], x.c, 0); });
+    return out;
+}
+function v801fRegName(core) { return core; }
+function v801fChips(core, pick) {
+    const C = v801fCands(core);
+    if (!C.length)
+        return `<p class="v801fnone">${v801fE(v801fM("この地域の港の候補はありません。仕向港の欄に港の名前を入れてください。", "No port suggestions for this region. Type the port name in the destination field.", "此地区没有候选港口。请在目的港栏输入港口名称。", "No hay puertos sugeridos para esta región. Escriba el puerto de destino."))}</p>`;
+    return `<div class="v801fchips"><span class="v801flbl">${v801fE(v801fM(`${core}の主な港：`, `Main ports in ${core}: `, `${core}的主要港口：`, `Puertos principales (${core}): `))}</span>${C.map(x => `<button type="button" class="btn g v801fchip${pick === x.p ? " on" : ""}" data-v801fport="${v801fE(x.p)}" data-noi18n>${v801fE(x.p)}${x.c && x.c !== x.p ? "（" + v801fE(x.c) + "）" : ""}${x.own ? `<span class="v801fown">${v801fE(v801fM("登録済み", "registered", "已登记", "registrado"))}</span>` : ""}</button>`).join("")}</div>
+    <p class="v801fhint">${v801fE(v801fM("候補に無い港は、仕向港の欄に直接入れてください。", "If the port is not listed, type it in the destination port field.", "候选中没有的港口，请直接输入到目的港栏。", "Si el puerto no aparece, escríbalo en el campo de destino."))}</p>`;
+}
+function v801fRegOfReq(r) {
+    try {
+        const L = (r && r.legs || []).filter(l => l && !l.ok && !l.other && !l.lost);
+        if (!L.length)
+            return null;
+        const l = L[0];
+        const leg = String(l.pod || l.cty || "").trim();
+        const core = v801fRegCore(leg) || v801fRegCore(l.cty);
+        if (!core)
+            return null;
+        return { id: r.id, leg, core, pol: r.pol || "", mode: String(r.mode || "LCL").toUpperCase(), at: Date.now(), use: true, done: 0, pick: "" };
+    }
+    catch (e) {
+        return null;
+    }
+}
+document.addEventListener("click", e => {
+    try {
+        const t = e.target;
+        if (!t || !t.closest || !v801fFwdOn())
+            return;
+        const b = t.closest(".v33fwtask [data-fwgo=frates]");
+        if (!b)
+            return;
+        const li = b.closest("li");
+        const m = /RQ-[A-Za-z0-9]+/.exec((li && li.textContent) || "");
+        const r = m && ((typeof FWDB !== "undefined" && FWDB && FWDB.reqs) || []).find(x => x.id === m[0]);
+        V801F.reg = r ? v801fRegOfReq(r) : null;
+        V801F.blk = null;
+    }
+    catch (x) { }
+}, true);
+document.addEventListener("click", e => {
+    try {
+        const t = e.target;
+        if (!t || !t.closest || !v801fFwdOn())
+            return;
+        const ch = t.closest("[data-v801fport]");
+        if (ch) {
+            e.preventDefault();
+            const p = ch.dataset.v801fport, pod = document.getElementById("frPod");
+            if (pod) {
+                pod.value = p;
+                try {
+                    pod.dispatchEvent(new Event("input", { bubbles: true }));
+                }
+                catch (x) { }
+            }
+            if (V801F.reg)
+                V801F.reg.pick = p;
+            if (V801F.blk)
+                V801F.blk = null;
+            v801fPaintForm();
+            const pr = document.getElementById("frPrice");
+            if (pr)
+                try {
+                    pr.focus();
+                }
+                catch (x) { }
+            return;
+        }
+        const u = t.closest("#v801fuse");
+        if (u) {
+            if (V801F.reg)
+                V801F.reg.use = !!u.checked;
+            return;
+        }
+        if (!t.closest("#frAdd"))
+            return;
+        const podEl = document.getElementById("frPod");
+        const pod = String((podEl && podEl.value) || "").trim();
+        const core = v801fRegCore(pod);
+        if (core) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            V801F.blk = { pod, core, at: Date.now() };
+            V801F.tag = null;
+            v801fToast(v801fM(`「${pod}」は地域の名前のため、レートとして登録できません。港の名前で入れてください`, `“${pod}” is a region name and cannot be registered as a rate. Enter a port name.`, `「${pod}」是地区名，不能登记为费率。请输入港口名称。`, `«${pod}» es una región; no se puede registrar. Escriba un puerto.`));
+            v801fPaintForm();
+            if (podEl)
+                try {
+                    podEl.focus();
+                }
+                catch (x) { }
+            return;
+        }
+        V801F.blk = null;
+        const R = V801F.reg;
+        V801F.tag = (R && R.use && pod && Date.now() - R.at < 30 * 60e3) ? { pod, leg: R.leg, id: R.id, at: Date.now() } : null;
+    }
+    catch (x) { }
+}, true);
+document.addEventListener("input", e => { try {
+    const t = e.target;
+    if (!t || t.id !== "frPod" || !v801fFwdOn() || !V801F.reg)
+        return;
+    const v = String(t.value || "").trim();
+    if (v && !v801fRegCore(v))
+        V801F.reg.pick = v;
+}
+catch (x) { } }, true);
+if (typeof fwdReevalPending === "function") {
+    const __re801f = fwdReevalPending;
+    fwdReevalPending = function () {
+        try {
+            const T = V801F.tag;
+            if (T && Date.now() - T.at < 8000 && typeof FWDB !== "undefined" && FWDB && Array.isArray(FWDB.rates)) {
+                V801F.tag = null;
+                const me = v801fMe(), real = v801fReal();
+                const r = FWDB.rates.filter(x => x && !x.dfw && String(x.pod || "").trim() === T.pod && (+x.at || 0) >= T.at - 2000 && (real || !x.co || x.co === me)).sort((a, b) => (+b.at || 0) - (+a.at || 0))[0];
+                if (r && !String(r.note || "").includes(T.leg)) {
+                    r.note = (r.note ? String(r.note) + "・" : "") + T.leg + "向けの依頼にも使う（" + T.id + " から登録）";
+                    r.v801reg = T.leg;
+                    V801F.reg = null;
+                    V801F.done = { id: T.id, leg: T.leg, pod: T.pod, at: Date.now() };
+                }
+            }
+        }
+        catch (e) { }
+        return __re801f.apply(this, arguments);
+    };
+}
+const V801F_RC = new Map();
+function v801fRegRate(r) { if (!r || r.dfw)
+    return false; const k = String(r.pod || ""); if (!V801F_RC.has(k)) {
+    if (V801F_RC.size > 500)
+        V801F_RC.clear();
+    V801F_RC.set(k, !!v801fRegCore(k));
+} return V801F_RC.get(k); }
+if (typeof fwdRatesFor === "function") {
+    const __rf801f = fwdRatesFor;
+    fwdRatesFor = function (pod, mode, coFilter) {
+        const F = (typeof FWDB !== "undefined") ? FWDB : null;
+        if (!F || !Array.isArray(F.rates) || !F.rates.some(v801fRegRate))
+            return __rf801f.apply(this, arguments);
+        const keep = F.rates;
+        F.rates = keep.filter(r => !v801fRegRate(r));
+        try {
+            return __rf801f.apply(this, arguments);
+        }
+        finally {
+            F.rates = keep;
+        }
+    };
+}
+function v801fRateMarks(w) {
+    try {
+        w.querySelectorAll("table tbody tr").forEach(tr => {
+            const td = tr.children[1];
+            const b = td && td.querySelector("b");
+            if (!b || td.querySelector(".v801freg"))
+                return;
+            const m = /→\s*(.+)$/.exec(b.textContent || "");
+            if (!m || !v801fRegCore(m[1]))
+                return;
+            td.insertAdjacentHTML("beforeend", `<br><span class="v801freg" data-noi18n>${v801fE(v801fM("地域の名前のため見積に使いません（港の名前で登録し直してください）", "Region name: not used in quotes (re-register by port)", "地区名：不用于报价（请按港口重新登记）", "Región: no se usa en cotizaciones (regístrela por puerto)"))}</span>`);
+        });
+    }
+    catch (e) { }
+}
+if (typeof v70fNeedLane === "function") {
+    const __nl801f = v70fNeedLane;
+    v70fNeedLane = function (m) {
+        try {
+            const core = m && v801fRegCore(m.pod);
+            if (core)
+                return `${m.pol || "—"} → ${m.pod}${v801fM("（地域：「レートを登録」で港を選びます）", " (region: choose a port via “Register rate”)", "（地区：在「登记费率」中选择港口）", " (región: elija un puerto en «Registrar tarifa»)")}・${m.mode}`;
+        }
+        catch (e) { }
+        return __nl801f.apply(this, arguments);
+    };
+}
+function v801fMissList() {
+    const out = [];
+    try {
+        ((FWDB && FWDB.reqs) || []).forEach(r => {
+            if (!r || !r.id)
+                return;
+            let need = false;
+            try {
+                need = !!v33FwdNeeds(r);
+            }
+            catch (e) { }
+            if (!need)
+                return;
+            let L = null;
+            try {
+                const rd = (typeof v70fReady === "function") ? v70fReady(r) : null;
+                if (rd)
+                    L = rd.miss;
+            }
+            catch (e) { }
+            if (!L)
+                L = (r.legs || []).filter(l => l && !l.ok && !l.other && !l.lost).map(l => ({ cty: l.cty || "", pod: l.pod || (typeof FWD_POD !== "undefined" && FWD_POD[l.cty]) || l.cty || "", mode: r.mode || "LCL", pol: r.pol || "" }));
+            if (L && L.length)
+                out.push({ id: r.id, txt: L.map(x => (typeof v70fNeedLane === "function") ? v70fNeedLane(x) : `${x.pol || "—"} → ${x.pod}・${x.mode}`).join("／") });
+        });
+    }
+    catch (e) { }
+    return out;
+}
+function v801fPaintForm() {
+    try {
+        if (!v801fFwdOn() || typeof fwdCur === "undefined" || fwdCur !== "frates")
+            return;
+        const w = document.getElementById("well");
+        if (!w)
+            return;
+        const pol = document.getElementById("frPol"), pod = document.getElementById("frPod"), md = document.getElementById("frMode");
+        if (!pol || !pod)
+            return;
+        const anchor = pol.closest(".rw") || pol.parentElement;
+        if (!anchor)
+            return;
+        const R = (V801F.reg && Date.now() - V801F.reg.at < 30 * 60e3) ? V801F.reg : null;
+        const B = (V801F.blk && Date.now() - V801F.blk.at < 10 * 60e3) ? V801F.blk : null;
+        let box = w.querySelector(".v801fpre");
+        if (!R && !B) {
+            if (box)
+                box.remove();
+            return;
+        }
+        if (R) {
+            if (!pol.value.trim() && R.pol)
+                pol.value = R.pol;
+            if (md && [...md.options].some(o => o.value === R.mode || o.text === R.mode) && !R.done)
+                md.value = R.mode;
+            const cur = pod.value.trim();
+            if (!cur || cur === R.leg || v801fRegCore(cur))
+                pod.value = R.pick || "";
+            if (!R.done) {
+                R.done = 1;
+                setTimeout(() => { try {
+                    (R.pick ? document.getElementById("frPrice") : document.getElementById("frPod")).focus();
+                }
+                catch (e) { } }, 40);
+            }
+        }
+        const old = w.querySelector(".v73fpre");
+        if (old && R)
+            old.remove();
+        let h = "";
+        if (B) {
+            const miss = v801fMissList().slice(0, 6);
+            h += `<p class="v801fng"><b>⚠ ${v801fE(v801fM(`「${B.pod}」は地域の名前のため、レートとして登録できません。`, `“${B.pod}” is a region name, so it cannot be registered as a rate.`, `「${B.pod}」是地区名，不能登记为费率。`, `«${B.pod}» es una región; no se puede registrar como tarifa.`))}</b>${v801fE(v801fM("地域の名前のレートは、どの港までの運賃か分からず、荷主の見積に港の無い区間が出てしまいます。仕向港の名前で登録してください。", "A region rate does not say which port the freight goes to, and shippers would get a quote without a port. Register it by destination port.", "地区费率无法表明运到哪个港口，货主会收到没有港口的报价。请按目的港登记。", "Una tarifa por región no indica el puerto; registre el puerto de destino."))}</p>${v801fChips(B.core, "")}`
+                + (miss.length ? `<p class="v801flbl">${v801fE(v801fM("要確認の依頼で、登録が要る区間：", "Lanes needed by requests to check:", "待确认请求需要登记的线路：", "Trayectos que necesitan las solicitudes:"))}</p><ul class="v801fmiss">${miss.map(x => `<li>${v801fE(x.id)}：${v801fE(v801fM("まだ当たりません。登録する区間：", "Not matched yet. Lane to register: ", "尚未匹配。需登记的线路：", "Aún no coincide. Trayecto: "))}${v801fE(x.txt)}</li>`).join("")}</ul>` : "");
+        }
+        if (R && !B) {
+            const lane = `${R.pol || "—"} → ${R.leg}・${R.mode}`;
+            h += `<p><b>${v801fE(v801fM(`依頼の仕向けは地域（${R.leg}）です。港を選んでください。`, `The request's destination is a region (${R.leg}). Choose a port.`, `请求的目的地是地区（${R.leg}）。请选择港口。`, `El destino de la solicitud es una región (${R.leg}). Elija un puerto.`))}</b><br>${v801fE(v801fM(`要確認の依頼 ${R.id}（${lane}）。地域の名前のままでは、特定の港のレートとして登録できません。仕出港（${R.pol || "—"}）・形態（${R.mode}）は入れました。`, `Request ${R.id} (${lane}) needs checking. A region name cannot be registered as a rate for a specific port. Origin (${R.pol || "—"}) and mode (${R.mode}) are filled in.`, `待确认请求 ${R.id}（${lane}）。地区名无法登记为特定港口的费率。已填入起运港（${R.pol || "—"}）和方式（${R.mode}）。`, `Solicitud ${R.id} (${lane}). Una región no se puede registrar como tarifa de un puerto. Origen (${R.pol || "—"}) y modo (${R.mode}) ya están puestos.`))}</p>`
+                + v801fChips(R.core, R.pick)
+                + (R.pick ? `<p class="v801fok">${v801fE(v801fM(`仕向港：${R.pick}を選びました。運賃・日数・有効期限を入れて「追加」を押してください。`, `Destination port: ${R.pick}. Enter the rate, transit days and validity, then press “Add”.`, `目的港：已选择 ${R.pick}。请填写运费、天数和有效期后按「添加」。`, `Puerto de destino: ${R.pick}. Introduzca tarifa, días y validez y pulse «Añadir».`))}</p>` : "")
+                + `<label class="v801fuse"><input type="checkbox" id="v801fuse"${R.use ? " checked" : ""}> ${v801fE(v801fM(`選んだ港のレートで、この依頼（${R.leg}向け）にも答える（荷主には「${R.pol || "—"} → 選んだ港」の見積として届きます。レートのメモに「${R.leg}向けの依頼にも使う」と残ります）`, `Also answer this ${R.leg} request with the chosen port's rate (the shipper gets a quote “${R.pol || "—"} → chosen port”; the rate note records it).`, `也用所选港口的费率答复此（${R.leg}）请求（货主会收到「${R.pol || "—"} → 所选港口」的报价；费率备注中会记录）。`, `Responder también esta solicitud (${R.leg}) con la tarifa del puerto elegido (el cargador recibe «${R.pol || "—"} → puerto elegido»).`))}</label>`;
+        }
+        if (!box) {
+            box = document.createElement("div");
+            box.className = "v801fpre";
+            box.setAttribute("role", "status");
+            box.setAttribute("data-noi18n", "");
+            anchor.insertAdjacentElement("beforebegin", box);
+        }
+        if (box.dataset.sig !== h) {
+            box.dataset.sig = h;
+            box.innerHTML = h;
+        }
+    }
+    catch (e) { }
+}
+if (typeof fwdRender === "function") {
+    const __fr801f = fwdRender;
+    fwdRender = function () {
+        try {
+            if (v801fFwdOn() && V801F.reg && typeof V73F !== "undefined" && V73F.pre && V73F.pre.id === V801F.reg.id && !V73F.pre.filled)
+                V73F.pre.filled = 1;
+        }
+        catch (e) { }
+        const o = __fr801f.apply(this, arguments);
+        try {
+            if (v801fFwdOn()) {
+                const pg = (typeof fwdCur !== "undefined" && fwdCur) || "finbox";
+                if (pg === "frates") {
+                    v801fPaintForm();
+                    const w = document.getElementById("well");
+                    if (w)
+                        v801fRateMarks(w);
+                }
+                else {
+                    if (V801F.reg && V801F.reg.done)
+                        V801F.reg = null;
+                    V801F.blk = null;
+                }
+            }
+        }
+        catch (e) { }
+        return o;
+    };
+}
+try {
+    if (typeof V422G !== "undefined" && Array.isArray(V422G)) {
+        const g = V422G.find(x => x && x.id === "lane");
+        if (g && Array.isArray(g.tips) && !g.tips.some(x => /地域の名前では登録できません/.test(x)))
+            g.tips.push("仕向港は港の名前で入れます（「ヨーロッパ」「東南アジア」など地域の名前では登録できません）。荷主の依頼の仕向けが地域のときは、要確認のタスクの「レートを登録」で出る候補から港を選ぶと、その港のレートで依頼に答えます。");
+    }
+}
+catch (e) { }
+const V801F_LG = {
+    on: "☁ クラウド同期：有効（ご契約のアカウント）— 別のPC・ブラウザ・スマホでも同じ内容が使えます／同時ログインは PC1台＋スマホ1台まで。デモ用・体験用のアカウントは例外で、変更はこの PC の中だけに残り、ログアウトすると初めの状態に戻ります（別の PC・スマホには引き継がれません）。",
+    ok: "☁ クラウド同期：有効（ご契約のアカウント・サーバーに接続済み）— 別のPC・ブラウザ・スマホでも同じ内容が使えます／同時ログインは PC1台＋スマホ1台まで。デモ用・体験用のアカウントは例外で、変更はこの PC の中だけに残り、ログアウトすると初めの状態に戻ります（別の PC・スマホには引き継がれません）。"
+};
+const V801F_LGT = {
+    on: ["☁ Cloud sync: on (contract accounts) — the same data is available on other PCs, browsers and phones; up to 1 PC + 1 phone signed in at the same time. Demo and trial accounts are an exception: changes stay only on this PC and are reset to the initial state when you log out (they do not carry over to other PCs or phones).",
+        "☁ 云同步：已启用（签约账户）— 在其他电脑、浏览器和手机上也能使用相同内容；同时登录最多电脑1台＋手机1台。演示用・体验用账户除外：更改只保留在此电脑上，注销后恢复为初始状态（不会同步到其他电脑或手机）。",
+        "☁ Sincronización: activa (cuentas contratadas) — los mismos datos en otros PC, navegadores y teléfonos; máximo 1 PC + 1 teléfono a la vez. Las cuentas de demostración y prueba son una excepción: los cambios quedan solo en este PC y se restablecen al cerrar sesión (no pasan a otros PC ni teléfonos)."],
+    ok: ["☁ Cloud sync: on (contract accounts, connected to the server) — the same data is available on other PCs, browsers and phones; up to 1 PC + 1 phone signed in at the same time. Demo and trial accounts are an exception: changes stay only on this PC and are reset to the initial state when you log out (they do not carry over to other PCs or phones).",
+        "☁ 云同步：已启用（签约账户・已连接服务器）— 在其他电脑、浏览器和手机上也能使用相同内容；同时登录最多电脑1台＋手机1台。演示用・体验用账户除外：更改只保留在此电脑上，注销后恢复为初始状态（不会同步到其他电脑或手机）。",
+        "☁ Sincronización: activa (cuentas contratadas, conectado al servidor) — los mismos datos en otros PC, navegadores y teléfonos; máximo 1 PC + 1 teléfono a la vez. Las cuentas de demostración y prueba son una excepción: los cambios quedan solo en este PC y se restablecen al cerrar sesión (no pasan a otros PC ni teléfonos)."]
+};
+(function () { try {
+    if (typeof I18N === "undefined" || !I18N || !I18N.dict)
+        return;
+    ["on", "ok"].forEach(k => ["en", "zh", "es"].forEach((l, i) => { const d = I18N.dict[l]; if (d)
+        d[V801F_LG[k]] = V801F_LGT[k][i]; }));
+}
+catch (e) { } })();
+if (typeof syncStatusText === "function") {
+    const __st801f = syncStatusText;
+    syncStatusText = function () {
+        const t = __st801f.apply(this, arguments);
+        try {
+            if (typeof t === "string" && /^☁ クラウド同期：有効/.test(t) && /別のPC・ブラウザ・スマホでも同じ内容/.test(t))
+                return /（サーバーに接続済み）/.test(t) ? V801F_LG.ok : V801F_LG.on;
+        }
+        catch (e) { }
+        return t;
+    };
+}
+function v801fLgMain() { try {
+    const s = document.getElementById("lgsync");
+    if (!s)
+        return false;
+    const o = (typeof I18N !== "undefined" && I18N.orig) ? [...s.childNodes].map(n => I18N.orig.get(n) || n.nodeValue || "").join("") : s.textContent;
+    return o === V801F_LG.on || o === V801F_LG.ok || /デモ用・体験用のアカウントは例外|Demo and trial accounts are an exception|演示用・体验用账户除外|cuentas de demostración y prueba son una excepción/.test(s.textContent);
+}
+catch (e) {
+    return false;
+} }
+if (typeof v73fLoginNote === "function") {
+    const __ln801f = v73fLoginNote;
+    v73fLoginNote = function () { try {
+        if (v801fLgMain()) {
+            const n = document.getElementById("v73flgdemo");
+            if (n)
+                n.remove();
+            return;
+        }
+    }
+    catch (e) { } return __ln801f.apply(this, arguments); };
+}
+setTimeout(() => { try {
+    const e = document.getElementById("lgsync");
+    if (e && typeof syncStatusText === "function" && /^☁ クラウド同期：有効/.test(e.textContent)) {
+        e.textContent = syncStatusText();
+        const n = document.getElementById("v73flgdemo");
+        if (n && v801fLgMain())
+            n.remove();
+    }
+}
+catch (e) { } }, 0);
+function v801fIsAdm() { try {
+    return typeof SES !== "undefined" && !!SES && SES.t === "admin" && typeof cur !== "undefined" && cur === "adm";
+}
+catch (e) {
+    return false;
+} }
+function v801fSyncOn() { try {
+    return typeof syncOn === "function" && !!syncOn();
+}
+catch (e) {
+    return false;
+} }
+function v801fSesT() { try {
+    return (typeof SES !== "undefined" && SES && +SES.at) || 0;
+}
+catch (e) {
+    return 0;
+} }
+function v801fPulled() { try {
+    const pa = (typeof V214 !== "undefined" && V214 && +V214.pullAt) || 0;
+    return !!pa && pa >= v801fSesT();
+}
+catch (e) {
+    return false;
+} }
+function v801fPullErr() { try {
+    return (typeof V214 !== "undefined" && V214 && !!V214.pullErr) || (typeof V73ADM !== "undefined" && V73ADM && !!V73ADM.pullErr);
+}
+catch (e) {
+    return false;
+} }
+function v801fAdmSt() {
+    try {
+        if (!v801fIsAdm())
+            return "";
+        if (!v801fSyncOn())
+            return "off";
+        if (v801fPulled())
+            return "";
+        if (v801fPullErr() || V801F.adm.give)
+            return "err";
+        return "wait";
+    }
+    catch (e) {
+        return "";
+    }
+}
+const V801F_AT = {
+    ld: { ja: "読み込み中…", en: "Loading…", zh: "读取中…", es: "Cargando…" },
+    wait: { ja: "☁ 同期サーバーから最新の数を読み込んでいます…（読み込みが終わるまで、数は出しません）", en: "☁ Loading the latest numbers from the sync server… (numbers are shown once loading finishes)", zh: "☁ 正在从同步服务器读取最新数字…（读取完成前不显示数字）", es: "☁ Cargando las cifras más recientes del servidor… (se muestran al terminar)" },
+    slow: { ja: "時間がかかっています。30秒たっても読み込めないときは、この端末に控えた数を印つきで出します。", en: "This is taking a while. If it cannot load within 30 seconds, the numbers saved on this device are shown, marked as not latest.", zh: "耗时较长。30秒内仍无法读取时，将显示本设备保存的数字（标明非最新）。", es: "Está tardando. Si no carga en 30 segundos, se muestran las cifras guardadas en este equipo, marcadas como no actuales." },
+    err: { ja: "⚠ 同期サーバーから最新の数を読み込めませんでした。上の数は、この端末に控えた{t}の数です（最新ではありません）。", en: "⚠ Could not load the latest numbers from the sync server. The numbers above are those saved on this device{t} (not the latest).", zh: "⚠ 未能从同步服务器读取最新数字。上面的数字是本设备保存的{t}数字（非最新）。", es: "⚠ No se pudieron cargar las cifras más recientes. Las cifras de arriba son las guardadas en este equipo{t} (no actuales)." },
+    late: { ja: "⚠ 同期サーバーから最新の数をまだ読み込めていません。上の数は、この端末に控えた{t}の数です（最新ではありません）。読み込めたら、最新の数に替えます。", en: "⚠ The latest numbers have not loaded yet. The numbers above are those saved on this device{t} (not the latest); they will be replaced once loaded.", zh: "⚠ 尚未读取到最新数字。上面的数字是本设备保存的{t}数字（非最新），读取后将替换为最新数字。", es: "⚠ Aún no se han cargado las cifras actuales. Las de arriba son las guardadas en este equipo{t} (no actuales); se sustituirán al cargar." },
+    off: { ja: "上の数は、この端末に控えた{t}の数です（同期サーバーにつながっていないため、最新ではありません）。", en: "The numbers above are those saved on this device{t} (not connected to the sync server, so not the latest).", zh: "上面的数字是本设备保存的{t}数字（未连接同步服务器，非最新）。", es: "Las cifras de arriba son las guardadas en este equipo{t} (sin conexión al servidor; no actuales)." },
+    at: { ja: " {d} 時点", en: " as of {d}", zh: "（{d} 时点）", es: " a las {d}" },
+    re: { ja: "今すぐ読み直す", en: "Reload now", zh: "立即重新读取", es: "Recargar ahora" },
+    hist: { ja: "変更履歴：読み込み中…", en: "Change history: loading…", zh: "变更记录：读取中…", es: "Historial: cargando…" }
+};
+function v801fAL(k, vars) { const o = V801F_AT[k] || {}; let s = String(o[v801fLang()] || o.ja || ""); if (vars)
+    Object.keys(vars).forEach(x => { s = s.split("{" + x + "}").join(String(vars[x])); }); return s; }
+function v801fHm(t) { const d = new Date(+t || 0); return (d.getMonth() + 1) + "/" + d.getDate() + " " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+function v801fAtTxt() { let at = 0; try {
+    at = +localStorage.getItem("bc20_v73adm_pullAt") || 0;
+}
+catch (e) { } return at ? v801fAL("at", { d: v801fHm(at) }) : ""; }
+function v801fKpiTiles() { const k = document.getElementById("admkpi"); if (!k)
+    return []; return [...k.children].filter(x => x && x.classList && x.classList.contains("kpi") && x.dataset.jump !== "syncslot"); }
+function v801fUseCols() {
+    const tb = document.querySelector("#accounts table");
+    if (!tb)
+        return [];
+    const th = [...tb.querySelectorAll("thead th")];
+    const idx = [];
+    th.forEach((x, i) => { if (x.classList.contains("num"))
+        idx.push(i); });
+    if (idx.length) {
+        const last = idx[idx.length - 1];
+        if (th[last + 1] && !th[last + 1].classList.contains("num"))
+            idx.push(last + 1);
+    }
+    return idx;
+}
+function v801fMask(on, tbl) {
+    if (tbl === undefined)
+        tbl = on;
+    try {
+        const k = document.getElementById("admkpi");
+        if (k) {
+            k.classList.toggle("v801w", !!on);
+            v801fKpiTiles().forEach(t => { t.classList.toggle("v801m", !!on); let ld = t.querySelector(".v801ld"); if (on) {
+                if (!ld) {
+                    ld = document.createElement("div");
+                    ld.className = "kv v801ld";
+                    ld.setAttribute("data-noi18n", "");
+                    ld.setAttribute("data-ai18n-skip", "");
+                    const lb = t.querySelector(".lbl");
+                    if (lb)
+                        lb.insertAdjacentElement("afterend", ld);
+                    else
+                        t.appendChild(ld);
+                }
+                const s = v801fAL("ld");
+                if (ld.textContent !== s)
+                    ld.textContent = s;
+            }
+            else if (ld)
+                ld.remove(); });
+        }
+        const acc = document.getElementById("accounts");
+        if (acc) {
+            acc.classList.toggle("v801w", !!tbl);
+            if (tbl) {
+                const cols = v801fUseCols();
+                acc.querySelectorAll("tbody tr").forEach(tr => { cols.forEach(i => { const td = tr.children[i]; if (!td || td.querySelector(".v801o"))
+                    return; const sp = document.createElement("span"); sp.className = "v801o"; while (td.firstChild)
+                    sp.appendChild(td.firstChild); td.appendChild(sp); const ld = document.createElement("span"); ld.className = "v801ld"; ld.setAttribute("data-noi18n", ""); ld.textContent = "…"; td.appendChild(ld); }); });
+            }
+        }
+        const lg = document.getElementById("v33admlog");
+        if (lg) {
+            const sp = [...lg.querySelectorAll(".v33row > span")].pop();
+            if (sp) {
+                if (on) {
+                    if (sp.dataset.v801o == null) {
+                        sp.dataset.v801o = sp.textContent;
+                    }
+                    sp.setAttribute("data-noi18n", "");
+                    sp.textContent = v801fAL("hist");
+                }
+                else if (sp.dataset.v801o != null) {
+                    const n = ((typeof V214 !== "undefined" && V214 && V214.log) || []).length;
+                    sp.textContent = String(sp.dataset.v801o).replace(/[\d,]+(\s*件)?\s*$/, (m, u) => n.toLocaleString() + (u || ""));
+                    delete sp.dataset.v801o;
+                    sp.removeAttribute("data-noi18n");
+                    try {
+                        if (v801fLang() !== "ja" && typeof i18nApply === "function")
+                            i18nApply(sp);
+                    }
+                    catch (e) { }
+                }
+            }
+        }
+    }
+    catch (e) { }
+}
+function v801fKpiFill() {
+    try {
+        if (typeof ADB === "undefined" || !ADB)
+            return;
+        const A = ADB.accounts || [], NOWv = (typeof NOW === "function") ? NOW() : Date.now(), Dd = (typeof DAY !== "undefined") ? DAY : 864e5;
+        const tot = k => A.reduce((s, a) => s + (((a && a.usage) || {})[k] || 0), 0);
+        const act = A.filter(a => a && a.st === "active" && a.expires > NOWv).length;
+        const V = [[A.length + "<small>件</small>", "うち有効 " + act + "件"], [tot("logins") + "<small>回</small>", "全アカウント合計"], [tot("uploads") + "<small>件</small>", "アップロードされた実ファイル"],
+            [tot("aiQ") + "<small>回</small>", "うち 🌐Web検索 " + tot("webQ") + "回"], [A.filter(a => a && a.usage && a.usage.lastActive && NOWv - a.usage.lastActive < 7 * Dd).length + "<small>件</small>", "直近1週間のアクティブ"]];
+        v801fKpiTiles().forEach((t, i) => {
+            const x = V[i];
+            if (!x)
+                return;
+            const kv = t.querySelector(".kv:not(.v801ld)"), kd = t.querySelector(".kd");
+            if (kv)
+                kv.innerHTML = x[0];
+            if (kd)
+                kd.textContent = x[1];
+            try {
+                if (v801fLang() !== "ja" && typeof i18nApply === "function")
+                    i18nApply(t);
+            }
+            catch (e) { }
+        });
+        try {
+            if (typeof v79admKpiUnits === "function")
+                v79admKpiUnits();
+        }
+        catch (e) { }
+    }
+    catch (e) { }
+}
+function v801fNote(st) {
+    try {
+        const k = document.getElementById("admkpi");
+        if (!k)
+            return;
+        let n = document.getElementById("v73admSync");
+        if (!st) {
+            if (n)
+                n.remove();
+            k.classList.remove("v73adm-stale");
+            return;
+        }
+        if (!n) {
+            n = document.createElement("p");
+            n.id = "v73admSync";
+            n.className = "nn";
+            n.setAttribute("role", "status");
+            k.insertAdjacentElement("afterend", n);
+        }
+        n.setAttribute("data-noi18n", "");
+        n.setAttribute("data-ai18n-skip", "");
+        let txt, warn = false;
+        if (st === "wait") {
+            txt = v801fAL("wait");
+            if (V801F.adm.t0 && Date.now() - V801F.adm.t0 > 15000)
+                txt += " " + v801fAL("slow");
+        }
+        else if (st === "off")
+            txt = v801fAL("off", { t: v801fAtTxt() });
+        else {
+            txt = v801fAL(V73ADM.pullErr ? "err" : "late", { t: v801fAtTxt() });
+            warn = true;
+        }
+        const sig = st + "|" + txt;
+        if (n.dataset.v801 !== sig || String(n.textContent).indexOf(txt) !== 0) {
+            n.dataset.v801 = sig;
+            n.textContent = txt;
+            n.style.color = warn ? "var(--warn)" : "";
+            if (st === "err") {
+                const b = document.createElement("button");
+                b.type = "button";
+                b.className = "btn g";
+                b.setAttribute("data-v801fre", "");
+                b.style.cssText = "margin-left:8px;padding:2px 10px;font-size:11px";
+                b.textContent = v801fAL("re");
+                n.appendChild(b);
+            }
+        }
+        k.classList.toggle("v73adm-stale", st !== "wait");
+    }
+    catch (e) { }
+}
+function v801fPendOn() { try {
+    return typeof V214 !== "undefined" && !!V214 && !!V214.pend;
+}
+catch (e) {
+    return false;
+} }
+function v801fAdmPaint() {
+    try {
+        const st = v801fAdmSt();
+        if (!document.getElementById("admkpi"))
+            return;
+        if (st === "" && v801fPendOn() && (document.querySelector("#admkpi.v801w") || document.querySelector("#accounts.v801w"))) {
+            v801fKpiFill();
+            v801fMask(false, true);
+            v801fPendWatch();
+        }
+        else
+            v801fMask(st === "wait");
+        v801fNote(st);
+        if (st === "wait") {
+            if (!V801F.adm.t0)
+                V801F.adm.t0 = Date.now();
+            if (!V801F.adm.tm)
+                V801F.adm.tm = setInterval(() => {
+                    try {
+                        const s2 = v801fAdmSt();
+                        if (s2 !== "wait") {
+                            clearInterval(V801F.adm.tm);
+                            V801F.adm.tm = 0;
+                            v801fAdmPaint();
+                            return;
+                        }
+                        if (V801F.adm.t0 && Date.now() - V801F.adm.t0 > 30000) {
+                            V801F.adm.give = 1;
+                        }
+                        v801fAdmPaint();
+                    }
+                    catch (e) { }
+                }, 1000);
+        }
+        else if (V801F.adm.tm) {
+            clearInterval(V801F.adm.tm);
+            V801F.adm.tm = 0;
+        }
+    }
+    catch (e) { }
+}
+function v801fPendWatch() {
+    if (V801F.adm.pend)
+        return;
+    V801F.adm.pend = setInterval(() => {
+        try {
+            if (!v801fIsAdm() || !v801fPendOn()) {
+                clearInterval(V801F.adm.pend);
+                V801F.adm.pend = 0;
+                return;
+            }
+            if (typeof v214AdmBusy === "function" && !v214AdmBusy()) {
+                clearInterval(V801F.adm.pend);
+                V801F.adm.pend = 0;
+                V214.pend = 0;
+                const y = window.scrollY;
+                renderAdmin();
+                try {
+                    window.scrollTo(0, y);
+                }
+                catch (e) { }
+            }
+        }
+        catch (e) { }
+    }, 800);
+}
+function v801fPullFirst() {
+    try {
+        if (typeof SES === "undefined" || !SES || SES.t !== "admin" || !v801fSyncOn())
+            return;
+        if (typeof V213 === "undefined" || !V213 || V213.admBusy)
+            return;
+        if (v801fPulled())
+            return;
+        if (V213.admPullAt && V213.admPullAt < v801fSesT()) {
+            V213.admPullAt = 0;
+            V801F.adm.t0 = 0;
+            V801F.adm.give = 0;
+        }
+        if (V213.admPullAt)
+            return;
+        if (typeof v213AdmAuto === "function")
+            v213AdmAuto();
+    }
+    catch (e) { }
+}
+if (typeof renderAdmin === "function") {
+    const __ra801f = renderAdmin;
+    renderAdmin = function () {
+        try {
+            if (typeof cur !== "undefined" && cur === "adm")
+                v801fPullFirst();
+        }
+        catch (e) { }
+        const r = __ra801f.apply(this, arguments);
+        try {
+            v801fAdmPaint();
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof v73admSyncNote === "function") {
+    const __sn801f = v73admSyncNote;
+    v73admSyncNote = function () { const r = __sn801f.apply(this, arguments); try {
+        v801fAdmPaint();
+    }
+    catch (e) { } return r; };
+}
+if (typeof v213AdmPull === "function") {
+    const __pl801f = v213AdmPull;
+    v213AdmPull = async function () {
+        try {
+            v801fKidWarm();
+        }
+        catch (e) { }
+        const was = v801fAdmSt() === "wait";
+        let x;
+        try {
+            x = await __pl801f.apply(this, arguments);
+        }
+        catch (e) {
+            try {
+                setTimeout(v801fAdmPaint, 0);
+            }
+            catch (x2) { }
+            throw e;
+        }
+        try {
+            if (x && x.r && x.r.ok) {
+                V801F.adm.give = 0;
+                V801F.adm.t0 = 0;
+                if (typeof V214 !== "undefined" && V214 && !V214.pullAt)
+                    V214.pullAt = Date.now();
+                if (was || document.querySelector("#admkpi.v801w"))
+                    setTimeout(() => { try {
+                        if (v801fIsAdm())
+                            v801fAdmPaint();
+                    }
+                    catch (e) { } }, 0);
+            }
+        }
+        catch (e) { }
+        return x;
+    };
+}
+document.addEventListener("click", e => {
+    try {
+        const b = e.target && e.target.closest && e.target.closest("[data-v801fre]");
+        if (!b)
+            return;
+        e.preventDefault();
+        if (typeof V73ADM !== "undefined" && V73ADM)
+            V73ADM.pullErr = 0;
+        V801F.adm.give = 0;
+        V801F.adm.t0 = Date.now();
+        if (typeof V213 !== "undefined" && V213) {
+            V213.admPullAt = 0;
+            V213.admBusy = 0;
+        }
+        v801fAdmPaint();
+        if (typeof v213AdmAuto === "function")
+            v213AdmAuto();
+    }
+    catch (x) { }
+}, true);
+async function v801fKid1(code) {
+    const enc = new TextEncoder(), sub = crypto.subtle;
+    const base = await sub.importKey("raw", enc.encode(String(code)), "PBKDF2", false, ["deriveBits"]);
+    const bits = await sub.deriveBits({ name: "PBKDF2", salt: enc.encode("bc20-kid:" + code), iterations: 120000, hash: "SHA-256" }, base, 256);
+    return [...new Uint8Array(bits)].map(b => b.toString(16).padStart(2, "0")).join("").slice(0, 40);
+}
+if (typeof v213Kid === "function") {
+    const __kd801f = v213Kid;
+    v213Kid = function (code) {
+        try {
+            if (typeof V213 !== "undefined" && V213 && V213.kid[code])
+                return Promise.resolve(V213.kid[code]);
+            const P = V801F.kidP;
+            if (P[code])
+                return P[code];
+            const self = this, args = arguments;
+            const p = ((typeof crypto !== "undefined" && crypto.subtle) ? v801fKid1(code) : Promise.reject(new Error("nosubtle"))).then(k => { if (typeof V213 !== "undefined" && V213)
+                V213.kid[code] = k; return k; }, () => __kd801f.apply(self, args));
+            P[code] = p;
+            p.then(() => { delete P[code]; }, () => { delete P[code]; });
+            return p;
+        }
+        catch (e) {
+            return __kd801f.apply(this, arguments);
+        }
+    };
+}
+function v801fKidWarm() {
+    try {
+        if (typeof ADB === "undefined" || !ADB || !Array.isArray(ADB.accounts) || typeof v213Kid !== "function")
+            return;
+        const t0 = Date.now();
+        const L = ADB.accounts.filter(a => a && a.code).map(a => v213Kid(a.code));
+        if (L.length && !V801F.kidLog) {
+            V801F.kidLog = { n: L.length, t0 };
+            Promise.all(L).then(() => { V801F.kidLog.ms = Date.now() - t0; }, () => { });
+        }
+    }
+    catch (e) { }
+}
+if (typeof v42ShowOtp === "function") {
+    const __so801f = v42ShowOtp;
+    v42ShowOtp = function () { const r = __so801f.apply(this, arguments); try {
+        setTimeout(v801fKidWarm, 0);
+    }
+    catch (e) { } return r; };
+}
+try {
+    if (typeof SES !== "undefined" && SES && SES.t === "admin")
+        setTimeout(v801fKidWarm, 0);
+}
+catch (e) { }
+if (typeof i18nSet === "function") {
+    const __is801f = i18nSet;
+    i18nSet = function () { const r = __is801f.apply(this, arguments); try {
+        setTimeout(() => { try {
+            if (typeof fwdCur !== "undefined" && fwdCur === "frates") {
+                const b = document.querySelector("#well .v801fpre");
+                if (b)
+                    b.dataset.sig = "";
+                v801fPaintForm();
+            }
+        }
+        catch (e) { } }, 60);
+    }
+    catch (e) { } return r; };
+}
+(function () {
+    try {
+        const st = document.createElement("style");
+        st.id = "v801fcss";
+        st.textContent = `
+.v801fpre{margin:0 0 10px;padding:9px 12px;border:1px solid var(--bl);border-radius:var(--r2);background:var(--bl-soft);font-size:11.5px;line-height:1.65}
+.v801fpre p{margin:0 0 6px}.v801fpre .v801fng{color:var(--ink)}.v801fpre .v801fng b{color:var(--warn,#b45309)}
+.v801fchips{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:4px 0}.v801flbl{font-size:11px;color:var(--ink-2);margin-right:2px}
+.v801fchip{padding:3px 9px;font-size:11px;min-height:28px}.v801fchip.on{border-color:var(--bl);background:var(--surface)}
+.v801fown{margin-left:4px;font-size:9.5px;color:var(--good,#15803d)}.v801fhint,.v801fnone{font-size:10.5px;color:var(--ink-3);margin:2px 0 6px}
+.v801fok{color:var(--good,#15803d)}.v801fuse{display:flex;gap:6px;align-items:flex-start;font-size:10.5px;color:var(--ink-2);line-height:1.6;margin-top:4px}
+.v801fuse input{margin-top:3px;flex:none}.v801freg{font-size:9.5px;color:var(--warn,#b45309);font-weight:400}.v801fmiss{margin:2px 0 0;padding-left:18px;font-size:11px}
+#admkpi .kpi .v801ld{display:none}#admkpi.v801w .kpi .v801ld{display:block;font-size:13px;color:var(--ink-3);font-weight:600}
+#admkpi.v801w .kpi.v801m > .kv:not(.v801ld),#admkpi.v801w .kpi.v801m > .kd{display:none}
+#accounts td .v801ld{display:none}#accounts.v801w td .v801ld{display:inline;color:var(--ink-3)}#accounts.v801w td .v801o{display:none}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+try {
+    if (typeof S30_NEWS !== "undefined" && Array.isArray(S30_NEWS)) {
+        if (!S30_NEWS.some(x => x && x[1] === "v21.80.1"))
+            S30_NEWS.unshift(["2026-11", "v21.80.1", "成長レベルの変わった理由・AIの気づきの場所・地域あての見積・管理コンソールの最新の数（第5回 UAT の回帰の直し）",
+                ["成長レベルが前に見たときから変わったら、上の札に ▲／▼ を出し、AI商社マンの画面に何で変わったか（質問の回数・そろった項目・外れた項目など）を出します",
+                    "商品情報の上の方に「AIの気づき」（未解決・「不明」と回答・解決済みの件数）と、一覧へ移るボタンを出しました。0件のときもそう出します",
+                    "通関統計で国別の明細が無い期間・品目は、その理由と、税の計算を確かめられる場所を出します",
+                    "物流会社：依頼の仕向けが地域（ヨーロッパなど）のときは、港を選んでからレートを登録します。ログイン画面の同期の案内を、デモ用・体験用のアカウントの扱いが分かる文に直しました",
+                    "管理コンソール：ログインの直後は、同期サーバーから最新の数を読み込むまで「読み込み中…」と出し、古い数を出さないようにしました"]]);
+    }
 }
 catch (e) { }
 try {
