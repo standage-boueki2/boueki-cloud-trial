@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="0cdb56ae9e7e";
+const BC20_BUILD="b6e113decddd";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -45352,7 +45352,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.80.1";
+const BC20_VER = "21.80.2";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -159470,6 +159470,617 @@ try {
                     "通関統計で国別の明細が無い期間・品目は、その理由と、税の計算を確かめられる場所を出します",
                     "物流会社：依頼の仕向けが地域（ヨーロッパなど）のときは、港を選んでからレートを登録します。ログイン画面の同期の案内を、デモ用・体験用のアカウントの扱いが分かる文に直しました",
                     "管理コンソール：ログインの直後は、同期サーバーから最新の数を読み込むまで「読み込み中…」と出し、古い数を出さないようにしました"]]);
+    }
+}
+catch (e) { }
+var V802RQ = { pk: null, ctx: null, inPo: 0, lastOpen: 0 };
+const V802RQ_CANCEL = { v802rqCancel: 1 };
+function v802rqE(s) { return (typeof esc === "function") ? esc(String(s == null ? "" : s)) : String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v802rqLang() { try {
+    return (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v802rqM(ja, en, zh, es) { const l = v802rqLang(); return l === "en" ? (en || ja) : l === "zh" ? (zh || ja) : l === "es" ? (es || ja) : ja; }
+function v802rqToast(m) { try {
+    if (typeof toast === "function")
+        toast(m);
+}
+catch (e) { } }
+function v802rqCn(c) { try {
+    return typeof cnorm === "function" ? cnorm(c) : String(c == null ? "" : c).trim();
+}
+catch (e) {
+    return String(c == null ? "" : c).trim();
+} }
+function v802rqReg(s) { try {
+    return typeof v801fRegCore === "function" ? v801fRegCore(s) : "";
+}
+catch (e) {
+    return "";
+} }
+function v802rqPortCty(p) { try {
+    if (typeof v801fCtyOfPort !== "function")
+        return "";
+    const x = String(p || "").trim();
+    return v801fCtyOfPort(x) || v801fCtyOfPort(x.replace(/港$/, "")) || "";
+}
+catch (e) {
+    return "";
+} }
+function v802rqPortsOf(c) { try {
+    return typeof v801fPortsOf === "function" ? v801fPortsOf(c) : [];
+}
+catch (e) {
+    return [];
+} }
+function v802rqCtyKnown(c) {
+    try {
+        if (typeof FWD_POD !== "undefined" && FWD_POD[c])
+            return true;
+        if (v802rqPortsOf(c).length)
+            return true;
+        if (typeof V801F_RCTY !== "undefined" && Object.keys(V801F_RCTY).some(k => (V801F_RCTY[k] || []).includes(c)))
+            return true;
+        if (typeof CTY_REGION !== "undefined" && CTY_REGION && Object.keys(CTY_REGION).some(k => Array.isArray(CTY_REGION[k]) && CTY_REGION[k].includes(c)))
+            return true;
+    }
+    catch (e) { }
+    return false;
+}
+function v802rqPlan(opts) {
+    opts = opts || {};
+    if (typeof v801fRegCore !== "function")
+        return null;
+    try {
+        if (typeof FWDON !== "undefined" && FWDON)
+            return null;
+    }
+    catch (e) { }
+    const S = (typeof D !== "undefined" && D && D.ship) || null;
+    if (!S)
+        return null;
+    const only = !!opts.only || (typeof V56SHIP !== "undefined" && !opts.cty);
+    const ctys = opts.cty ? [v802rqCn(opts.cty)] : [...new Set([S.country].concat(only ? [] : ((typeof TEN !== "undefined" && TEN && TEN.targets) || []))
+            .flatMap(c => String(c == null ? "" : c).split(/[・･、,\/／\s]+/)).filter(Boolean).map(v802rqCn))].slice(0, 5);
+    const legs = ctys.filter(Boolean).map(c => {
+        const pod0 = String((c === S.country && opts.pod) ? opts.pod : ((typeof FWD_POD !== "undefined" && FWD_POD[c]) || c)).trim();
+        const rp = v802rqReg(pod0), rc = v802rqReg(c);
+        if (rp)
+            return { c, pod0, reg: rp, kind: "ask" };
+        if (rc)
+            return { c, pod0, reg: rc, kind: "auto" };
+        return { c, pod0, kind: "ok" };
+    });
+    return { S, legs, ask: legs.filter(l => l.kind === "ask"), auto: legs.filter(l => l.kind === "auto"), single: legs.length === 1 };
+}
+function v802rqPolKey(p) { try {
+    return typeof v56shipPolKey === "function" ? v56shipPolKey(p) : String(p || "").replace(/港$/, "").trim();
+}
+catch (e) {
+    return "";
+} }
+function v802rqRated(port, pol, mode) {
+    try {
+        if (typeof fwdRatesFor !== "function")
+            return false;
+        const k = v802rqPolKey(pol);
+        return (fwdRatesFor(port, mode) || []).some(r => r && !r.v56shipNolane && (!k || v802rqPolKey(r.pol) === k) && (() => { const P = String(r.pod || "").trim(); return !!P && (P === port || P.includes(port) || port.includes(P)); })());
+    }
+    catch (e) {
+        return false;
+    }
+}
+function v802rqCands(reg, pol, mode) {
+    let ctys = [];
+    try {
+        ctys = typeof v801fRegCtys === "function" ? v801fRegCtys(reg) : [];
+    }
+    catch (e) { }
+    const all = [], seen = new Set();
+    const add = (p, c, i) => { const k = String(p).replace(/[・\s]/g, ""); if (!p || seen.has(k))
+        return; seen.add(k); all.push({ p, c, i }); };
+    const P = ctys.map(c => ({ c, L: v802rqPortsOf(c) }));
+    P.forEach(x => x.L.forEach((p, i) => add(p, x.c, i)));
+    all.forEach(x => { x.rate = v802rqRated(x.p, pol, mode) ? 1 : 0; });
+    const out = all.filter(x => x.rate).concat(all.filter(x => !x.rate && x.i === 0)).concat(all.filter(x => !x.rate && x.i === 1));
+    return out.slice(0, 10);
+}
+function v802rqPrev(S, reg) {
+    try {
+        const L = ((typeof FWDB !== "undefined" && FWDB && FWDB.reqs) || []).filter(r => r && S && S.no && r.caseNo === S.no);
+        for (const r of L) {
+            const l = (r.legs || []).find(x => x && x.v802reg === reg && (x.v802pod || x.pod));
+            if (l)
+                return { cty: l.cty, pod: l.v802pod || l.pod, how: "prev" };
+        }
+    }
+    catch (e) { }
+    return null;
+}
+function v802rqTyped(x) {
+    x = String(x == null ? "" : x);
+    try {
+        x = x.normalize("NFKC");
+    }
+    catch (e) { }
+    x = x.trim();
+    if (!x)
+        return null;
+    if (v802rqReg(x))
+        return { err: "reg", x };
+    const c = v802rqCn(x);
+    if (v802rqCtyKnown(c)) {
+        const pod = (typeof FWD_POD !== "undefined" && FWD_POD[c]) || v802rqPortsOf(c)[0] || c;
+        return { cty: c, pod, how: "cty" };
+    }
+    const pc = v802rqPortCty(x);
+    if (pc)
+        return { cty: pc, pod: x, how: "port" };
+    return { cty: x, pod: x, how: "free" };
+}
+function v802rqHtml() {
+    const K = V802RQ.pk;
+    if (!K)
+        return "";
+    const E = v802rqE, M = v802rqM;
+    const regs = [...new Set(K.legs.map(l => l.reg))].join("・");
+    const legHtml = K.legs.map((l, i) => {
+        const chips = l.cands.length
+            ? `<div class="v802rqchips" role="group" aria-label="${E(M(`${l.reg}の主な港`, `Main ports in ${l.reg}`, `${l.reg}的主要港口`, `Puertos principales (${l.reg})`))}">${l.cands.map(x => `<button type="button" class="btn g v802rqchip" data-v802rqi="${i}" data-v802rqp="${E(x.p)}" data-v802rqc="${E(x.c)}" aria-pressed="false">${E(x.p)}${x.c && x.c !== x.p ? "（" + E(x.c) + "）" : ""}${x.rate ? `<span class="v802rqrt">${E(M("レートあり", "rate", "有费率", "tarifa"))}</span>` : ""}</button>`).join("")}</div>`
+            : `<p class="v802rqnone">${E(M("この地域の港の候補はありません。下に港か国の名前を入れてください。", "No port suggestions for this region. Type a port or country below.", "此地区没有候选港口。请在下方输入港口或国家名称。", "No hay puertos sugeridos. Escriba un puerto o país abajo."))}</p>`;
+        return `<div class="v802rqleg" data-v802rqleg="${i}">
+      <p class="v802rqlbl"><b>${E(M(`${l.reg}の主な港`, `Main ports in ${l.reg}`, `${l.reg}的主要港口`, `Puertos principales (${l.reg})`))}</b></p>${chips}
+      <label class="v802rqin">${E(M("候補に無いとき：港か国の名前", "Not listed: port or country name", "没有候选时：港口或国家名称", "Si no aparece: puerto o país"))}
+        <input class="sel" type="text" data-v802rqin="${i}" autocomplete="off" placeholder="${E(M("例：アントワープ／ベルギー", "e.g. Antwerp / Belgium", "例：安特卫普／比利时", "p. ej. Amberes / Bélgica"))}"></label>
+      <p class="v802rqsel" data-v802rqsel="${i}" aria-live="polite"></p></div>`;
+    }).join("");
+    const hasRate = K.legs.some(l => l.cands.some(x => x.rate));
+    return `<div class="dwhead"><h3>🚚 ${E(M("見積の前に、仕向港を選んでください", "Choose the destination port before requesting quotes", "请求报价前，请选择目的港", "Antes de pedir cotizaciones, elija el puerto de destino"))}</h3></div>
+    <div class="dwbody v802rq" id="v802rq" data-noi18n data-ai18n-skip style="display:block;overflow-y:auto;padding:12px 18px 16px">
+    <p class="v802rqlead">${E(M(`この案件の仕向けは「${regs}」（地域）です。物流会社の運賃は港ごとに決まるため、どの港まで送るかを選んでから見積を依頼します。`, `This case's destination is “${regs}” (a region). Freight rates are set per port, so choose the port to ship to before requesting quotes.`, `此案件的目的地是“${regs}”（地区）。物流公司的运费按港口确定，请先选择运到哪个港口，再请求报价。`, `El destino de este caso es «${regs}» (una región). Las tarifas se fijan por puerto: elija el puerto antes de pedir cotizaciones.`))}</p>
+    ${legHtml}
+    ${hasRate ? `<p class="v802rqhint">${E(M(`「レートあり」＝${K.pol || "仕出港"}発で、物流会社のレートが登録されている港です（すぐ見積が届きます）。`, `“rate” = a forwarder has registered a rate from ${K.pol || "the origin port"} to this port (you get a quote right away).`, `“有费率”＝已有物流公司登记从${K.pol || "起运港"}出发到此港的费率（可立即收到报价）。`, `«tarifa» = un transitario ya registró una tarifa desde ${K.pol || "el puerto de origen"} (cotización inmediata).`))}</p>` : ""}
+    <p class="v802rqhint">${E(M(`案件の仕向け（${regs}）は変えません。選んだ港は、この見積の依頼にだけ使います。`, `The case's destination (${regs}) stays as it is. The chosen port is used only for this quote request.`, `案件的目的地（${regs}）不变。所选港口仅用于本次报价请求。`, `El destino del caso (${regs}) no cambia. El puerto elegido solo se usa para esta solicitud.`))}</p>
+    <p class="v802rqerr" id="v802rqerr" role="alert"></p>
+    <div class="rw v802rqbtns"><button type="button" class="btn" id="v802rqgo" disabled>${E(M("この港で見積を依頼", "Request quotes for this port", "按此港口请求报价", "Pedir cotización para este puerto"))}</button>
+      <button type="button" class="btn g" id="v802rqno">${E(M("やめる", "Cancel", "取消", "Cancelar"))}</button></div></div>`;
+}
+function v802rqSelTxt(s) {
+    const M = v802rqM;
+    if (!s)
+        return M("まだ選んでいません", "Not chosen yet", "尚未选择", "Aún no elegido");
+    const nm = s.pod + (s.cty && s.cty !== s.pod ? "（" + s.cty + "）" : "");
+    return M("選んだ港：", "Chosen: ", "已选择：", "Elegido: ") + nm + (s.how === "prev" ? M("（この案件で前に選んだ港）", " (chosen before for this case)", "（此案件之前选择的港口）", " (elegido antes en este caso)") : "") + (s.how === "cty" ? M("（国を選んだので、その国の主な港で依頼します）", " (country chosen: its main port is used)", "（选择了国家，按该国主要港口请求）", " (país elegido: se usa su puerto principal)") : "");
+}
+function v802rqPaint() {
+    const K = V802RQ.pk;
+    if (!K)
+        return;
+    const box = document.getElementById("v802rq");
+    if (!box)
+        return;
+    K.legs.forEach((l, i) => {
+        box.querySelectorAll(`[data-v802rqi="${i}"]`).forEach(b => { const on = !!l.sel && b.dataset.v802rqp === l.sel.pod; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on ? "true" : "false"); });
+        const s = box.querySelector(`[data-v802rqsel="${i}"]`);
+        if (s) {
+            const tt = l.typed ? (v802rqM("入力：", "Typed: ", "输入：", "Escrito: ") + l.typed) : v802rqSelTxt(l.sel);
+            if (s.textContent !== tt)
+                s.textContent = tt;
+            s.classList.toggle("on", !!l.sel || !!l.typed);
+        }
+    });
+    const go = document.getElementById("v802rqgo");
+    if (go)
+        go.disabled = !K.legs.every(l => l.sel || l.typed);
+}
+function v802rqErr(t) { const e = document.getElementById("v802rqerr"); if (e)
+    e.textContent = t || ""; }
+function v802rqDone(v) { const K = V802RQ.pk; if (!K)
+    return; V802RQ.pk = null; try {
+    K.res(v);
+}
+catch (e) { } }
+function v802rqAsk(P, opts) {
+    if (V802RQ.pk)
+        v802rqDone(null);
+    return new Promise(res => {
+        const S = P.S, term = String(opts.term || S.term || ((typeof D !== "undefined" && D && D.term) || ""));
+        let pol = String(S.pol || "");
+        try {
+            if (typeof v56shipCasePol === "function")
+                pol = v56shipCasePol(S, term) || pol;
+        }
+        catch (e) { }
+        const mode = String(opts.mode || S.mode || "LCL");
+        const legs = P.ask.map(l => ({ reg: l.reg, from: l.c, cands: v802rqCands(l.reg, pol, mode), sel: v802rqPrev(S, l.reg), typed: "" }));
+        V802RQ.pk = { legs, res, pol, mode, opening: 1 };
+        try {
+            openDW(v802rqHtml());
+            try {
+                if (typeof dwChrome === "function")
+                    dwChrome();
+            }
+            catch (e) { }
+        }
+        finally {
+            if (V802RQ.pk)
+                V802RQ.pk.opening = 0;
+        }
+        V802RQ.lastOpen = Date.now();
+        v802rqPaint();
+        try {
+            if (typeof logU === "function")
+                logU("fwd", "AI見積の前に仕向港を確認:" + [...new Set(legs.map(l => l.reg))].join("・"));
+        }
+        catch (e) { }
+    });
+}
+document.addEventListener("click", e => {
+    try {
+        const K = V802RQ.pk;
+        const t = e.target;
+        if (!K || !t || !t.closest)
+            return;
+        const ch = t.closest("[data-v802rqp]");
+        if (ch && ch.closest("#v802rq")) {
+            e.preventDefault();
+            const i = +ch.dataset.v802rqi, l = K.legs[i];
+            if (!l)
+                return;
+            l.sel = { cty: ch.dataset.v802rqc || v802rqPortCty(ch.dataset.v802rqp) || ch.dataset.v802rqp, pod: ch.dataset.v802rqp, how: "chip" };
+            l.typed = "";
+            const inp = document.querySelector(`#v802rq [data-v802rqin="${i}"]`);
+            if (inp)
+                inp.value = "";
+            v802rqErr("");
+            v802rqPaint();
+            return;
+        }
+        if (t.closest("#v802rqno")) {
+            e.preventDefault();
+            v802rqDone(null);
+            try {
+                closeDW();
+            }
+            catch (x) { }
+            return;
+        }
+        if (t.closest("#v802rqgo")) {
+            e.preventDefault();
+            const out = [];
+            for (const l of K.legs) {
+                let s = l.sel;
+                if (l.typed) {
+                    const r = v802rqTyped(l.typed);
+                    if (r && r.err) {
+                        v802rqErr(v802rqM(`「${r.x}」は地域の名前です。港か国の名前を入れてください。`, `“${r.x}” is a region name. Enter a port or country name.`, `“${r.x}”是地区名称。请输入港口或国家名称。`, `«${r.x}» es una región. Escriba un puerto o un país.`));
+                        return;
+                    }
+                    s = r;
+                }
+                if (!s) {
+                    v802rqErr(v802rqM(`${l.reg}の港を選んでください。`, `Choose a port in ${l.reg}.`, `请选择${l.reg}的港口。`, `Elija un puerto en ${l.reg}.`));
+                    return;
+                }
+                out.push({ reg: l.reg, from: l.from, cty: s.cty, pod: s.pod, how: s.how });
+            }
+            v802rqDone(out);
+            return;
+        }
+    }
+    catch (x) { }
+}, true);
+document.addEventListener("input", e => {
+    try {
+        const K = V802RQ.pk;
+        const t = e.target;
+        if (!K || !t || !t.dataset || t.dataset.v802rqin == null)
+            return;
+        const l = K.legs[+t.dataset.v802rqin];
+        if (!l)
+            return;
+        l.typed = String(t.value || "").trim();
+        if (l.typed)
+            l.sel = null;
+        v802rqErr("");
+        v802rqPaint();
+    }
+    catch (x) { }
+}, true);
+document.addEventListener("keydown", e => { try {
+    const t = e.target;
+    if (!V802RQ.pk || !t || !t.dataset || t.dataset.v802rqin == null || e.key !== "Enter" || e.isComposing)
+        return;
+    e.preventDefault();
+    const g = document.getElementById("v802rqgo");
+    if (g && !g.disabled)
+        g.click();
+}
+catch (x) { } }, true);
+if (typeof closeDW === "function") {
+    const __cd802 = closeDW;
+    closeDW = function () { try {
+        if (V802RQ.pk && !V802RQ.pk.opening)
+            v802rqDone(null);
+    }
+    catch (e) { } return __cd802.apply(this, arguments); };
+}
+if (typeof openDW === "function") {
+    const __od802 = openDW;
+    openDW = function () { try {
+        if (V802RQ.pk && !V802RQ.pk.opening)
+            v802rqDone(null);
+    }
+    catch (e) { } return __od802.apply(this, arguments); };
+}
+if (typeof fwdLegBuild === "function") {
+    const __lb802 = fwdLegBuild;
+    fwdLegBuild = function (cty) {
+        const C = V802RQ.ctx;
+        const X = C && C.by[String(cty == null ? "" : cty)];
+        if (!X)
+            return __lb802.apply(this, arguments);
+        const a = [...arguments];
+        a[0] = X.cty;
+        a[1] = X.pod;
+        const l = __lb802.apply(this, a);
+        try {
+            if (l) {
+                l.v802reg = X.reg;
+                l.v802pod = X.pod;
+                if (!l.ok)
+                    l.pod = X.pod;
+            }
+        }
+        catch (e) { }
+        return l;
+    };
+}
+function v802rqCond(opts) {
+    try {
+        if (typeof V60 !== "undefined" && V60 && V60.go && Date.now() - V60.go < 2000 && typeof v60CondRead === "function") {
+            V60.go = 0;
+            const o = v60CondRead();
+            Object.keys(o).forEach(k => { if (opts[k] == null || opts[k] === "")
+                opts[k] = o[k]; });
+        }
+    }
+    catch (e) { }
+}
+function v802rqAfter(before) {
+    try {
+        const F = (typeof FWDB !== "undefined") ? FWDB : null;
+        if (!F || !Array.isArray(F.reqs))
+            return null;
+        const r = F.reqs.find(x => x && !before.has(x.id));
+        if (!r || !Array.isArray(r.legs))
+            return r || null;
+        const seen = new Map(), keep = [];
+        r.legs.forEach(l => { if (!l)
+            return; const k = l.cty; if (!seen.has(k)) {
+            seen.set(k, keep.length);
+            keep.push(l);
+        }
+        else if (l.v802reg && !keep[seen.get(k)].v802reg)
+            keep[seen.get(k)] = l; });
+        const cty = keep.map(l => l.cty).join("・"), pod = keep.map(l => l.pod).join("・");
+        if (keep.length !== r.legs.length || r.cty !== cty || r.pod !== pod) {
+            r.legs = keep;
+            r.cty = cty;
+            r.pod = pod;
+            try {
+                if (typeof fwdReqStatus === "function")
+                    r.status = fwdReqStatus(r);
+            }
+            catch (e) { }
+            r._m = Date.now();
+            try {
+                fwdSave();
+            }
+            catch (e) { }
+            try {
+                if (typeof syncSchedule === "function")
+                    syncSchedule("fwd");
+            }
+            catch (e) { }
+            try {
+                const h = document.querySelector("#pn .dwhead h3");
+                if (h && h.textContent.includes(r.id) && typeof openFwdQuote === "function")
+                    openFwdQuote(r.id);
+            }
+            catch (e) { }
+        }
+        return r;
+    }
+    catch (e) {
+        return null;
+    }
+}
+if (typeof fwdRequest === "function") {
+    const __fr802 = fwdRequest;
+    fwdRequest = async function (opts) {
+        let P = null;
+        try {
+            P = v802rqPlan(opts);
+        }
+        catch (e) {
+            P = null;
+        }
+        if (!P || (!P.ask.length && !P.auto.length))
+            return __fr802.apply(this, arguments);
+        const po = V802RQ.inPo > 0;
+        opts = Object.assign({}, opts || {});
+        v802rqCond(opts);
+        let pick = P.auto.map(l => ({ reg: l.reg, from: l.c, cty: v802rqPortCty(l.pod0) || l.pod0, pod: l.pod0, how: "auto" }));
+        if (P.ask.length) {
+            const got = await v802rqAsk(P, opts);
+            if (!got) {
+                v802rqToast(v802rqM("見積の依頼はまだ出していません。仕向港を選ぶと依頼できます", "The quote request has not been sent. Choose a destination port to send it", "尚未发出报价请求。选择目的港后即可请求", "La solicitud no se envió. Elija un puerto de destino para enviarla"));
+                if (po)
+                    throw V802RQ_CANCEL;
+                return;
+            }
+            pick = pick.concat(got);
+        }
+        const by = {};
+        pick.forEach(x => { by[x.from] = x; });
+        if (P.single && pick.length === 1) {
+            opts.cty = pick[0].cty;
+            by[pick[0].cty] = pick[0];
+        }
+        try {
+            if (typeof logU === "function")
+                logU("fwd", "仕向港を選んで依頼:" + pick.map(x => x.reg + "→" + x.pod).join("・"));
+        }
+        catch (e) { }
+        const before = new Set(((typeof FWDB !== "undefined" && FWDB && FWDB.reqs) || []).map(r => r && r.id));
+        V802RQ.ctx = { by };
+        let pr;
+        try {
+            pr = __fr802.call(this, opts);
+        }
+        finally {
+            V802RQ.ctx = null;
+        }
+        try {
+            return await pr;
+        }
+        finally {
+            v802rqAfter(before);
+        }
+    };
+}
+if (typeof poShareFwd === "function") {
+    const __ps802 = poShareFwd;
+    poShareFwd = async function () {
+        V802RQ.inPo++;
+        try {
+            return await __ps802.apply(this, arguments);
+        }
+        catch (e) {
+            if (e === V802RQ_CANCEL)
+                return;
+            throw e;
+        }
+        finally {
+            V802RQ.inPo = Math.max(0, V802RQ.inPo - 1);
+        }
+    };
+}
+function v802rqLegs(r) { return ((r && r.legs) || []).filter(l => l && l.v802reg); }
+if (typeof openFwdQuote === "function") {
+    const __oq802 = openFwdQuote;
+    openFwdQuote = function (id) {
+        const out = __oq802.apply(this, arguments);
+        try {
+            if (typeof FWDON !== "undefined" && FWDON)
+                return out;
+            const r = ((typeof FWDB !== "undefined" && FWDB && FWDB.reqs) || []).find(x => x && x.id === id);
+            const L = v802rqLegs(r);
+            if (!L.length)
+                return out;
+            const b = document.querySelector("#pn .dwbody");
+            if (!b || b.querySelector(".v802rqnote"))
+                return out;
+            const t = L.map(l => {
+                const sp = l.v802pod || l.pod, cs = l.cty && l.cty !== sp, other = l.ok && l.pod && l.pod !== sp;
+                return v802rqM(`案件の仕向けは地域（${l.v802reg}）のため、選んだ港（${sp}${cs ? "・" + l.cty : ""}）で見積を依頼しました。` + (other ? `見積は同じ国の${l.pod}までのレートです。` : ""), `The case's destination is a region (${l.v802reg}), so quotes were requested for the chosen port (${sp}${cs ? ", " + l.cty : ""}).` + (other ? ` The quote uses a rate to ${l.pod} in the same country.` : ""), `案件目的地是地区（${l.v802reg}），因此按所选港口（${sp}${cs ? "・" + l.cty : ""}）请求了报价。` + (other ? `报价使用的是同一国家到${l.pod}的费率。` : ""), `El destino del caso es una región (${l.v802reg}); se pidió cotización para el puerto elegido (${sp}${cs ? ", " + l.cty : ""}).` + (other ? ` La cotización usa una tarifa a ${l.pod} del mismo país.` : ""));
+            }).join(" ");
+            const p = document.createElement("p");
+            p.className = "nn v802rqnote";
+            p.setAttribute("role", "note");
+            p.setAttribute("data-noi18n", "");
+            p.setAttribute("data-ai18n-skip", "");
+            p.textContent = "📍 " + t;
+            b.insertAdjacentElement("afterbegin", p);
+        }
+        catch (e) { }
+        return out;
+    };
+}
+function v802rqShipHint() {
+    try {
+        if (typeof FWDON !== "undefined" && FWDON)
+            return;
+        const S = (typeof D !== "undefined" && D && D.ship) || null;
+        const card = document.getElementById("fwdhist");
+        if (!card)
+            return;
+        const regs = S ? [...new Set(String(S.country || "").split(/[・･、,\/／\s]+/).filter(Boolean).map(c => v802rqReg(v802rqCn(c))).filter(Boolean))] : [];
+        let n = card.querySelector(".v802rqhint2");
+        if (!regs.length) {
+            if (n)
+                n.remove();
+            return;
+        }
+        const t = v802rqM(`この案件の仕向けは地域（${regs.join("・")}）です。AI見積を頼むときに、仕向港を選んでいただきます。`, `This case's destination is a region (${regs.join(", ")}). You will choose the destination port when requesting AI quotes.`, `此案件的目的地是地区（${regs.join("・")}）。请求AI报价时需要选择目的港。`, `El destino de este caso es una región (${regs.join(", ")}). Elegirá el puerto al pedir cotizaciones.`);
+        if (!n) {
+            n = document.createElement("p");
+            n.className = "nn v802rqhint2";
+            n.setAttribute("role", "note");
+            n.setAttribute("data-noi18n", "");
+            n.setAttribute("data-ai18n-skip", "");
+            const h = card.querySelector("h3");
+            const at = (h && h.parentElement) || card;
+            at.appendChild(n);
+        }
+        if (n.textContent !== "📍 " + t)
+            n.textContent = "📍 " + t;
+    }
+    catch (e) { }
+}
+if (typeof fwdShipBind === "function") {
+    const __sb802 = fwdShipBind;
+    fwdShipBind = function () { const r = __sb802.apply(this, arguments); try {
+        v802rqShipHint();
+    }
+    catch (e) { } return r; };
+}
+if (typeof ansLogi === "function") {
+    const __al802 = ansLogi;
+    ansLogi = function () {
+        const r = __al802.apply(this, arguments);
+        try {
+            const S = (typeof D !== "undefined" && D && D.ship) || null;
+            if (r && typeof r.a === "string" && S && v802rqReg(v802rqCn(S.country))) {
+                const k = "この案件の仕向国（" + v802rqE(S.country) + "）";
+                if (r.a.indexOf(k) >= 0 && r.a.indexOf("v802rqai") < 0)
+                    r.a = r.a.split(k).join("この案件の仕向け（" + v802rqE(S.country) + "。地域のため、AI見積を頼む前に仕向港を選んでいただきます）") + '<span class="v802rqai" hidden></span>';
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+(function () {
+    try {
+        if (document.getElementById("v802rqcss"))
+            return;
+        const st = document.createElement("style");
+        st.id = "v802rqcss";
+        st.textContent = `
+.v802rq{font-size:12px;line-height:1.7}.v802rq p{margin:0 0 8px}.v802rqlead{font-size:12.5px}
+.v802rqleg{margin:10px 0;padding:10px 12px;border:1px solid var(--bl);border-radius:var(--r2);background:var(--bl-soft)}
+.v802rqlbl{margin:0 0 6px!important}.v802rqchips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
+.v802rqchip{padding:4px 10px;font-size:11.5px;min-height:32px}.v802rqchip.on{border-color:var(--bl);background:var(--surface,#fff);box-shadow:0 0 0 2px var(--bl) inset;font-weight:700}
+.v802rqrt{margin-left:5px;font-size:9.5px;color:var(--good,#15803d);font-weight:600}
+.v802rqin{display:block;font-size:11px;color:var(--ink-2)}.v802rqin input{display:block;width:100%;max-width:360px;box-sizing:border-box;margin-top:3px}
+.v802rqsel{margin:6px 0 0!important;font-size:11px;color:var(--ink-3)}.v802rqsel.on{color:var(--good,#15803d);font-weight:600}
+.v802rqhint,.v802rqnone{font-size:10.5px;color:var(--ink-3)}.v802rqerr{color:var(--warn,#b45309);font-size:11px;min-height:0}.v802rqerr:empty{display:none}
+.v802rqbtns{gap:8px;margin-top:6px;flex-wrap:wrap}.v802rqnote{margin:0 0 8px!important;padding:6px 10px;border-left:3px solid var(--bl);background:var(--bl-soft);font-size:11px}
+.v802rqhint2{margin-top:6px!important;font-size:11px;color:var(--ink-2)}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+try {
+    if (typeof S30_NEWS !== "undefined" && Array.isArray(S30_NEWS)) {
+        if (!S30_NEWS.some(x => x && x[1] === "v21.80.2"))
+            S30_NEWS.unshift(["2026-11", "v21.80.2", "地域あての案件は、見積を頼む前に仕向港を選ぶ",
+                ["案件の仕向けが地域（ヨーロッパ・東南アジアなど）のときは、物流会社に AI見積を頼む前に、仕向港（国）を選んでいただくようにしました。その地域の主な港の候補（物流会社のレートがある港が先）から選ぶか、港・国の名前を入れます",
+                    "選んだ港で見積を依頼します。案件の仕向け（地域）はそのままです。見積の画面に、どの港で頼んだかを出します"]]);
     }
 }
 catch (e) { }
