@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="b6e113decddd";
+const BC20_BUILD="6bbb99b75749";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -28737,6 +28737,17 @@ function syncUrl() {
         u = localStorage.getItem("bc20_sync_url") || "";
     }
     catch (e) { }
+    if (u.trim() && !syncUrlOk(u.trim())) {
+        try {
+            if (typeof SYNC.urlRejected !== "string" || SYNC.urlRejected !== u.trim()) {
+                SYNC.urlRejected = u.trim();
+                if (typeof console !== "undefined")
+                    console.warn("[21.81] 同期の接続先の上書きを使いません（許可した形ではありません）");
+            }
+        }
+        catch (e) { }
+        u = "";
+    }
     if (u.trim()) {
         SYNC.cfgSrc = "この端末で上書き設定";
         return u.trim();
@@ -28747,6 +28758,19 @@ function syncUrl() {
     }
     SYNC.cfgSrc = "";
     return "";
+}
+function syncUrlOk(u) {
+    u = String(u || "").trim();
+    if (/^https:\/\/script\.google\.com\/(?:a\/macros\/[A-Za-z0-9.\-]+\/|macros\/)s\/[A-Za-z0-9_\-]{20,200}\/exec$/.test(u))
+        return true;
+    let local = false;
+    try {
+        local = typeof location !== "undefined" && /^(127\.0\.0\.1|localhost|\[::1\])$/.test(location.hostname);
+    }
+    catch (e) {
+        local = false;
+    }
+    return local && /^http:\/\/(127\.0\.0\.1|localhost)(:\d{2,5})?\/[^\s]*$/.test(u);
 }
 function syncOn() { SYNC.url = syncUrl(); SYNC.on = !!SYNC.url && !!(window.crypto && crypto.subtle); return SYNC.on; }
 function syncCryptoOk() { return !!(window.crypto && crypto.subtle); }
@@ -28880,8 +28904,13 @@ function syncSnapshot() {
 }
 function syncApply(snap) {
     SYNC.applying = 1;
+    const drop = [];
     try {
-        Object.entries(snap.items || {}).forEach(([k, v]) => { try {
+        const it = (snap && typeof snap === "object" && snap.items && typeof snap.items === "object" && !Array.isArray(snap.items)) ? snap.items : {};
+        Object.keys(it).forEach(k => { const v = it[k]; if (!syncApplyKeyOk(k) || typeof v !== "string") {
+            drop.push(String(k).slice(0, 40));
+            return;
+        } try {
             localStorage.setItem(k, v);
         }
         catch (e) { } });
@@ -28889,6 +28918,35 @@ function syncApply(snap) {
     finally {
         SYNC.applying = 0;
     }
+    try {
+        SYNC.dropped = drop;
+        if (drop.length && typeof console !== "undefined")
+            console.warn("[21.81] 同期の取り込みで、決まったキー以外を書きませんでした：" + drop.length + "件");
+    }
+    catch (e) { }
+}
+function syncApplyKeyOk(k) {
+    k = String(k == null ? "" : k);
+    if (!/^bc20_[A-Za-z0-9_\-]{1,120}$/.test(k))
+        return false;
+    const fixed = ["bc20_corp_v1", "bc20_notif_v1", "bc20_dept_v1", "bc20_dashcur", "bc20_plan_v1", "bc20_fwdplan_v1", "bc20_net_v1"];
+    if (fixed.indexOf(k) >= 0)
+        return true;
+    try {
+        if (typeof SYNC_KEYS !== "undefined" && Array.isArray(SYNC_KEYS) && SYNC_KEYS.indexOf(k) >= 0 && !/^bc20_(sync|llm|dev|ses|auth|adm|admin|pw|otp|stok|key)/i.test(k))
+            return true;
+    }
+    catch (e) { }
+    let code = "";
+    try {
+        code = (typeof SES !== "undefined" && SES && SES.t === "trial" && SES.code) ? String(SES.code) : "";
+    }
+    catch (e) {
+        code = "";
+    }
+    if (!code)
+        return false;
+    return ["bc20_ten_", "bc20_tomb_", "bc20_grow_", "bc20_v30_", "bc20_v33_"].some(p => k === p + code);
 }
 function syncUsage() {
     const a = (typeof acct === "function") ? acct() : null;
@@ -45352,7 +45410,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.80.2";
+const BC20_VER = "21.81";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -160081,6 +160139,823 @@ try {
             S30_NEWS.unshift(["2026-11", "v21.80.2", "地域あての案件は、見積を頼む前に仕向港を選ぶ",
                 ["案件の仕向けが地域（ヨーロッパ・東南アジアなど）のときは、物流会社に AI見積を頼む前に、仕向港（国）を選んでいただくようにしました。その地域の主な港の候補（物流会社のレートがある港が先）から選ぶか、港・国の名前を入れます",
                     "選んだ港で見積を依頼します。案件の仕向け（地域）はそのままです。見積の画面に、どの港で頼んだかを出します"]]);
+    }
+}
+catch (e) { }
+var V81FSEC = { dropIn: 0, dropOut: 0, last: [] };
+function v81fsecOk(k) { try {
+    return typeof syncApplyKeyOk === "function" ? !!syncApplyKeyOk(k) : false;
+}
+catch (e) {
+    return false;
+} }
+function v81fsecLog(dir, keys) {
+    try {
+        V81FSEC.last = keys.slice(0, 10).map(k => String(k).slice(0, 40));
+        if (dir === "in")
+            V81FSEC.dropIn += keys.length;
+        else
+            V81FSEC.dropOut += keys.length;
+        if (typeof logU === "function")
+            logU("sec", (dir === "in" ? "同期の取り込みで決まったキー以外を捨てた：" : "送るスナップショットから決まったキー以外を外した：") + keys.length + "件（" + V81FSEC.last.slice(0, 3).join("・") + "）");
+    }
+    catch (e) { }
+}
+function v81fsecClean(snap, dir) {
+    if (!snap || typeof snap !== "object")
+        return snap;
+    const it = snap.items;
+    if (!it || typeof it !== "object" || Array.isArray(it)) {
+        snap.items = {};
+        return snap;
+    }
+    const bad = [];
+    Object.keys(it).forEach(k => { if (!v81fsecOk(k) || typeof it[k] !== "string") {
+        bad.push(k);
+        try {
+            delete it[k];
+        }
+        catch (e) { }
+    } });
+    if (bad.length)
+        v81fsecLog(dir || "in", bad);
+    return snap;
+}
+if (typeof syncApply === "function") {
+    const __sa81 = syncApply;
+    syncApply = function (snap) { try {
+        v81fsecClean(snap, "in");
+    }
+    catch (e) { } return __sa81.apply(this, arguments); };
+}
+if (typeof v16MergeIntoLocal === "function") {
+    const __mi81 = v16MergeIntoLocal;
+    v16MergeIntoLocal = function (snap) { try {
+        v81fsecClean(snap, "in");
+    }
+    catch (e) { } return __mi81.apply(this, arguments); };
+}
+if (typeof syncSnapshot === "function") {
+    const __sn81 = syncSnapshot;
+    syncSnapshot = function () { const o = __sn81.apply(this, arguments); try {
+        if (o && typeof o === "object") {
+            v81fsecClean(o, "out");
+            o.sv = 2;
+        }
+    }
+    catch (e) { } return o; };
+}
+document.addEventListener("click", e => {
+    try {
+        const b = e.target && e.target.closest ? e.target.closest("#syncsave") : null;
+        if (!b)
+            return;
+        const i = document.getElementById("syncurl");
+        const u = ((i && i.value) || "").trim();
+        if (!u || typeof syncUrlOk !== "function" || syncUrlOk(u))
+            return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (typeof toast === "function")
+            toast("この形の接続先は使えません（Google Apps Script の Web アプリ https://script.google.com/…/exec だけ）");
+    }
+    catch (x) { }
+}, true);
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N || !I18N.dict)
+            return;
+        const r = ["この形の接続先は使えません（Google Apps Script の Web アプリ https://script.google.com/…/exec だけ）",
+            "This kind of address cannot be used (only a Google Apps Script web app: https://script.google.com/…/exec)", "不能使用这种连接地址（仅限 Google Apps Script 网络应用：https://script.google.com/…/exec）", "No se puede usar este tipo de dirección (solo una aplicación web de Google Apps Script: https://script.google.com/…/exec)"];
+        ["en", "zh", "es"].forEach((l, i) => { if (!I18N.dict[l])
+            I18N.dict[l] = {}; if (!I18N.dict[l][r[0]])
+            I18N.dict[l][r[0]] = r[i + 1]; });
+    }
+    catch (e) { }
+})();
+var V81APP = { thin: {}, sec: 0, lwPend: null, lwDirty: 0, lwPersistAt: 0, lwPages: 0, mailPages: 0, toastAt: {}, kick: 0, view: 0, srvName: 0 };
+const V81APP_LW_MAX = 6, V81APP_MAIL_MAX = 4, V81APP_DL = Date.UTC(2026, 10, 9, 0, 14, 0);
+function v81appLang() { try {
+    return (typeof I18N !== "undefined" && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v81appL(o, vars) {
+    let s = "";
+    try {
+        const L = v81appLang();
+        s = String((o && (o[L] != null ? o[L] : o.ja)) || "");
+    }
+    catch (e) {
+        s = String((o && o.ja) || "");
+    }
+    if (vars)
+        Object.keys(vars).forEach(k => { s = s.split("{" + k + "}").join(String(vars[k])); });
+    return s;
+}
+function v81appE(s) { s = String(s == null ? "" : s); try {
+    if (typeof esc === "function")
+        return esc(s);
+}
+catch (e) { } return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v81appDay(t) { try {
+    if (typeof v80admDay === "function")
+        return v80admDay(t, 1);
+}
+catch (e) { } const d = new Date(+t || 0); return (d.getMonth() + 1) + "/" + d.getDate() + " " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+function v81appTrial() { try {
+    return typeof SES !== "undefined" && !!SES && SES.t === "trial";
+}
+catch (e) {
+    return false;
+} }
+function v81appToast(s, key) { try {
+    if (key) {
+        const t = V81APP.toastAt[key] || 0;
+        if (Date.now() - t < 60000)
+            return;
+        V81APP.toastAt[key] = Date.now();
+    }
+    if (typeof toast === "function")
+        toast(s);
+}
+catch (e) { } }
+function v81appNum(s, re, def) { try {
+    const m = re.exec(String(s || ""));
+    return m ? m[1] : def;
+}
+catch (e) {
+    return def;
+} }
+const V81APP_T = {
+    pwReq: { ja: "アクセスコードと氏名でのログインは終わりました（{d}）。メールアドレスとパスワードでログインしてください。メールアドレスが未登録の方は、アカウントの管理者に登録を頼んでから「初めての方・パスワードを忘れた方」でパスワードを作ってください。",
+        en: "Sign-in with an access code and name has ended ({d}). Please sign in with your email address and password. If you have no registered email, ask your account administrator to register one, then create a password from “First time / Forgot your password”.",
+        zh: "使用访问码和姓名登录已结束（{d}）。请使用邮箱地址和密码登录。尚未登记邮箱的人，请先请账户管理员登记邮箱，再通过“首次使用 / 忘记密码”设置密码。",
+        es: "El acceso con código de acceso y nombre ha terminado ({d}). Inicie sesión con su correo electrónico y contraseña. Si no tiene un correo registrado, pida al administrador de la cuenta que lo registre y luego cree una contraseña en «Primera vez / ¿Olvidó su contraseña?»." },
+    usePw: { ja: "このお名前にはメールアドレスが登録されているため、メールアドレスとパスワードでログインしてください（初めての方は「初めての方・パスワードを忘れた方」からパスワードを作れます）。",
+        en: "An email address is registered for this name, so please sign in with your email address and password (the first time, create a password from “First time / Forgot your password”).",
+        zh: "该姓名已登记邮箱，请使用邮箱地址和密码登录（首次使用请通过“首次使用 / 忘记密码”设置密码）。",
+        es: "Este nombre tiene un correo registrado: inicie sesión con su correo electrónico y contraseña (la primera vez, cree una contraseña en «Primera vez / ¿Olvidó su contraseña?»)." },
+    authErr: { ja: "ログインを確かめられませんでした。少し待ってから、もう一度お試しください（続くときは、画面を読み込み直してください）。",
+        en: "We couldn't verify your sign-in. Please wait a moment and try again (if it keeps happening, reload the page).",
+        zh: "无法确认登录。请稍候再试（如果一直出现，请重新加载页面）。",
+        es: "No pudimos verificar su inicio de sesión. Espere un momento y vuelva a intentarlo (si sigue ocurriendo, vuelva a cargar la página)." },
+    role: { ja: "役割は「管理者」か「メンバー」だけです。画面を読み込み直してから、もう一度お試しください。",
+        en: "The role must be “Admin” or “Member”. Please reload the page and try again.",
+        zh: "角色只能是“管理员”或“成员”。请重新加载页面后再试。",
+        es: "El rol solo puede ser «Administrador» o «Miembro». Vuelva a cargar la página e inténtelo de nuevo." },
+    actor: { ja: "ログインしている方と、変更した方のお名前が合わないため、変更を保存できませんでした。画面を読み込み直してから、もう一度お試しください。",
+        en: "The change wasn't saved because the signed-in person and the person making the change don't match. Please reload the page and try again.",
+        zh: "登录的人与进行更改的人姓名不一致，无法保存更改。请重新加载页面后再试。",
+        es: "No se guardó el cambio porque la persona que inició sesión y la que hace el cambio no coinciden. Vuelva a cargar la página e inténtelo de nuevo." },
+    mDup: { ja: "同じメールを少し前に送っています。届いていないときは、10分ほどたってから送り直してください。", en: "You sent the same email a moment ago. If it hasn't arrived, send it again in about 10 minutes.",
+        zh: "刚才已发送过同样的邮件。如果对方没有收到，请约10分钟后再发送。", es: "Acaba de enviar el mismo correo. Si no ha llegado, vuelva a enviarlo en unos 10 minutos." },
+    mCap: { ja: "このアカウントの今日の送信の上限（{n}通）に達しました。明日また送れます。", en: "This account has reached today's sending limit ({n} emails). You can send again tomorrow.",
+        zh: "此账户已达到今天的发送上限（{n}封）。明天可以再发送。", es: "Esta cuenta alcanzó el límite de envíos de hoy ({n} correos). Podrá enviar de nuevo mañana." },
+    mCapAll: { ja: "今日の送信の上限（全体）に達しました。明日また送れます。", en: "Today's overall sending limit has been reached. You can send again tomorrow.",
+        zh: "今天的整体发送上限已满。明天可以再发送。", es: "Se alcanzó el límite general de envíos de hoy. Podrá enviar de nuevo mañana." },
+    mQuota: { ja: "今日のメールの送信枠が残り少ないため、送っていません（ログインの確認コードのために残しています）。明日また送れます。", en: "Not sent: today's email quota is almost used up (the rest is kept for sign-in codes). You can send again tomorrow.",
+        zh: "今天的邮件发送额度所剩不多，因此未发送（剩余额度留给登录验证码）。明天可以再发送。", es: "No enviado: casi se agotó la cuota de correos de hoy (lo que queda se reserva para los códigos de inicio de sesión). Podrá enviar de nuevo mañana." },
+    mStore: { ja: "送信の記録を読めなかったため、送っていません。少し待ってから、もう一度お試しください。", en: "Not sent: the sending record couldn't be read. Please wait a moment and try again.",
+        zh: "无法读取发送记录，因此未发送。请稍候再试。", es: "No enviado: no se pudo leer el registro de envíos. Espere un momento y vuelva a intentarlo." },
+    mUnk: { ja: "送れたかどうか確かめられませんでした。同じメールは10分ほど送り直せません。届いていないときは、そのあとでもう一度送ってください。", en: "We couldn't confirm whether the email was sent. The same email can't be resent for about 10 minutes; if it hasn't arrived, send it again after that.",
+        zh: "无法确认邮件是否已发出。同样的邮件约10分钟内不能重发；如果对方没有收到，请之后再发送。", es: "No pudimos confirmar si el correo se envió. No se puede reenviar el mismo correo durante unos 10 minutos; si no ha llegado, envíelo de nuevo después." },
+    mNoAcct: { ja: "このアカウントは同期サーバーの台帳にありません。STANDAGE の担当にご連絡ください。", en: "This account isn't in the sync server's ledger. Please contact STANDAGE.",
+        zh: "此账户不在同步服务器的台账中。请联系 STANDAGE 的负责人。", es: "Esta cuenta no está en el registro del servidor de sincronización. Póngase en contacto con STANDAGE." },
+    mRate: { ja: "操作が多すぎるため、少しのあいだ止めています。1分ほど待ってから、もう一度お試しください。", en: "Too many requests, so this is paused for a moment. Please wait about a minute and try again.",
+        zh: "操作过于频繁，暂时停止受理。请等待约1分钟后再试。", es: "Demasiadas solicitudes; se ha pausado un momento. Espere un minuto y vuelva a intentarlo." },
+    note: { ja: "招待したメンバーは、<b>メールアドレス＋パスワード</b>でログインします（初めての端末と30日ごとに、メールの確認コードで確かめます）。初めての方は、招待状が届いたメールアドレスで「初めての方・パスワードを忘れた方」からパスワードを作ります（初めてログインすると「参加中」）。<b>管理者</b>は招待・担当・役割・停止・削除ができ、<b>メンバー</b>は見る・投稿する・担当の仕事をします。停止・削除したメンバーはログインできません。削除するときは、未完了のタスクと承認者を別のメンバーへ引き継げます（Ver.1 と同じく、引き継いでから外す流れ）。代表（アカウント発行時の担当者）は外せません。",
+        en: "Invited members sign in with <b>their email address + password</b> (on a new device and every 30 days, we confirm it with a code sent by email). The first time, they create a password from “First time / Forgot your password” with the email address the invitation was sent to (after the first sign-in they become “Active”). <b>Admins</b> can invite, assign, change roles, suspend and delete; <b>members</b> view, post and do the work assigned to them. Suspended or deleted members can no longer sign in. Before deleting a member, you can hand over their unfinished tasks and approvals to another member. The account representative (the person named when the account was issued) cannot be removed.",
+        zh: "受邀成员使用<b>邮箱地址＋密码</b>登录（在新设备上以及每30天，会通过邮件验证码确认）。首次使用时，用收到邀请函的邮箱地址，通过“首次使用 / 忘记密码”设置密码（首次登录后变为“已加入”）。<b>管理员</b>可以邀请・分配负责・更改角色・停用・删除，<b>成员</b>可以查看・发帖・处理负责的工作。被停用・删除的成员无法登录。删除前，可以把未完成的任务和审批人移交给其他成员。代表（开通账户时的负责人）不能移除。",
+        es: "Los miembros invitados inician sesión con <b>su correo electrónico + contraseña</b> (en un dispositivo nuevo y cada 30 días se confirma con un código enviado por correo). La primera vez crean una contraseña en «Primera vez / ¿Olvidó su contraseña?» con el correo al que llegó la invitación (al iniciar sesión por primera vez pasan a «Activo»). Los <b>administradores</b> pueden invitar, asignar, cambiar roles, suspender y eliminar; los <b>miembros</b> ven, publican y hacen el trabajo asignado. Los miembros suspendidos o eliminados ya no pueden iniciar sesión. Antes de eliminar a un miembro, puede traspasar sus tareas pendientes y aprobaciones a otro miembro. El representante de la cuenta (la persona indicada al emitirla) no se puede quitar." },
+    noteUntil: { ja: "メールアドレスが未登録の方は {d} まで、アクセスコード＋ご本人の氏名でもログインできます。", en: "People without a registered email can also sign in with the access code + their own name until {d}.",
+        zh: "尚未登记邮箱的人，在 {d} 之前也可以使用访问码＋本人姓名登录。", es: "Quienes no tengan un correo registrado también pueden iniciar sesión con el código de acceso + su propio nombre hasta el {d}." },
+    noteDemo: { ja: "（デモ用・体験用のアカウントは、今まで通りアクセスコードでログインします。）", en: "(Demo / trial accounts still sign in with the access code.)", zh: "（演示・体验用账户仍照常使用访问码登录。）", es: "(Las cuentas de demostración o prueba siguen iniciando sesión con el código de acceso.)" },
+    short: { ja: "招待したメンバーは<b>メールアドレス＋パスワード</b>でログインします（初めての方は「初めての方・パスワードを忘れた方」からパスワードを作ります）。",
+        en: "Invited members sign in with <b>their email address + password</b> (the first time, they create a password from “First time / Forgot your password”).",
+        zh: "受邀成员使用<b>邮箱地址＋密码</b>登录（首次使用时，通过“首次使用 / 忘记密码”设置密码）。",
+        es: "Los miembros invitados inician sesión con <b>su correo electrónico + contraseña</b> (la primera vez crean una contraseña en «Primera vez / ¿Olvidó su contraseña?»)." },
+    fsCol: { ja: "アカウントの番号（先頭10桁）", en: "Account ID (first 10 chars)", zh: "账户编号（前10位）", es: "ID de cuenta (primeros 10 caracteres)" },
+    fsTip: { ja: "アクセスコードは出しません（同期サーバーの番号の先頭10桁）", en: "The access code is not shown (first 10 characters of the sync-server ID)", zh: "不显示访问码（同步服务器编号的前10位）", es: "No se muestra el código de acceso (primeros 10 caracteres del ID del servidor)" },
+    tok: { ja: "AI の利用量の上限（トークン・1日・同期サーバーの設定）：1アカウント {a}・デモ用 {d}・全体 {all}", en: "AI usage limits (tokens per day, sync-server setting): per account {a} · demo {d} · overall {all}",
+        zh: "AI 用量上限（令牌・每天・同步服务器设置）：每个账户 {a}・演示用 {d}・整体 {all}", es: "Límites de uso de IA (tokens por día, configuración del servidor): por cuenta {a} · demostración {d} · total {all}" },
+    tokNone: { ja: "上限なし", en: "no limit", zh: "无上限", es: "sin límite" }
+};
+function v81appSec() { if (V81APP.sec)
+    return V81APP.sec; try {
+    const o = JSON.parse(localStorage.getItem("bc20_v81app_sec") || "null");
+    if (o && +o.sec > 0 && Date.now() - (+o.at || 0) < 7 * 864e5)
+        return +o.sec;
+}
+catch (e) { } return 0; }
+function v81appSecSet(n) { V81APP.sec = +n || 0; try {
+    localStorage.setItem("bc20_v81app_sec", JSON.stringify({ sec: V81APP.sec, at: Date.now() }));
+}
+catch (e) { } }
+function v81appKidOf(code) { try {
+    if (typeof V213 !== "undefined" && V213 && V213.kid && V213.kid[code])
+        return V213.kid[code];
+}
+catch (e) { } try {
+    const P = (typeof V56AUTH !== "undefined" && V56AUTH) ? V56AUTH.pre : null;
+    if (P && P.code === code && P.kidV)
+        return P.kidV;
+}
+catch (e) { } return ""; }
+function v81appThinOf(a) { try {
+    if (!a)
+        return false;
+    if (a.__v81thin === 1)
+        return true;
+    const kid = a.code ? v81appKidOf(a.code) : "";
+    const t = kid ? (+V81APP.thin[kid] || 0) : 0;
+    return !!t && Date.now() - t < 180000;
+}
+catch (e) {
+    return false;
+} }
+function v81appOnLogin() { try {
+    return !!document.getElementById("lg-code") && !(typeof SES !== "undefined" && SES);
+}
+catch (e) {
+    return false;
+} }
+function v81appLoginView(a) {
+    const L = (a.members || []).filter(m => m && m.name && !(m.del === 1 || m.del === true) && m.st !== "disabled");
+    const v = Object.assign({}, a, { members: L });
+    try {
+        Object.defineProperty(v, "__v81thin", { value: 1, enumerable: false });
+    }
+    catch (e) {
+        v.__v81thin = 1;
+    }
+    V81APP.view++;
+    return v;
+}
+if (typeof syncRefreshAcct === "function") {
+    const __sra81 = syncRefreshAcct;
+    syncRefreshAcct = function (code) {
+        return Promise.resolve(__sra81.apply(this, arguments)).then(a => {
+            try {
+                if (a && !a.unknown && a.code && v81appOnLogin() && v81appThinOf(a))
+                    return v81appLoginView(a);
+            }
+            catch (e) { }
+            return a;
+        });
+    };
+}
+if (typeof v56authLoginWho === "function") {
+    const __lw81 = v56authLoginWho;
+    v56authLoginWho = function (a, raw) {
+        const r = __lw81.apply(this, arguments);
+        try {
+            if (r && r.err && v81appThinOf(a)) {
+                const w = String(raw == null ? "" : raw).replace(/[​-‍﻿]/g, "").trim().slice(0, 60);
+                if (w) {
+                    V81APP.srvName++;
+                    return { who: w, srv: 1 };
+                }
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof v213SrvApply === "function") {
+    const __sa81 = v213SrvApply;
+    v213SrvApply = function (a, s) {
+        try {
+            if (s && s.__v81thin === 1) {
+                const s2 = Object.assign({}, s);
+                delete s2.members;
+                delete s2.who;
+                delete s2.approver;
+                return __sa81.call(this, a, s2);
+            }
+        }
+        catch (e) { }
+        return __sa81.apply(this, arguments);
+    };
+}
+function v81appLoginMsg(r) {
+    const k = String((r && r.reason) || "");
+    if (k === "pw_req") {
+        const u = +(r && r.until) || ((typeof V65A !== "undefined" && V65A && +V65A.until) || 0) || V81APP_DL;
+        return v81appL(V81APP_T.pwReq, { d: v81appDay(u) });
+    }
+    if (k === "pw" && !(r && r.upd))
+        return v81appL(V81APP_T.usePw);
+    if (k === "auth_err")
+        return v81appL(V81APP_T.authErr);
+    return "";
+}
+function v81appKick(r, force) {
+    try {
+        if (V81APP.kick || !v81appTrial() || SES.pw === 1 || typeof SYNC === "undefined" || !SYNC || (!force && (!SYNC.started || SYNC.kicked)))
+            return false;
+    }
+    catch (e) {
+        return false;
+    }
+    V81APP.kick = Date.now();
+    const m = v81appLoginMsg({ reason: (r && r.reason && r.reason !== "session") ? r.reason : "pw_req", until: r && r.until, upd: r && r.upd }) || v81appLoginMsg({ reason: "pw_req" });
+    try {
+        sessionStorage.removeItem("bc20_ses_v1");
+    }
+    catch (e) { }
+    try {
+        if (typeof v65authSsDel === "function")
+            v65authSsDel();
+    }
+    catch (e) { }
+    try {
+        sessionStorage.setItem("bc20_v65a_msg", m);
+    }
+    catch (e) { }
+    try {
+        SYNC.kicked = 1;
+        clearInterval(SYNC.beatT);
+    }
+    catch (e) { }
+    setTimeout(() => { try {
+        location.reload();
+    }
+    catch (e) { } }, 0);
+    return true;
+}
+if (typeof syncKicked === "function") {
+    const __sk81 = syncKicked;
+    syncKicked = function (by, reason) {
+        try {
+            if (/^(pw_req|pw|auth_err)$/.test(String(reason || "")) && v81appKick({ reason: String(reason) }, true))
+                return;
+        }
+        catch (e) { }
+        return __sk81.apply(this, arguments);
+    };
+}
+function v81appMailMsg(r) {
+    const k = String((r && r.reason) || ""), m = String((r && r.msg) || "");
+    if (k === "dup")
+        return v81appL(V81APP_T.mDup);
+    if (k === "cap")
+        return v81appL(V81APP_T.mCap, { n: v81appNum(m, /（(\d+)通）/, "40") });
+    if (k === "cap_all")
+        return v81appL(V81APP_T.mCapAll);
+    if (k === "quota")
+        return v81appL(V81APP_T.mQuota);
+    if (k === "store")
+        return v81appL(V81APP_T.mStore);
+    if (k === "unknown")
+        return /台帳/.test(m) ? v81appL(V81APP_T.mNoAcct) : v81appL(V81APP_T.mUnk);
+    if (k === "rate")
+        return v81appL(V81APP_T.mRate);
+    return "";
+}
+function v81appLwStore() { try {
+    if (typeof lwStoreT === "function")
+        return lwStoreT() || [];
+}
+catch (e) { } return []; }
+async function v81appLwPages(inner, self, op, body, opt) {
+    let r = await inner.call(self, op, body, opt);
+    try {
+        if (r && r.ok && r.more === 1 && Array.isArray(r.msgs)) {
+            let all = r.msgs.slice(), last = r, n = 0, since = +body.since || 0;
+            while (last && last.ok && last.more === 1 && n < V81APP_LW_MAX) {
+                const at = +last.at || 0;
+                if (!(at > since))
+                    break;
+                since = at;
+                n++;
+                last = await inner.call(self, op, Object.assign({}, body, { since }), Object.assign({}, opt || {}, { v81page: 1 }));
+                if (last && last.ok && Array.isArray(last.msgs))
+                    all = all.concat(last.msgs);
+                else
+                    break;
+            }
+            V81APP.lwPages += n;
+            const seen = {};
+            all = all.filter(m => { const id = m && m.id; if (!id)
+                return true; if (seen[id])
+                return false; seen[id] = 1; return true; });
+            r = Object.assign({}, r, { msgs: all, at: (last && last.ok && last.at != null) ? last.at : since, more: (last && last.ok && last.more === 1) ? 1 : 0, v81pages: n + 1 });
+        }
+    }
+    catch (e) { }
+    try {
+        if (r && r.ok && Array.isArray(r.msgs) && r.msgs.length && r.at != null && typeof LW !== "undefined") {
+            const store = v81appLwStore(), ids = r.msgs.map(m => m && m.id).filter(Boolean);
+            V81APP.lwPend = { kid: body.kid, at: +r.at || 0, ids, pre: ids.filter(id => store.some(m => m && m.lwid === id)), t0: Date.now() };
+            r = Object.assign({}, r);
+            delete r.at;
+        }
+    }
+    catch (e) { }
+    return r;
+}
+async function v81appMailPages(inner, self, op, body, opt) {
+    let r = await inner.call(self, op, body, opt);
+    try {
+        if (r && r.ok && r.more === 1 && Array.isArray(r.msgs)) {
+            let all = r.msgs.slice(), last = r, n = 0, since = +body.since || 0;
+            while (last && last.ok && last.more === 1 && n < V81APP_MAIL_MAX) {
+                const mx = (last.msgs || []).reduce((x, m) => Math.max(x, +(m && m.at) || 0), since);
+                if (!(mx > since))
+                    break;
+                since = mx;
+                n++;
+                last = await inner.call(self, op, Object.assign({}, body, { since }), Object.assign({}, opt || {}, { v81page: 1 }));
+                if (last && last.ok && Array.isArray(last.msgs))
+                    all = all.concat(last.msgs);
+                else
+                    break;
+            }
+            V81APP.mailPages += n;
+            const seen = {};
+            all = all.filter(m => { const id = m && m.msgId; if (!id)
+                return true; if (seen[id])
+                return false; seen[id] = 1; return true; });
+            r = Object.assign({}, r, { msgs: all, more: (last && last.ok && last.more === 1) ? 1 : 0, v81pages: n + 1 });
+        }
+    }
+    catch (e) { }
+    return r;
+}
+const V81APP_TC_MAX = 8;
+async function v81appTcPages(inner, self, op, body, opt, r) {
+    try {
+        if (r && r.ok && r.more === 1 && Array.isArray(r.msgs)) {
+            let all = r.msgs.slice(), last = r, n = 0, since = +body.since || 0;
+            while (last && last.ok && last.more === 1 && n < V81APP_TC_MAX) {
+                const mx = (last.msgs || []).reduce((x, m) => Math.max(x, +(m && m.at) || 0), since);
+                if (!(mx > since))
+                    break;
+                since = mx;
+                n++;
+                const b2 = Object.assign({}, body, { since });
+                delete b2.pkg;
+                delete b2.view;
+                last = await inner.call(self, op, b2, Object.assign({}, opt || {}, { v81page: 1 }));
+                if (last && last.ok && Array.isArray(last.msgs))
+                    all = all.concat(last.msgs);
+                else
+                    break;
+            }
+            const seen = {};
+            all = all.filter(m => { const id = m && m.id; if (!id)
+                return true; if (seen[id])
+                return false; seen[id] = 1; return true; });
+            r = Object.assign({}, r, { msgs: all, more: (last && last.ok && last.more === 1) ? 1 : 0, v81pages: n + 1 });
+        }
+    }
+    catch (e) { }
+    return r;
+}
+function v81appTenSaved(ids) {
+    try {
+        if (typeof SES === "undefined" || !SES || SES.t !== "trial" || typeof TEN === "undefined" || !TEN || !(TEN.src === "upload" || TEN.src === "sample2"))
+            return true;
+        if (typeof window !== "undefined" && window.__tenSaveErr)
+            return false;
+        const s = localStorage.getItem("bc20_ten_" + SES.code);
+        if (!s)
+            return false;
+        return (ids || []).every(id => s.indexOf('"lwid":' + JSON.stringify(String(id))) >= 0);
+    }
+    catch (e) {
+        return false;
+    }
+}
+if (typeof lwPersist === "function") {
+    const __lp81 = lwPersist;
+    lwPersist = function () {
+        const r = __lp81.apply(this, arguments);
+        const P = V81APP.lwPend;
+        if (v81appTenSaved(P ? P.ids : []))
+            V81APP.lwPersistAt = Date.now();
+        return r;
+    };
+}
+if (typeof lwPull === "function") {
+    const __lwp81 = lwPull;
+    lwPull = async function (manual) {
+        if (typeof LW !== "undefined" && LW.busy)
+            return __lwp81.apply(this, arguments);
+        V81APP.lwPend = null;
+        const t0 = Date.now();
+        let n = 0;
+        try {
+            n = await __lwp81.apply(this, arguments);
+        }
+        finally {
+            try {
+                const P = V81APP.lwPend;
+                V81APP.lwPend = null;
+                if (P && typeof SYNC !== "undefined" && SYNC && SYNC.kid === P.kid) {
+                    const store = v81appLwStore();
+                    const all = P.ids.every(id => store.some(m => m && m.lwid === id));
+                    const added = P.ids.length > P.pre.length, saved = V81APP.lwPersistAt >= t0;
+                    let ok = all && (!added || saved);
+                    if (ok && !added && V81APP.lwDirty) {
+                        const t1 = Date.now();
+                        try {
+                            if (typeof lwPersist === "function")
+                                lwPersist();
+                        }
+                        catch (e) { }
+                        ok = V81APP.lwPersistAt >= t1;
+                    }
+                    if (ok) {
+                        V81APP.lwDirty = 0;
+                        LW.since = Math.max(LW.since || 0, +P.at || 0);
+                    }
+                    else
+                        V81APP.lwDirty = 1;
+                }
+            }
+            catch (e) { }
+        }
+        return n;
+    };
+}
+if (typeof syncCall === "function") {
+    const __sc81 = syncCall;
+    syncCall = async function (op, body, opt) {
+        const self = this;
+        if (op === "lw_pull" && body && body.kid && !(opt && opt.v81page))
+            return v81appLwPages(__sc81, self, op, body, opt);
+        if (op === "mail_pull" && body && body.kid && !(opt && opt.v81page))
+            return v81appMailPages(__sc81, self, op, body, opt);
+        let prev = null;
+        try {
+            if (op === "lookup" && body && body.kid && typeof V61 !== "undefined" && V61 && V61.acct && V61.acct[body.kid])
+                prev = Object.assign({}, V61.acct[body.kid]);
+        }
+        catch (e) { }
+        let r = await __sc81.apply(this, arguments);
+        if (op === "tc_get" && body && body.id && !(opt && opt.v81page) && r && r.ok && r.more === 1)
+            r = await v81appTcPages(__sc81, self, op, body, opt, r);
+        try {
+            if (op === "ping" && r && r.ok && +r.sec > 0)
+                v81appSecSet(+r.sec);
+            if (op === "lookup" && body && body.kid && r) {
+                if (r.thin === 1) {
+                    V81APP.thin[body.kid] = Date.now();
+                    if (!V81APP.sec)
+                        v81appSecSet(4);
+                    if (r.acct && typeof r.acct === "object") {
+                        try {
+                            Object.defineProperty(r.acct, "__v81thin", { value: 1, enumerable: false });
+                        }
+                        catch (e) { }
+                    }
+                    if (prev && V61.acct[body.kid]) {
+                        V61.acct[body.kid].wmk = prev.wmk;
+                        V61.acct[body.kid].wmm = prev.wmm;
+                    }
+                }
+                else if (r.ok)
+                    delete V81APP.thin[body.kid];
+            }
+            if (r && r.ok === false) {
+                if (/^(login|pw_login|pw_resume)$/.test(op)) {
+                    const m = v81appLoginMsg(r);
+                    if (m)
+                        r.msg = m;
+                    if (op === "login" && r.reason === "pw_req")
+                        v81appKick(r);
+                }
+                else if (r.reason === "session" && r.why === "pw_req")
+                    v81appKick(r);
+                if (op === "members_put") {
+                    if (r.reason === "role")
+                        v81appToast(v81appL(V81APP_T.role), "role");
+                    else if (r.reason === "forbidden" && /操作する方のお名前が合いません/.test(String(r.msg || "")))
+                        v81appToast(v81appL(V81APP_T.actor), "actor");
+                }
+                if (/^(mem_mail|mem_setmail|mem_untrust)$/.test(op) && r.reason === "forbidden" && /操作する方のお名前が合いません/.test(String(r.msg || "")))
+                    r.msg = v81appL(V81APP_T.actor);
+                if (op === "mail_send") {
+                    const m = v81appMailMsg(r);
+                    if (m)
+                        r.msg = m;
+                }
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof v61AdmBody === "function") {
+    const __ab81 = v61AdmBody;
+    v61AdmBody = function () {
+        let x = null, keep = null;
+        try {
+            const A = (typeof V61N !== "undefined" && V61N) ? V61N.adm : null;
+            x = A && A.list;
+            if (x && Array.isArray(x.rows) && x.rows.some(r => r && !r.code && r.ac)) {
+                keep = x.rows;
+                x.rows = x.rows.map(r => (r && !r.code && r.ac) ? Object.assign({}, r, { code: String(r.ac).slice(0, 10) + "…" }) : r);
+                if (typeof V61ADM !== "undefined" && V61ADM && Array.isArray(V61ADM.cols))
+                    V61ADM.cols[2] = V81APP_T.fsCol.ja;
+            }
+        }
+        catch (e) { }
+        let h;
+        try {
+            h = __ab81.apply(this, arguments);
+        }
+        finally {
+            try {
+                if (keep && x)
+                    x.rows = keep;
+            }
+            catch (e) { }
+        }
+        try {
+            if (keep && typeof h === "string")
+                h = h.replace(/<table class="tb v61fs-tb"/, `<table class="tb v61fs-tb" data-v81ac="1" title="${v81appE(v81appL(V81APP_T.fsTip))}"`);
+        }
+        catch (e) { }
+        return h;
+    };
+}
+function v81appPwOn() { try {
+    return !(typeof V65A !== "undefined" && V65A && V65A.srv === -1);
+}
+catch (e) {
+    return true;
+} }
+function v81appIsDemo() { try {
+    const kid = (typeof SYNC !== "undefined" && SYNC && SYNC.kid) || "";
+    const x = (typeof V61 !== "undefined" && V61 && V61.acct && kid) ? V61.acct[kid] : null;
+    return !!(x && (x.pub === 1 || x.demo === 1 || x.otpEx === 1));
+}
+catch (e) {
+    return false;
+} }
+function v81appNoteHtml() {
+    let h = v81appL(V81APP_T.note);
+    try {
+        const u = (typeof V65A !== "undefined" && V65A && +V65A.until) || 0;
+        if (u && Date.now() < u && !v81appIsDemo())
+            h += " " + v81appE(v81appL(V81APP_T.noteUntil, { d: v81appDay(u) }));
+    }
+    catch (e) { }
+    if (v81appIsDemo())
+        h += " " + v81appE(v81appL(V81APP_T.noteDemo));
+    return h;
+}
+const V81APP_NOTE_RE = /<p class="nn" style="margin-top:6px">招待したメンバーは、<b>アクセスコード＋ご本人の氏名<\/b>でログインします[\s\S]*?<\/p>/;
+const V81APP_SHORT_RE = /<p class="nn" style="margin-top:6px">招待したメンバーは<b>アクセスコード＋ご本人の氏名<\/b>でログインします。<\/p>/;
+if (typeof teamPageHtml === "function") {
+    const __tp81 = teamPageHtml;
+    teamPageHtml = function () {
+        let h = __tp81.apply(this, arguments);
+        try {
+            if (typeof h === "string" && v81appPwOn())
+                h = h.replace(V81APP_NOTE_RE, `<p class="nn" id="v81appNote" style="margin-top:6px" data-noi18n data-ai18n-skip>${v81appNoteHtml()}</p>`);
+        }
+        catch (e) { }
+        return h;
+    };
+}
+if (typeof tmPmCardHtml === "function") {
+    const __pm81 = tmPmCardHtml;
+    tmPmCardHtml = function () {
+        let h = __pm81.apply(this, arguments);
+        try {
+            if (typeof h === "string" && v81appPwOn())
+                h = h.replace(V81APP_SHORT_RE, `<p class="nn v81appShort" style="margin-top:6px" data-noi18n data-ai18n-skip>${v81appL(V81APP_T.short)}</p>`);
+        }
+        catch (e) { }
+        return h;
+    };
+}
+function v81appNoteRepaint() { try {
+    const n = document.getElementById("v81appNote");
+    if (n)
+        n.innerHTML = v81appNoteHtml();
+    document.querySelectorAll(".v81appShort").forEach(p => { p.innerHTML = v81appL(V81APP_T.short); });
+}
+catch (e) { } }
+if (typeof i18nSet === "function") {
+    const __is81 = i18nSet;
+    i18nSet = function () { const r = __is81.apply(this, arguments); try {
+        setTimeout(() => { v81appNoteRepaint(); try {
+            if (typeof v61AdmPaint === "function" && document.getElementById("v61fsBody"))
+                v61AdmPaint();
+        }
+        catch (e) { } try {
+            const t = document.getElementById("v81appTok");
+            if (t)
+                t.textContent = v81appTokTxt();
+        }
+        catch (e) { } }, 90);
+    }
+    catch (e) { } return r; };
+}
+(function () {
+    try {
+        const A = "招待した人は、同じアクセスコード＋ご本人の氏名でログインします。", A2 = "招待した人は、招待状が届いたメールアドレスで「初めての方・パスワードを忘れた方」からパスワードを作り、メールアドレス＋パスワードでログインします（初めての端末と30日ごとに、メールの確認コードで確かめます）。";
+        const B = "招待したメンバーは、アクセスコード＋ご本人の氏名でログインします。", B2 = "招待したメンバーは、メールアドレス＋パスワードでログインします（初めての方は、招待状が届いたメールアドレスで「初めての方・パスワードを忘れた方」からパスワードを作ります）。";
+        const fix = (L, id, a, b) => { if (!Array.isArray(L))
+            return; const g = L.find(x => x && x.id === id); if (g && Array.isArray(g.steps))
+            g.steps = g.steps.map(s => String(s).replace(a, b)); };
+        if (typeof V49G !== "undefined")
+            fix(V49G, "team", A, A2);
+        if (typeof V422G !== "undefined")
+            fix(V422G, "team", B, B2);
+    }
+    catch (e) { }
+})();
+if (typeof tmRoleOf === "function") {
+    const __ro81 = tmRoleOf;
+    tmRoleOf = function (m) { try {
+        if (m && (m.role == null || m.role === "") && v81appSec() >= 4)
+            return "member";
+    }
+    catch (e) { } return __ro81.apply(this, arguments); };
+}
+if (typeof v213MemWire === "function") {
+    const __mw81 = v213MemWire;
+    v213MemWire = function (m) {
+        const o = __mw81.apply(this, arguments);
+        try {
+            if (o && m && !Array.isArray(m.assign))
+                delete o.assign;
+        }
+        catch (e) { }
+        return o;
+    };
+}
+function v81appTokN(v) { v = +v; if (!(v > 0))
+    return v81appL(V81APP_T.tokNone); try {
+    return v.toLocaleString(v81appLang() === "ja" ? "ja-JP" : v81appLang() === "zh" ? "zh-CN" : v81appLang() === "es" ? "es-ES" : "en-US");
+}
+catch (e) {
+    return String(v);
+} }
+function v81appTokTxt() { try {
+    const C = (typeof V63A !== "undefined" && V63A && V63A.adm && V63A.adm.conf) || null;
+    if (!C || C.tokAcct == null)
+        return "";
+    return v81appL(V81APP_T.tok, { a: v81appTokN(C.tokAcct), d: v81appTokN(C.tokDemo), all: v81appTokN(C.tokAll) });
+}
+catch (e) {
+    return "";
+} }
+if (typeof v63aCardHtml === "function") {
+    const __ch81 = v63aCardHtml;
+    v63aCardHtml = function () {
+        let h = __ch81.apply(this, arguments);
+        try {
+            const t = v81appTokTxt();
+            if (t && typeof h === "string") {
+                const k = `<div style="margin-top:10px;font-size:12px">`;
+                const i = h.indexOf(k);
+                if (i > 0)
+                    h = h.slice(0, i) + `<p class="nn" id="v81appTok" style="margin:6px 0 0" data-noi18n data-ai18n-skip>${v81appE(t)}</p>` + h.slice(i);
+            }
+        }
+        catch (e) { }
+        return h;
+    };
+}
+function v81appSecTidy() { try {
+    const box = document.getElementById("v80secB");
+    if (!box)
+        return;
+    box.querySelectorAll("li").forEach(li => { const tw = document.createTreeWalker(li, NodeFilter.SHOW_TEXT); let n; while ((n = tw.nextNode())) {
+        if (n.nodeValue.indexOf("（）") >= 0)
+            n.nodeValue = n.nodeValue.split("（）").join("");
+    } });
+}
+catch (e) { } }
+if (typeof v80admSecPaint === "function") {
+    const __sp81 = v80admSecPaint;
+    v80admSecPaint = function () { const r = __sp81.apply(this, arguments); v81appSecTidy(); return r; };
+}
+(function () {
+    try {
+        if (typeof I18N === "undefined" || !I18N || !I18N.dict)
+            return;
+        [[V81APP_T.fsCol.ja, V81APP_T.fsCol.en, V81APP_T.fsCol.zh, V81APP_T.fsCol.es]].forEach(r => { ["en", "zh", "es"].forEach((l, i) => { if (!I18N.dict[l])
+            I18N.dict[l] = {}; if (!I18N.dict[l][r[0]])
+            I18N.dict[l][r[0]] = r[i + 1]; }); });
+    }
+    catch (e) { }
+})();
+try {
+    if (typeof S30_NEWS !== "undefined" && Array.isArray(S30_NEWS)) {
+        if (!S30_NEWS.some(x => x && x[1] === "v21.81"))
+            S30_NEWS.unshift(["2026-11", "v21.81", "ログイン・会社ごとのデータ・メールの返信・依頼ページの守りを強化",
+                ["社内のセキュリティチェックで見つかった点を直しました（ログインした方とメンバーの変更をする方の確かめ、会社ごとのデータの分け方、バイヤーからのメールの返信の取り込み、相手に送る依頼ページのリンク、STANDAGE への依頼の「見た記録」など）。普段の使い方は変わりません",
+                    "会社の管理者の方は、管理コンソールに一度ログインし直してください",
+                    "アクセスコードと氏名でのログインは 11月9日 9:14 で終わります。それまでに、メールアドレスとパスワードでのログインに切り替えてください"]]);
     }
 }
 catch (e) { }
