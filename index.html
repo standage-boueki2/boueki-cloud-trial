@@ -5042,7 +5042,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="6bbb99b75749";
+const BC20_BUILD="740c8dc356c6";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -45410,7 +45410,7 @@ try {
     }
 }
 catch (e) { }
-const BC20_VER = "21.81";
+const BC20_VER = "21.82";
 const V214 = { verAt: 0, verBusy: 0, newer: "", srv: "", warm: 0, pullAt: 0, pullErr: "", pushAt: 0, pushErr: "", log: [], pend: 0 };
 function v214Toast(m) { try {
     if (typeof toast === "function")
@@ -160959,6 +160959,2548 @@ try {
     }
 }
 catch (e) { }
+var V82DOC = { ver: "21.82", err: [], printAck: 0, obs: null, scanT: 0 };
+function v82docErr(k, e) { try {
+    V82DOC.err.push(k + ": " + String((e && e.message) || e).slice(0, 160));
+}
+catch (x) { } }
+function v82docE(s) { s = String(s == null ? "" : s); try {
+    if (typeof esc === "function")
+        return esc(s);
+}
+catch (e) { } return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]); }
+function v82docUi() { try {
+    return (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v82docX(ja, en, zh, es, l) { l = l || v82docUi(); return l === "en" ? (en || ja) : l === "zh" ? (zh || ja) : l === "es" ? (es || ja) : ja; }
+function v82docRunning() { try {
+    return typeof V80DOC !== "undefined" && !!V80DOC.run && typeof DK3G !== "undefined" && !!DK3G.run;
+}
+catch (e) {
+    return false;
+} }
+const V82DOC_FIRST = [6, 12];
+function v82docSlidesRange(N) { return N <= 12 ? [5, 9] : N <= 18 ? [7, 13] : [9, 16]; }
+if (typeof v80docEstimate === "function") {
+    const __es82 = v80docEstimate;
+    v80docEstimate = function () {
+        const E = __es82.apply(this, arguments);
+        try {
+            if (!E)
+                return E;
+            if (E.k === "first")
+                return Object.assign({}, E, { lo: V82DOC_FIRST[0] * 60000, hi: V82DOC_FIRST[1] * 60000, v82: 1 });
+            if (E.k === "slides" && E.N) {
+                const ab = v82docSlidesRange(E.N);
+                return Object.assign({}, E, { lo: ab[0] * 60000, hi: ab[1] * 60000, v82: 1 });
+            }
+        }
+        catch (e) {
+            v82docErr("est", e);
+        }
+        return E;
+    };
+}
+if (typeof v80docEstTxt === "function") {
+    const __et82 = v80docEstTxt;
+    v80docEstTxt = function (E, l) {
+        try {
+            if (E && E.k === "first") {
+                const a = V82DOC_FIRST[0], b = V82DOC_FIRST[1];
+                return v82docX("約" + a + "〜" + b + "分（はじめて作るとき）", "about " + a + "–" + b + " min (first time)", "约" + a + "〜" + b + "分钟（首次制作）", "unos " + a + "–" + b + " min (la primera vez)", l || v82docUi());
+            }
+        }
+        catch (e) {
+            v82docErr("esttxt", e);
+        }
+        return __et82.apply(this, arguments);
+    };
+}
+if (typeof v80docEstJaTr === "function") {
+    const __jt82 = v80docEstJaTr;
+    v80docEstJaTr = function (s, l) {
+        try {
+            const m = String(s).match(/^約(\d+)〜(\d+)分（はじめて作るとき）$/);
+            if (m)
+                return l === "en" ? "about " + m[1] + "–" + m[2] + " min (first time)" : l === "zh" ? "约" + m[1] + "〜" + m[2] + "分钟（首次制作）" : "unos " + m[1] + "–" + m[2] + " min (la primera vez)";
+        }
+        catch (e) { }
+        return __jt82.apply(this, arguments);
+    };
+}
+function v82docToastTxt(l) {
+    const R = V80DOC.run;
+    if (!R)
+        return "";
+    l = l || v82docUi();
+    const est = (typeof v80docEstTxt === "function" && R.est) ? v80docEstTxt(R.est, l) : "";
+    const el = (typeof v80docClock === "function") ? v80docClock(Date.now() - R.t0) : "";
+    const over = R.est && R.est.hi && Date.now() - R.t0 > R.est.hi;
+    let s = v82docX("営業資料の作成：経過 " + el + "／目安 " + est + "（資料の画面と同じ目安）", "Sales deck: " + el + " elapsed / estimate " + est + " (same as on the deck screen)", "营业资料制作：已用 " + el + "／参考 " + est + "（与资料画面相同）", "Presentación: " + el + " transcurridos / estimado " + est + " (igual que en la pantalla del documento)", l);
+    if (over)
+        s += v82docX("・目安を過ぎています（止まってはいません。理由は資料の画面に出ます）", " · Taking longer than estimated (it has not stopped; the reason is shown on the deck screen)", "・已超过参考时间（并未停止，原因显示在资料画面）", " · Tarda más de lo estimado (no se ha detenido; el motivo aparece en la pantalla)", l);
+    return s + v82docX("／終わると自動で画面に反映されます", " / The screen updates automatically when done", "／完成后会自动反映到画面", " / La pantalla se actualiza al terminar", l);
+}
+function v82docToastPaint() {
+    if (!v82docRunning() || typeof AIT === "undefined" || !AIT || !AIT.el)
+        return;
+    const d = AIT.el;
+    const R = V80DOC.run;
+    const m = d.querySelector(".atm");
+    if (m) {
+        const s = v82docToastTxt();
+        if (s && m.textContent !== s)
+            m.textContent = s;
+        m.setAttribute("data-noi18n", "1");
+        m.dataset.v82doc = "1";
+    }
+    const hi = (R.est && R.est.hi) || 0;
+    const sec = (Date.now() - R.t0) / 1000;
+    d.classList.toggle("v68tover", !!(hi && Date.now() - R.t0 > hi));
+    const i = d.querySelector(".atbar i");
+    if (i && hi)
+        i.style.width = Math.max(3, Math.min(95, Math.round(sec * 1000 / hi * 100))) + "%";
+    const bar = d.querySelector(".atbar");
+    if (bar && hi) {
+        bar.setAttribute("aria-valuemax", String(Math.round(hi / 1000)));
+        bar.setAttribute("aria-valuenow", String(Math.min(Math.round(sec), Math.round(hi / 1000))));
+    }
+}
+if (typeof v68tPaint === "function") {
+    const __tp82 = v68tPaint;
+    v68tPaint = function () { const r = __tp82.apply(this, arguments); try {
+        v82docToastPaint();
+    }
+    catch (e) {
+        v82docErr("toast", e);
+    } return r; };
+}
+if (typeof v68tRecord === "function") {
+    const __tr82 = v68tRecord;
+    v68tRecord = function (kind) { try {
+        if (kind === "deck" && v82docRunning())
+            return;
+    }
+    catch (e) { } return __tr82.apply(this, arguments); };
+}
+if (typeof aiThinkEnd === "function") {
+    const __ae82 = aiThinkEnd;
+    aiThinkEnd = function (id, ok) {
+        const r = __ae82.apply(this, arguments);
+        try {
+            if (ok && v82docRunning() && typeof AIT !== "undefined" && AIT && AIT.el && !(AIT.items && AIT.items.length)) {
+                const d = AIT.el;
+                const t = d.querySelector(".att"), s = d.querySelector(".ats");
+                if (t)
+                    t.textContent = v82docX("🤖 営業資料の作成を続けています", "🤖 Still making the sales deck", "🤖 正在继续制作营业资料", "🤖 Sigue creando la presentación");
+                if (s)
+                    s.textContent = v82docX("この段の AI の返事を受け取りました。進み具合は資料の画面に出ます", "Received the AI reply for this step. Progress is shown on the deck screen", "已收到此步骤的AI回复。进度显示在资料画面", "Respuesta de la IA recibida para este paso. El avance aparece en la pantalla del documento");
+                [t, s].forEach(x => { if (x)
+                    x.setAttribute("data-noi18n", "1"); });
+            }
+        }
+        catch (e) {
+            v82docErr("end", e);
+        }
+        return r;
+    };
+}
+const V82DOC_UNIT = /(mm|cm|ｍｍ|ｃｍ|inch(?:es)?|in\.)(?![a-z])/i;
+function v82docUnitNorm(u) { u = String(u || ""); try {
+    u = u.normalize("NFKC");
+}
+catch (e) { } u = u.toLowerCase(); return /^in/.test(u) ? "inch" : u; }
+function v82docTriRe(tri) { const a = String(tri).split("×"); return new RegExp(a.map(x => x.replace(/\./g, "\\.")).join("\\s*[×xX＊*]\\s*") + "\\s*(mm|cm|ｍｍ|ｃｍ|inch(?:es)?|in\\.)?", "i"); }
+function v82docUnitFor(dt, tri) {
+    try {
+        const ci = (typeof v80docOuterCol === "function") ? v80docOuterCol(dt.cols) : -1;
+        const h = ci >= 0 ? String((dt.cols || [])[ci] || "") : "";
+        let x;
+        try {
+            x = h.normalize("NFKC");
+        }
+        catch (e) {
+            x = h;
+        }
+        const m = x.match(/(mm|cm|inch(?:es)?|in\.)(?![a-z])/i);
+        if (m)
+            return v82docUnitNorm(m[1]);
+    }
+    catch (e) { }
+    try {
+        const ctx = (typeof V80DOC !== "undefined" && V80DOC.mctx) || null;
+        const T = (ctx && ctx.T) || ((typeof TEN !== "undefined") ? TEN : null);
+        const L = [];
+        if (ctx && ctx.d)
+            (ctx.d.prods || []).forEach(q => { if (q)
+                L.push(q.ctn); });
+        if (ctx && ctx.s0)
+            (ctx.s0.prods || []).forEach(q => { if (q)
+                L.push(q.ctn); });
+        try {
+            if (typeof dk3Prods === "function")
+                (dk3Prods(T) || []).forEach(t => { if (t)
+                    L.push(t.ctn); });
+        }
+        catch (e) { }
+        if (T)
+            L.push(T.ctn);
+        const re = v82docTriRe(tri);
+        for (const s of L) {
+            if (!s)
+                continue;
+            let t = String(s);
+            try {
+                t = t.normalize("NFKC");
+            }
+            catch (e) { }
+            const m = t.match(re);
+            if (m && m[1])
+                return v82docUnitNorm(m[1]);
+        }
+    }
+    catch (e) { }
+    return "";
+}
+if (typeof dk3Carton === "function") {
+    const __ct82 = dk3Carton;
+    dk3Carton = function (dt) {
+        const r = __ct82.apply(this, arguments);
+        try {
+            if (!r || typeof r !== "string" || !dt)
+                return r;
+            const m = r.match(/(\d+(?:\.\d+)?)\s*[×xX＊*]\s*(\d+(?:\.\d+)?)\s*[×xX＊*]\s*(\d+(?:\.\d+)?)(\s*(?:mm|cm|ｍｍ|ｃｍ|inch(?:es)?|in\.)(?![a-z]))?/i);
+            if (!m || m[4])
+                return r;
+            const tri = [m[1], m[2], m[3]].map(x => String(+x)).join("×");
+            const u = v82docUnitFor(dt, tri);
+            if (!u)
+                return r;
+            return r.slice(0, m.index + m[0].length) + u + r.slice(m.index + m[0].length);
+        }
+        catch (e) {
+            v82docErr("unit", e);
+            return r;
+        }
+    };
+}
+function v82docRealToday() { try {
+    if (typeof todayISO === "function")
+        return String(todayISO());
+}
+catch (e) { } const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function v82docAppToday() { try {
+    if (typeof fwdToday === "function")
+        return String(fwdToday()).slice(0, 10);
+}
+catch (e) { } return v82docRealToday(); }
+function v82docDays(v, today) {
+    const m = String(v || "").replace(/\//g, "-").match(/^(\d{4})-(\d{1,2})-(\d{1,2})/), t = String(today || "").match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (!m || !t)
+        return null;
+    return Math.round((Date.UTC(+m[1], +m[2] - 1, +m[3]) - Date.UTC(+t[1], +t[2] - 1, +t[3])) / 864e5);
+}
+function v82docExpNote(v, l) {
+    l = l || v82docUi();
+    const app = v82docAppToday(), real = v82docRealToday();
+    const dA = v82docDays(v, app), dR = v82docDays(v, real);
+    if (dA === null)
+        return null;
+    if (dA < 0)
+        return { k: "past", t: v82docX("期限切れ（" + (-dA) + "日前に終了）・本予約の前に再見積を", "Expired (" + (-dA) + " day(s) ago). Ask for a new quote before booking", "已过期（" + (-dA) + "天前结束）・正式订舱前请重新报价", "Vencida (hace " + (-dA) + " día(s)). Pida una nueva cotización antes de reservar", l) };
+    if (dR !== null && dR < 0 && real !== app)
+        return { k: "real", t: v82docX("実際の今日（" + real + "）では期限切れ。見本のデータは " + app + " の時点で表示しています。本予約の前に再見積を", "Expired as of today (" + real + "). The sample data is shown as of " + app + ". Ask for a new quote before booking", "按实际今天（" + real + "）已过期。示例数据按 " + app + " 显示。正式订舱前请重新报价", "Vencida a fecha de hoy (" + real + "). Los datos de muestra se muestran a " + app + ". Pida una nueva cotización antes de reservar", l) };
+    if (dA === 0)
+        return { k: "today", t: v82docX("今日まで", "expires today", "今天到期", "vence hoy", l) };
+    if (dA < 7)
+        return { k: "soon", t: v82docX("期限間近（あと" + dA + "日）", "expiring soon (" + dA + " day(s) left)", "即将到期（剩余" + dA + "天）", "vence pronto (quedan " + dA + " días)", l) };
+    return null;
+}
+function v82docExpBadge(v) { const n = v82docExpNote(v); if (!n)
+    return null; const sp = document.createElement("span"); sp.className = "v82exp v82exp-" + n.k; sp.setAttribute("data-noi18n", "1"); sp.dataset.v82exp = v; sp.textContent = (n.k === "soon" || n.k === "today" ? "⏳ " : "⚠ ") + n.t; return sp; }
+function v82docIsFwd() { try {
+    if (typeof FWDON !== "undefined" && FWDON)
+        return true;
+}
+catch (e) { } try {
+    if (typeof SES !== "undefined" && SES && (SES.role === "fwd" || SES.t === "fwd"))
+        return true;
+}
+catch (e) { } return false; }
+function v82docExpScan(root) {
+    if (!root || v82docIsFwd())
+        return 0;
+    let n = 0;
+    try {
+        const h = root.querySelector("h3");
+        if (!h || !/AI見積|AI quote|AI报价|AI 报价|cotización/i.test(h.textContent || ""))
+            return 0;
+    }
+    catch (e) {
+        return 0;
+    }
+    try {
+        const W = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+        const hits = [];
+        let x;
+        while ((x = W.nextNode())) {
+            if (x.parentElement && x.parentElement.closest(".v82exp,.fwdx,script,style,textarea"))
+                continue;
+            const m = String(x.nodeValue || "").match(/(?:有効期限|Valid until|valid until|有效期|Válida hasta)\s*[:：]?\s*(\d{4}[-\/]\d{1,2}[-\/]\d{1,2})/);
+            if (m)
+                hits.push([x, m[1]]);
+        }
+        hits.forEach(([tn, v]) => { const el = tn.parentElement; if (!el || el.querySelector(":scope > .v82exp"))
+            return; const b = v82docExpBadge(v); if (!b)
+            return; tn.parentNode.insertBefore(b, tn.nextSibling); n++; });
+    }
+    catch (e) {
+        v82docErr("scan1", e);
+    }
+    try {
+        root.querySelectorAll("table").forEach(tb => {
+            if (tb.closest(".fwdx"))
+                return;
+            const ths = [...tb.querySelectorAll("thead th")];
+            const ci = ths.findIndex(th => /^(有効期限|Valid until|Validity|有效期|Validez)$/i.test(String(th.textContent || "").trim()));
+            if (ci < 0)
+                return;
+            tb.querySelectorAll("tbody tr").forEach(tr => { const td = tr.children[ci]; if (!td || td.querySelector(".v82exp"))
+                return; const m = String(td.textContent || "").match(/(\d{4}[-\/]\d{1,2}[-\/]\d{1,2})/); if (!m)
+                return; const b = v82docExpBadge(m[1]); if (!b)
+                return; td.appendChild(document.createElement("br")).className = "v82expbr"; td.appendChild(b); n++; });
+        });
+    }
+    catch (e) {
+        v82docErr("scan2", e);
+    }
+    return n;
+}
+function v82docExpWatch() {
+    try {
+        const pn = document.getElementById("pn");
+        if (!pn)
+            return;
+        v82docExpScan(pn);
+        if (V82DOC.obs && V82DOC.obsEl === pn)
+            return;
+        if (V82DOC.obs)
+            V82DOC.obs.disconnect();
+        V82DOC.obs = new MutationObserver(() => { clearTimeout(V82DOC.scanT); V82DOC.scanT = setTimeout(() => { try {
+            v82docExpScan(pn);
+        }
+        catch (e) { } }, 30); });
+        V82DOC.obs.observe(pn, { childList: true, subtree: true });
+        V82DOC.obsEl = pn;
+    }
+    catch (e) {
+        v82docErr("watch", e);
+    }
+}
+if (typeof openFwdQuote === "function") {
+    const __ofq82 = openFwdQuote;
+    openFwdQuote = function () { const r = __ofq82.apply(this, arguments); try {
+        v82docExpWatch();
+    }
+    catch (e) {
+        v82docErr("ofq", e);
+    } return r; };
+}
+function v82docCorp() { try {
+    return (typeof corpProf === "function" ? corpProf() : {}) || {};
+}
+catch (e) {
+    return {};
+} }
+function v82docShip() { try {
+    return (typeof D !== "undefined" && D && D.ship) || null;
+}
+catch (e) {
+    return null;
+} }
+function v82docIsExport(S) { try {
+    if (typeof v56docExport === "function")
+        return !!v56docExport(S);
+}
+catch (e) { } const c = String((S && S.country) || "").trim(); return !!c && !/^(日本|Japan)$/i.test(c); }
+function v82docCorpMiss() {
+    const p = v82docCorp(), S = v82docShip(), ex = v82docIsExport(S), out = [];
+    if (ex) {
+        const L = [["cbankEn", "銀行名（英語）"], ["cacct", "口座番号"], ["cswift", "SWIFT/BIC"], ["cbenef", "受取人の英文名"]].filter(([k]) => !String(p[k] || "").trim()).map(x => x[1]);
+        if (L.length)
+            out.push({ k: "bank", label: "振込先（海外送金用）：" + L.join("・") + " が未設定", need: true });
+    }
+    else if (!String(p.cbank || "").trim())
+        out.push({ k: "bank", label: "振込先（銀行名・支店・口座番号）が未設定", need: true });
+    if (!String(p.cregno || "").trim())
+        out.push({ k: "regno", label: "適格請求書 登録番号が未設定" + (ex ? "（輸出の書類では必須ではありませんが、書類には「—」と出ます）" : ""), need: !ex });
+    return out;
+}
+function v82docDocHasCorp(o) { try {
+    const t = String((o && o.innerText) || (o && o.textContent) || "");
+    return /適格請求書 登録番号|お振込先（Bank）|Bank details（お振込先）/.test(t);
+}
+catch (e) {
+    return false;
+} }
+function v82docPrintSheet(miss, again) {
+    const T = s => { try {
+        return typeof v33T === "function" ? v33T(s) : s;
+    }
+    catch (e) {
+        return s;
+    } };
+    const html = `<p class="v33p">${v82docE(T("このまま印刷すると、書類のこの欄は空欄（—）になります。相手が代金を振り込めない・書類を受け取ってもらえないことがあります。"))}</p>
+    <ol class="v33ck-l" id="v82docmiss">${miss.map(m => `<li class="v33ck-i v33ck-${m.need ? "yel" : "blu"}"><div><b>${v82docE(T(m.label))}</b></div></li>`).join("")}</ol>
+    <p class="v33p v33mute">${v82docE(T("「🧾 帳票の会社設定」で一度入れると、PI・CI などすべての書類に入ります。"))}</p>`;
+    const foot = `<button class="btn" type="button" id="v82docset">${v82docE(T("🧾 会社設定で入れる"))}</button><span class="v33sp"></span><button class="btn g" type="button" id="v82docgo">${v82docE(T("このまま印刷する"))}</button>`;
+    let el = null;
+    try {
+        if (typeof v33Sheet === "function")
+            el = v33Sheet({ title: "印刷の前に：未設定の項目があります", html, foot });
+    }
+    catch (e) {
+        el = null;
+    }
+    if (!el) {
+        let ok = false;
+        try {
+            ok = window.confirm(T("振込先・登録番号が未設定です。このまま印刷しますか？") + "\n" + miss.map(m => "・" + T(m.label)).join("\n"));
+        }
+        catch (e) {
+            ok = true;
+        }
+        if (ok) {
+            V82DOC.printAck = Date.now();
+            again();
+        }
+        return;
+    }
+    const set = el.querySelector("#v82docset"), now = el.querySelector("#v82docgo");
+    if (set)
+        set.onclick = () => { try {
+            v33SheetClose();
+        }
+        catch (e) { } try {
+            if (typeof openCorpSet === "function")
+                openCorpSet();
+            setTimeout(() => { const f = document.getElementById(miss[0] && miss[0].k === "regno" ? "cregno" : (v82docIsExport(v82docShip()) ? "v56doccbankEn" : "cbank")) || document.getElementById("cbank"); if (f)
+                try {
+                    f.focus();
+                    f.scrollIntoView({ block: "center" });
+                }
+                catch (e) { } }, 80);
+        }
+        catch (e) {
+            v82docErr("set", e);
+        } };
+    if (now)
+        now.onclick = () => {
+            try {
+                v33SheetClose();
+            }
+            catch (e) { }
+            V82DOC.printAck = Date.now();
+            try {
+                if (typeof v33AuLog === "function")
+                    v33AuLog("v82doc_print_miss", "書類の印刷（未設定のまま）：" + miss.map(m => m.label).join(" / ").slice(0, 240), miss.length);
+            }
+            catch (e) { }
+            again();
+        };
+}
+if (typeof poPrintDoc === "function") {
+    const __ppd82 = poPrintDoc;
+    poPrintDoc = function () {
+        const self = this, args = arguments;
+        const o = document.getElementById("dO");
+        try {
+            if (o && o.innerHTML.trim() && v82docDocHasCorp(o) && Date.now() - V82DOC.printAck > 4000) {
+                const miss = v82docCorpMiss();
+                if (miss.length) {
+                    V82DOC.lastMiss = miss;
+                    v82docPrintSheet(miss, () => poPrintDoc.apply(self, args));
+                    return;
+                }
+            }
+        }
+        catch (e) {
+            v82docErr("gate", e);
+        }
+        const swp = [];
+        try {
+            if (o) {
+                const W = document.createTreeWalker(o, NodeFilter.SHOW_TEXT, null);
+                let x;
+                while ((x = W.nextNode())) {
+                    const v = String(x.nodeValue || "");
+                    if (/^\s*未設定（🧾会社設定から登録できます）\s*$/.test(v)) {
+                        swp.push([x, v]);
+                        x.nodeValue = "—";
+                    }
+                }
+            }
+        }
+        catch (e) { }
+        V82DOC.printAck = 0;
+        try {
+            return __ppd82.apply(this, arguments);
+        }
+        finally {
+            swp.forEach(([x, v]) => { try {
+                x.nodeValue = v;
+            }
+            catch (e) { } });
+        }
+    };
+}
+if (typeof v33CkQuote === "function") {
+    const __ckq82 = v33CkQuote;
+    v33CkQuote = function () {
+        let F = __ckq82.apply(this, arguments) || [];
+        try {
+            if (!v82docShip())
+                return F;
+            const fix = () => { try {
+                if (typeof openCorpSet === "function")
+                    openCorpSet();
+            }
+            catch (e) { } };
+            F = F.filter(f => !(f && /^(振込先（銀行情報）|振込先（海外送金用）|振込先|適格請求書 登録番号)が足りません$/.test(String(f.t || ""))));
+            v82docCorpMiss().forEach(m => F.push({ lv: m.need ? "yel" : "blu", t: m.label, how: "🧾 帳票の会社設定で入れると、すべての書類に入ります", go: fix }));
+            if (typeof v33CkSort === "function")
+                F = v33CkSort(F);
+        }
+        catch (e) {
+            v82docErr("ck", e);
+        }
+        return F;
+    };
+}
+if (typeof v33CkGate === "function") {
+    const __cg82 = v33CkGate;
+    v33CkGate = function (o) {
+        try {
+            if (o && o.what === "見積書" && typeof o.send === "function") {
+                const s0 = o.send;
+                o = Object.assign({}, o, { send: function () { V82DOC.printAck = Date.now(); return s0.apply(this, arguments); } });
+            }
+        }
+        catch (e) { }
+        return __cg82.call(this, o);
+    };
+}
+function v82docNowDocs() {
+    const T = s => { try {
+        return typeof v71csT === "function" ? v71csT(s) : s;
+    }
+    catch (e) {
+        return s;
+    } };
+    const N = s => v82docE(T(s));
+    let miss = [];
+    try {
+        miss = v82docCorpMiss();
+    }
+    catch (e) { }
+    const p = v82docCorp();
+    const any = !!(p.cregno || p.cbank || p.cbankEn || p.cswift);
+    const st = miss.length ? `<span class="v82docst v82docst-n">${N(any ? "一部が未設定" : "未設定")}</span>` : `<span class="v82docst v82docst-y">${N("設定済み")}</span>`;
+    return `<div class="v82docnow" id="v82docnow"><b>${N("いま使える書類の機能")}</b>
+    <ul>
+      <li><span>${N("見積：バイヤーから返事が来たら、AI商社マンが登録した価格表から見積を計算して返信案に入れます（有効期限30日・値段は AI に書かせない・承認してから送る）。")}</span>
+        <button class="btn g" onclick="go('db')">${N("AIバイヤー開拓のやり取りを開く")}</button></li>
+      <li><span>${N("帳票の会社設定（登録番号・振込先・海外送金用の口座）を先に入れておくと、書類をつくる機能が使えるようになったとき、すべての書類に入ります。")} ${st}</span>
+        <button class="btn g" onclick="openCorpSet()">${N("🧾 帳票の会社設定を開く")}</button></li>
+      <li><span>${N("必要な書類（原産地証明・成分表・ラベルなど）は「① 規制を調べる」で、送り先の国ごとに確かめられます。")}</span>
+        <button class="btn g" onclick="opsTab='reg';render()">${N("① 規制を調べる")}</button></li>
+      <li><span>${N("PI（見積送り状）・CI・PL の下書きは、下の「先行プレビュー」で見本として確かめ・印刷できます（実際の取引にはまだ使えません）。")}</span></li>
+    </ul></div>`;
+}
+if (typeof v71csPanel === "function") {
+    const __csp82 = v71csPanel;
+    v71csPanel = function (k) {
+        let h = __csp82.apply(this, arguments);
+        try {
+            if (k === "doc" && typeof h === "string") {
+                const i = h.indexOf('<div class="v71csp">');
+                const add = v82docNowDocs();
+                h = i > 0 ? h.slice(0, i) + add + h.slice(i) : h + add;
+            }
+        }
+        catch (e) {
+            v82docErr("cs", e);
+        }
+        return h;
+    };
+}
+(function () {
+    try {
+        if (document.getElementById("v82doccss"))
+            return;
+        const st = document.createElement("style");
+        st.id = "v82doccss";
+        st.textContent = `.v82exp{display:inline-block;margin-left:6px;padding:0 7px;border-radius:9px;font-size:10.5px;line-height:18px;font-weight:700}
+.v82exp-past,.v82exp-real{color:var(--crit,#b42318);background:#fdecea;border:1px solid #f5c2bd}.v82exp-soon,.v82exp-today{color:var(--or-deep,#b45309);background:#fff4e5;border:1px solid #f6d6ad}
+@media print{.v82exp,.v82expbr{display:none}}
+.v82docnow{margin-top:12px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r2,8px);background:#fff;font-size:11.5px}
+.v82docnow ul{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}.v82docnow li{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-top:6px;border-top:1px dashed var(--line-2,#e5e7eb)}
+.v82docnow li>span{flex:1 1 320px;line-height:1.7;color:var(--ink-2)}.v82docst{display:inline-block;margin-left:4px;padding:0 6px;border-radius:9px;font-size:10px;font-weight:700}
+.v82docst-n{color:#a14f00;background:#fff1e0}.v82docst-y{color:#166534;background:#e8f6ec}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+try {
+    if (typeof I18N !== "undefined" && I18N && I18N.dict) {
+        const R = [
+            ["いま使える書類の機能", "Document features available now", "现在可用的单证功能", "Funciones de documentos disponibles ahora"],
+            ["見積：バイヤーから返事が来たら、AI商社マンが登録した価格表から見積を計算して返信案に入れます（有効期限30日・値段は AI に書かせない・承認してから送る）。", "Quotes: when a buyer replies, the AI Trade Agent calculates a quote from your registered price list and adds it to the draft reply (valid 30 days; prices are never written by the AI; sent only after you approve).", "报价：买家回复后，AI商社专员会根据登记的价格表计算报价并放入回复草稿（有效期30天・价格不由AI填写・经您批准后才发送）。", "Cotizaciones: cuando un comprador responde, el agente de IA calcula la cotización con su lista de precios y la añade al borrador (válida 30 días; la IA no escribe precios; se envía solo tras su aprobación)."],
+            ["AIバイヤー開拓のやり取りを開く", "Open AI buyer outreach conversations", "打开AI买家开发的往来", "Abrir las conversaciones de captación"],
+            ["帳票の会社設定（登録番号・振込先・海外送金用の口座）を先に入れておくと、書類をつくる機能が使えるようになったとき、すべての書類に入ります。", "Enter your company settings for documents (registration no., bank account, account for international transfers) now; they will appear on every document once document creation is available.", "请先填写单据的公司设置（登记号・收款账户・海外汇款账户），制作单证功能上线后会自动填入所有单证。", "Introduzca ya los ajustes de empresa (n.º de registro, cuenta bancaria, cuenta para transferencias internacionales); aparecerán en todos los documentos cuando la función esté disponible."],
+            ["🧾 帳票の会社設定を開く", "🧾 Open company settings for documents", "🧾 打开单据的公司设置", "🧾 Abrir ajustes de empresa"], ["設定済み", "Set", "已设置", "Configurado"], ["未設定", "Not set", "未设置", "Sin configurar"], ["一部が未設定", "Partly not set", "部分未设置", "Parcialmente sin configurar"],
+            ["必要な書類（原産地証明・成分表・ラベルなど）は「① 規制を調べる」で、送り先の国ごとに確かめられます。", "Check the documents required by each destination (certificate of origin, ingredient list, labels, etc.) in “① Check regulations”.", "所需单证（原产地证明・成分表・标签等）可在“① 查法规”中按目的国确认。", "Consulte los documentos necesarios por destino (certificado de origen, lista de ingredientes, etiquetas, etc.) en «① Ver regulaciones»."],
+            ["① 規制を調べる", "① Check regulations", "① 查法规", "① Ver regulaciones"],
+            ["PI（見積送り状）・CI・PL の下書きは、下の「先行プレビュー」で見本として確かめ・印刷できます（実際の取引にはまだ使えません）。", "You can view and print sample drafts of the PI, CI and PL in the “early preview” below (not yet for real transactions).", "PI（形式发票）・CI・PL 的草稿可在下方“抢先预览”中以示例查看和打印（尚不能用于实际交易）。", "Puede ver e imprimir borradores de muestra de PI, CI y PL en la «vista previa» de abajo (aún no para operaciones reales)."],
+            ["印刷の前に：未設定の項目があります", "Before printing: some items are not set", "打印前：有未设置的项目", "Antes de imprimir: hay datos sin configurar"],
+            ["このまま印刷すると、書類のこの欄は空欄（—）になります。相手が代金を振り込めない・書類を受け取ってもらえないことがあります。", "If you print now, these fields will be blank (—). The buyer may be unable to pay or may not accept the document.", "直接打印的话，这些栏目会是空白（—）。对方可能无法付款或不接受该单据。", "Si imprime ahora, estos campos quedarán en blanco (—). El comprador podría no poder pagar o no aceptar el documento."],
+            ["「🧾 帳票の会社設定」で一度入れると、PI・CI などすべての書類に入ります。", "Once entered in “🧾 Company settings for documents”, they appear on every document such as the PI and CI.", "在“🧾 单据的公司设置”中填写一次，即可用于PI・CI等所有单证。", "Al introducirlos una vez en «🧾 Ajustes de empresa», aparecen en todos los documentos (PI, CI…)."],
+            ["🧾 会社設定で入れる", "🧾 Enter in company settings", "🧾 在公司设置中填写", "🧾 Introducir en ajustes de empresa"], ["このまま印刷する", "Print anyway", "直接打印", "Imprimir de todos modos"],
+            ["🧾 帳票の会社設定で入れると、すべての書類に入ります", "Enter it in 🧾 Company settings for documents; it will appear on every document", "在🧾单据的公司设置中填写后，会用于所有单证", "Introdúzcalo en 🧾 Ajustes de empresa; aparecerá en todos los documentos"]
+        ];
+        R.forEach(r => { ["en", "zh", "es"].forEach((l, i) => { if (r[i + 1] && I18N.dict[l])
+            I18N.dict[l][r[0]] = r[i + 1]; }); });
+    }
+}
+catch (e) {
+    v82docErr("i18n", e);
+}
+try {
+    if (typeof I18N !== "undefined" && Array.isArray(I18N.pat)) {
+        I18N.pat.unshift({ re: /^振込先（海外送金用）：(.+) が未設定$/, en: (m) => "Bank account for international transfers: " + m[1].replace("銀行名（英語）", "bank name (English)").replace("口座番号", "account no.").replace("受取人の英文名", "beneficiary name").split("・").join(", ") + " not set", zh: (m) => "收款账户（海外汇款）：" + m[1] + " 未设置", es: (m) => "Cuenta para transferencias internacionales: " + m[1] + " sin configurar" }, { re: /^振込先（銀行名・支店・口座番号）が未設定$/, en: "Bank account (bank, branch, account no.) not set", zh: "收款账户（银行・分行・账号）未设置", es: "Cuenta bancaria (banco, sucursal, n.º de cuenta) sin configurar" }, { re: /^適格請求書 登録番号が未設定(（輸出の書類では必須ではありませんが、書類には「—」と出ます）)?$/, en: (m) => "Qualified invoice registration no. not set" + (m[1] ? " (not required on export documents, but shown as “—”)" : ""), zh: (m) => "合格发票登记号未设置" + (m[1] ? "（出口单证非必需，但会显示“—”）" : ""), es: (m) => "N.º de registro de factura cualificada sin configurar" + (m[1] ? " (no es obligatorio en exportación, pero aparece como «—»)" : "") });
+    }
+}
+catch (e) {
+    v82docErr("pat", e);
+}
+var V82F = { re: null, ci: 0, pend: null, chk: {}, t0: Date.now(), fixT: 0, shown: {} };
+function v82fOn() { try {
+    return typeof FWDON !== "undefined" && !!FWDON;
+}
+catch (e) {
+    return false;
+} }
+function v82fE(s) { return (typeof esc === "function") ? esc(String(s == null ? "" : s)) : String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v82fM(ja, en, zh, es) { try {
+    const l = (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+    return l === "en" ? (en || ja) : l === "zh" ? (zh || ja) : l === "es" ? (es || ja) : ja;
+}
+catch (e) {
+    return ja;
+} }
+function v82fY(n) { return "¥" + Math.round(+n || 0).toLocaleString(); }
+function v82fNow() { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function v82fExp(valid) { const v = String(valid || "").replace(/\//g, "-"); return /^\d{4}-\d{2}-\d{2}$/.test(v) && v < v82fNow(); }
+function v82fMe() { try {
+    return (typeof fwdCo === "function") ? fwdCo() : ((FWDB && FWDB.profile && FWDB.profile.co) || "");
+}
+catch (e) {
+    return "";
+} }
+function v82fPub() { try {
+    return v82fOn() && typeof FWDB !== "undefined" && !!FWDB && FWDB.fv === 1 && FWDB.w !== "real";
+}
+catch (e) {
+    return false;
+} }
+function v82fPolKey(s) { try {
+    if (typeof v56shipPolKey === "function")
+        return v56shipPolKey(s);
+}
+catch (e) { } return String(s || "").replace(/\s+/g, "").replace(/(?:国際)?(?:空港|港)$/, "").toLowerCase(); }
+function v82fLanePol(q) { const m = /^(.*?)\s*→/.exec(String((q && q.lane) || "")); return m ? m[1].trim() : ""; }
+function v82fToast(m) { try {
+    if (typeof toast === "function")
+        toast(m);
+}
+catch (e) { } }
+if (typeof fwdRateValid === "function") {
+    const __rv82f = fwdRateValid;
+    fwdRateValid = function (r) { const o = __rv82f.apply(this, arguments); try {
+        if (o && r && v82fExp(r.valid))
+            return false;
+    }
+    catch (e) { } return o; };
+}
+function v82fCtx(r) {
+    try {
+        if (typeof V56SHIP === "undefined" || !r || !r.pol)
+            return null;
+        const term = String(r.term || "");
+        const code = (typeof v56shipTermCode === "function") ? v56shipTermCode(term) : "";
+        return { pol: String(r.pol), polKey: v82fPolKey(r.pol), code, fob: code === "FOB", term, cty: r.cty || "" };
+    }
+    catch (e) {
+        return null;
+    }
+}
+function v82fWith(r, fn) { if (typeof V56SHIP === "undefined" || V56SHIP.req)
+    return fn(); const c = v82fCtx(r); if (!c)
+    return fn(); V56SHIP.req = c; try {
+    return fn();
+}
+finally {
+    V56SHIP.req = null;
+} }
+function v82fFindReq(cty, pod, mode) {
+    const S = V82F.re;
+    if (!S)
+        return null;
+    const R = S.reqs;
+    for (let i = S.ci; i < R.length; i++) {
+        const r = R[i];
+        if (!r || !Array.isArray(r.legs) || String(r.mode || "") !== String(mode || ""))
+            continue;
+        if (r.legs.some(l => l && !l.hold && l.cty === cty && (l.pod || (typeof FWD_POD !== "undefined" && FWD_POD[l.cty]) || l.cty) === pod)) {
+            S.ci = i;
+            return r;
+        }
+    }
+    return null;
+}
+if (typeof fwdLegBuild === "function") {
+    const __lb82f = fwdLegBuild;
+    fwdLegBuild = function (cty, pod, mode) {
+        const a = arguments, self = this;
+        try {
+            if (V82F.re && !v82fOn() && typeof V56SHIP !== "undefined" && !V56SHIP.req) {
+                const r = v82fFindReq(cty, pod, mode);
+                if (r)
+                    return v82fWith(r, () => __lb82f.apply(self, a));
+            }
+        }
+        catch (e) { }
+        return __lb82f.apply(this, arguments);
+    };
+}
+function v82fBad(r, l) {
+    if (!l || !l.ok)
+        return "";
+    const q = l.quote || {};
+    const lp = v82fLanePol(q);
+    if (r && r.pol && lp && !q.v56shipFob && v82fPolKey(lp) !== v82fPolKey(r.pol))
+        return "pol";
+    const O = (l.offers || []).filter(o => o && o.rate);
+    if (O.length ? O.every(o => v82fExp(o.rate.valid)) : v82fExp(q.valid))
+        return "exp";
+    return "";
+}
+function v82fFixLegs() {
+    let n = 0;
+    try {
+        (FWDB.reqs || []).forEach(r => {
+            if (!r || !Array.isArray(r.legs))
+                return;
+            const fixed = [];
+            r.legs.forEach(l => {
+                if (!l || l.hold)
+                    return;
+                const k = v82fBad(r, l);
+                if (!k)
+                    return;
+                const was = (l.quote && l.quote.lane) || "";
+                Object.keys(l).forEach(x => { if (!/^(cty|pod|situ|v802reg|v802pod)$/.test(x))
+                    delete l[x]; });
+                l.ok = 0;
+                l.v82why = k;
+                l.v82was = was;
+                fixed.push(l);
+                n++;
+            });
+            if (fixed.length) {
+                try {
+                    r.status = fwdReqStatus(r);
+                }
+                catch (e) { }
+                r._m = Date.now();
+                r.msgs = (r.msgs || []).concat([{ f: "物", t: fixed.map(l => `${v82fE(l.cty)}：${l.v82why === "pol" ? `依頼の仕出港（${v82fE(r.pol)}）と違う港のレートで付いていた見積を取り下げました。${v82fE(r.pol)}発のレートが登録されると、自動でお見積します` : "有効期限の切れたレートしか無いため、見積を取り下げました（有効なレートがありません）。物流会社が新しい期限のレートを登録すると、自動でお見積します"}`).join("<br>"), at: (typeof TODAYS !== "undefined" ? TODAYS : v82fNow()) }]);
+            }
+        });
+    }
+    catch (e) { }
+    return n;
+}
+if (typeof fwdReevalPending === "function") {
+    const __re82f = fwdReevalPending;
+    fwdReevalPending = function () {
+        if (v82fOn())
+            return __re82f.apply(this, arguments);
+        V82F.re = { reqs: ((typeof FWDB !== "undefined" && FWDB && FWDB.reqs) || []).slice(), ci: 0 };
+        let n = 0;
+        try {
+            n = __re82f.apply(this, arguments) || 0;
+        }
+        finally {
+            V82F.re = null;
+        }
+        try {
+            n += v82fFixLegs();
+        }
+        catch (e) { }
+        return n;
+    };
+}
+function v82fShipFix() {
+    try {
+        if (v82fOn() || typeof FWDB === "undefined" || !FWDB || !(FWDB.reqs || []).length)
+            return;
+        const need = (FWDB.reqs || []).some(r => r && (!r.kid || typeof SYNC === "undefined" || !SYNC.kid || r.kid === SYNC.kid) && (r.legs || []).some(l => l && !l.hold && v82fBad(r, l)));
+        if (!need)
+            return;
+        const n = fwdReevalPending();
+        if (n) {
+            try {
+                fwdSave();
+            }
+            catch (e) { }
+            try {
+                if (typeof syncSchedule === "function")
+                    syncSchedule("fwd");
+            }
+            catch (e) { }
+        }
+    }
+    catch (e) { }
+}
+if (typeof fwdMerge === "function") {
+    const __fm82f = fwdMerge;
+    fwdMerge = function () {
+        const o = __fm82f.apply(this, arguments);
+        try {
+            if (v82fOn())
+                v82fPubFix(o);
+            else {
+                clearTimeout(V82F.fixT);
+                V82F.fixT = setTimeout(v82fShipFix, 50);
+            }
+        }
+        catch (e) { }
+        return o;
+    };
+}
+if (typeof v70fLegCan === "function") {
+    const __lc82f = v70fLegCan;
+    v70fLegCan = function (r) { const a = arguments, self = this; return v82fWith(r, () => __lc82f.apply(self, a)); };
+}
+if (typeof v45OwnCan === "function") {
+    const __oc82f = v45OwnCan;
+    v45OwnCan = function (r) { const a = arguments, self = this; return v82fWith(r, () => __oc82f.apply(self, a)); };
+}
+function v82fPubFix(F) {
+    try {
+        F = F || (typeof FWDB !== "undefined" ? FWDB : null);
+        if (!F || F.fv !== 1 || F.w === "real" || !v82fOn())
+            return 0;
+        const me = (F.profile && F.profile.co) || v82fMe();
+        if (!me)
+            return 0;
+        let n = 0;
+        (F.reqs || []).forEach(r => {
+            (r && r.legs || []).forEach(l => {
+                if (!l || !l.ok || !l.hold)
+                    return;
+                const hc = String(l.holdCo || l.sel || l.co || "");
+                if (!hc || hc === me)
+                    return;
+                l.hold = 0;
+                l.lost = 1;
+                l.v82hc = hc;
+                n++;
+            });
+        });
+        return n;
+    }
+    catch (e) {
+        return 0;
+    }
+}
+if (typeof fwdLoad === "function") {
+    const __fl82f = fwdLoad;
+    fwdLoad = function () { const o = __fl82f.apply(this, arguments); try {
+        v82fPubFix();
+    }
+    catch (e) { } return o; };
+}
+if (typeof fwdReqStatus === "function") {
+    const __rs82f = fwdReqStatus;
+    fwdReqStatus = function (r) {
+        const s = __rs82f.apply(this, arguments);
+        try {
+            if (r && r.fv === 1 && v82fOn()) {
+                const hc = [...new Set((r.legs || []).filter(l => l && l.v82hc).map(l => l.v82hc))];
+                if (hc.length && /他社に決定/.test(String(s)))
+                    return String(s).replace("他社に決定", "他社に決定（" + hc.join("・") + "が押さえ中）");
+            }
+        }
+        catch (e) { }
+        return s;
+    };
+}
+if (typeof fwdReqRec === "function") {
+    const __rr82f = fwdReqRec;
+    fwdReqRec = function (r) {
+        let s = String(__rr82f.apply(this, arguments) || "");
+        try {
+            if (!s)
+                return s;
+            (r.legs || []).filter(l => l && l.ok && (l.offers || []).length > 1).forEach(l => {
+                const n = l.offers.length, v = l.offers.filter(o => o && o.rate && !v82fExp(o.rate.valid)).length;
+                if (v === n)
+                    return;
+                const k = `${v82fE(l.cty)} ${n}社`;
+                const i = s.indexOf(k);
+                if (i >= 0 && s.indexOf("（有効期限内", i) !== i + k.length)
+                    s = s.slice(0, i + k.length) + `<span class="v82fvc" data-noi18n>（有効期限内 ${v}社）</span>` + s.slice(i + k.length);
+            });
+        }
+        catch (e) { }
+        return s;
+    };
+}
+function v82fLegNotes(r, l) {
+    const out = [];
+    if (!l)
+        return out;
+    const q = l.quote || {};
+    if (l.v82hc)
+        out.push(["warn", v82fM(`荷主は ${l.v82hc}（他社）で仮押さえしました。貴社（${v82fMe()}）の仮押さえではありません。`, `The shipper holds with ${l.v82hc} (another forwarder), not with your company.`)]);
+    if (l.ok) {
+        const lp = v82fLanePol(q);
+        if (r.pol && lp && !q.v56shipFob && v82fPolKey(lp) !== v82fPolKey(r.pol))
+            out.push(["crit", v82fM(`⚠ 仕出港が違います：依頼は ${r.pol} 発ですが、この見積は ${lp} 発のレートで組まれています（古い見直しの形）。${l.hold ? "仮押さえ済みのため、荷主に確かめてください。" : "荷主が次に画面を開くと、" + r.pol + "発のレートで組み直します（無ければレーン未登録）。"}`, `⚠ Port of loading differs: request from ${r.pol}, quote uses a ${lp} rate.`)]);
+        const O = (l.offers || []).filter(o => o && o.rate);
+        const sel = O.find(o => o.co === (l.sel || l.co)) || O[0];
+        const vd = O.filter(o => !v82fExp(o.rate.valid));
+        if ((sel && v82fExp(sel.rate.valid)) || (!sel && v82fExp(q.valid))) {
+            const vv = (sel && sel.rate.valid) || q.valid;
+            out.push(["crit", l.hold || l.v82hc ? v82fM(`⚠ 仮押さえのレートは有効期限切れです（${vv}）。この運賃のまま本予約・荷主への提示をしないでください。新しい期限のレートを登録し、荷主に再見積を出してください。`, `⚠ The held rate has expired (${vv}). Register a new rate before booking.`)
+                    : vd.length ? v82fM(`⚠ 推奨・選択中のレートは有効期限切れです（${vv}）。有効なレートは ${vd.map(o => o.co).join("・")}。荷主が次に画面を開くと、有効なレートで推奨を組み直します。`, `⚠ The recommended rate has expired (${vv}).`)
+                        : v82fM(`⚠ 有効なレートがありません（${O.length || 1}社とも有効期限切れ・${vv}など）。推奨・仮押さえの対象外です。「物流レート管理」で新しい期限のレートを登録してください。`, `⚠ No valid rate (all expired). Register a new rate.`)]);
+        }
+    }
+    else if (l.v82why === "exp")
+        out.push(["warn", v82fM("有効なレートがありません（期限の切れたレートしか無かったため、見積を取り下げました）。新しい期限のレートを登録すると、荷主が次に画面を開いたときに見積が届きます。", "No valid rate (only expired rates).")]);
+    else if (l.v82why === "pol")
+        out.push(["warn", v82fM(`${r.pol || ""}発のレートが未登録です（ほかの港発のレートで付いていた見積は取り下げました）。`, `No rate from ${r.pol || ""}.`)]);
+    return out;
+}
+if (typeof openFwdQuote === "function") {
+    const __oq82f = openFwdQuote;
+    openFwdQuote = function (id) {
+        const o = __oq82f.apply(this, arguments);
+        try {
+            const r = ((typeof FWDB !== "undefined" && FWDB && FWDB.reqs) || []).find(x => x && x.id === id);
+            const pn = document.getElementById("pn");
+            if (!r || !pn)
+                return o;
+            const cards = [...pn.querySelectorAll(".fwdleg")];
+            (r.legs || []).forEach((l, i) => {
+                const c = cards[i];
+                if (!c || c.querySelector(".v82fln"))
+                    return;
+                const N = v82fLegNotes(r, l);
+                if (!N.length)
+                    return;
+                const head = c.firstElementChild || c;
+                head.insertAdjacentHTML("afterend", N.map(([k, t]) => `<p class="v82fln v82f-${k}" role="note" data-noi18n>${v82fE(t)}</p>`).join(""));
+            });
+        }
+        catch (e) { }
+        return o;
+    };
+}
+window.addEventListener("click", e => { try {
+    const b = e.target && e.target.closest && e.target.closest("[data-v69fcsdone]");
+    if (!b || !v82fOn())
+        return;
+    V82F.pend = { cid: b.dataset.v69fcsdone, at: Date.now() };
+}
+catch (x) { } }, true);
+document.addEventListener("click", () => { try {
+    if (V82F.pend && Date.now() - V82F.pend.at > 3000)
+        V82F.pend = null;
+}
+catch (x) { } }, false);
+function v82fCaseOf(cid) { try {
+    return (typeof v33Cases === "function" ? v33Cases() : []).find(k => v33CsId(k.key) === cid) || null;
+}
+catch (e) {
+    return null;
+} }
+function v82fVerify(cid) {
+    const c = v82fCaseOf(cid);
+    if (!c)
+        return { ok: 0, miss: ["?"], n: 0 };
+    let miss = c.reqs.filter(r => v33FwdState(r) !== "done");
+    if (miss.length) {
+        const me = (typeof v33Me === "function") ? v33Me() : "";
+        miss.forEach(r => { try {
+            const a = v33FaOf(r.id) || {};
+            v33FaSet(r.id, { st: "done", who: a.who || me });
+        }
+        catch (e) { } });
+        miss = c.reqs.filter(r => v33FwdState(r) !== "done");
+    }
+    return { ok: miss.length ? 0 : 1, miss: miss.map(r => r.id), n: c.reqs.length };
+}
+if (typeof toast === "function") {
+    const __ts82f = toast;
+    toast = function (m) {
+        try {
+            const P = V82F.pend;
+            if (P && v82fOn() && /^案件を完了にしました|^Case marked done|^案件已设为完成|^Caso marcado/.test(String(m || ""))) {
+                V82F.pend = null;
+                const v = v82fVerify(P.cid);
+                V82F.last = Object.assign({ cid: P.cid }, v);
+                if (!v.ok) {
+                    try {
+                        console.warn("v82f: 完了にできなかった依頼", v.miss);
+                    }
+                    catch (e) { }
+                    return __ts82f.call(this, v82fM(`完了にできませんでした（${v.miss.join("・")}）。もう一度押すか、「担当・状態を変える」で完了にしてください`, `Could not mark done (${v.miss.join(", ")}). Please try again.`));
+                }
+                m = v82fM(`案件を完了にしました（依頼 ${v.n}件・受信箱の状態も完了）`, `Case marked done (${v.n} request(s), also in the inbox)`);
+            }
+        }
+        catch (e) { }
+        return __ts82f.apply(this, [m].concat([].slice.call(arguments, 1)));
+    };
+}
+function v82fJpy(r) { try {
+    return (typeof fwdRateJpy === "function") ? fwdRateJpy(r) : (+r.price || 0);
+}
+catch (e) {
+    return +r.price || 0;
+} }
+function v82fRk(r) { return [r.co || "", r.pol, r.pod, r.mode, +r.price || 0].join("|"); }
+function v82fOkGet() { try {
+    return JSON.parse(localStorage.getItem("bc20_v82f_rateok") || "{}") || {};
+}
+catch (e) {
+    return {};
+} }
+function v82fOkSet(k) { try {
+    const o = v82fOkGet();
+    o[k] = Date.now();
+    const ks = Object.keys(o);
+    if (ks.length > 300)
+        ks.slice(0, ks.length - 300).forEach(x => delete o[x]);
+    localStorage.setItem("bc20_v82f_rateok", JSON.stringify(o));
+}
+catch (e) { } }
+function v82fOdd(r, all) {
+    try {
+        if (!r || !(+r.price > 0) || v82fExp(r.valid))
+            return null;
+        const md = String(r.mode || "").toUpperCase(), p = v82fJpy(r);
+        const peers = (all || []).filter(x => x && x !== r && String(x.pod || "") === String(r.pod || "") && String(x.mode || "").toUpperCase() === md && +x.price > 0 && !v82fExp(x.valid)).map(v82fJpy);
+        if (!peers.length)
+            return null;
+        let med, n = peers.length;
+        if (peers.length === 1)
+            med = peers[0];
+        else {
+            const g = peers.concat([p]).sort((a, b) => a - b);
+            med = g.length % 2 ? g[(g.length - 1) / 2] : (g[g.length / 2 - 1] + g[g.length / 2]) / 2;
+        }
+        if (!(med > 0))
+            return null;
+        const x = p / med;
+        if (x >= 5 || x <= 0.2)
+            return { r, p, med, x, n, one: peers.length === 1 };
+    }
+    catch (e) { }
+    return null;
+}
+function v82fOddList() { try {
+    const R = (FWDB && FWDB.rates) || [];
+    const ok = v82fOkGet();
+    return R.map(r => v82fOdd(r, R)).filter(o => o && !ok[v82fRk(o.r)] && !v82fExp(o.r.valid));
+}
+catch (e) {
+    return [];
+} }
+function v82fOddTxt(o) {
+    const r = o.r;
+    const t = o.x >= 1 ? `約${Math.round(o.x)}倍` : `約${Math.round(1 / o.x)}分の1`;
+    return `${r.pol}→${r.pod}・${r.mode} ${r.cur || "¥"}${(+r.price || 0).toLocaleString()}${r.unit || ""}（${o.one ? `同じ仕向港・形態のもう1本のレート ${v82fY(o.med)}` : `同じ仕向港・形態のレート ${o.n + 1}本の中央値 ${v82fY(o.med)}`} の${t}）`;
+}
+function v82fOddSheet(L) {
+    if (!L.length || typeof v33Sheet !== "function")
+        return;
+    const E = v82fE;
+    const el = v33Sheet({ title: v82fM("運賃の桁を確かめてください", "Please check the rate"),
+        html: `<div class="v82fodd" data-noi18n><p>${E(v82fM("登録したレートは保存しました。ただ、同じ仕向港・形態のほかのレートと比べて、桁が違う可能性があります：", "Saved. These rates differ by an order of magnitude from other rates for the same port and mode:"))}</p>
+      <ul>${L.map((o, i) => `<li>${E(v82fOddTxt(o))} <button type="button" class="btn g" data-v82fdel="${i}">${E(v82fM("この行を消す", "Delete this rate"))}</button></li>`).join("")}</ul>
+      <p class="v33mute">${E(v82fM("このまま見積に使われます（2m³ なら運賃は単価×2）。打ち間違いなら「この行を消す」で消して、正しい運賃で登録し直してください。正しい運賃なら「このままにする」を押します（この端末では、もう聞きません）。", "This rate will be used in quotes as is."))}</p></div>`,
+        foot: `<button class="btn" type="button" data-v82fok>${E(v82fM("このままにする", "Keep as is"))}</button>` });
+    if (!el)
+        return;
+    el.setAttribute("data-v82fodd", "1");
+    el.querySelector("[data-v82fok]").onclick = () => { L.forEach(o => v82fOkSet(v82fRk(o.r))); try {
+        v33SheetClose();
+    }
+    catch (x) { } try {
+        fwdRender();
+    }
+    catch (x) { } };
+    el.querySelectorAll("[data-v82fdel]").forEach(b => b.onclick = () => {
+        const o = L[+b.dataset.v82fdel];
+        const k = v82fRk(o.r);
+        const i = (FWDB.rates || []).findIndex(x => x && v82fRk(x) === k);
+        if (i >= 0) {
+            try {
+                if (typeof fwdRateKey === "function")
+                    FWDB.rateDel = (FWDB.rateDel || []).concat([{ k: fwdRateKey(o.r), t: Date.now() }]).slice(-200);
+            }
+            catch (x) { }
+            FWDB.rates.splice(i, 1);
+        }
+        b.closest("li").remove();
+        try {
+            fwdReevalPending();
+        }
+        catch (x) { }
+        try {
+            fwdSave();
+        }
+        catch (x) { }
+        try {
+            fwdRender();
+        }
+        catch (x) { }
+        v82fToast(v82fM("そのレートを消しました", "Rate deleted"));
+        if (!el.querySelector("[data-v82fdel]")) {
+            try {
+                v33SheetClose();
+            }
+            catch (x) { }
+        }
+    });
+}
+if (typeof fwdSave === "function") {
+    const __sv82f = fwdSave;
+    fwdSave = function () {
+        const o = __sv82f.apply(this, arguments);
+        try {
+            if (v82fOn() && typeof FWDB !== "undefined" && FWDB) {
+                const now = Date.now();
+                const R = FWDB.rates || [];
+                const fresh = R.filter(r => r && (+r.at || 0) >= V82F.t0 && (+r.at || 0) > now - 20000 && !V82F.chk[v82fRk(r)]);
+                if (fresh.length) {
+                    fresh.forEach(r => { V82F.chk[v82fRk(r)] = 1; });
+                    const L = fresh.map(r => v82fOdd(r, R)).filter(Boolean).filter(x => !v82fOkGet()[v82fRk(x.r)]);
+                    if (L.length)
+                        setTimeout(() => { try {
+                            v82fOddSheet(L);
+                        }
+                        catch (e) { } }, 350);
+                }
+            }
+        }
+        catch (e) { }
+        return o;
+    };
+}
+function v82fInbox(w) {
+    const R = (FWDB && FWDB.reqs) || [];
+    try {
+        const card = [...w.querySelectorAll(".g4 .c")].find(c => /受信した依頼|Requests received|收到的请求|Solicitudes recibidas/.test((c.querySelector(".lbl") || {}).textContent || ""));
+        if (card && !card.querySelector(".v82fbrk")) {
+            const st = r => { try {
+                return v33FwdState(r);
+            }
+            catch (e) {
+                return "none";
+            } };
+            const ai = R.filter(r => r && (r.quote || (r.legs || []).some(l => l && l.ok)));
+            const rest = R.filter(r => r && ai.indexOf(r) < 0);
+            const nd = rest.filter(r => { try {
+                return !!v33FwdNeeds(r);
+            }
+            catch (e) {
+                return false;
+            } });
+            const dn = rest.filter(r => nd.indexOf(r) < 0 && st(r) === "done");
+            const ck = rest.filter(r => nd.indexOf(r) < 0 && dn.indexOf(r) < 0 && (() => { try {
+                const a = v33FaOf(r.id) || {};
+                return !!(a.task && a.task.done && !(typeof v73fAutoT === "function" && v73fAutoT(a.task)));
+            }
+            catch (e) {
+                return false;
+            } })());
+            const ot = rest.length - nd.length - dn.length - ck.length;
+            const parts = [["AI自動回答", ai.length], ["要確認", nd.length], ["確認済み", ck.length], ["完了", dn.length], ["その他（貴社のレートで出せる状態など）", ot]].filter((x, i) => i < 3 || x[1] > 0);
+            card.insertAdjacentHTML("beforeend", `<div class="v82fbrk" data-noi18n>${v82fE(v82fM("内訳：", "Breakdown: "))}${parts.map(([k, n]) => `${v82fE(k)} <b>${n}</b>`).join("＋")}＝${R.length}${v82fE(v82fM("件（「確認済み」は、レートを登録せずに「済み」にした依頼）", ""))}</div>`);
+        }
+    }
+    catch (e) { }
+    try {
+        w.querySelectorAll(".v33fwtask li.v33li").forEach(li => {
+            if (li.querySelector(".v82ftk"))
+                return;
+            const m = /RQ-[A-Za-z0-9]+/.exec(li.textContent || "");
+            const r = m && R.find(x => x.id === m[0]);
+            if (!r)
+                return;
+            const pend = (r.legs || []).filter(l => l && !l.ok && !l.other && !l.lost);
+            if (pend.length < 2)
+                return;
+            const b = li.querySelector(".v33li-m b");
+            if (b)
+                b.insertAdjacentHTML("afterend", ` <span class="v33lv v33lv-mute v82ftk" data-noi18n>${v82fE(v82fM(`1件の依頼・${pend.length}区間`, `1 request · ${pend.length} lanes`))}</span>`);
+            const nd = li.querySelector(".v70fneed");
+            if (nd && !nd.querySelector(".v82flanes")) {
+                const P = (typeof FWD_POD !== "undefined" && FWD_POD) || {};
+                nd.innerHTML = v82fE(v82fM("登録する区間（この1件の依頼の中）：", "Lanes to register (in this one request): ")) + `<span class="v82flanes">${pend.map((l, i) => `<span class="v82flane">${i + 1}. ${v82fE(`${r.pol || "—"} → ${l.pod || P[l.cty] || l.cty}${l.cty && l.cty !== (l.pod || P[l.cty]) ? "（" + l.cty + "）" : ""}・${r.mode || "LCL"}`)}</span>`).join("")}</span>`;
+            }
+        });
+    }
+    catch (e) { }
+    try {
+        w.querySelectorAll("table tbody tr").forEach(tr => {
+            if (tr.querySelector(".v82frow"))
+                return;
+            const m = /RQ-[A-Za-z0-9]+/.exec(tr.textContent || "");
+            const r = m && R.find(x => x.id === m[0]);
+            if (!r)
+                return;
+            const k = [];
+            (r.legs || []).forEach(l => { v82fLegNotes(r, l).forEach(([lv, t]) => { if (lv === "crit")
+                k.push(/仕出港/.test(t) ? v82fM(`${l.cty}：仕出港が違う見積`, `${l.cty}: different port`) : v82fM(`${l.cty}：期限切れのレート`, `${l.cty}: expired rate`)); }); });
+            if (!k.length)
+                return;
+            const st = tr.querySelector("td.v33fwst");
+            const cell = st ? st.previousElementSibling : tr.children[6];
+            if (cell)
+                cell.insertAdjacentHTML("beforeend", `<div class="v82frow" data-noi18n>${k.map(x => `<span class="p mid" style="font-size:9.5px">⚠ ${v82fE(x)}</span>`).join(" ")}</div>`);
+        });
+    }
+    catch (e) { }
+}
+function v82fCases(w) {
+    try {
+        const ph = w.querySelector(".ph p.v33mute") || w.querySelector(".ph");
+        if (ph && !w.querySelector(".v82fcsn"))
+            ph.insertAdjacentHTML("afterend", `<p class="v82fcsn" data-noi18n>${v82fE(v82fM("「対応済み n/m件」は、その案件の依頼 m件のうち、対応を「完了」にした件数です（荷主の状況とは別。全部が完了になると「対応：完了」）。", "“Handled n/m” = requests in the case you marked done."))}</p>`);
+        w.querySelectorAll(".v69fcs").forEach(x => {
+            if (x.dataset.v82f)
+                return;
+            x.dataset.v82f = "1";
+            const m = /(\d+)\/(\d+)/.exec(x.textContent || "");
+            x.title = v82fM("この案件の依頼のうち、対応を「完了」にした件数", "Requests in this case marked done");
+            if (m)
+                x.textContent = v82fM(`対応済み ${m[1]}/${m[2]}件`, `Handled ${m[1]}/${m[2]}`);
+        });
+    }
+    catch (e) { }
+}
+function v82fAgg(w) {
+    try {
+        const c = [...w.querySelectorAll(".g4 .c")].find(c => /相見積があるレーン|Lanes with|有比价|con varias/.test((c.querySelector(".lbl") || {}).textContent || ""));
+        if (c && !c.querySelector(".v82fcnt"))
+            c.insertAdjacentHTML("beforeend", `<div class="v82fcnt" data-noi18n>${v82fE(v82fM("有効期限内のレートだけを数えます（期限切れは数えません）。受信箱・見積のカードの「◯社」は、依頼のときに回答した会社の数です（有効期限内の数は括弧の中）。", "Counts valid rates only. “n companies” on request cards = companies that answered at request time."))}</div>`);
+    }
+    catch (e) { }
+}
+function v82fRates(w) {
+    try {
+        if (w.querySelector(".v82foddbox"))
+            return;
+        const L = v82fOddList();
+        if (!L.length)
+            return;
+        const ph = w.querySelector(".ph");
+        if (!ph)
+            return;
+        ph.insertAdjacentHTML("afterend", `<div class="v82foddbox" role="alert" data-noi18n><b>⚠ ${v82fE(v82fM("桁が違う可能性のある運賃があります", "Possible order-of-magnitude errors"))}</b><ul>${L.map(o => `<li>${v82fE(v82fOddTxt(o))}</li>`).join("")}</ul><button type="button" class="btn g" data-v82foddchk>${v82fE(v82fM("確かめる", "Check"))}</button></div>`);
+        const b = w.querySelector("[data-v82foddchk]");
+        if (b)
+            b.onclick = () => v82fOddSheet(v82fOddList());
+    }
+    catch (e) { }
+}
+if (typeof fwdRender === "function") {
+    const __fr82f = fwdRender;
+    fwdRender = function () {
+        try {
+            v82fPubFix();
+        }
+        catch (e) { }
+        const o = __fr82f.apply(this, arguments);
+        try {
+            if (!v82fOn())
+                return o;
+            const w = document.getElementById("well");
+            if (!w)
+                return o;
+            const pg = (typeof fwdCur !== "undefined" && fwdCur) || "finbox";
+            if (pg === "finbox")
+                v82fInbox(w);
+            else if (pg === "fcase")
+                v82fCases(w);
+            else if (pg === "fagg")
+                v82fAgg(w);
+            else if (pg === "frates")
+                v82fRates(w);
+        }
+        catch (e) { }
+        return o;
+    };
+}
+(function () {
+    try {
+        const st = document.createElement("style");
+        st.id = "v82fcss";
+        st.textContent = `.v82fln{margin:5px 0 3px;font-size:11px;line-height:1.6;padding:5px 9px;border-radius:6px}
+.v82f-crit{background:var(--crit-soft,#fdecec);color:var(--crit,#b42318);border:1px solid var(--crit,#b42318)}.v82f-warn{background:var(--warn-soft,#fff6e5);color:var(--ink-2);border:1px solid var(--warn,#b45309)}
+.v82fbrk{margin-top:4px;font-size:10.5px;color:var(--ink-2);line-height:1.6}.v82fcnt{margin-top:4px;font-size:10px;color:var(--ink-3);line-height:1.55}
+.v82fcsn{margin:4px 0 0;font-size:11px;color:var(--ink-2)}.v82flanes{display:block;margin:2px 0 0;padding-left:10px}.v82flane{display:block}.v82frow{margin-top:3px}.v82fvc{color:var(--crit,#b42318)}
+.v82foddbox{margin:0 0 10px;padding:9px 12px;border:1px solid var(--warn,#b45309);border-radius:var(--r2);background:var(--warn-soft,#fff6e5);font-size:12px;line-height:1.65}.v82foddbox ul,.v82fodd ul{margin:4px 0 6px;padding-left:18px}
+.v82fodd p{margin:4px 0;font-size:12px;line-height:1.7}.v82fodd li{font-size:12px;line-height:1.8}.v82fodd li .btn{margin-left:6px;padding:1px 8px;font-size:11px}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+var V82ADM = { go: 0, pendH: null, kbSrvHist: null, kbAsk: "", kbBusy: 0, loadMs: 0, histN: 0 };
+function v82admLang() { try {
+    return (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v82admM(ja, en, zh, es) { const l = v82admLang(); return l === "en" ? (en || ja) : l === "zh" ? (zh || ja) : l === "es" ? (es || ja) : ja; }
+function v82admE(s) { s = String(s == null ? "" : s); try {
+    if (typeof esc === "function")
+        return esc(s);
+}
+catch (e) { } return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v82admToast(m) { try {
+    if (typeof toast === "function")
+        toast(m);
+}
+catch (e) { } }
+function v82admIsAdm() { try {
+    return typeof SES !== "undefined" && !!SES && SES.t === "admin";
+}
+catch (e) {
+    return false;
+} }
+function v82admLs(k, d) { try {
+    const v = JSON.parse(localStorage.getItem(k) || "null");
+    return v == null ? d : v;
+}
+catch (e) {
+    return d;
+} }
+function v82admLsSet(k, v) { try {
+    localStorage.setItem(k, JSON.stringify(v));
+}
+catch (e) { } }
+function v82admHm(t) { const d = new Date(+t || 0); return d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate() + " " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+function v82admDev() { try {
+    return String(((typeof syncDev === "function") && syncDev().name) || "").slice(0, 40);
+}
+catch (e) {
+    return "";
+} }
+const V82ADM_KBH = "bc20_v82kbh";
+function v82admKbLocal() { const L = v82admLs(V82ADM_KBH, []); return Array.isArray(L) ? L : []; }
+function v82admKbDiff(a, b) {
+    const A = new Map((a || []).map(x => [x.id, x])), B = new Map((b || []).map(x => [x.id, x])), out = [];
+    const pick = x => ({ id: x.id, q: String(x.q || ""), a: String(x.a || ""), src: String(x.src || ""), at: String(x.at || ""), tags: String(x.tags || ""), cat: String(x.cat || "") });
+    (b || []).forEach(x => {
+        const o = A.get(x.id);
+        if (!o) {
+            out.push({ a: "add", id: x.id, q: String(x.q || x.a || "").slice(0, 80) });
+            return;
+        }
+        const f = ["q", "a", "src", "at", "tags", "cat"].filter(k => String(o[k] || "") !== String(x[k] || ""));
+        if (f.length)
+            out.push({ a: "chg", id: x.id, q: String(x.q || x.a || "").slice(0, 80), f, prev: pick(o) });
+    });
+    (a || []).forEach(x => { if (!B.has(x.id))
+        out.push({ a: "del", id: x.id, q: String(x.q || x.a || "").slice(0, 80), it: pick(x) }); });
+    return out;
+}
+function v82admKbHistAdd(ch) {
+    try {
+        if (!ch || !ch.length)
+            return;
+        const e = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), t: Date.now(), by: "master", dev: v82admDev(), cv: (typeof APP_VER !== "undefined" ? String(APP_VER) : ""), ch };
+        const L = v82admKbLocal();
+        L.push(e);
+        v82admLsSet(V82ADM_KBH, L.slice(-100));
+    }
+    catch (e) { }
+}
+if (typeof syncCall === "function") {
+    const __sc82adm = syncCall;
+    syncCall = async function (op, body) {
+        const r = await __sc82adm.apply(this, arguments);
+        try {
+            if (op === "stdkb_get" && body && body.pw && r && r.ok) {
+                V82ADM.kbSrvHist = Array.isArray(r.hist) ? r.hist : null;
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+async function v82admKbSend(list, how) {
+    const before = (typeof V33ADM !== "undefined" && V33ADM && V33ADM.kb) || [];
+    let r = null;
+    try {
+        r = await syncCall("stdkb_set", { pw: SES.apw || "", items: list, dev: { name: v82admDev() }, why: how }, { timeout: 45000 });
+    }
+    catch (e) {
+        r = { ok: false, msg: String(e && e.message || e) };
+    }
+    if (!(r && r.ok)) {
+        v82admToast((r && r.msg) || v82admM("保存できませんでした（同期サーバーにつながりません）", "Could not save (cannot reach the sync server)", "无法保存（无法连接同步服务器）", "No se pudo guardar (no hay conexión con el servidor)"));
+        return false;
+    }
+    const ch = v82admKbDiff(before, list);
+    if (how === "restore")
+        ch.forEach(c => { if (c.a === "add")
+            c.a = "restore"; });
+    V33ADM.kb = list;
+    if (!r.hist)
+        v82admKbHistAdd(ch);
+    return { r, ch };
+}
+async function v82admKbVerify(fn) {
+    let L = null;
+    try {
+        const r = await syncCall("stdkb_get", { pw: SES.apw || "" }, { timeout: 30000 });
+        if (r && r.ok)
+            L = r.items || [];
+    }
+    catch (e) { }
+    if (!L)
+        return null;
+    try {
+        V33ADM.kb = L;
+    }
+    catch (e) { }
+    return fn(L);
+}
+async function v82admKbDel(id) {
+    if (V82ADM.kbBusy)
+        return;
+    const k = ((V33ADM && V33ADM.kb) || []).find(x => x.id === id);
+    if (!k)
+        return;
+    V82ADM.kbBusy = 1;
+    V82ADM.kbAsk = "";
+    try {
+        v82admKbPaintBusy(id);
+        const x = await v82admKbSend(((V33ADM && V33ADM.kb) || []).filter(y => y.id !== id), "del");
+        if (!x) {
+            return;
+        }
+        const gone = await v82admKbVerify(L => !L.some(y => y.id === id));
+        v82admToast(gone === false ? v82admM("⚠ 同期サーバーにまだ残っています。もう一度お試しください", "⚠ It is still on the sync server. Please try again", "⚠ 同步服务器上仍然存在。请重试", "⚠ Sigue en el servidor. Inténtelo de nuevo")
+            : gone === null ? v82admM("削除を送りました（同期サーバーから読み直せなかったため、消えたかは確かめられていません）", "Deletion sent (could not re-read the sync server to confirm)", "已发送删除（无法从同步服务器重新读取，尚未确认）", "Eliminación enviada (no se pudo confirmar en el servidor)")
+                : v82admM("削除しました（全アカウントに1時間以内に届きます。変更履歴から元に戻せます）", "Deleted (reaches all accounts within an hour; you can restore it from the change history)", "已删除（1小时内同步到所有账户；可从变更记录恢复）", "Eliminado (llega a todas las cuentas en una hora; puede restaurarlo desde el historial)"));
+    }
+    finally {
+        V82ADM.kbBusy = 0;
+        try {
+            v33AdmKb();
+        }
+        catch (e) { }
+    }
+}
+async function v82admKbRestore(it) {
+    if (V82ADM.kbBusy || !it || !it.id || !String(it.a || "").trim())
+        return;
+    const cur = ((V33ADM && V33ADM.kb) || []);
+    if (cur.some(y => y.id === it.id)) {
+        v82admToast(v82admM("この知識はもう一覧にあります", "This entry is already in the list", "该知识已在列表中", "Esta entrada ya está en la lista"));
+        return;
+    }
+    V82ADM.kbBusy = 1;
+    try {
+        const x = await v82admKbSend([Object.assign({ by: "STANDAGE" }, it)].concat(cur), "restore");
+        if (!x)
+            return;
+        const ok = await v82admKbVerify(L => L.some(y => y.id === it.id));
+        v82admToast(ok === false ? v82admM("⚠ 元に戻せませんでした。もう一度お試しください", "⚠ Could not restore. Please try again", "⚠ 无法恢复。请重试", "⚠ No se pudo restaurar. Inténtelo de nuevo") : v82admM("元に戻しました（全アカウントに1時間以内に届きます）", "Restored (reaches all accounts within an hour)", "已恢复（1小时内同步到所有账户）", "Restaurado (llega a todas las cuentas en una hora)"));
+    }
+    finally {
+        V82ADM.kbBusy = 0;
+        try {
+            v33AdmKb();
+        }
+        catch (e) { }
+    }
+}
+function v82admKbPaintBusy(id) { try {
+    const li = document.querySelector(`#v33kbbox [data-v82kbli="${CSS.escape(id)}"]`);
+    const ask = li && li.querySelector(".v82kbask");
+    if (ask)
+        ask.innerHTML = `<span class="v33mute">${v82admE(v82admM("削除しています…", "Deleting…", "正在删除…", "Eliminando…"))}</span>`;
+}
+catch (e) { } }
+function v82admKbAskHtml(k) {
+    return `<div class="v82kbask" role="group" aria-label="${v82admE(v82admM("削除の確認", "Confirm deletion", "确认删除", "Confirmar eliminación"))}" data-noi18n data-ai18n-skip>
+  <span>${v82admE(v82admM("この知識を削除しますか？全アカウントの AI商社マンが参照しなくなります（変更履歴から元に戻せます）。", "Delete this entry? The AI Trade Agent of every account will stop using it (you can restore it from the change history).", "要删除这条知识吗？所有账户的 AI 商社专员将不再参考它（可从变更记录恢复）。", "¿Eliminar esta entrada? El Agente IA de todas las cuentas dejará de usarla (puede restaurarla desde el historial)."))}</span>
+  <button class="btn" type="button" data-v82kbyes="${v82admE(k.id)}">${v82admE(v82admM("削除する", "Delete", "删除", "Eliminar"))}</button><button class="btn g" type="button" data-v82kbno="1">${v82admE(v82admM("やめる", "Cancel", "取消", "Cancelar"))}</button></div>`;
+}
+function v82admKbHistRows() { const srv = V82ADM.kbSrvHist; const L = (srv || v82admKbLocal()).slice().sort((a, b) => (+b.t || 0) - (+a.t || 0)).slice(0, 50); return { srv: !!srv, L }; }
+function v82admKbChTxt(c) {
+    const q = "「" + String(c.q || "").slice(0, 40) + "」";
+    const F = { q: v82admM("問い", "question", "问题", "pregunta"), a: v82admM("答え", "answer", "答案", "respuesta"), src: v82admM("出典", "source", "出处", "fuente"), at: v82admM("確認した日", "date checked", "确认日期", "fecha"), tags: v82admM("分野・語", "tags", "领域・关键词", "etiquetas"), cat: v82admM("分類", "category", "分类", "categoría") };
+    if (c.a === "add")
+        return v82admM("登録", "Added", "登记", "Añadido") + " " + q;
+    if (c.a === "del")
+        return v82admM("削除", "Deleted", "删除", "Eliminado") + " " + q;
+    if (c.a === "restore")
+        return v82admM("元に戻す", "Restored", "恢复", "Restaurado") + " " + q;
+    return v82admM("直す", "Edited", "修改", "Editado") + " " + q + "（" + (c.f || []).map(k => F[k] || k).join("・") + "）";
+}
+function v82admKbHistHtml() {
+    const { srv, L } = v82admKbHistRows();
+    const cur = new Set(((typeof V33ADM !== "undefined" && V33ADM && V33ADM.kb) || []).map(x => x.id));
+    const who = e => e.by && e.by !== "master" ? String(e.by) : v82admM("マスター", "master", "主管理员", "maestro");
+    const items = [];
+    L.forEach(e => (e.ch || []).forEach((c, i) => {
+        const it = c.a === "del" ? c.it : c.a === "chg" ? null : null;
+        items.push(`<li>${v82admE(v82admHm(e.t))}　${v82admE(who(e))}${e.dev ? "・" + v82admE(e.dev) : ""}　<b>${v82admE(v82admKbChTxt(c))}</b>${it && !cur.has(it.id) ? ` <button class="btn g v82kbrs" type="button" data-v82kbrs="${v82admE(e.id + "|" + i)}">${v82admE(v82admM("元に戻す", "Restore", "恢复", "Restaurar"))}</button>` : ""}</li>`);
+    }));
+    const note = srv ? v82admM("同期サーバーの記録（全員の変更）", "Sync server record (changes by everyone)", "同步服务器的记录（所有人的更改）", "Registro del servidor (cambios de todos)")
+        : v82admM("この PC で行った変更だけです（同期サーバーが変更履歴に対応すると、ほかの PC・管理者の変更も出ます）。全体の記録は、同期サーバーのセキュリティの記録（admin.op・stdkb_set）にも、誰が・いつ保存したかが残っています。", "Only changes made on this PC (once the sync server supports a change history, changes from other PCs and administrators also appear). The sync server's security log (admin.op · stdkb_set) also records who saved and when.", "仅显示在此电脑上进行的更改（同步服务器支持变更记录后，也会显示其他电脑和管理员的更改）。同步服务器的安全记录（admin.op・stdkb_set）中也记录了谁在何时保存。", "Solo los cambios hechos en este PC (cuando el servidor admita el historial, aparecerán también los de otros PC y administradores). El registro de seguridad del servidor (admin.op · stdkb_set) también guarda quién y cuándo guardó.");
+    return `<details id="v82kbHist" data-noi18n data-ai18n-skip${V82ADM.histOpen ? " open" : ""}><summary>${v82admE(v82admM("🕘 知識の変更履歴（新しい順・" + items.length + "件）", "🕘 Change history of the knowledge (newest first · " + items.length + ")", "🕘 知识的变更记录（按时间倒序・" + items.length + " 条）", "🕘 Historial de cambios (" + items.length + ")"))}</summary>
+    <p class="v33mute">${v82admE(note)}</p>${items.length ? `<ul>${items.join("")}</ul>` : `<p class="v33mute">${v82admE(v82admM("まだありません", "None yet", "暂无", "Aún no hay"))}</p>`}</details>`;
+}
+function v82admKbFind(key) { const [eid, i] = String(key).split("|"); const { L } = v82admKbHistRows(); const e = L.find(x => x.id === eid); const c = e && (e.ch || [])[+i]; return c && c.it ? c.it : null; }
+function v82admKbBind() {
+    try {
+        const box = document.getElementById("v33kbbox");
+        if (!box || !v82admIsAdm())
+            return;
+        box.querySelectorAll("[data-kbdel]").forEach(b => {
+            const li = b.closest("li");
+            if (li)
+                li.setAttribute("data-v82kbli", b.dataset.kbdel);
+            b.onclick = ev => {
+                ev.preventDefault();
+                const id = b.dataset.kbdel;
+                V82ADM.kbAsk = id;
+                box.querySelectorAll(".v82kbask").forEach(x => x.remove());
+                const k = ((V33ADM && V33ADM.kb) || []).find(x => x.id === id);
+                if (!k || !li)
+                    return;
+                li.insertAdjacentHTML("beforeend", v82admKbAskHtml(k));
+                const y = li.querySelector("[data-v82kbyes]"), n = li.querySelector("[data-v82kbno]");
+                if (n)
+                    n.onclick = () => { V82ADM.kbAsk = ""; const a = li.querySelector(".v82kbask"); if (a)
+                        a.remove(); try {
+                        b.focus();
+                    }
+                    catch (e) { } };
+                if (y) {
+                    y.onclick = () => v82admKbDel(id);
+                    setTimeout(() => { try {
+                        n.focus();
+                    }
+                    catch (e) { } }, 20);
+                }
+            };
+        });
+        const f = box.querySelector("#v33kbf");
+        if (f && !f.dataset.v82) {
+            f.dataset.v82 = "1";
+            f.onsubmit = async (e) => {
+                e.preventDefault();
+                if (V82ADM.kbBusy)
+                    return;
+                const d = Object.fromEntries(new FormData(f).entries());
+                if (!String(d.a || "").trim())
+                    return;
+                const list = ((V33ADM && V33ADM.kb) || []).slice();
+                const it = { id: d.id || v33Id("k").replace(/[^0-9a-z]/g, "").slice(0, 24), q: d.q, a: d.a, src: d.src, at: d.at, tags: d.tags, by: "STANDAGE" };
+                const i = list.findIndex(x => x.id === it.id);
+                if (i >= 0)
+                    list[i] = Object.assign({}, list[i], it);
+                else
+                    list.unshift(it);
+                V82ADM.kbBusy = 1;
+                let ok = false;
+                try {
+                    const x = await v82admKbSend(list, i >= 0 ? "edit" : "add");
+                    ok = !!x;
+                    if (ok)
+                        v82admToast(v82admM("保存しました（全アカウントに1時間以内に届きます）", "Saved (reaches all accounts within an hour)", "已保存（1小时内同步到所有账户）", "Guardado (llega a todas las cuentas en una hora)"));
+                }
+                finally {
+                    V82ADM.kbBusy = 0;
+                }
+                if (ok) {
+                    try {
+                        v33AdmKb();
+                    }
+                    catch (x2) { }
+                }
+            };
+        }
+        let h = document.getElementById("v82kbHist");
+        const html = v82admKbHistHtml();
+        const tmp = document.createElement("div");
+        tmp.innerHTML = html;
+        const nh = tmp.firstElementChild;
+        if (h)
+            h.replaceWith(nh);
+        else {
+            const ul = box.querySelector("ul.v33list");
+            (ul || box.lastElementChild || box).insertAdjacentElement(ul ? "afterend" : "beforeend", nh);
+        }
+        nh.addEventListener("toggle", () => { V82ADM.histOpen = nh.open; });
+        nh.querySelectorAll("[data-v82kbrs]").forEach(b => b.onclick = () => { const it = v82admKbFind(b.dataset.v82kbrs); if (it)
+            v82admKbRestore(it); });
+        if (V82ADM.kbAsk) {
+            const b = box.querySelector(`[data-kbdel="${CSS.escape(V82ADM.kbAsk)}"]`);
+            if (b)
+                b.click();
+        }
+    }
+    catch (e) {
+        try {
+            console.warn("v82adm kb", e);
+        }
+        catch (x) { }
+    }
+}
+if (typeof v33AdmKb === "function") {
+    const __kb82adm = v33AdmKb;
+    v33AdmKb = async function () { const r = await __kb82adm.apply(this, arguments); try {
+        v82admKbBind();
+    }
+    catch (e) { } return r; };
+}
+if (typeof v80admHistAdd === "function") {
+    const __ha82adm = v80admHistAdd;
+    V82ADM.histAdd0 = __ha82adm;
+    v80admHistAdd = function (ch, how) { try {
+        if (how === "save" && v82admIsAdm()) {
+            V82ADM.pendH = { ch, how, t: Date.now() };
+            return;
+        }
+    }
+    catch (e) { } return __ha82adm.apply(this, arguments); };
+}
+if (typeof v531Gate === "function") {
+    const __g82adm = v531Gate;
+    v531Gate = function (act, only) { try {
+        if (V82ADM.go && act === "save" && !only && typeof v531Sig === "function" && typeof V531 !== "undefined")
+            V531.ok = v531Sig("save");
+    }
+    catch (e) { } return __g82adm.apply(this, arguments); };
+}
+function v82admLlmSig() { try {
+    return (typeof v80admLlmSig === "function") ? v80admLlmSig(LLM) : JSON.stringify([LLM.prov, LLM.keys, LLM.act, LLM.route]);
+}
+catch (e) {
+    return "";
+} }
+function v82admBindSave() {
+    const sv = document.getElementById("ppsave");
+    if (!sv || sv.dataset.v82)
+        return;
+    sv.dataset.v82 = "1";
+    const o = sv.onclick;
+    sv.onclick = function (ev) {
+        const isGo = !!(typeof V80ADM !== "undefined" && V80ADM && V80ADM.pass);
+        const s0 = v82admLlmSig();
+        if (isGo)
+            V82ADM.go = 1;
+        let r;
+        try {
+            r = o ? o.call(this, ev) : undefined;
+        }
+        finally {
+            V82ADM.go = 0;
+        }
+        try {
+            const P = V82ADM.pendH;
+            if (isGo && P) {
+                V82ADM.pendH = null;
+                if (v82admLlmSig() !== s0) {
+                    V82ADM.histN++;
+                    V82ADM.histAdd0(P.ch, P.how);
+                }
+                else {
+                    V82ADM.histSkip = (V82ADM.histSkip || 0) + 1;
+                }
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof ppBind === "function") {
+    const __pb82adm = ppBind;
+    ppBind = function () { const r = __pb82adm.apply(this, arguments); try {
+        if (v82admIsAdm())
+            v82admBindSave();
+    }
+    catch (e) { } return r; };
+}
+if (typeof s30ExpHtml === "function") {
+    const __ex82adm = s30ExpHtml;
+    s30ExpHtml = function () {
+        let h = __ex82adm.apply(this, arguments);
+        try {
+            const now = Date.now();
+            h = String(h).replace(/<tr>(<td><b>[\s\S]*?<\/b><\/td><td class="acode">)([^<]*)(<\/td>[\s\S]*?)<\/tr>/g, (m, a, code, rest) => {
+                const acct = (typeof findAcct === "function") ? findAcct(code.replace(/&amp;/g, "&")) : null;
+                if (!acct || acct.st !== "active" || !(+acct.expires < now))
+                    return m;
+                return "<tr>" + a + code + rest.replace('<span class="p hi">有効</span>', '<span class="p mid">期限切れ</span>') + "</tr>";
+            });
+        }
+        catch (e) { }
+        return h;
+    };
+}
+const V82ADM_ROW = '<div style="border:1px solid var(--line);border-radius:var(--r2);background:var(--surface-2)">';
+function v82admAlloc(total, parts) {
+    const fl = parts.map(v => Math.floor(v));
+    let rem = total - fl.reduce((s, v) => s + v, 0);
+    if (rem < 0 || rem > parts.length)
+        return null;
+    const ord = parts.map((v, i) => [v - Math.floor(v), i]).sort((x, y) => y[0] - x[0]);
+    for (let k = 0; k < rem; k++)
+        fl[ord[k][1]]++;
+    return fl;
+}
+if (typeof costCardHtml === "function") {
+    const __cc82adm = costCardHtml;
+    costCardHtml = function () {
+        let h = __cc82adm.apply(this, arguments);
+        try {
+            if (typeof h !== "string")
+                return h;
+            const fx = costFx(), rg = costRange(), A = costAgg(rg[0], rg[1]), rows = costUserRows(A), total = costYen(A.usd, fx);
+            const parts = rows.map(r => r.cost ? r.cost.usd * fx.v : 0), al = v82admAlloc(total, parts);
+            const seg = h.split(V82ADM_ROW);
+            let moved = 0;
+            if (al && seg.length === rows.length + 1) {
+                rows.forEach((r, i) => {
+                    if (!r.cost)
+                        return;
+                    const old = costFmtY(costYen(r.cost.usd, fx)), nw = al[i] >= 1 ? "¥" + al[i].toLocaleString() : (r.cost.usd > 0 ? "¥1未満" : "¥0");
+                    if (old === nw)
+                        return;
+                    const k = '<span class="n" style="font-weight:600">';
+                    const j = seg[i + 1].indexOf(k + old);
+                    if (j < 0)
+                        return;
+                    seg[i + 1] = seg[i + 1].slice(0, j) + k + nw + seg[i + 1].slice(j + k.length + old.length);
+                    moved++;
+                });
+                h = seg.join(V82ADM_ROW);
+            }
+            const sumNote = rows.some(r => r.cost) ? `<p class="v82adm-n" data-noi18n data-ai18n-skip>${v82admE(v82admM("※ 金額は1円未満を四捨五入しています。ユーザー別の金額は、足すと上の合計（" + costFmtY(total) + "）と同じになるように1円未満を配分しています（各行の差は1円未満）。", "* Amounts are rounded to the yen. Per-user amounts distribute the fractions so that they add up to the total above (" + costFmtY(total) + "); each row differs by less than ¥1.", "※ 金额已四舍五入到日元。按用户的金额已分配不足1日元的部分，使其合计与上方合计（" + costFmtY(total) + "）一致（每行误差不足1日元）。", "* Importes redondeados al yen. Los importes por usuario reparten las fracciones para que sumen el total de arriba (" + costFmtY(total) + "); cada fila difiere en menos de ¥1."))}</p>` : "";
+            h = h.replace(/(<p class="lbl">API呼び出し（記録）<\/p>[\s\S]*?<div class="kd">うち 🌐Web検索 \d+回[^<]*)(<\/div>)/, (m, a, b) => a + `<span class="v82adm-n" data-noi18n data-ai18n-skip title="${v82admE(v82admM("この期間に記録した API の呼び出しのうち、Web 検索つきの回数", "Number of recorded API calls with web search in this period", "此期间记录的 API 调用中带网络搜索的次数", "Llamadas API con búsqueda web registradas en este periodo"))}">${v82admE(v82admM("（この期間の API 呼び出し）", " (API calls in this period)", "（此期间的 API 调用）", " (llamadas API del periodo)"))}</span>` + b);
+            const webNote = `<p class="v82adm-n" id="v82admWeb" data-noi18n data-ai18n-skip>${v82admE(v82admM("※「Web検索」の数の違い：ここは、上の期間に実際に記録した API の呼び出し（1回の質問で複数回呼ぶこともあります）のうち Web 検索つきの回数です。ダッシュボードの「AIへの質問 ◯回・うち 🌐Web検索 ◯回」は、全アカウントの質問の累計（期間なし・API の記録を始める前の分や、内蔵エンジンで答えた分も含む）なので、一致しません。", "* Why the “web search” numbers differ: here it is the recorded API calls with web search in the period above (one question can make several calls). The dashboard’s “AI questions … of which 🌐 web search …” is the all-time total of questions across all accounts (including those before API recording started and those answered by the built-in engine), so the numbers do not match.", "※“网络搜索”次数的差异：此处是上述期间实际记录的 API 调用（一次提问可能调用多次）中带网络搜索的次数。仪表板的“AI 提问 ◯ 次・其中 🌐网络搜索 ◯ 次”是所有账户提问的累计（不限期间，包括开始记录 API 之前的部分和内置引擎回答的部分），因此两者不一致。", "* Por qué difieren las cifras de búsqueda web: aquí son las llamadas API con búsqueda web registradas en el periodo (una pregunta puede hacer varias llamadas). En el panel, «Preguntas a la IA … de ellas 🌐 búsqueda web …» es el total histórico de preguntas de todas las cuentas (incluidas las anteriores al registro y las del motor integrado), por eso no coinciden."))}</p>`;
+            const gi = h.indexOf('<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))');
+            if (gi > 0)
+                h = h.slice(0, gi) + webNote + sumNote + h.slice(gi);
+            else
+                h = h.replace(/<\/div>\s*$/, webNote + sumNote + "</div>");
+            V82ADM.costMoved = moved;
+        }
+        catch (e) {
+            try {
+                console.warn("v82adm cost", e);
+            }
+            catch (x) { }
+        }
+        return h;
+    };
+}
+function v82admKpiNote() {
+    try {
+        const t = document.querySelector('#admkpi .kpi[data-jump="admaislot"]');
+        if (!t)
+            return;
+        const kd = t.querySelector(".kd:not(.v801ld)");
+        if (!kd)
+            return;
+        t.title = v82admM("全アカウントの質問の累計（期間なし）。APIコスト分析の「Web検索」は、期間内の API の呼び出しの回数なので一致しません", "All-time total of questions across all accounts. The “web search” in the API cost analysis counts API calls in a period, so they differ", "所有账户提问的累计（不限期间）。API 成本分析中的“网络搜索”是期间内的 API 调用次数，因此不一致", "Total histórico de preguntas de todas las cuentas. La «búsqueda web» del análisis de costes cuenta llamadas API de un periodo, por eso difieren");
+        if (!kd.querySelector(".v82adm-kd")) {
+            const s = document.createElement("span");
+            s.className = "v82adm-kd";
+            s.setAttribute("data-noi18n", "");
+            s.setAttribute("data-ai18n-skip", "");
+            s.textContent = v82admM("（累計の質問）", " (all-time questions)", "（累计提问）", " (preguntas totales)");
+            kd.appendChild(s);
+        }
+    }
+    catch (e) { }
+}
+if (typeof v63aCardHtml === "function") {
+    const __ah82adm = v63aCardHtml;
+    v63aCardHtml = function () {
+        let h = __ah82adm.apply(this, arguments);
+        try {
+            if (typeof h !== "string" || typeof V63A === "undefined" || !V63A.adm)
+                return h;
+            const C = V63A.adm.conf || {}, def = +C.capAcct || 0, A = (V63A.adm.accts || []).filter(a => a && a.kid);
+            const n = x => { try {
+                return (+x).toLocaleString();
+            }
+            catch (e) {
+                return String(x);
+            } };
+            A.forEach(a => {
+                const tag = a.cap > 0 ? v82admM("個別", "custom", "单独", "propio") : v82admM("既定", "default", "默认", "predet.");
+                const lim = a.cap > 0 ? a.cap : def;
+                h = h.replace(new RegExp(`(<tr data-v63a="${a.kid.replace(/[^0-9a-zA-Z]/g, "")}">[\\s\\S]*?<td style="white-space:nowrap">)${+a.used || 0} / ${lim || "上限なし"}(</td>)`), (m, x, y) => x + `${n(+a.used || 0)} / ${lim ? n(lim) : "上限なし"} <span class="v82adm-cap${a.cap > 0 ? " on" : ""}" data-noi18n data-ai18n-skip>${v82admE(tag)}</span>` + y);
+            });
+            const nCust = A.filter(a => a.cap > 0).length;
+            const note = `<p class="nn" id="v82admCap" data-noi18n data-ai18n-skip>${v82admE(v82admM("1日の上限の決まり：「上限（1日）」の欄が空欄のアカウントは、全体の既定（1アカウント " + n(def) + " 回）を使います（表に「既定」）。数を入れたアカウントだけ、その数が上限です（表に「個別」・いま " + nCust + " 件）。個別の数は、共通のデモ用・体験用のアカウントのように多くの人が同じアカウントを使うときに大きくします。空欄に戻すと既定に戻ります。回数はサーバー経由で AI に頼んだ回数で、日本時間の0時に 0 に戻ります。全体の上限・トークンの量の上限に先に届くと、その日は内蔵エンジンで答えます。お客様の画面の「残り回数」も、この数（同期サーバーの答え）から出しています。", "Daily limit rules: accounts with an empty “Limit (per day)” use the overall default (" + n(def) + " per account; shown as “default”). Only accounts with a number use that number (shown as “custom”; " + nCust + " now). Custom numbers are set higher for shared demo/trial accounts used by many people. Clearing the field returns it to the default. Counts are AI requests via the server and reset at midnight Japan time. If the overall or token limits are reached first, the built-in engine answers for the rest of the day. The “remaining” count on customers’ screens comes from the same number (the sync server’s answer).", "每日上限规则：“上限（每日）”为空的账户使用全体默认值（每个账户 " + n(def) + " 次，表中显示“默认”）。只有填写了数字的账户才使用该数字（表中显示“单独”，目前 " + nCust + " 个）。像多人共用的演示・体验账户，会设得更大。清空后恢复默认值。次数为经由服务器请求 AI 的次数，在日本时间0点归零。若先达到全体上限或令牌量上限，当天由内置引擎回答。客户画面上的“剩余次数”也来自同一数字（同步服务器的回答）。", "Reglas del límite diario: las cuentas con «Límite (diario)» vacío usan el valor predeterminado (" + n(def) + " por cuenta; «predet.»). Solo las cuentas con un número usan ese número («propio»; ahora " + nCust + "). Se aumenta para cuentas de demostración compartidas. Si se vacía, vuelve al predeterminado. Se cuentan las solicitudes a la IA vía el servidor y se reinician a medianoche (hora de Japón). Si antes se alcanza el límite global o de tokens, responde el motor integrado. El «restante» de la pantalla del cliente sale del mismo número."))}</p>`;
+            const k = '<div class="tw" style="max-height:none;margin-top:8px">';
+            const i = h.lastIndexOf(k);
+            if (i > 0)
+                h = h.slice(0, i) + note + h.slice(i);
+        }
+        catch (e) { }
+        return h;
+    };
+}
+const V82ADM_LDK = "bc20_v82adm_loadms";
+if (typeof v801fNote === "function") {
+    const __nt82adm = v801fNote;
+    v801fNote = function (st) {
+        const r = __nt82adm.apply(this, arguments);
+        try {
+            const n = document.getElementById("v73admSync");
+            const t0 = (typeof V801F !== "undefined" && V801F && V801F.adm && V801F.adm.t0) || 0;
+            if (st === "wait" && n && t0) {
+                const s = Math.max(0, Math.round((Date.now() - t0) / 1000)), last = +v82admLs(V82ADM_LDK, 0) || 0;
+                let sp = n.querySelector(".v82adm-ld");
+                if (!sp) {
+                    sp = document.createElement("span");
+                    sp.className = "v82adm-ld";
+                    n.appendChild(sp);
+                }
+                sp.textContent = " " + v82admM("（" + s + "秒" + (last ? "・前回は約" + Math.max(1, Math.round(last / 1000)) + "秒" : "") + "）", " (" + s + "s" + (last ? " · last time about " + Math.max(1, Math.round(last / 1000)) + "s" : "") + ")", "（" + s + "秒" + (last ? "・上次约" + Math.max(1, Math.round(last / 1000)) + "秒" : "") + "）", " (" + s + " s" + (last ? " · la última vez unos " + Math.max(1, Math.round(last / 1000)) + " s" : "") + ")");
+                V82ADM.ldT0 = t0;
+            }
+            else if (st === "" && V82ADM.ldT0) {
+                const ms = Date.now() - V82ADM.ldT0;
+                V82ADM.ldT0 = 0;
+                if (ms > 0 && ms < 120000) {
+                    V82ADM.loadMs = ms;
+                    v82admLsSet(V82ADM_LDK, ms);
+                }
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+if (typeof renderAdmin === "function") {
+    const __ra82adm = renderAdmin;
+    renderAdmin = function () { const r = __ra82adm.apply(this, arguments); try {
+        v82admKpiNote();
+    }
+    catch (e) { } return r; };
+}
+if (typeof v801fKpiFill === "function") {
+    const __kf82adm = v801fKpiFill;
+    v801fKpiFill = function () { const r = __kf82adm.apply(this, arguments); try {
+        v82admKpiNote();
+    }
+    catch (e) { } return r; };
+}
+(function () {
+    try {
+        const st = document.createElement("style");
+        st.id = "v82admcss";
+        st.textContent = `
+.v82kbask{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%;margin-top:6px;padding:8px 10px;border:1px solid var(--warn,#b45309);border-radius:8px;background:var(--surface);font-size:12px;line-height:1.6;box-sizing:border-box}
+.v82kbask span{flex:1 1 220px}.v82kbask .btn{min-height:32px}
+#v33kbbox li.v33li[data-v82kbli]{flex-wrap:wrap}
+#v82kbHist{margin-top:10px;font-size:11.5px}#v82kbHist summary{cursor:pointer}#v82kbHist ul{margin:4px 0 0 16px;padding:0;line-height:1.75;max-height:260px;overflow:auto}#v82kbHist p{margin:4px 0}
+#v82kbHist .v82kbrs{padding:1px 8px;font-size:10.5px;min-height:24px;margin-left:4px}
+.v82adm-n{font-size:10.5px;color:var(--ink-3);line-height:1.6;margin:6px 0 0}.v82adm-kd{font-size:10px;color:var(--ink-3)}
+.v82adm-cap{display:inline-block;margin-left:4px;padding:0 6px;border-radius:9px;border:1px solid var(--line);font-size:9.5px;color:var(--ink-3)}.v82adm-cap.on{border-color:var(--bl);color:var(--bl)}
+#v82admCap{margin-top:8px}
+@keyframes v82admPulse{0%,100%{opacity:.45}50%{opacity:1}}
+#admkpi.v801w .kpi .v801ld,#accounts.v801w td .v801ld{animation:v82admPulse 1.4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){#admkpi.v801w .kpi .v801ld,#accounts.v801w td .v801ld{animation:none}}`;
+        document.head.appendChild(st);
+    }
+    catch (e) { }
+})();
+var V82SHP = { v: "21.82", obRaw: {}, dmLang: "", capBusy: 0, mvAt: 0 };
+function v82shpL() { try {
+    return (typeof I18N !== "undefined" && I18N && I18N.lang) || "ja";
+}
+catch (e) {
+    return "ja";
+} }
+function v82shpM(ja, en, zh, es) { const l = v82shpL(); return l === "en" ? (en || ja) : l === "zh" ? (zh || en || ja) : l === "es" ? (es || en || ja) : ja; }
+function v82shpE(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function v82shpN(s) { s = String(s == null ? "" : s); try {
+    s = s.normalize("NFKC");
+}
+catch (e) { } return s; }
+function v82shpFmt(n) { try {
+    return (+n).toLocaleString("en-US");
+}
+catch (e) {
+    return String(n);
+} }
+const V82SHP_UNIT = /(拠点|店舗|店|社|か所|カ所|ヶ所|箇所|カ国|か国|名|outlets?|stores?|locations?|branches|shops?)/;
+function v82shpSizeFix(s) {
+    s = String(s == null ? "" : s).trim();
+    if (!s || /その他の国|Other countries|内訳の合計.{0,40}合いません|breakdown does not add up/.test(s))
+        return s;
+    const n = v82shpN(s);
+    const mt = n.match(new RegExp("([0-9][0-9,]*)\\s*" + V82SHP_UNIT.source));
+    if (!mt)
+        return s;
+    const T = +mt[1].replace(/,/g, "");
+    if (!(T > 0))
+        return s;
+    const rest = n.slice(mt.index + mt[0].length);
+    const open = rest.search(/[(（]/);
+    if (open < 0)
+        return s;
+    const close = rest.indexOf(")", open) >= 0 ? rest.indexOf(")", open) : rest.length;
+    const inner = rest.slice(open + 1, close);
+    const items = [];
+    const re = /([^\d\s(),、，・+＋\/／:：;；]+?)\s*[:：]?\s*([0-9][0-9,]*)/g;
+    let m;
+    while ((m = re.exec(inner))) {
+        const nm = m[1].replace(/^(and|約|約\s*)/, "").trim();
+        if (!nm || /^(合計|計|total)$/i.test(nm))
+            continue;
+        items.push([nm, +m[2].replace(/,/g, "")]);
+    }
+    if (items.length < 2)
+        return s;
+    const S = items.reduce((a, x) => a + x[1], 0);
+    if (S === T)
+        return s;
+    const sep = (/＋/.test(s) ? "＋" : /\+/.test(inner) ? "+" : /、/.test(s) ? "、" : /・/.test(s) ? "・" : /,/.test(inner) ? ", " : "＋");
+    const ja = /[぀-ヿ一-鿿]/.test(s);
+    const cpos = Math.max(s.lastIndexOf("）"), s.lastIndexOf(")"));
+    if (S < T) {
+        const add = (ja ? "その他の国 " : "Other countries ") + v82shpFmt(T - S);
+        return cpos > 0 ? s.slice(0, cpos) + sep + add + s.slice(cpos) : s + sep + add;
+    }
+    return s + (ja ? `（内訳の合計 ${v82shpFmt(S)} と合計 ${v82shpFmt(T)} が合いません・要確認）` : ` (breakdown does not add up: ${v82shpFmt(S)} vs total ${v82shpFmt(T)} — please check)`);
+}
+if (typeof llmAsk === "function") {
+    const __la82 = llmAsk;
+    llmAsk = async function (q, maxTok, opts) {
+        try {
+            const o = opts || {};
+            if (o.task === "ob" && typeof o.sys === "string" && /アプローチ先リスト/.test(o.sys) && o.sys.indexOf("v82size") < 0)
+                opts = Object.assign({}, o, { sys: o.sys + "\n・size（規模）に拠点数・店舗数などの合計と国の内訳を書くときは、内訳の合計を合計にそろえる（内訳に入らない分は「その他の国 ◯」と書く）。確かめられない数は書かない（v82size）" });
+            if (V82SHP.dmLang && /^海外バイヤーとの下記やり取りに対する、次の返信案を/.test(String(q || ""))) {
+                const L = V82SHP.dmLang;
+                q = String(q).replace(/^(海外バイヤーとの下記やり取りに対する、次の返信案を)[^（\n]*?(で作成してください)/, (m0, a, b) => a + L + b) + `\n\n必ず ${L} で書いてください（相手のメッセージの言語が違っても、${L} で書く）。`;
+            }
+        }
+        catch (e) { }
+        const r = await __la82.call(this, q, maxTok, opts);
+        try {
+            const o = opts || {};
+            if (o.task === "ob" && r && r.txt && /アプローチ先リスト/.test(String(o.sys || ""))) {
+                const t = String(r.txt).replace(/```json|```/g, "");
+                const a = t.indexOf("{"), b = t.lastIndexOf("}");
+                if (a >= 0 && b > a) {
+                    const j = JSON.parse(t.slice(a, b + 1));
+                    const M = {};
+                    (Array.isArray(j.leads) ? j.leads : []).forEach(x => { if (x && x.name && x.size)
+                        M[String(x.name).slice(0, 90)] = String(x.size).slice(0, 160); });
+                    V82SHP.obRaw = M;
+                }
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+}
+function v82shpObFixRun(run) {
+    if (!run || !Array.isArray(run.leads))
+        return 0;
+    let n = 0;
+    run.leads.forEach(l => {
+        if (!l)
+            return;
+        const raw = V82SHP.obRaw[l.name];
+        const base = (raw && String(raw).indexOf(String(l.size || "")) === 0) ? raw : (l.size || "");
+        const f = v82shpSizeFix(base).slice(0, 160);
+        if (f !== l.size) {
+            l.size = f;
+            n++;
+        }
+    });
+    return n;
+}
+if (typeof v71obBuild === "function") {
+    const __b82 = v71obBuild;
+    v71obBuild = async function () {
+        V82SHP.obRaw = {};
+        const r = await __b82.apply(this, arguments);
+        try {
+            const run = (typeof v71obRun === "function") ? v71obRun() : null;
+            if (v82shpObFixRun(run)) {
+                if (typeof v71obSave === "function")
+                    v71obSave();
+                if (typeof v71obPaint === "function")
+                    v71obPaint();
+            }
+        }
+        catch (e) {
+            try {
+                console.warn("v82shp ob", e);
+            }
+            catch (x) { }
+        }
+        return r;
+    };
+}
+function v82shpTenBack() {
+    if (typeof SES === "undefined" || !SES || SES.t !== "trial" || SES.role === "fwd")
+        return false;
+    if (typeof PID === "undefined" || !PID || PID === "custom")
+        return false;
+    if (typeof TENS === "undefined" || !Array.isArray(TENS) || TENS.length)
+        return false;
+    if (typeof loadTen !== "function")
+        return false;
+    const keepT = (typeof TEN !== "undefined") ? TEN : null;
+    const t = loadTen();
+    if (!t || !TENS.length)
+        return false;
+    TEN = keepT;
+    try {
+        if (typeof buildNav === "function")
+            buildNav();
+        if (typeof render === "function")
+            render();
+    }
+    catch (e) { }
+    return true;
+}
+function v82shpTenBackSoon() { [0, 600, 2000, 5000].forEach(ms => setTimeout(() => { try {
+    if (v82shpTenBack())
+        V82SHP.tenBack = (+V82SHP.tenBack || 0) + 1;
+}
+catch (e) {
+    try {
+        console.warn("v82shp tenBack", e);
+    }
+    catch (x) { }
+} }, ms)); }
+if (typeof enterApp === "function") {
+    const __ea82 = enterApp;
+    enterApp = function () { const r = __ea82.apply(this, arguments); try {
+        v82shpTenBackSoon();
+    }
+    catch (e) { } return r; };
+}
+if (typeof syncStart === "function") {
+    const __ss82 = syncStart;
+    syncStart = async function () { const r = await __ss82.apply(this, arguments); try {
+        v82shpTenBackSoon();
+    }
+    catch (e) { } return r; };
+}
+function v82shpScopeSig() {
+    try {
+        if (typeof dashScopeUnits !== "function")
+            return "";
+        const us = dashScopeUnits() || [];
+        const ks = us.map(u => String(u.co || "") + "|" + String(u.item || "")).sort();
+        let h = 0;
+        const s = ks.join("¦");
+        for (let i = 0; i < s.length; i++)
+            h = (h * 31 + s.charCodeAt(i)) | 0;
+        return us.length + ":" + (h >>> 0).toString(36);
+    }
+    catch (e) {
+        return "";
+    }
+}
+if (typeof v801p801Track === "function") {
+    const __tr82 = v801p801Track;
+    v801p801Track = function (key, L) {
+        try {
+            if (key && /^s\|/.test(String(key.id || "")) && String(key.id).indexOf("|v82:") < 0) {
+                const g = v82shpScopeSig();
+                if (g)
+                    key = Object.assign({}, key, { id: key.id + "|v82:" + g });
+            }
+        }
+        catch (e) { }
+        return __tr82.call(this, key, L);
+    };
+}
+const V82SHP_BASIC = ["co", "coEn", "item", "sku", "origin", "lead"];
+function v82shpNeedNm(k, t) { try {
+    if (typeof v79pNeedName === "function")
+        return v79pNeedName(k, t);
+}
+catch (e) { } return ((typeof NEED !== "undefined" ? NEED : []).find(x => x && x.k === k) || {}).n || k; }
+function v82shpHas(t, k) { try {
+    const hf = (typeof v54upldHas === "function") ? v54upldHas : (typeof has === "function" ? has : (v => Array.isArray(v) ? v.length > 0 : !!(v && String(v).trim())));
+    return !!hf(t[k]) && !(k === "hs" && t.hsGuess);
+}
+catch (e) {
+    return false;
+} }
+function v82shpFillFix(h) {
+    const t = (typeof TEN !== "undefined") ? TEN : null;
+    if (!t || typeof NEED === "undefined" || h.indexOf("data-v82basic") >= 0)
+        return h;
+    const g = h.indexOf('<div class="g4" style="margin-top:12px;gap:8px">');
+    if (g < 0)
+        return h;
+    let i = g, depth = 0, end = -1;
+    const re = /<div\b|<\/div>/g;
+    re.lastIndex = g;
+    let m;
+    while ((m = re.exec(h))) {
+        if (m[0] === "</div>") {
+            depth--;
+            if (depth === 0) {
+                end = m.index;
+                break;
+            }
+        }
+        else
+            depth++;
+    }
+    if (end < 0)
+        return h;
+    const ks = V82SHP_BASIC.filter(k => NEED.some(x => x && x.k === k));
+    const f = ks.filter(k => v82shpHas(t, k)).length, pc = ks.length ? Math.round(f / ks.length * 100) : 100;
+    const miss = ks.filter(k => !v82shpHas(t, k)).map(k => v82shpNeedNm(k, t));
+    const tile = `<div data-v82basic="${f}/${ks.length}" style="padding:9px 11px;border:1px solid var(--line);border-radius:var(--r2);background:${pc === 100 ? "var(--good-soft)" : "var(--surface-2)"}">
+    <p class="lbl">${v82shpE(v82shpM("基本情報・出荷計画", "Basics & shipping plan", "基本信息・出货计划", "Datos básicos y plan de envío"))}</p>
+    <div class="n" style="font-size:16px;font-weight:300;color:${pc === 100 ? "var(--good)" : "var(--ink)"}">${f}<span style="font-size:10px">/${ks.length}</span></div>
+    <div class="mt" style="margin-top:5px"><i style="width:${pc}%;background:${pc === 100 ? "var(--good)" : "var(--or)"}"></i></div>
+    <div class="kd">${v82shpE(pc === 100 ? v82shpM("そろっています", "Complete", "已齐备", "Completo") : miss.join("・") + v82shpM("が必要", " needed", "待填写", " pendiente"))}</div></div>`;
+    const grp = [["規制判定・関税", 4], ["見積・受注書", 4], ["運賃見積・梱包", 3], ["商談準備・AI提案", 4]];
+    const n4 = grp.reduce((a, x) => a + x[1], 0), N = NEED.length;
+    const note = `<p class="nn" data-v82need="${n4}+${ks.length}=${N}" style="margin-top:7px">${v82shpE(v82shpM(`項目の内訳：規制判定・関税 4・見積・受注書 4・運賃見積・梱包 3・商談準備・AI提案 4（ここまで ${n4}項目）＋基本情報・出荷計画 ${ks.length}（会社名・英文社名・商品名・品番・産地・リードタイム）＝ ${N}項目。上の「◯ / ${N} 項目」はこの ${N}項目の数です。`, `Breakdown: regulations & duties 4, quotes & orders 4, freight & packing 3, sales prep 4 (${n4} so far) + basics & shipping plan ${ks.length} (company, English name, product, SKU, origin, lead time) = ${N} items.`, `项目明细：规制判定・关税 4・报价・订单 4・运费・包装 3・商谈准备・AI提案 4（共 ${n4} 项）＋基本信息・出货计划 ${ks.length} ＝ ${N} 项。`, `Desglose: normativa 4, presupuestos 4, flete y embalaje 3, preparación 4 (${n4}) + datos básicos ${ks.length} = ${N} campos.`))}</p>`;
+    return h.slice(0, end) + tile + h.slice(end, end + 6) + note + h.slice(end + 6);
+}
+if (typeof vFill === "function") {
+    const __vf82 = vFill;
+    vFill = function () { let h = String(__vf82.apply(this, arguments)); try {
+        h = v82shpFillFix(h);
+    }
+    catch (e) {
+        try {
+            console.warn("v82shp fill", e);
+        }
+        catch (x) { }
+    } return h; };
+}
+function v82shpDemo() { try {
+    if (typeof v79pDemoKey === "function")
+        return v79pDemoKey();
+    if (typeof PID === "undefined" || !PID || PID === "custom" || typeof PRODUCTS === "undefined" || !PRODUCTS[PID])
+        return "";
+    return (typeof D !== "undefined" && D === PRODUCTS[PID]) ? PID : "";
+}
+catch (e) {
+    return "";
+} }
+function v82shpDemoMsg() { return v82shpM("見本（デモ商材）は編集できません。貴社の商品を登録すると、強みを追加・編集できます。", "Samples (demo products) cannot be edited. Register your own product to add or edit strengths.", "示例（演示商品）不能编辑。登记贵公司的商品后即可添加・编辑优势。", "Las muestras (productos de demostración) no se pueden editar. Registre su producto para añadir o editar puntos fuertes."); }
+function v82shpDemoStop() { if (!v82shpDemo())
+    return false; try {
+    if (typeof toast === "function")
+        toast(v82shpDemoMsg());
+}
+catch (e) { } return true; }
+if (typeof openStrEdit === "function") {
+    const __ose82 = openStrEdit;
+    openStrEdit = function () { if (v82shpDemoStop())
+        return; return __ose82.apply(this, arguments); };
+}
+if (typeof strDel === "function") {
+    const __sd82 = strDel;
+    strDel = function () { if (v82shpDemoStop())
+        return; return __sd82.apply(this, arguments); };
+}
+if (typeof strengthsAI === "function") {
+    const __sa82 = strengthsAI;
+    strengthsAI = function () { if (v82shpDemoStop())
+        return; return __sa82.apply(this, arguments); };
+}
+function v82shpItemFix(h) {
+    if (!v82shpDemo())
+        return h;
+    const k = h.indexOf("① 商品情報・強み");
+    if (k < 0)
+        return h;
+    const c0 = h.lastIndexOf('<div class="c"', k);
+    if (c0 < 0)
+        return h;
+    const nx = h.indexOf('<div class="c"', k);
+    const c1 = nx > 0 ? nx : h.length;
+    let seg = h.slice(c0, c1);
+    seg = seg.replace(/<button class="btn g" onclick="openStrEdit\(-1\)">[\s\S]*?<\/button>/, "")
+        .replace(/<button class="btn" onclick="strengthsAI\(\)"[^>]*>[\s\S]*?<\/button>/, `<span class="v68pin" data-v82demo="1">${v82shpE(v82shpM("見本", "Sample", "示例", "Muestra"))}</span>`)
+        .replace(/<button class="btn g"[^>]*onclick="openStrEdit\(\d+\)"[^>]*>[\s\S]*?<\/button>/g, "")
+        .replace(/<button class="btn g"[^>]*onclick="strDel\(\d+\)"[^>]*>[\s\S]*?<\/button>/g, "")
+        .replace(/各カードの ✎ で編集、🗑 で削除できます。/, v82shpE(v82shpDemoMsg()))
+        .replace(/⚠ 強みでない文の可能性。✎で修正するか🗑で削除を/g, "⚠ 強みでない文の可能性");
+    if (seg.indexOf(v82shpDemoMsg()) < 0) {
+        const pi = seg.indexOf('<p class="nn">');
+        if (pi >= 0) {
+            const pe = seg.indexOf("</p>", pi);
+            if (pe > 0)
+                seg = seg.slice(0, pe) + " " + v82shpE(v82shpDemoMsg()) + seg.slice(pe);
+        }
+    }
+    seg = seg.replace('<div class="c"', '<div class="c" data-v82demostr="1"');
+    return h.slice(0, c0) + seg + h.slice(c1);
+}
+if (typeof vItem === "function") {
+    const __vi82 = vItem;
+    vItem = function () { let h = String(__vi82.apply(this, arguments)); try {
+        h = v82shpItemFix(h);
+    }
+    catch (e) {
+        try {
+            console.warn("v82shp item", e);
+        }
+        catch (x) { }
+    } return h; };
+}
+function v82shpCapHtml() {
+    let r = null, old = 0;
+    try {
+        if (typeof V63A !== "undefined" && V63A) {
+            r = V63A.last;
+            old = V63A.old ? 1 : 0;
+        }
+    }
+    catch (e) { }
+    const tail = v82shpM("（回数は日本時間の0時に戻ります。上限に達した日は、内蔵エンジンで答えます）", " (resets at midnight Japan time; after the limit, the built-in engine answers)", "（次数在日本时间0点重置。达到上限的当天由内置引擎回答）", " (se reinicia a medianoche, hora de Japón; al llegar al límite responde el motor integrado)");
+    let body = "", st = "na";
+    if (r && r.ok && r.on) {
+        const cap = +r.cap || 0, used = +r.used || 0;
+        if (cap > 0) {
+            st = "cap";
+            body = v82shpM(`🔢 AI の利用（STANDAGE の AI）：今日 ${v82shpFmt(used)}回／1日の上限 ${v82shpFmt(cap)}回・残り ${v82shpFmt(Math.max(0, cap - used))}回`, `🔢 AI use (STANDAGE AI): ${v82shpFmt(used)} today / daily limit ${v82shpFmt(cap)}, ${v82shpFmt(Math.max(0, cap - used))} left`, `🔢 AI 使用（STANDAGE 的 AI）：今天 ${v82shpFmt(used)} 次／每日上限 ${v82shpFmt(cap)} 次・剩余 ${v82shpFmt(Math.max(0, cap - used))} 次`, `🔢 Uso de IA (IA de STANDAGE): ${v82shpFmt(used)} hoy / límite diario ${v82shpFmt(cap)}, quedan ${v82shpFmt(Math.max(0, cap - used))}`) + tail +
+                v82shpM("。質問のほか、資料づくり・画面の訳など AI を使う操作はどれも1回と数えます。共通のアカウントでは、使う人全員で同じ上限を使います。", " Questions, document drafting and screen translations each count as one. On a shared account, everyone shares the same limit.", "。提问以外，制作资料・画面翻译等使用AI的操作都各计1次。共用账户由所有使用者共享同一上限。", " Preguntas, documentos y traducciones cuentan una vez cada uno. En una cuenta compartida, todos comparten el límite.");
+        }
+        else {
+            st = "nocap";
+            body = v82shpM(`🔢 AI の利用（STANDAGE の AI）：今日 ${v82shpFmt(used)}回（このアカウントの1日の上限は決まっていません）`, `🔢 AI use (STANDAGE AI): ${v82shpFmt(used)} today (no daily limit set for this account)`, `🔢 AI 使用：今天 ${v82shpFmt(used)} 次（本账户未设每日上限）`, `🔢 Uso de IA: ${v82shpFmt(used)} hoy (sin límite diario)`);
+        }
+    }
+    else if (r && r.ok && !r.on) {
+        st = "off";
+        body = v82shpM("🔢 いまは STANDAGE の AI（サーバー経由）を使っていないため、回数の上限はかかりません（内蔵エンジン、または御社の AI キーで答えます）。", "🔢 STANDAGE AI (via the server) is not in use now, so no daily limit applies (the built-in engine or your own AI key answers).", "🔢 当前未使用 STANDAGE 的 AI（经服务器），不受次数上限限制（由内置引擎或贵公司的 AI 密钥回答）。", "🔢 La IA de STANDAGE no está en uso; no hay límite diario (responde el motor integrado o su propia clave).");
+    }
+    else {
+        st = "na";
+        body = v82shpM("🔢 AI の1日の利用回数は、同期サーバーにつながると、ここに出ます（今日の回数・1日の上限・残り）。", "🔢 Your daily AI use (today, limit, remaining) appears here once connected to the sync server.", "🔢 连接同步服务器后，这里会显示每日 AI 使用次数（今天・上限・剩余）。", "🔢 El uso diario de IA aparece aquí al conectar con el servidor.");
+    }
+    if (old)
+        st = "old";
+    return `<p class="nn" id="v82shpCap" data-v82cap="${st}" data-noi18n style="margin:0 0 10px;padding:8px 12px;border:1px solid var(--line);border-radius:var(--r2,8px);background:var(--surface-2)">${v82shpE(body)}</p>`;
+}
+function v82shpCapPaint() {
+    try {
+        if (typeof cur === "undefined" || cur !== "ai")
+            return;
+        const w = document.getElementById("well");
+        if (!w)
+            return;
+        const html = v82shpCapHtml();
+        const ex = document.getElementById("v82shpCap");
+        if (ex) {
+            if (ex.outerHTML !== html)
+                ex.outerHTML = html;
+            return;
+        }
+        const h3 = w.querySelector(".c");
+        if (h3)
+            h3.insertAdjacentHTML("beforebegin", html);
+        else
+            w.insertAdjacentHTML("afterbegin", html);
+    }
+    catch (e) { }
+}
+if (typeof render === "function") {
+    const __re82 = render;
+    render = function () {
+        const r = __re82.apply(this, arguments);
+        try {
+            if (typeof cur !== "undefined" && cur === "ai") {
+                v82shpCapPaint();
+                if (typeof v63aPull === "function" && !V82SHP.capBusy && !(typeof V63A !== "undefined" && V63A && V63A.old)) {
+                    V82SHP.capBusy = 1;
+                    Promise.resolve(v63aPull(Date.now() - (+V82SHP.capAt || 0) > 30000)).catch(() => null).then(() => { V82SHP.capBusy = 0; V82SHP.capAt = Date.now(); v82shpCapPaint(); });
+                }
+            }
+        }
+        catch (e) { }
+        try {
+            v82shpBellSoon();
+        }
+        catch (e) { }
+        return r;
+    };
+}
+const V82SHP_TC = /[們這說請謝價報樣與們為從會寄貨單運輸聯繫擇點從還對應開關買賣訂製種類]/, V82SHP_SC = /[们这说请谢价报样与为从会寄货单运输联系择点还对应开关买卖订制种类]/;
+function v82shpLangOf(s) {
+    s = String(s || "").replace(/https?:\/\/\S+/g, "").replace(/\S+@\S+/g, "");
+    if (!s.trim())
+        return "";
+    const cnt = re => (s.match(re) || []).length;
+    const kana = cnt(/[぀-ヿ]/g), han = cnt(/[一-鿿]/g), hang = cnt(/[가-힯]/g), thai = cnt(/[฀-๿]/g), arab = cnt(/[؀-ۿ]/g), lat = cnt(/[A-Za-z]/g);
+    const tot = kana + han + hang + thai + arab + lat;
+    if (!tot)
+        return "";
+    if (kana >= 3 && kana + han >= tot * 0.3)
+        return "日本語";
+    if (hang >= tot * 0.3)
+        return "한국어";
+    if (thai >= tot * 0.3)
+        return "ไทย（タイ語）";
+    if (arab >= tot * 0.3)
+        return "العربية（アラビア語）";
+    if (han >= tot * 0.3) {
+        const tc = cnt(new RegExp(V82SHP_TC.source, "g")), sc = cnt(new RegExp(V82SHP_SC.source, "g"));
+        return sc > tc ? "简体中文" : "繁體中文";
+    }
+    if (lat >= tot * 0.5) {
+        const w = " " + s.toLowerCase().replace(/[^a-zà-ÿ\s]/g, " ") + " ";
+        const sc2 = (ws) => ws.reduce((a, x) => a + (w.split(" " + x + " ").length - 1), 0);
+        const es = sc2(["el", "la", "los", "las", "de", "que", "y", "para", "con", "gracias", "por", "una"]), fr = sc2(["le", "les", "des", "et", "pour", "avec", "merci", "nous", "vous", "une", "est"]), de = sc2(["der", "die", "und", "das", "mit", "für", "danke", "wir", "sie", "ist"]), pt = sc2(["o", "os", "de", "que", "e", "para", "com", "obrigado", "não", "uma", "você"]), en = sc2(["the", "and", "to", "of", "for", "we", "you", "please", "thank", "with", "is", "are"]), vi = cnt(/[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/gi), id = sc2(["dan", "untuk", "kami", "terima", "kasih", "dengan", "yang", "ini"]);
+        if (vi >= 3)
+            return "Tiếng Việt";
+        const best = [["English", en], ["Español", es], ["Français", fr], ["Deutsch", de], ["Português", pt], ["Bahasa Indonesia", id]].sort((a, b) => b[1] - a[1])[0];
+        return best[1] >= 2 ? best[0] : "English";
+    }
+    return "";
+}
+function v82shpDmLangs() { try {
+    return (typeof DM_LANGS !== "undefined" && Array.isArray(DM_LANGS)) ? DM_LANGS : ["English", "简体中文", "繁體中文", "한국어", "日本語"];
+}
+catch (e) {
+    return ["English"];
+} }
+if (typeof openDMThread === "function") {
+    const __odt82 = openDMThread;
+    openDMThread = function (id) {
+        const r = __odt82.apply(this, arguments);
+        try {
+            const ai = document.getElementById("dmRai");
+            const th = (typeof dmThreads === "function") ? dmThreads()[id] : null;
+            if (ai && th && !ai.dataset.v82) {
+                ai.dataset.v82 = "1";
+                const lastBy = (th.msgs || []).filter(m => m && m.w === "by").slice(-1)[0];
+                const det = lastBy ? v82shpLangOf((lastBy.subj || "") + "\n" + (lastBy.body || "")) : "";
+                const L = v82shpDmLangs();
+                const thl = String(th.lang || "English");
+                const def = (det && L.includes(det)) ? det : thl;
+                const sel = document.createElement("select");
+                sel.className = "sel";
+                sel.id = "v82dmL";
+                sel.setAttribute("aria-label", v82shpM("返信案の言語", "Reply language", "回复草稿的语言", "Idioma de la respuesta"));
+                sel.style.cssText = "margin-right:6px;min-height:30px;padding:3px 6px;font-size:12px";
+                sel.innerHTML = L.map(l => `<option value="${v82shpE(l)}" ${l === def ? "selected" : ""}>${v82shpE(l)}${l === det ? v82shpE(v82shpM("（相手の最新の言語）", " (buyer's latest)", "（对方最新消息的语言）", " (último del comprador)")) : ""}${l === thl && l !== det ? v82shpE(v82shpM("（スレッドの言語）", " (thread)", "（会话语言）", " (hilo)")) : ""}</option>`).join("");
+                ai.insertAdjacentElement("beforebegin", sel);
+                ai.style.marginRight = "0";
+                sel.style.marginRight = "auto";
+                const lab = (again) => `🤖 ${again ? v82shpM("もう一度作成", "Draft again", "重新生成", "Generar de nuevo") : v82shpM("AIが返信案を作成", "AI drafts a reply", "AI生成回复草稿", "La IA redacta una respuesta")}（${sel.value}）`;
+                ai.textContent = lab(false);
+                ai.dataset.v82lang = sel.value;
+                sel.onchange = () => { ai.dataset.v82lang = sel.value; ai.textContent = lab(!!ai.dataset.v82again); };
+                const orig = ai.onclick;
+                if (typeof orig === "function")
+                    ai.onclick = async function (ev) {
+                        const chosen = sel.value || thl;
+                        const keep = th.lang;
+                        V82SHP.dmLang = chosen;
+                        th.lang = chosen;
+                        let p = null;
+                        try {
+                            p = orig.call(this, ev);
+                        }
+                        finally {
+                            th.lang = keep;
+                        }
+                        try {
+                            await p;
+                        }
+                        catch (e) { }
+                        V82SHP.dmLang = "";
+                        ai.dataset.v82again = "1";
+                        ai.textContent = lab(true);
+                        try {
+                            const ta = document.getElementById("dmR");
+                            const got = ta ? v82shpLangOf(ta.value) : "";
+                            const old = document.getElementById("v82dmWarn");
+                            if (old)
+                                old.remove();
+                            if (ta && ta.value.trim() && got && got !== chosen && !(got === "English" && /^(Español|Français|Deutsch|Português|Bahasa Indonesia)$/.test(chosen))) {
+                                ai.closest(".composer").insertAdjacentHTML("afterend", `<p class="nn" id="v82dmWarn" data-noi18n style="margin-top:4px;color:var(--warn,#9a6400)">${v82shpE(v82shpM(`選んだ言語（${chosen}）と違う言語（${got}）で作られた可能性があります。送る前に確かめてください。`, `The draft may be in ${got}, not the chosen ${chosen}. Please check before sending.`, `草稿可能是${got}，而非所选的${chosen}。发送前请确认。`, `El borrador puede estar en ${got} y no en ${chosen}. Revíselo antes de enviar.`))}</p>`);
+                            }
+                        }
+                        catch (e) { }
+                    };
+            }
+        }
+        catch (e) {
+            try {
+                console.warn("v82shp dm", e);
+            }
+            catch (x) { }
+        }
+        return r;
+    };
+}
+function v82shpRect(e) { try {
+    const r = e.getBoundingClientRect();
+    return r;
+}
+catch (x) {
+    return null;
+} }
+function v82shpBellFree() {
+    const bell = document.getElementById("bell");
+    if (!bell)
+        return 0;
+    const b = v82shpRect(bell);
+    if (!b || !b.width)
+        return 0;
+    const hd = bell.closest("header,.top,.hdr,#top,.bar") || bell.parentElement;
+    const hb = hd ? v82shpRect(hd) : b;
+    const below = Math.round(Math.max(b.bottom, (hb && hb.bottom) || 0) + 8);
+    let moved = 0;
+    [...document.body.children].forEach(el => {
+        if (!el || el === bell || el.contains(bell) || el.id === "welv" || el.id === "lgv")
+            return;
+        let cs;
+        try {
+            cs = getComputedStyle(el);
+        }
+        catch (e) {
+            return;
+        }
+        if (cs.position !== "fixed" || cs.display === "none" || cs.visibility === "hidden" || +cs.opacity === 0)
+            return;
+        const r = v82shpRect(el);
+        if (!r || !r.width || !r.height)
+            return;
+        if (r.height > Math.min(240, innerHeight * 0.5))
+            return;
+        if (el.getAttribute("role") === "dialog" || el.getAttribute("aria-modal") === "true")
+            return;
+        const hit = !(r.right <= b.left || r.left >= b.right || r.bottom <= b.top || r.top >= b.bottom);
+        if (!hit)
+            return;
+        el.style.top = below + "px";
+        el.style.bottom = "auto";
+        el.dataset.v82mv = "1";
+        moved++;
+    });
+    return moved;
+}
+function v82shpBellSoon() { if (V82SHP.mvT)
+    return; V82SHP.mvT = setTimeout(() => { V82SHP.mvT = 0; try {
+    v82shpBellFree();
+}
+catch (e) { } }, 60); }
+if (typeof toast === "function") {
+    const __to82 = toast;
+    toast = function () { const r = __to82.apply(this, arguments); try {
+        v82shpBellSoon();
+    }
+    catch (e) { } return r; };
+}
+try {
+    if (typeof MutationObserver !== "undefined" && document.body && !window.__v82shpMo) {
+        window.__v82shpMo = 1;
+        new MutationObserver(() => { try {
+            v82shpBellSoon();
+        }
+        catch (e) { } }).observe(document.body, { childList: true });
+    }
+}
+catch (e) { }
+try {
+    if (typeof v30I18n === "function")
+        v30I18n([
+            ["見本", "Sample", "示例", "Muestra"]
+        ]);
+}
+catch (e) { }
+var V82SEED_OLD = { "2026-09-20": 1, "2026-09-30": 1, "2026-10-31": 1 };
+function v82seedValid() { try {
+    const d = new Date();
+    return (d.getFullYear() + (d.getMonth() === 11 ? 1 : 0)) + "-12-31";
+}
+catch (e) {
+    return "2026-12-31";
+} }
+function v82seedKey(r) { return [r && r.co, r && r.pol, r && r.pod, r && r.mode, r && r.price].join("|"); }
+var V82SEED_KEYS = (function () { const s = new Set(); try {
+    fwdSeedRates().concat(fwdSeedRates2()).forEach(r => s.add(v82seedKey(r)));
+}
+catch (e) { } return s; })();
+if (typeof fwdSeedRates === "function") {
+    const __sr82 = fwdSeedRates;
+    fwdSeedRates = function () { const vd = v82seedValid(); return (__sr82.apply(this, arguments) || []).map(r => (V82SEED_OLD[r.valid] ? Object.assign({}, r, { valid: vd }) : r)); };
+}
+if (typeof fwdSeedRates2 === "function") {
+    const __sr82b = fwdSeedRates2;
+    fwdSeedRates2 = function () { const vd = v82seedValid(); return (__sr82b.apply(this, arguments) || []).map(r => (V82SEED_OLD[r.valid] ? Object.assign({}, r, { valid: vd }) : r)); };
+}
+function v82seedFix() {
+    try {
+        if (typeof FWDB === "undefined" || !FWDB || !Array.isArray(FWDB.rates))
+            return 0;
+        const vd = v82seedValid();
+        let n = 0;
+        FWDB.rates.forEach(r => { if (r && V82SEED_OLD[r.valid] && V82SEED_KEYS.has(v82seedKey(r))) {
+            r.valid = vd;
+            n++;
+        } });
+        if (n && typeof fwdSave === "function")
+            fwdSave();
+        return n;
+    }
+    catch (e) {
+        return 0;
+    }
+}
+if (typeof fwdLoad === "function") {
+    const __fl82s = fwdLoad;
+    fwdLoad = function () { const o = __fl82s.apply(this, arguments); v82seedFix(); return o; };
+}
 try {
     if (typeof v35Restore === "function")
         v35Restore();
