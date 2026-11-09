@@ -1,0 +1,81 @@
+--- a/app_r04n9/logic_v2185mail.js
++++ b/app_r04n902/logic_v2185mail.js
+@@ -22,6 +22,10 @@
+      最初の送信の間は、受け付けた時に送信元・最初の時刻・番号つきで「送信中」を保存しておく。読み込み直した後に「送信中」が残っていれば、
+      このページで送っている途中のもの（V2185M.fly）でない限り、結果が分からない最初の送信として、同じ番号・同じ期限で確かめ直す（期限を過ぎていれば未確認）。
+      番号を作る前に止まった（番号が無い）ものは、サーバーに出ていないので「未送信」。期限（6 分）を過ぎた「確認中」は、タイマーが動いていなくても未確認と出す
++   ・11/9 23:23 の再レビュー（R04-N9-02・H07）：番号（idem）を入れた保存が、ブラウザの保存先（localStorage の bc20_ten_）に本当に残ったかを、
++     送る前に読み直して確かめる（v2185mKept：同じ v2185id のメッセージに同じ番号・送信元・最初の時刻があること）。確かめられなければ送らない
++     （サーバーに出さず「未送信」と理由。新しい番号は作らず、自動で送り直さない）。これで「番号の無い送信中」が保存に残るのは、本当に送っていないときだけになり、
++     読み込み直した後の「未送信」が正しくなる。保存の対象でない商品（saveTen が残さない src）のメッセージは、保存に何も残らず取り違えようがないので確かめない
+    ・ほかの層の bmSend・syncCall・bmChip の上に重ねる（最後の層）。DOM のハンドラは足さない（21.84 の CSP のまま） */
+ const V2185M = { ctx: null, live: {}, fly: {}, cap: 0, inner: null };
+ const V2185M_TIMEOUT = 60000, V2185M_CHECK = [10000, 40000, 120000, 300000], V2185M_SAFE_MS = 6 * 60000;
+@@ -43,6 +47,10 @@
+         zh: "刚才已发送过内容相同的邮件（此画面无法确认是否送达）。请确认对方没有收到后，约10分钟后再发送。",
+         es: "Hace un momento se envió un correo con el mismo contenido (esta pantalla no puede confirmar si llegó). Compruebe que no llegó y vuelva a enviarlo en unos 10 minutos." },
+     notSent: { ja: "送っていません。", en: "Not sent.", zh: "未发送。", es: "No enviado." },
++    noKeep: { ja: "送っていません。この端末のブラウザに送信の記録（送信の番号）を保存できませんでした。保存容量を空けて（不要な商品・添付を整理して）から、もう一度送ってください。",
++        en: "Not sent. This browser could not save the send record (send ID). Free up storage (remove unneeded products or attachments), then send again.",
++        zh: "未发送。此浏览器无法保存发送记录（发送编号）。请腾出存储空间（整理不需要的商品或附件）后再发送。",
++        es: "No enviado. Este navegador no pudo guardar el registro de envío (ID de envío). Libere espacio (elimine productos o adjuntos innecesarios) y vuelva a enviarlo." },
+     cSent: { ja: "送信済", en: "Sent", zh: "已发送", es: "Enviado" },
+     cChk: { ja: "送信を確認中", en: "Checking delivery", zh: "正在确认发送", es: "Comprobando el envío" },
+     cUnk: { ja: "送れたか未確認", en: "Delivery unconfirmed", zh: "未确认是否发出", es: "Envío sin confirmar" },
+@@ -92,6 +100,44 @@
+     catch (e) { return null; }
+ }
+ function v2185mSame(m) { return !!v2185mCur(m); }
++/* R04-N9-02：番号（idem）を入れた保存が、ブラウザの保存先に本当に残ったか（読み直して確かめる）。保存の対象でない商品のメッセージは確かめない（何も残らない） */
++function v2185mOwner(m) {
++    try {
++        const L = (typeof TENS !== "undefined" && Array.isArray(TENS)) ? TENS.slice() : [];
++        if (typeof TEN !== "undefined" && TEN && L.indexOf(TEN) < 0) L.push(TEN);
++        for (const t of L) { const th = t && t.dmThreads && t.dmThreads[m.v2185th]; if (th && Array.isArray(th.msgs) && th.msgs.indexOf(m) >= 0) return t; }
++    }
++    catch (e) { }
++    return null;
++}
++function v2185mKept(m) {
++    try {
++        if (!m || !m.idem || !m.v2185id || !m.v2185th) return false;
++        const ses = (typeof SES !== "undefined") ? SES : null;
++        const raw = (ses && ses.code) ? localStorage.getItem("bc20_ten_" + ses.code) : null;
++        const t = v2185mOwner(m);
++        const need = !!(ses && ses.t === "trial" && ((t && (t.src === "upload" || t.src === "sample2")) || (raw && raw.indexOf(m.v2185id) >= 0)));
++        if (!need) return true;
++        if (!raw || raw.indexOf(m.idem) < 0 || raw.indexOf(m.v2185id) < 0) return false;
++        const j = JSON.parse(raw);
++        for (const s of (j && Array.isArray(j.list)) ? j.list : []) {
++            const th = s && s.dmThreads && s.dmThreads[m.v2185th];
++            for (const x of (th && Array.isArray(th.msgs)) ? th.msgs : []) {
++                if (x && x.v2185id === m.v2185id) return x.idem === m.idem && x.v2185k === m.v2185k && +x.v2185t0 === +m.v2185t0;
++            }
++        }
++        return false;
++    }
++    catch (e) { return false; }
++}
++/* 確かめられない：送らない（サーバーに出さない）。新しい番号は作らず、自動で送り直さない */
++function v2185mNoKeep(id, m) {
++    try { if (m && m.v2185id) delete V2185M.fly[m.v2185id]; } catch (e) { }
++    const t = v2185mL(V2185M_T.noKeep), cm = v2185mCur(m);
++    if (cm) { v2185mSet(id, cm, "failed", t, "❌ " + t); return; }
++    try { m.st = "failed"; m.err = t; } catch (e) { }   /* アカウント・スレッドが変わった：今の画面は書き換えない（同じアカウントなら描き直して、残った「送信中」を未送信と出す） */
++    try { if (v2185mKidNow() && v2185mKidNow() === m.v2185k && typeof bmRefresh === "function") bmRefresh(id); } catch (e) { }
++}
+ /* 最初に送った時刻からの絶対の時刻と、送ってよい残りの時間 */
+ function v2185mDue(m, att) { return (+m.v2185t0 || 0) + V2185M_CHECK[att]; }
+ function v2185mLeft(m) { return (+m.v2185t0 || 0) + V2185M_SAFE_MS - Date.now(); }
+@@ -227,7 +273,10 @@
+         }
+         return (async () => {
+             try { if (!b.idem) b.idem = (m && m.idem) || await v2185mIdem(b, m ? id : ""); } catch (e) { }
+-            if (m) { m.idem = b.idem; try { if (typeof saveTen === "function") saveTen(); } catch (e) { } }
++            if (m) {
++                m.idem = b.idem; try { if (typeof saveTen === "function") saveTen(); } catch (e) { }
++                if (!v2185mKept(m)) { v2185mNoKeep(id, m); return new Promise(() => { }); }   /* R04-N9-02：番号の保存を確かめられなければ送らない */
++            }
+             const o = Object.assign({}, opt || {}, { timeout: Math.max(+((opt || {}).timeout) || 0, V2185M_TIMEOUT) });
+             let r = null, err = null;
+             try { r = await __sc2185.call(self, op, b, o); }

@@ -1,0 +1,160 @@
+{
+  "label": "v42",
+  "total": 5,
+  "passed": 3,
+  "results": [
+    {
+      "id": "H07 idem save fails (QuotaExceededError): no handoff, or no false Not sent after reload",
+      "pass": false,
+      "observed": {
+        "before": {
+          "st": "sent",
+          "err": "",
+          "idem": "bc-15f19c449846526ab6590389c43245b262e58aa7",
+          "dupOk": false,
+          "key": "ce88c1-cb85jaf2",
+          "n": 1,
+          "chip": "✅ 送信済"
+        },
+        "quotaHits": 3,
+        "stored": {
+          "st": "sending",
+          "idem": "",
+          "v2185id": "mw72fqs2-4aefyqjy"
+        },
+        "requests": 1,
+        "effects": 1,
+        "afterReload": {
+          "st": "failed",
+          "err": "送っていません。",
+          "idem": "",
+          "dupOk": false,
+          "key": "ce88c1-cb85jaf2",
+          "n": 1,
+          "chip": "❌ 送れませんでした（未送信）"
+        },
+        "final": {
+          "st": "failed",
+          "err": "送っていません。",
+          "idem": "",
+          "dupOk": false,
+          "key": "ce88c1-cb85jaf2",
+          "n": 1,
+          "chip": "❌ 送れませんでした（未送信）"
+        },
+        "requestsFinal": 1,
+        "effectsFinal": 1
+      },
+      "error": "Expected \"actual\" to be strictly unequal to:\n\n'failed'"
+    },
+    {
+      "id": "H08 saves fail only after handoff: restored message keeps idem, resumes, 1 effect, never Not sent",
+      "pass": true,
+      "observed": {
+        "before": {
+          "st": "sent",
+          "err": "",
+          "idem": "bc-1df9299e854acfb22b525ebfab6c3fdc9d235303",
+          "dupOk": false,
+          "key": "ce88c1-7yzcex8r",
+          "n": 1,
+          "chip": "✅ 送信済"
+        },
+        "stored": {
+          "st": "sending",
+          "idem": "bc-1df9299e854acfb22b525ebfab6c3fdc9d235303",
+          "v2185id": "mw72fqpu-n24yclpg"
+        },
+        "quotaHits": 2,
+        "afterReload": {
+          "st": "checking",
+          "err": "応答が遅れているため、同じ送信の番号で結果を確かめています（二重には送りません）。",
+          "idem": "bc-1df9299e854acfb22b525ebfab6c3fdc9d235303",
+          "dupOk": false,
+          "key": "ce88c1-7yzcex8r",
+          "n": 1,
+          "chip": "⏳ 送信を確認中"
+        },
+        "final": {
+          "st": "unknown",
+          "err": "送れたかどうか確かめられませんでした。届いている場合もあります。同じメールは10分ほど送り直せません。相手に届いていないことを確かめてから送り直してください。",
+          "idem": "bc-1df9299e854acfb22b525ebfab6c3fdc9d235303",
+          "dupOk": false,
+          "key": "ce88c1-7yzcex8r",
+          "n": 1,
+          "chip": "⚠ 送れたか未確認"
+        },
+        "effects": 1,
+        "idems": [
+          "bc-1df9299e854acfb22b525ebfab6c3fdc9d235303"
+        ]
+      }
+    },
+    {
+      "id": "H09 positive control: ordinary send, sent, 1 effect, same after reload",
+      "pass": true,
+      "observed": {
+        "before": {
+          "st": "sent",
+          "err": "",
+          "idem": "bc-8af9fc372bd657e4badd3d0f65dabf81660b3cba",
+          "dupOk": false,
+          "key": "ce88c1-y7545ujf",
+          "n": 1,
+          "chip": "✅ 送信済"
+        },
+        "stored": {
+          "st": "sent",
+          "idem": "bc-8af9fc372bd657e4badd3d0f65dabf81660b3cba",
+          "v2185id": "mw72fqtg-ek7p42gz"
+        },
+        "afterReload": {
+          "st": "sent",
+          "err": "",
+          "idem": "bc-8af9fc372bd657e4badd3d0f65dabf81660b3cba",
+          "dupOk": false,
+          "key": "ce88c1-y7545ujf",
+          "n": 1,
+          "chip": "✅ 送信済"
+        },
+        "effects": 1,
+        "requests": 1
+      }
+    },
+    {
+      "id": "H10 after a refusal the same text can be sent again once storage works: 1 effect, sent",
+      "pass": false,
+      "observed": {
+        "first": {
+          "st": "sent",
+          "err": "",
+          "idem": "bc-05be3494eb7995af830d68bb324cf3f6cc95e6ac",
+          "dupOk": false,
+          "key": "ce88c1-p3nfcm6e",
+          "n": 1,
+          "chip": "✅ 送信済"
+        },
+        "requestsAfterFirst": 1,
+        "second": {
+          "st": "unknown",
+          "err": "同じ内容のメールを少し前に送っています（届いたかは、この画面では確かめられません）。届いていないことを確かめてから、10分ほどたって送り直してください。",
+          "idem": "bc-05be3494eb7995af830d68bb324cf3f6cc95e6ac",
+          "dupOk": false,
+          "key": "ce88c1-p3nfcm6e",
+          "n": 2,
+          "chip": "⚠ 送れたか未確認"
+        },
+        "effects": 1,
+        "requests": 2
+      },
+      "error": "Expected values to be strictly equal:\n\n'unknown' !== 'sent'\n"
+    },
+    {
+      "id": "H11 no page errors in these fixtures",
+      "pass": true,
+      "observed": {
+        "errors": []
+      }
+    }
+  ]
+}

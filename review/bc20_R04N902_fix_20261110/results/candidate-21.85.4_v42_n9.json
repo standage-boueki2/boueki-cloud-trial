@@ -1,0 +1,68 @@
+{
+  "label": "v42",
+  "total": 3,
+  "passed": 3,
+  "results": [
+    {
+      "id": "O1 reload during first request, then the resumed check actually runs: one effect, same idem, settles sent (dst-capable) or unknown (v42)",
+      "pass": true,
+      "observed": {
+        "persisted": {
+          "st": "checking",
+          "err": "応答が遅れているため、同じ送信の番号で結果を確かめています（二重には送りません）。",
+          "idem": "bc-8c91abf18874af69d78f35b6c20a8ace25824cff",
+          "dupOk": false,
+          "key": "ce88c1-9u6vsgrw",
+          "n": 1,
+          "chip": "⏳ 送信を確認中"
+        },
+        "after": {
+          "st": "unknown",
+          "err": "送れたかどうか確かめられませんでした。届いている場合もあります。同じメールは10分ほど送り直せません。相手に届いていないことを確かめてから送り直してください。",
+          "idem": "bc-8c91abf18874af69d78f35b6c20a8ace25824cff",
+          "dupOk": false,
+          "key": "ce88c1-9u6vsgrw",
+          "n": 1,
+          "chip": "⚠ 送れたか未確認"
+        },
+        "effects": 1,
+        "idems": [
+          "bc-8c91abf18874af69d78f35b6c20a8ace25824cff"
+        ],
+        "requests": 2
+      }
+    },
+    {
+      "id": "O2 old handler cannot persist Not sent: abort during first request without reload settles via the layer (checking → sent)",
+      "pass": true,
+      "observed": {
+        "mid": {
+          "st": "checking",
+          "err": "応答が遅れているため、同じ送信の番号で結果を確かめています（二重には送りません）。",
+          "idem": "bc-f2870084c283f3837c321f86a468f08220eadceb",
+          "dupOk": false,
+          "key": "ce88c1-w27rruba",
+          "n": 1,
+          "chip": "⏳ 送信を確認中"
+        },
+        "after": {
+          "st": "unknown",
+          "err": "送れたかどうか確かめられませんでした。届いている場合もあります。同じメールは10分ほど送り直せません。相手に届いていないことを確かめてから送り直してください。",
+          "idem": "bc-f2870084c283f3837c321f86a468f08220eadceb",
+          "dupOk": false,
+          "key": "ce88c1-w27rruba",
+          "n": 1,
+          "chip": "⚠ 送れたか未確認"
+        },
+        "effects": 1
+      }
+    },
+    {
+      "id": "O3 no page errors in these fixtures",
+      "pass": true,
+      "observed": {
+        "errors": []
+      }
+    }
+  ]
+}
