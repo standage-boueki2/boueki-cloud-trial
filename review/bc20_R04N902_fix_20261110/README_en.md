@@ -2,6 +2,10 @@
 
 Nothing is deployed. Production is still Apps Script version 42 and app 21.85.1. The backend is unchanged since 9 Nov 21:17: v2.33 sec q (security `2111d903…d234`, deployment `bd0aef57…7fa4`, latency `5f3f4903…0288`). Synthetic data only.
 
+Files in the Drive copy (out8_cloud_R04N902_20261110): this README, `layer_r04n9_to_r04n902.diff`, `omori-browser-n902.cjs`, `build.py`, `tsx.cjs`.
+- Full layer = 9 Nov layer `app_r04n9/logic_v2185mail.js` (`26210229…3137`) + the diff (`patch -p1`). Expected result: `24e6e14b…82a5`.
+- Candidate page = `python3 build.py <live 21.85.1 index.html> <layer transpiled by tsx.cjs> index-candidate-21.85.4.html 21.85.4 938c06368422`. Expected result: `22455e84…d3b2`.
+
 ## What changed (mail layer only: `app/layer_r04n9_to_r04n902.diff`, +50 / −1 lines incl. comments)
 1. After the first `mail_send` sets `m.idem` and calls `saveTen()`, the layer reads `localStorage["bc20_ten_" + SES.code]` back **before the request leaves the page** (`v2185mKept`). It looks for the stored message with the same `v2185id` and requires the same `idem`, origin account (`v2185k`) and first-admission time (`v2185t0`).
 2. If that cannot be confirmed, there is **no handoff**: no request and no new identity. Nothing is resent automatically. The message becomes `failed`, with the reason "Not sent: this browser could not save the send record (send ID)…" (`v2185mNoKeep`). So a stored "sending / no idem" record now only exists when nothing left the page, and the existing restore rule ("no idem → Not sent") stays truthful after reload.
