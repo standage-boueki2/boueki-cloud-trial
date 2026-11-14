@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-rVBajYo0QxTeSJiZES8GO7H7cldtjoEpuis7ygIU/Q0=' 'sha256-rKAouANr0NUSQYIzgErOcU395GxYe4mTNpwntDLxHnY=' 'sha256-72Zf9tkN5iBQvQYTjVHa2f13/4MdSk9jQyfaXguqGFs=' 'sha256-bzw0oDVwD7QDYxD55AsyzL1A/CLNbPTzEO1MF9qrIMw=' 'sha256-t5VpmcMf33s9gMOUXGq89Q8mGE5CckAd/Al1d1y1SvI=' 'sha256-rwNbx6B5wY2ninXspInrGst3kK1IKSuKy0YpsaDG9AU=' https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' data: blob: https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec https://script.googleusercontent.com https://*.googleusercontent.com https://docs.google.com/spreadsheets/ https://docs.google.com/document/ https://docs.google.com/presentation/ https://drive.google.com https://drive.usercontent.google.com https://api.openai.com https://api.anthropic.com https://generativelanguage.googleapis.com https://api.perplexity.ai https://api.frankfurter.dev https://r.jina.ai https://images.weserv.nl https://commons.wikimedia.org https://upload.wikimedia.org https://api.openverse.org https://api.onedrive.com https://onedrive.live.com https://*.1drv.com https://*.sharepoint.com https://*.livefilestore.com; frame-src 'self' blob: data: https://standage-boueki2.github.io https://script.google.com https://script.googleusercontent.com https://*.googleusercontent.com https://accounts.google.com https://docs.google.com https://drive.google.com; worker-src 'self' blob:; manifest-src 'self' data: blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-rVBajYo0QxTeSJiZES8GO7H7cldtjoEpuis7ygIU/Q0=' 'sha256-rKAouANr0NUSQYIzgErOcU395GxYe4mTNpwntDLxHnY=' 'sha256-kkXB3JWRHl326iV3ZUntC4GQd+fBMI5hqNdvygHusoM=' 'sha256-bzw0oDVwD7QDYxD55AsyzL1A/CLNbPTzEO1MF9qrIMw=' 'sha256-t5VpmcMf33s9gMOUXGq89Q8mGE5CckAd/Al1d1y1SvI=' 'sha256-rwNbx6B5wY2ninXspInrGst3kK1IKSuKy0YpsaDG9AU=' https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' data: blob: https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec https://script.googleusercontent.com https://*.googleusercontent.com https://docs.google.com/spreadsheets/ https://docs.google.com/document/ https://docs.google.com/presentation/ https://drive.google.com https://drive.usercontent.google.com https://api.openai.com https://api.anthropic.com https://generativelanguage.googleapis.com https://api.perplexity.ai https://api.frankfurter.dev https://r.jina.ai https://images.weserv.nl https://commons.wikimedia.org https://upload.wikimedia.org https://api.openverse.org https://api.onedrive.com https://onedrive.live.com https://*.1drv.com https://*.sharepoint.com https://*.livefilestore.com; frame-src 'self' blob: data: https://standage-boueki2.github.io https://script.google.com https://script.googleusercontent.com https://*.googleusercontent.com https://accounts.google.com https://docs.google.com https://drive.google.com; worker-src 'self' blob:; manifest-src 'self' data: blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <script>(function(){
 var SK="bc20_ses_v1",TK="bc20_v65a_s",SID="bc20_v84k_sid",NOTE="bc20_v84k_note",ABS=432e5,IDLE=108e5;
 var P=Storage.prototype,G=P.getItem,S=P.setItem,R=P.removeItem,K=P.key;
@@ -5081,7 +5081,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="491532cbf88f";
+const BC20_BUILD="4ca3c7be9ab2";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -193679,7 +193679,7 @@ function v92Next(R, st, pl, up, now, opt) {
     const snz = kind => (R.prefs.snooze[kind] || 0) > now;
     const hold = k => (R.prefs.hold[k] || 0) > now;
     const fam = days => R.props.some(p => p && V92_FAM[p.kind] && now - (p.at || 0) < days * V88_DAY);
-    const waiting = R.props.some(p => p && p.st === "later");
+    const waiting = R.props.some(p => p && p.st === "later" && p.lk !== "early" && (p.until || 0) - now <= 3 * V88_DAY + 60000);
     const C = [];
     if (!G)
         C.push({ kind: "goal", key: "goal:" + Math.floor(now / (30 * V88_DAY)), pri: 0, gap: 1 });
@@ -193842,6 +193842,7 @@ function v92Eval(opt) {
             const q = pc ? v92Make(pc, R, st, pl, up) : null;
             if (q) {
                 p.st = "later";
+                p.lk = "bump";
                 p.until = now + 3 * V88_DAY;
                 p.bump = (p.bump || 0) + 1;
                 R.props.push(q);
@@ -193944,6 +193945,7 @@ function v92Later(id) {
                 days = 1;
         }
         p.st = "later";
+        p.lk = "later";
         p.stAt = now;
         p.until = now + days * V88_DAY;
         v88Toast(days === 1 ? v88M("締切が近いので、明日もう一度お出しします", "The deadline is close — I'll bring this back tomorrow") : v88M("3日後にもう一度お出しします", "I'll bring this back in 3 days"));
@@ -194019,6 +194021,7 @@ function v92Why(id, k) {
                 until = Math.max(now + V88_DAY, Math.min(now + 7 * V88_DAY, d.end - 3 * V88_DAY));
         }
         p.st = "later";
+        p.lk = "early";
         p.until = until;
         v92Count(R, p.kind, "early");
         v88Toast(v88M(`時期が来たら（${v88MD(until)}ごろ）もう一度お出しします`, `I'll bring this back when the time is right (around ${v88MD(until)})`));
@@ -194143,7 +194146,7 @@ function v92StLabel(p) {
     if (p.st === "seen")
         return v88M("表示中", "Showing");
     if (p.st === "later")
-        return p.early ? v88M(`時期が早い（${until} ごろにもう一度）`, `Too early (back around ${until})`) : v88M(`あとで（${until} にもう一度）`, `Later (back on ${until})`);
+        return p.lk === "early" ? v88M(`時期が早い（${until} ごろにもう一度）`, `Too early (back around ${until})`) : p.lk === "bump" ? v88M(`急ぎの提案を先に出しています（${until} ごろにもう一度）`, `Waiting behind a more urgent suggestion (back around ${until})`) : v88M(`あとで（${until} にもう一度）`, `Later (back on ${until})`);
     if (p.st === "adopted")
         return (p.won ? v88M("取り込んだ → 次の段階へ進んだ", "Adopted → moved to the next stage") : v88M("取り込んだ", "Adopted"));
     if (p.st === "acted")
@@ -194201,7 +194204,7 @@ function v92Hist(R) {
   </div>`;
 }
 function v92PropsTxt(R, n) {
-    return R.props.slice(-(n || 5)).map(p => `・${v88MD(p.at)}［${V92_KN[p.kind] ? V92_KN[p.kind][0] : p.kind}］${v88S((p.ai && p.ai.title) || p.title, 80)}（${({ "new": "未読", seen: "表示中", later: p.early ? "時期が早い" : "あとで", adopted: "取り込んだ", acted: "実行した", done: "次の段階へ進んだ", no: "今は要らない", noask: "今は要らない", expired: p.auto === "passed" ? "締切を過ぎた" : p.auto === "dup" ? "置き換え" : "反応なし" })[p.st] || p.st}${(p.st === "no" || p.st === "noask") && p.why ? "・" + (V92_RSN[p.whyK] ? V92_RSN[p.whyK][0] : p.why) : ""}${p.won ? "・そのあと次の段階へ" : ""}）`).join("\n");
+    return R.props.slice(-(n || 5)).map(p => `・${v88MD(p.at)}［${V92_KN[p.kind] ? V92_KN[p.kind][0] : p.kind}］${v88S((p.ai && p.ai.title) || p.title, 80)}（${({ "new": "未読", seen: "表示中", later: p.lk === "early" ? "時期が早い" : "あとで", adopted: "取り込んだ", acted: "実行した", done: "次の段階へ進んだ", no: "今は要らない", noask: "今は要らない", expired: p.auto === "passed" ? "締切を過ぎた" : p.auto === "dup" ? "置き換え" : "反応なし" })[p.st] || p.st}${(p.st === "no" || p.st === "noask") && p.why ? "・" + (V92_RSN[p.whyK] ? V92_RSN[p.whyK][0] : p.why) : ""}${p.won ? "・そのあと次の段階へ" : ""}）`).join("\n");
 }
 function v92FactsTxt() {
     const F = v92Facts(), now = v88Now();
