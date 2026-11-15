@@ -1,0 +1,19 @@
+/* 21.92 r3b（刷新版の層）
+   (b) 右下の「AI商社マンに聞く」：PC の幅では最初から小さい丸にして、本文の右に丸のぶんの余白を取る（どの画面でも、押せるもの・数字の上に乗らない）。
+       乗せる・選ぶ（キーボード）と今のとおり広がる。スマホは下のメニューに入口があるので今のまま（daily-13・auto-20・food-13・health-N15・xmobile-23） */
+@media (min-width:821px){
+  html.rd .stage{padding-right:54px!important}
+  html.rd #askfab{right:4px!important;bottom:18px!important}
+  html.rd #askfab:not(:hover):not(:focus-visible){width:46px!important;min-width:0!important;height:46px!important;padding:0!important;border-radius:50%!important;overflow:hidden;font-size:0!important;gap:0!important;justify-content:center}
+  html.rd #askfab:not(:hover):not(:focus-visible) > *{font-size:0!important}
+  html.rd #askfab:not(:hover):not(:focus-visible) .afl{display:none!important}
+  html.rd #askfab:not(:hover):not(:focus-visible) .afi{font-size:22px!important;margin:0!important}
+  html.rd #askfab:not(:hover):not(:focus-visible) .aftip{display:none!important}
+}
+/* AIバイヤー開拓ほか：窓（#dw）の見出しの社名が、右上の「拡大」「×」の下に入る → 見出しの右に余白（culture-M01・indagri-M08・medical-N13） */
+#dw h3:first-of-type{padding-right:132px;box-sizing:border-box}
+/* ヒアリングの「選択肢の例：」の札：押すと答えの欄に入る */
+.rd-tag.k-v92ex.k92r3b-pick{cursor:pointer!important;border-style:solid!important}
+.rd-tag.k-v92ex.k92r3b-pick:hover,.rd-tag.k-v92ex.k92r3b-pick:focus-visible{background:var(--rd-soft,#EEF4FB)!important;color:var(--rd-ink,#1B2B44)!important}
+/* 国選定「主要指標の比較」の表：順位の欄を折り返さない */
+html.rd section.k-card:has(svg[aria-label="主要指標の比較"]) .rd-tbl td:last-child{white-space:nowrap}

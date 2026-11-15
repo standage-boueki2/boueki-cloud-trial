@@ -1,0 +1,21 @@
+/* 21.92 r3c：英語・中国語・スペイン語のときだけ効く見た目の直し（xcut-M05）。日本語の画面（data-lang が ja、または無い）には何もしない
+   ① 営業資料：そろい具合の円の中の「%（15/21項目）」が、訳すと長くなって円の線に重なる → 小さくして、円の中で折り返す
+   ② 右の「かんたんに補完」のボタン：1行で切れていた題と説明を、2行まで折り返す
+   ③ 案件一覧の検索欄：例の文が切れる → 欄を広げ、例の文字を少し小さく */
+html.rd[data-lang="en"] .k-ring > span small:last-child,
+html.rd[data-lang="es"] .k-ring > span small:last-child,
+html.rd[data-lang="zh"] .k-ring > span small:last-child{font-size:10.5px;line-height:1.2;max-width:calc(var(--size) - 62px);text-align:center;white-space:normal;overflow-wrap:anywhere}
+html.rd[data-lang="en"] .k-ring > span small:first-child,
+html.rd[data-lang="es"] .k-ring > span small:first-child{font-size:11.5px;line-height:1.2;max-width:calc(var(--size) - 52px);text-align:center}
+html.rd[data-lang="en"] .k-ring > span,
+html.rd[data-lang="es"] .k-ring > span{line-height:1.1}
+html.rd[data-lang="en"] .k-row .k-rt b,
+html.rd[data-lang="es"] .k-row .k-rt b,
+html.rd[data-lang="en"] .k-row .k-rt small,
+html.rd[data-lang="es"] .k-row .k-rt small{white-space:normal;text-overflow:clip;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;line-height:1.3}
+@media (min-width:900px){
+  html.rd[data-lang="en"] .k-cltool .k-clq,
+  html.rd[data-lang="es"] .k-cltool .k-clq{width:min(330px,100%)}
+}
+html.rd[data-lang="en"] .k-clq input::placeholder,
+html.rd[data-lang="es"] .k-clq input::placeholder{font-size:13px}

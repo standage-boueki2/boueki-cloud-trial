@@ -1,0 +1,1055 @@
+{
+ "id": "xcut",
+ "category": "横断（入口と案内・スマホ幅・多言語・管理者）",
+ "base": "8814",
+ "status": "完了",
+ "personas": [
+  {
+   "id": "入口-P1",
+   "name": "田中 美咲（貿易素人）",
+   "overall_r2": 3,
+   "overall": 4,
+   "overall_reason": "ログインの誤りの案内が見える所に出る／登録直後の「次は」が 1 つ／AI の答えの欄 308px／検索・用語集から AI に聞ける。残り：期限切れのときの連絡先そのものが無い（文だけ）、くわしいガイドの本文と絵が刷新前、資料を入れた直後の「次は」が古いまま（xcut-M06）、0件のあいだは他の画面が見られない",
+   "to_5": "xlogin-03（連絡先）・xlogin-12（ガイドの本文）・xcut-M06・xlogin-07"
+  },
+  {
+   "id": "入口-P2",
+   "name": "小林 直樹（少し経験者）",
+   "overall_r2": 3,
+   "overall": 4,
+   "overall_reason": "見本から自社の商品に戻れる／検索で左メニューの名前が出る／招待の説明が 1 つ／読み取り直後の食い違いなし。残り：ガイドの本文が刷新前（窓の上の言い直しだけ）、停止の確認だけブラウザ標準の窓",
+   "to_5": "xlogin-12・xlogin-28"
+  },
+  {
+   "id": "入口-P3",
+   "name": "森田 浩一（商社経験豊富）",
+   "overall_r2": 3,
+   "overall": 4,
+   "overall_reason": "メンバーの招待・役割・停止・削除が操作の記録に残る／検索で B/L・L/C・インコタームズが出る／AI が CIF・HSコードに答える。残り：ログイン・ログアウトは操作の記録に入らず「ログインの履歴：準備中です。」、HS 4桁「8482」は検索で「AI に聞く」止まり",
+   "to_5": "ログインの履歴（準備中）を出す・HS 番号での検索"
+  },
+  {
+   "id": "スマホ-P1",
+   "name": "小林 由美（素人・390）",
+   "overall_r2": 3,
+   "overall": 4,
+   "overall_reason": "はじめての窓が画面に収まり × がある／資料を入れると AI の質問に着く／メニューは選ぶと閉じる／横はみ出し 0。残り：資料を入れたあとの「次は」と「はじめの設定 0/6」が古いまま（xcut-M06）",
+   "to_5": "xcut-M06"
+  },
+  {
+   "id": "スマホ-P2",
+   "name": "松本 大輔（少し経験者・390）",
+   "overall_r2": 3,
+   "overall": 4,
+   "overall_reason": "28 画面はみ出し 0・メニュー 30/30 閉じる・窓 16/16 で × が見えて閉じる・停滞中の名前が読める・DDP 試算が 1 列。残り：商談の表のチェック 22px、書類をつくるのチェック 18px（xmobile-21）",
+   "to_5": "xmobile-21（表のチェックを 34px 以上に）"
+  },
+  {
+   "id": "スマホ-P3",
+   "name": "石川 修（経験豊富・390／1280）",
+   "overall_r2": 3,
+   "overall": 4,
+   "overall_reason": "表の短い列が 1 行（国 109px）・「ゆったり」でも一覧が収まる・戻るで案件の詳細に戻る。残り：1280×720 で右下の丸いボタンが分析の「期限が今日まで」・商談の「承認・公開の設定」に重なる（xmobile-23）",
+   "to_5": "xmobile-23"
+  },
+  {
+   "id": "英語",
+   "name": "英語の利用者",
+   "overall_r2": 3,
+   "overall": 4,
+   "overall_reason": "食品の見本 29 画面でかなを含む UI の行 225 → 10、物流会社 8 画面 42 → 0。検索・AI ヒアリング・カテゴリー・スタートガイド・ようこそ窓が英語。残り：ほかの業種の見本（daily 19 行・machine 73 行）と 0 件のときの文、開く窓の中、新しい 5 つの見本の名前",
+   "to_5": "xcut-M01・xcut-M03・xi18n-66"
+  },
+  {
+   "id": "中国語",
+   "name": "中国語の利用者",
+   "overall_r2": 2,
+   "overall": 4,
+   "overall_reason": "食品の見本 29 画面で 10 行（2回目は 12 画面で 258 行）、物流会社 8 画面 0 行（3 画面 75 行）。「？」「次は」・左メニュー・検索が中国語。残り：ようこそ窓の見出しとボタンが日本語、商品情報④の業種の項目が日本語、ほかの業種の見本（daily 21・machine 75 行）",
+   "to_5": "xcut-M02・xi18n-67・xcut-M01"
+  },
+  {
+   "id": "スペイン語",
+   "name": "スペイン語の利用者",
+   "overall_r2": 2,
+   "overall": 4,
+   "overall_reason": "食品の見本 29 画面で 10 行（2回目は 12 画面で 308 行）、物流会社 0 行（3 画面 77 行）。3 言語の混在はほぼ無くなった。残り：ようこそ窓の見出しとボタンが日本語、ほかの業種の見本（daily 19・machine 74 行）、営業資料の円・ボタンの文字が収まらない",
+   "to_5": "xcut-M02・xcut-M01・xcut-M05"
+  },
+  {
+   "id": "管理者",
+   "name": "管理者の運用担当",
+   "overall_r2": 3,
+   "overall": 4,
+   "overall_reason": "並べ替えが正しい順／期限の延長・日付の入れ直し・配信・削除・個社版↔全社版に確認の窓／社員の札と絞り込み／一覧の CSV／検索からアカウントへ。操作して誤りは無かった。残り：会社のメニューの「やさしい説明」、英語のときの版の表示とサーバーの結果の文、本物の同期サーバーでの動きは未確認",
+   "to_5": "xi18n-91・92 の残りと、本物のサーバーでの確認"
+  }
+ ],
+ "screens": [],
+ "recheck": [
+  {
+   "no": "xi18n-84",
+   "result": "fixed",
+   "seen": "管理者：「期限」昇順＝11/22→11/29→12/15→12/27→2027/2/27、降順は逆。知らせ「『期限』で昇順に並べ替えました（日付の早い順）」。「コード」も A→Z／Z→A の順"
+  },
+  {
+   "no": "xi18n-85",
+   "result": "fixed",
+   "seen": "「期限を +14日」で確認の窓「…の期限を14日延ばしますか？ 期限：2026/11/22 → 2026/12/6」。やめる＝変わらず・詳細は開いたまま。詳細の「期限の日付を変える」で 12/6→11/22 に戻せた（確認つき）。過去の日付は「今日より前の日付にはできません。」"
+  },
+  {
+   "no": "xi18n-86",
+   "result": "fixed",
+   "seen": "「今すぐ配信」で確認の窓「日次ダイジェストのメールを、いますぐ配信しますか？…送ったメールは取り消せません。」。やめる＝サーバーへの依頼 0回、はい＝1回。結果はボタンの下に「『今すぐ配信』は、完了を確かめられませんでした（15:02:53 に実行）…」（代役サーバー）"
+  },
+  {
+   "no": "xi18n-87",
+   "result": "fixed",
+   "seen": "個社版→全社版を選ぶと確認の窓「『アルファ食品株式会社』の AI商社マンを『全社版』に切り替えますか？ いまは『個社版』です。」。やめる＝solo のまま"
+  },
+  {
+   "no": "xi18n-88",
+   "result": "fixed",
+   "seen": "削除の確認は専用の窓「『STANDAGE 商社デスク』（BC-F7HK-CCCC-0003）を削除しますか？…30日以内なら『期限切れ・削除』から元に戻せます…」。ブラウザ標準の窓は出ない"
+  },
+  {
+   "no": "xi18n-89",
+   "result": "fixed",
+   "seen": "一覧に「🏢 社員」の札、絞り込み「社員」（1/5件）、CSV の「種類」列に 荷主／物流会社／社員"
+  },
+  {
+   "no": "xi18n-90",
+   "result": "fixed",
+   "seen": "一覧の所で「いま出ている 1件を CSV に書き出しました。」。何でも検索「アルファ」→「アカウント 👤 アルファ食品株式会社 BC-Y3FY-AAAA-0001・山田 花子・有効」→ Enter で一覧が絞り込まれる"
+  },
+  {
+   "no": "xi18n-92",
+   "result": "partial",
+   "seen": "管理者を English に：265 行のうち日本語は 9 行（版の表示「版 21.92（build…）」・「貿易クラウド AI商社マン / Admin console」・会社名と人名）。確認の窓・絞り込み・並べ替えの知らせは英語。接続テストの結果「✓ 接続OK：backend v?／保存先 ／台帳 0件」は日本語"
+  },
+  {
+   "no": "xmobile-01",
+   "result": "fixed",
+   "seen": "390：荷主 30 項目を押して全部閉じた（閉じない 0）。物流会社 14 項目のうち 13 が閉じた・1（見積受信箱の 1 つ目）は道具の押し損ない"
+  },
+  {
+   "no": "xmobile-02",
+   "result": "fixed",
+   "seen": "ホームの検索欄 61→352（カード右端 378）。入力後のカードの横送り 0"
+  },
+  {
+   "no": "xmobile-03",
+   "result": "fixed",
+   "seen": "物流会社の見積受信箱（390）：受信日 292x23・依頼No 180x23・状態の札 102x30・担当と状態 292x82。重なりなし"
+  },
+  {
+   "no": "xmobile-05",
+   "result": "fixed",
+   "seen": "DDP 試算の窓：中身の幅 389/389（右へ出る欄なし）"
+  },
+  {
+   "no": "xmobile-06",
+   "result": "fixed",
+   "seen": "営業資料「入力する」→「あとで」→ 商談「商談を記録する」：位置 0/1869・× y=8（見える）"
+  },
+  {
+   "no": "xmobile-07",
+   "result": "fixed",
+   "seen": "文字「ゆったり」：1280 で表 290→1252（カード 289→1253 の中）。390 は名前が折り返し（ws=normal）"
+  },
+  {
+   "no": "xmobile-08",
+   "result": "fixed",
+   "seen": "物流会社ホームで下のタブ「受信箱」→ finbox に移る（on=受信箱）"
+  },
+  {
+   "no": "xmobile-11",
+   "result": "fixed",
+   "seen": "バイヤー一覧「国」109px・1行（390）／101px（1280・表 918/918）。バイヤー開拓の一覧は 390 でカード表示"
+  },
+  {
+   "no": "xmobile-09",
+   "result": "fixed",
+   "seen": "国選定「AI商社マンにおまかせ（1クリック）」29→361、商品情報「この商品で輸出の次のステップへ」12→378（画面 390 の中）"
+  },
+  {
+   "no": "xmobile-10",
+   "result": "fixed",
+   "seen": "取り込み元の札 35→355・2行（はみ出しなし）"
+  },
+  {
+   "no": "xmobile-12",
+   "result": "fixed",
+   "seen": "下のタブ「返信」→ 受信箱の絞り込みの位置（y=825・絞り込みが画面の y=84）に着く"
+  },
+  {
+   "no": "xmobile-13",
+   "result": "fixed",
+   "seen": "やりとりの入力欄 64px（714〜778）。押すと 335px に広がる"
+  },
+  {
+   "no": "xmobile-15",
+   "result": "fixed",
+   "seen": "「↑」：下へ送ったあとは見えない（opacity 0・押せない）、上へ戻すと出て 4秒で消える"
+  },
+  {
+   "no": "xmobile-17",
+   "result": "fixed",
+   "seen": "ようこそ窓 x=18〜372。登録メニューに ×（[326,48] 40x40・見える）。押すと閉じて「商品を登録」の画面"
+  },
+  {
+   "no": "xmobile-22",
+   "result": "fixed",
+   "seen": "10 画面の入力欄 58 個のうち 16px 未満 0"
+  },
+  {
+   "no": "xmobile-24",
+   "result": "fixed",
+   "seen": "分析（390）：「対応待ち」が y=586。提案のカードは 186px にたたまれ、開くと 4つのボタン"
+  },
+  {
+   "no": "xmobile-26",
+   "result": "fixed",
+   "seen": "案件の詳細 → 書類をつくる → 戻る ＝ 案件の詳細（Golden Leaf Trading Ltd.）に戻る"
+  },
+  {
+   "no": "xmobile-21",
+   "result": "partial",
+   "seen": "押す所 34px 未満：ホーム 0・やりとり 0。商談の表のチェック 22x22 が 6 個、書類をつくるのチェック 18x18 が 7 個（ラベルごと押せる）、パンくず 61x33"
+  },
+  {
+   "no": "xmobile-23",
+   "result": "partial",
+   "seen": "1280×720：右下のボタンは 54x54 の丸になったが、分析では「期限が今日まで…」、商談では「承認・公開の設定」のボタンにまだ重なる。言語の欄は 98px で「日本語」が全部見える"
+  },
+  {
+   "no": "xlogin-01",
+   "result": "fixed",
+   "seen": "ログインの誤りの案内が押したボタンのすぐ下に出る（1366×768 で y=585〜631、1440×900 で 427〜473・14px）。誤りのある欄に入力の位置が移る"
+  },
+  {
+   "no": "xlogin-03",
+   "result": "partial",
+   "seen": "期限切れ「…延長・再開をご希望のときは、このアクセスコードをお渡しした STANDAGE の担当者へ、会社名とアクセスコードを添えてご連絡ください。」と文で案内。メール・電話・申し込みフォームなどの連絡先そのものは画面に無い"
+  },
+  {
+   "no": "xlogin-09",
+   "result": "fixed",
+   "seen": "見本（日用雑貨）のホーム：右上「次は 販売先の国を選ぶ」と、空の一覧の「次は：販売先の国を選ぶ」が同じ行き先"
+  },
+  {
+   "no": "xlogin-18",
+   "result": "fixed",
+   "seen": "検索：案件・案件一覧・規制を調べる・書類をつくる・受注・請求・入金・この案件の書類・商品一覧・分析・レポート・メンバー・権限・セキュリティ が画面として出る"
+  },
+  {
+   "no": "xlogin-31",
+   "result": "fixed",
+   "seen": "「AI商社マンに聞く」の答えの欄：1366×768 で 308px、1440×900 で 431px"
+  },
+  {
+   "no": "xlogin-02",
+   "result": "fixed",
+   "seen": "1366×768：メール欄 375〜423、「ログインする」521〜575、コードの「トライアルを開始する」547〜601（768 の中）"
+  },
+  {
+   "no": "xlogin-05",
+   "result": "fixed",
+   "seen": "空のまま：「メールアドレスを入力してください。」「アクセスコードを入力してください。」「管理者IDとパスワードを入力してください。」"
+  },
+  {
+   "no": "xlogin-06",
+   "result": "fixed",
+   "seen": "0件のとき「次は 資料をアップロード（下の枠へ）」。押しても登録メニューは開かない"
+  },
+  {
+   "no": "xlogin-07",
+   "result": "partial",
+   "seen": "0件で 案件・タスク・AI商社マン を押すと登録メニューに戻るのは同じ。ただし窓の頭に理由「商品を1つ登録する（または『サンプルで試す』）と、案件・タスク・やりとり・AI商社マンなどの画面が使えるようになります。それまでは、どのメニューを押してもこの登録の画面に戻ります。」"
+  },
+  {
+   "no": "xlogin-08",
+   "result": "fixed",
+   "seen": "ようこそ窓は Esc で閉じる"
+  },
+  {
+   "no": "xlogin-13",
+   "result": "partial",
+   "seen": "「次は」があるのは 28 画面のうち 8 画面（案件・バイヤー開拓・営業資料・商談・販売先国・規制・商品情報・商品情報を登録）。中国語・スペイン語のようこそ窓は今も「在任何画面…“下一步”按钮都会告诉您」（どの画面でも）と言う"
+  },
+  {
+   "no": "xlogin-19",
+   "result": "fixed",
+   "seen": "検索：インボイス・B/L・L/C・インコタームズ → 用語の説明つき。ログアウト →「ログアウト（場所を示します）」。「8482」→「『8482』を AI商社マンに聞く」"
+  },
+  {
+   "no": "xlogin-32",
+   "result": "fixed",
+   "seen": "AI：「ログアウトはどこ」→ 場所を答える／「トライアルの期限」→「残り 14日（11/29 まで）」／「1,000個をCIFで」→ 単価のあとに「⚠ 上の金額は、登録されている価格表の単価で計算…」／「HSコードと関税率」→「この商品の HSコード（登録済み）：9617.00」"
+  },
+  {
+   "no": "xlogin-12",
+   "result": "partial",
+   "seen": "「使い方を見る」の窓の上に「刷新版での場所 左メニュー › すべての機能 › 調査・規制 › 販売先国の選定　このガイドの絵と道順は、刷新前の配置で書かれています」と出る（国選定・規制・メンバー・やりとり・分析の 5 画面）。ガイドの本文と絵は刷新前のまま"
+  },
+  {
+   "no": "xlogin-20",
+   "result": "fixed",
+   "seen": "自社（今治タオル）を登録 → 見本（スドウ金属工業）へ → 再読み込み → 会社名のボタンに「表示している会社・商品（切り替え）…貴社の商品に戻る」。押すと帯が「今治コットン工房株式会社」に戻る"
+  },
+  {
+   "no": "xlogin-25",
+   "result": "fixed",
+   "seen": "招待 → 管理者に → 停止 → 削除 のあと、操作の記録に「メンバーを削除 高橋 涼／メンバーを停止 高橋 涼／メンバーの役割を変更 高橋 涼 →管理者／メンバーを招待 高橋 涼」の 4 行（誰が＝小林 直樹）"
+  },
+  {
+   "no": "xlogin-10",
+   "result": "fixed",
+   "seen": "登録直後のホームの「次は 商品を登録」→ 商品情報を登録の「AI商社マンと埋める（残り 2項目）」に着き、入力欄にカーソル。登録メニューの窓は出ない"
+  },
+  {
+   "no": "xlogin-16",
+   "result": "fixed",
+   "seen": "用語集 84語。見つからないとき「この言葉を AI商社マンに聞く」→ 入力欄に「『にゅうきん』とは何ですか？」。FAS・CPT・CIP・DPU・D/P・D/A がある。「← 販売先国の選定」で来た画面に戻る"
+  },
+  {
+   "no": "xlogin-21",
+   "result": "fixed",
+   "seen": "商品一覧で見本のカードの余白を押す →「『ステンレス真空断熱タンブラー 350ml』に切り替えました」・帯がスドウ金属工業に"
+  },
+  {
+   "no": "xlogin-22",
+   "result": "fixed",
+   "seen": "検索「ログアウト」→ Enter で会社名のボタンの窓が開き、ログアウトに橙の枠。ログアウト後、ログイン画面に「✓ ログアウトしました。」"
+  },
+  {
+   "no": "xlogin-26",
+   "result": "fixed",
+   "seen": "メンバーの画面に「いまのこの環境…では、招待したメンバーも、招待状のとおり『アクセスコード＋ご本人の氏名』でログインします。」"
+  },
+  {
+   "no": "xlogin-27",
+   "result": "fixed",
+   "seen": "「一覧に登録済み」「まだ入っていません」「ログインの履歴（新しい順）」「準備中です」。台帳・同期サーバーの言葉は出ない"
+  },
+  {
+   "no": "xlogin-28",
+   "result": "partial",
+   "seen": "招待の誤り「氏名を入力してください。」は氏名の欄のすぐ下（y=247、欄の下端 239）。停止の確認はブラウザ標準の窓のまま（「高橋 涼 さんを停止します。…」）"
+  },
+  {
+   "no": "xlogin-23",
+   "result": "fixed",
+   "seen": "通知センターの札「そのほか 1件／今日のタスク 1件／期限 1件」（同じ名前の札は 1 枚）。設定の文は「（いまは、このブラウザの中の通知だけです）」"
+  },
+  {
+   "no": "xlogin-24",
+   "result": "fixed",
+   "seen": "文字「ゆったり」で左メニュー「すべての機能」は 1 行（文字の高さ 17px）"
+  },
+  {
+   "no": "xlogin-15",
+   "result": "partial",
+   "seen": "お問い合わせの「どの画面で」はホームで「案件」。見本の環境の日時・差出人は確かめていない"
+  },
+  {
+   "no": "xi18n-01",
+   "result": "fixed",
+   "seen": "英語・dash:home：かなを含む UI の行 12 → 0 行（見える 88 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-02",
+   "result": "fixed",
+   "seen": "英語・today：かなを含む UI の行 6 → 0 行（見える 84 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-03",
+   "result": "fixed",
+   "seen": "英語・rm：かなを含む UI の行 1 → 0 行（見える 9 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-04",
+   "result": "fixed",
+   "seen": "英語・inbox：かなを含む UI の行 2 → 0 行（見える 46 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-05",
+   "result": "fixed",
+   "seen": "英語・ai：かなを含む UI の行 12 → 0 行（見える 284 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-06",
+   "result": "fixed",
+   "seen": "英語・db：かなを含む UI の行 5 → 0 行（見える 270 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-07",
+   "result": "fixed",
+   "seen": "英語・deck：かなを含む UI の行 26 → 0 行（見える 231 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-08",
+   "result": "fixed",
+   "seen": "英語・deal：かなを含む UI の行 2 → 2 行（見える 83 行のうち。見本データ・固有名詞を除く）　残り：「（下のバイヤー一覧の札と同じ数え方・失注を除く）」「ほかに サンプル出荷 1 company」"
+  },
+  {
+   "no": "xi18n-09",
+   "result": "fixed",
+   "seen": "英語・msg：かなを含む UI の行 2 → 0 行（見える 140 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-10",
+   "result": "fixed",
+   "seen": "英語・dash:case：かなを含む UI の行 16 → 0 行（見える 75 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-11",
+   "result": "fixed",
+   "seen": "英語・cty：かなを含む UI の行 58 → 0 行（見える 80 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-12",
+   "result": "fixed",
+   "seen": "英語・ops:reg：かなを含む UI の行 4 → 0 行（見える 113 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-13",
+   "result": "fixed",
+   "seen": "英語・ops:doc：かなを含む UI の行 76 → 0 行（見える 278 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-14",
+   "result": "fixed",
+   "seen": "英語・ops:ship：かなを含む UI の行 4 → 0 行（見える 52 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-15",
+   "result": "fixed",
+   "seen": "英語・ops:ord：かなを含む UI の行 5 → 0 行（見える 53 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-16",
+   "result": "fixed",
+   "seen": "英語・ops:file：かなを含む UI の行 17 → 0 行（見える 52 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-17",
+   "result": "fixed",
+   "seen": "英語・item：かなを含む UI の行 8 → 0 行（見える 186 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-18",
+   "result": "fixed",
+   "seen": "英語・up：かなを含む UI の行 1 → 1 行（見える 72 行のうち。見本データ・固有名詞を除く）　残り：「資料をアップロード（下の枠へ）」"
+  },
+  {
+   "no": "xi18n-19",
+   "result": "fixed",
+   "seen": "英語・docs：かなを含む UI の行 6 → 0 行（見える 66 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-20",
+   "result": "fixed",
+   "seen": "英語・legal：かなを含む UI の行 13 → 0 行（見える 65 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-21",
+   "result": "partial",
+   "seen": "英語・gloss：かなを含む UI の行 71 → 6 行（見える 219 行のうち。見本データ・固有名詞を除く）　残り：「輸送費保険料込み。CPT に、売り手が手配する貨物保険を足した条件です。コンテナ」「輸送費込み。売り手が、指定の仕向地までの運賃を払います。貨物のリスクは、最初の運」"
+  },
+  {
+   "no": "xi18n-22",
+   "result": "fixed",
+   "seen": "英語・dash:rep：かなを含む UI の行 2 → 0 行（見える 166 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-23",
+   "result": "fixed",
+   "seen": "英語・task：かなを含む UI の行 2 → 1 行（見える 143 行のうち。見本データ・固有名詞を除く）　残り：「期限切れ・7日以内の数は、分析・レポートと同じ数え方です（見本の会社は、見本の日」"
+  },
+  {
+   "no": "xi18n-24",
+   "result": "fixed",
+   "seen": "英語・team：かなを含む UI の行 11 → 0 行（見える 60 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-25",
+   "result": "fixed",
+   "seen": "英語・fhome：かなを含む UI の行 4 → 0 行（見える 73 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-26",
+   "result": "fixed",
+   "seen": "英語・fai：かなを含む UI の行 2 → 0 行（見える 42 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-27",
+   "result": "fixed",
+   "seen": "英語・finbox：かなを含む UI の行 5 → 0 行（見える 66 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-28",
+   "result": "fixed",
+   "seen": "英語・fagg：かなを含む UI の行 27 → 0 行（見える 138 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-29",
+   "result": "fixed",
+   "seen": "英語・frates：かなを含む UI の行 2 → 0 行（見える 86 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-30",
+   "result": "fixed",
+   "seen": "英語・fcase：かなを含む UI の行 1 → 0 行（見える 68 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-31",
+   "result": "fixed",
+   "seen": "英語・frq：かなを含む UI の行 1 → 0 行（見える 35 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-32",
+   "result": "fixed",
+   "seen": "英語・fteam：かなを含む UI の行 5 → 0 行（見える 59 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-33",
+   "result": "fixed",
+   "seen": "中国語・dash:home：かなを含む UI の行 17 → 0 行（見える 88 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-34",
+   "result": "fixed",
+   "seen": "中国語・today：かなを含む UI の行 25 → 0 行（見える 83 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-35",
+   "result": "fixed",
+   "seen": "中国語・up：かなを含む UI の行 13 → 1 行（見える 73 行のうち。見本データ・固有名詞を除く）　残り：「資料をアップロード（下の枠へ）」"
+  },
+  {
+   "no": "xi18n-36",
+   "result": "fixed",
+   "seen": "中国語・item：かなを含む UI の行 16 → 0 行（見える 186 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-37",
+   "result": "fixed",
+   "seen": "中国語・cty：かなを含む UI の行 10 → 0 行（見える 79 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-38",
+   "result": "fixed",
+   "seen": "中国語・ops:reg：かなを含む UI の行 11 → 0 行（見える 109 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-39",
+   "result": "fixed",
+   "seen": "中国語・ops:doc：かなを含む UI の行 48 → 0 行（見える 280 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-40",
+   "result": "fixed",
+   "seen": "中国語・deal：かなを含む UI の行 10 → 2 行（見える 82 行のうち。見本データ・固有名詞を除く）　残り：「（下のバイヤー一覧の札と同じ数え方・失注を除く）」「ほかに サンプル出荷 1家」"
+  },
+  {
+   "no": "xi18n-41",
+   "result": "fixed",
+   "seen": "中国語・msg：かなを含む UI の行 15 → 0 行（見える 139 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-42",
+   "result": "fixed",
+   "seen": "中国語・deck：かなを含む UI の行 56 → 0 行（見える 230 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-43",
+   "result": "fixed",
+   "seen": "中国語・db：かなを含む UI の行 27 → 0 行（見える 271 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-44",
+   "result": "fixed",
+   "seen": "中国語・team：かなを含む UI の行 12 → 0 行（見える 60 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-45",
+   "result": "fixed",
+   "seen": "中国語・fhome：かなを含む UI の行 36 → 0 行（見える 75 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-46",
+   "result": "fixed",
+   "seen": "中国語・finbox：かなを含む UI の行 20 → 0 行（見える 66 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-47",
+   "result": "fixed",
+   "seen": "中国語・frates：かなを含む UI の行 19 → 0 行（見える 86 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-48",
+   "result": "fixed",
+   "seen": "スペイン語・dash:home：かなを含む UI の行 21 → 0 行（見える 88 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-49",
+   "result": "fixed",
+   "seen": "スペイン語・today：かなを含む UI の行 34 → 0 行（見える 85 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-50",
+   "result": "fixed",
+   "seen": "スペイン語・up：かなを含む UI の行 19 → 1 行（見える 73 行のうち。見本データ・固有名詞を除く）　残り：「資料をアップロード（下の枠へ）」"
+  },
+  {
+   "no": "xi18n-51",
+   "result": "fixed",
+   "seen": "スペイン語・item：かなを含む UI の行 16 → 0 行（見える 185 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-52",
+   "result": "fixed",
+   "seen": "スペイン語・cty：かなを含む UI の行 13 → 0 行（見える 81 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-53",
+   "result": "fixed",
+   "seen": "スペイン語・ops:reg：かなを含む UI の行 13 → 0 行（見える 110 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-54",
+   "result": "fixed",
+   "seen": "スペイン語・ops:doc：かなを含む UI の行 109 → 0 行（見える 281 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-55",
+   "result": "fixed",
+   "seen": "スペイン語・deal：かなを含む UI の行 12 → 2 行（見える 83 行のうち。見本データ・固有名詞を除く）　残り：「（下のバイヤー一覧の札と同じ数え方・失注を除く）」「ほかに サンプル出荷 1emp.」"
+  },
+  {
+   "no": "xi18n-56",
+   "result": "fixed",
+   "seen": "スペイン語・msg：かなを含む UI の行 17 → 0 行（見える 140 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-57",
+   "result": "fixed",
+   "seen": "スペイン語・deck：かなを含む UI の行 73 → 0 行（見える 231 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-58",
+   "result": "fixed",
+   "seen": "スペイン語・db：かなを含む UI の行 29 → 0 行（見える 271 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-59",
+   "result": "fixed",
+   "seen": "スペイン語・team：かなを含む UI の行 16 → 0 行（見える 60 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-60",
+   "result": "fixed",
+   "seen": "スペイン語・fhome：かなを含む UI の行 45 → 0 行（見える 74 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-61",
+   "result": "fixed",
+   "seen": "スペイン語・finbox：かなを含む UI の行 23 → 0 行（見える 66 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-62",
+   "result": "fixed",
+   "seen": "スペイン語・frates：かなを含む UI の行 21 → 0 行（見える 85 行のうち。見本データ・固有名詞を除く）"
+  },
+  {
+   "no": "xi18n-63",
+   "result": "fixed",
+   "seen": "検索：英語「Contracts」→ Pages 📄 Contracts、「invoice」→ Orders · Invoices · Payments／Create documents、中国語「单证」→ 制作单证・本案件单证、スペイン語「factura」→ Pedidos · Facturas · Cobros。ただし結果が出ていても先頭に「Not found? Ask the AI about “Contracts” No screen, product, task or term matched」が出る（xcut-M04）"
+  },
+  {
+   "no": "xi18n-64",
+   "result": "fixed",
+   "seen": "資料なしの登録（英語）：「Newcomer Foods LLC : new product “Yuzu honey 250g” — we'll build it from scratch, without documents.」「English product name — please tell us.」。スペイン語も「Nombre del producto en inglés: indíquelo, por favor.」。資料を入れたあとの質問も英語（選択肢の地名「日本（福岡県福岡市）」は資料の中身）"
+  },
+  {
+   "no": "xi18n-65",
+   "result": "fixed",
+   "seen": "商材カテゴリーのボタン：英語 Food／Alcoholic beverages／Daily goods／Apparel／Furniture／Industrial parts…、スペイン語 Alimentos／Bebidas alcohólicas／Ropa／Muebles…"
+  },
+  {
+   "no": "xi18n-69",
+   "result": "partial",
+   "seen": "ようこそ窓：英語は全部英語。中国語・スペイン語は説明と流れは訳されたが、見出し「はじめまして。AI商社マンです。」、3つの手順の題「商品資料をアップロード／足りない情報に答える／あとはAIに聞く・任せる」、例「「どの国に売れる？」「500個でいくら？」…」、ボタン「さっそく始める」が日本語のまま"
+  },
+  {
+   "no": "xi18n-70",
+   "result": "fixed",
+   "seen": "スタートガイドの窓：英語・中国語・スペイン語とも 28 行のうち日本語 0 行"
+  },
+  {
+   "no": "xi18n-72",
+   "result": "fixed",
+   "seen": "「？」の説明と「次は」：3 言語とも 12 画面で訳されている（中国語「下一步 选择销售目标国」、スペイン語「Siguiente Ver regulaciones」）。残りは 商品情報を登録 の「Next 資料をアップロード（下の枠へ）」だけ"
+  },
+  {
+   "no": "xi18n-75",
+   "result": "fixed",
+   "seen": "英語：Tasks & progress でも Documents でも「ハラル認証_見積比較_20260804.xlsx」。タスク名も「ハラル認証 取得可否の判断」のまま（利用者のデータは書き換えられない）"
+  },
+  {
+   "no": "xi18n-77",
+   "result": "fixed",
+   "seen": "スペイン語の案件一覧：Caso／Buscar compradores／Sugerencia de su asesor IA／Fijar un objetivo／Requiere su respuesta／Probar otro sector と 1 つの言語にそろった。英語のままは「11/15・Expanding」だけ。画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/img/es_food_dash_home.png"
+  },
+  {
+   "no": "xi18n-78",
+   "result": "fixed",
+   "seen": "物流会社（スペイン語）：「¡Hola!／Tareas de hoy／Bandeja de cotizaciones／Casos y envíos／Empezar」。8 画面のかなを含む UI の行 0。画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/img/es_fwd_fhome.png"
+  },
+  {
+   "no": "xi18n-66",
+   "result": "open",
+   "seen": "見本のカード（英語）：農業資材・健康食品・建設機械・文化教育・ペットの 5 つは「グリーンアース農材株式会社／有機液体肥料 アミノグロウ 1L」など日本語のまま。会社のメニューの一覧も同じ。完成形 3 つの資料名も日本語"
+  },
+  {
+   "no": "xi18n-67",
+   "result": "open",
+   "seen": "見本 daily・商品情報④（中国語）：「生活用品の項目」「OEM・名入れの条件 未登记（例：名入れ刺繍は100枚から）」「試験成績・安全の規格」が日本語。スペイン語・英語は項目名が英語／例の文が日本語"
+  },
+  {
+   "no": "xi18n-71",
+   "result": "fixed",
+   "seen": "通知センターの窓（3 言語）：18 行のうち日本語は見本のタスク名 1 行だけ"
+  },
+  {
+   "no": "xi18n-73",
+   "result": "partial",
+   "seen": "文字の大きさの窓は日本語 0 行。会社のメニューは下の説明「このボタンの中に、会社・商品の切り替え、新しい会社の商品の登録、ログアウトがあります。」が日本語、左メニューの札のツールチップ「要対応 5件（相手の返信に…）」も日本語"
+  },
+  {
+   "no": "xi18n-74",
+   "result": "fixed",
+   "seen": "国選定「Not analyzed yet. From regulation, market, competitor and base data, the AI Trade Agent will pick the Top 3 recommended markets.」。物流レート管理に「Deletion」は無い"
+  },
+  {
+   "no": "xi18n-79",
+   "result": "fixed",
+   "seen": "英語の Documents：はみ出しの計測 0（2回目は 4 つの手順のカードで 160>144）"
+  },
+  {
+   "no": "xi18n-91",
+   "result": "partial",
+   "seen": "管理者の会社のメニューに「表示｜やさしい説明」が残る（荷主向けの切り替え）。ほかの文言は直しの報告のとおり未再確認"
+  },
+  {
+   "no": "xmobile-04",
+   "result": "fixed",
+   "seen": "今日やること「停滞中の案件」（390）：Sakura Foods Pte Ltd／Nordic Tea House Inc.／Taipei Fine Foods Co. が全部読める（幅 263・切れなし）。画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/img/m390_today_stale.png"
+  },
+  {
+   "no": "xmobile-14",
+   "result": "fixed",
+   "seen": "390 で開いた窓 19 個（荷主 16・物流会社 3）とも、× が画面の中（[340,8] 40x40 など）に見え、押して閉じた"
+  },
+  {
+   "no": "xmobile-16",
+   "result": "fixed",
+   "seen": "ホームのいちばん下：下のメニュー（上端 781）に隠れる押す所 0"
+  },
+  {
+   "no": "xmobile-18",
+   "result": "fixed",
+   "seen": "スマホの商品を登録：「ここを押して ファイルを選ぶ」。ドラッグ・Enter の言い回しは 0"
+  },
+  {
+   "no": "xmobile-19",
+   "result": "fixed",
+   "seen": "拠点の地図（1280）：枠の外へ出る国名 0（5 つは点の左に置かれる）"
+  },
+  {
+   "no": "xmobile-20",
+   "result": "fixed",
+   "seen": "小さくなった右下のボタン：文字の切れ端なし（.afl は非表示）"
+  },
+  {
+   "no": "xmobile-25",
+   "result": "fixed",
+   "seen": "通知センターの見出し 22px・1 行（高さ 29px）"
+  },
+  {
+   "no": "xlogin-11",
+   "result": "fixed",
+   "seen": "資料を入れた直後：食い違う表示（未反映／すべて登録する）は出ず、「資料を読み込みました…19項目を取り込み…残り 2項目」"
+  },
+  {
+   "no": "xlogin-30",
+   "result": "fixed",
+   "seen": "商品があるとき「商品情報を登録」を開き直しても「何をしますか？」の窓は出ない"
+  }
+ ],
+ "issues": [
+  {
+   "no": "xcut-M01",
+   "screen": "ops:doc・item・dash:home・db・deck（英語・中国語・スペイン語／見本 daily・machine）",
+   "title": "食品の見本と物流会社はほぼ訳されたが、ほかの業種の見本では日本語の文が残る（機械は「書類をつくる」だけで 32 行）",
+   "steps": "見本「日用雑貨（daily）」「建設機械（machine）」を開く → 言語を English／中文／Español にする → 案件一覧・商品情報を登録・商品情報・販売先国・規制・書類をつくる・商談・営業資料・バイヤー開拓 の 9 画面を開いて、かなを含む行を数える",
+   "expected": "食品の見本（29 画面で 10 行）と同じくらいまで訳されている",
+   "actual": "daily：9 画面で 英語 19／中国語 21／スペイン語 19 行。machine：英語 73／中国語 75／スペイン語 74 行（うち商品情報の 24〜26 行は見本の商品の売り文句＝データ、書類をつくる 32 行・営業資料 5 行・規制 3 行は UI と規制の説明）。どの業種でも、案件が 0 件のときの「まだ案件はありません／バイヤーに連絡すると、相手ごとに案件ができます。」「まだ相手はいません。下の「AIバイヤー開拓」でリストを作れます」「まだやりとりはありません」が日本語（新しい利用者は必ずここを通る）",
+   "evidence": "英語・machine・書類をつくる：「EPA の税率が一般の税率より低い時だけ。協定と方式（第三者証明・認定輸出者・自己申告）は…」「Issued / made by: 日本商工会議所（特定原産地証明書の発給）」「Due：11/20 until（出港の5日前）」「適合宣言・製品認証（CE・UKCA・KC・CCC・SABER など）」／英語・daily・営業資料：「「日用品・雑貨・キッチン」の海外バイヤー向けの型で作ります（理由：HS 9617…）」「AI商社マンにまかせる（いまの判断：…）」／全文 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/out/en_xcut_mach/ops_doc.txt・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/out/zh_xcut_daily/・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/out/es_xcut_mach/　画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/img/en_mach_ops_doc.png",
+   "personas": [
+    "英語",
+    "中国語",
+    "スペイン語"
+   ],
+   "severity": "major",
+   "fix_hint": "0 件のときの文・書類の判定表の説明（理由・発行者・期限の「出港のN日前」）・営業資料の「型」の説明を辞書に入れる。直しの確かめを food 以外の見本でも行う"
+  },
+  {
+   "no": "xcut-M02",
+   "screen": "はじめての窓（ようこそ）中国語・スペイン語",
+   "title": "ようこそ窓の見出し・3つの手順の題・先へ進むボタン「さっそく始める」が、中国語・スペイン語では日本語のまま（xi18n-69 の残り）",
+   "steps": "新しいアカウントで入る → 言語を 中文（Español）にして読み込み直す → 最初の窓を読む",
+   "expected": "英語と同じく全部その言語",
+   "actual": "説明文と 6 つの手順は訳されているが、「はじめまして。AI商社マンです。」「商品資料をアップロード」「足りない情報に答える」「あとはAIに聞く・任せる」「「どの国に売れる？」「500個でいくら？」。見積や返信の下書きまで任せられます。」「さっそく始める」が日本語",
+   "evidence": "zh：「…在任何画面，标题右侧的“下一步”按钮都会告诉您接下来做什么。 | さっそく始める | 手头没有资料时： | 用样例试用」／es：「…le indica qué hacer a continuación. | さっそく始める | ¿No tiene documentos a mano?」（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/out/i_fr.log）",
+   "personas": [
+    "中国語",
+    "スペイン語"
+   ],
+   "severity": "minor",
+   "fix_hint": "英語にある 6 つの文を中国語・スペイン語の辞書にも入れる"
+  },
+  {
+   "no": "xcut-M03",
+   "screen": "team（招待の窓）・dash:case（ステータスの窓）英語",
+   "title": "画面は英語になったが、開く窓（ドロワー）の中に日本語の文が残る",
+   "steps": "言語を English にする → メンバーの画面で「＋ Invite a member」／案件の詳細で「Change status」を押す",
+   "expected": "窓の中も英語",
+   "actual": "招待の窓 23 行のうち 6 行が日本語（「…の別のご担当者を招待します。費用はかかりません。…」「氏名（必須・ログインのときに入力する名前）」「担当する商品」「あとから増えた商品も含みます」「選んだ商品だけ」「やりとりの閲覧・投稿だけ」）。ステータスの窓は「宛先：🔒 未開示（つなぐ依頼で相手が承諾すると開示）／Email sending not set up…」「実送信はまだありません（記録のみ）。 控え：未設定」と 1 行に 2 言語",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/i18n/out/en_xci_p1/x_dialogs.json・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/out/i_dialogs_en.log",
+   "personas": [
+    "英語"
+   ],
+   "severity": "minor",
+   "fix_hint": "窓の中の文も数え直しの対象に入れる（今回の数え方は画面の本文だけ）"
+  },
+  {
+   "no": "xcut-M06",
+   "screen": "up（商品情報を登録・資料を入れた直後）",
+   "title": "資料を取り込んだあとも、同じ画面の「次は」が「資料をアップロード（下の枠へ）」、はじめの設定が「0/6」のまま",
+   "steps": "スマホ（390）で新しいアカウント → さっそく始める → 資料（商品情報_生活用品_daily_towel.xlsx）を入れる → 画面の先頭へ戻る",
+   "expected": "「次は」が「AIの質問に答える（残り 2項目）」などに変わる",
+   "actual": "知らせ「…を取り込みました（3シート）」と AI の質問（残り 2項目・情報 19/21）が出ているのに、見出しの右は「次は 資料をアップロード（下の枠へ）」、帯は「はじめの設定 0/6」。押すと「AIの質問に答える」のあたりへ送られる（行き先は合っている）。ホームでは「次は 商品を登録」",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/out/../mobile の実行記録：「## 先頭へ戻す {\"cur\":\"up\",…\"next\":[\"次は 資料をアップロード（下の枠へ）\"],\"setup\":\"はじめの設定\\n0/6…」。画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/img/m390_first_after_upload_top.png・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/img/m390_first_next1.png",
+   "personas": [
+    "P1"
+   ],
+   "severity": "minor",
+   "fix_hint": "取り込みが済んだら「次は」を「足りない情報に答える（残り N項目）」に変える"
+  },
+  {
+   "no": "xcut-M04",
+   "screen": "上の帯（何でも検索）英語・中国語・スペイン語",
+   "title": "検索の結果が出ているのに、先頭に「見つからないとき…一致するものがありません」が出る。分類名の一部が日本語",
+   "steps": "言語を English にする → Ctrl+K →「Contracts」と入れる",
+   "expected": "結果があるときは「Not found?」を出さない（日本語の画面では出ない）",
+   "actual": "「Not found? 🤖 Ask the AI about “Contracts” No screen, product, task or term matched」の下に「Pages 📄 Contracts Assets (knowledge)」。中国語「找不到时…未找到匹配的页面、商品、任务或术语」の下に 制作单证 など。「Check regulations 調査・規制（「書類」に関係する画面）」は分類名が日本語",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/out/i_combo_en.log・i_combo_zh.log・i_combo_es.log",
+   "personas": [
+    "英語",
+    "中国語",
+    "スペイン語"
+   ],
+   "severity": "polish",
+   "fix_hint": "結果が 1 件でもあれば「見つからないとき」は末尾に回すか出さない"
+  },
+  {
+   "no": "xcut-M05",
+   "screen": "deck・dash:home（スペイン語）",
+   "title": "スペイン語で文字が収まらない所（そろい具合の円・右のボタン・一覧の検索欄）",
+   "steps": "見本 food → Español → 外国語 営業資料／案件一覧（1440×900）",
+   "expected": "文字が枠に収まる",
+   "actual": "営業資料：円の中の「71 % (15/21 elementos)」が円の線に重なる。「Completar con el Agente comerci…」「Información de la empresa y fotos del …」が途中で切れる。案件一覧：検索欄の例「Buscar por comprador, pa」が切れる。「11/15・Expanding」は英語",
+   "evidence": "画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/img/es_food_deck.png・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents3/xcut/img/es_food_dash_home.png",
+   "personas": [
+    "スペイン語"
+   ],
+   "severity": "polish",
+   "fix_hint": "円の中は数字だけにして内訳は外へ。ボタンは 2 行まで折り返す"
+  }
+ ],
+ "good": [
+  "管理者：並べ替え・期限の延長と入れ直し・配信・削除・個社版／全社版の切り替えに、会社名とコードの入った確認の窓が付き、やめると何も変わらない",
+  "スマホ（390）：荷主 28 画面・物流会社 8 画面とも横はみ出し 0（画面の幅 390 のまま）",
+  "多言語：食品の見本（荷主 29 画面）のかなを含む UI の行は 3 言語とも 10 行、物流会社 8 画面は 0 行。検索はその言語の言葉で画面が出る",
+  "利用者のデータ（ファイル名・タスク名）は辞書で書き換えられなくなった",
+  "入口：ログインの誤りの案内がボタンのすぐ下に出て、欄に入力の位置が移る。見本から「貴社の商品に戻る」がいつも出る",
+  "スマホ：開いた窓 19 個すべてで × が右上に固定で見える。停滞中の案件の相手名が全部読める"
+ ],
+ "not_checked": [
+  "荷主の 30 画面のうち tcd（商社デスク）は開いていない（29 画面を数えた）。dash:case・tcd は 390 の横はみ出しの巡回に入れていない",
+  "xi18n-68（未評価の注意書き）・76（見本のトースト）・80・81・82・83、xlogin-04・14・17・29・33、xmobile-27（1280 の見積受信箱）は今回確かめていない",
+  "中国語・スペイン語での開く窓（ドロワー）の中身、AI ヒアリング（中国語）",
+  "管理者：本物の同期サーバーでの動き、中国語・スペイン語・スマホ幅の管理者の画面",
+  "スマホの実機（iPhone）での拡大・キーボードの出方",
+  "物流会社のメニュー 14 項目のうち 1 つ（見積受信箱の 1 つ目）は道具の押し損ないで未確認"
+ ],
+ "jp_left_kana_ui_lines": {
+  "en_food": {
+   "screens": 29,
+   "lines": 3012,
+   "kana_ui": 10,
+   "per_screen": {
+    "deal": "2/83",
+    "gloss": "6/219",
+    "task": "1/143",
+    "up": "1/72"
+   }
+  },
+  "en_fwd": {
+   "screens": 8,
+   "lines": 567,
+   "kana_ui": 0,
+   "per_screen": {}
+  },
+  "en_daily": {
+   "screens": 9,
+   "lines": 1248,
+   "kana_ui": 19,
+   "per_screen": {
+    "dash_home": "2/49",
+    "db": "3/178",
+    "deal": "1/61",
+    "deck": "2/234",
+    "item": "4/203",
+    "ops_doc": "6/261",
+    "up": "1/74"
+   }
+  },
+  "en_mach": {
+   "screens": 9,
+   "lines": 1313,
+   "kana_ui": 73,
+   "per_screen": {
+    "dash_home": "2/49",
+    "db": "3/178",
+    "deal": "1/61",
+    "deck": "5/234",
+    "item": "24/192",
+    "ops_doc": "32/313",
+    "ops_reg": "3/114",
+    "up": "3/74"
+   }
+  },
+  "zh_food": {
+   "screens": 29,
+   "lines": 2998,
+   "kana_ui": 10,
+   "per_screen": {
+    "deal": "2/82",
+    "gloss": "6/219",
+    "task": "1/142",
+    "up": "1/73"
+   }
+  },
+  "zh_fwd": {
+   "screens": 8,
+   "lines": 574,
+   "kana_ui": 0,
+   "per_screen": {}
+  },
+  "zh_daily": {
+   "screens": 9,
+   "lines": 1245,
+   "kana_ui": 21,
+   "per_screen": {
+    "dash_home": "2/48",
+    "db": "3/179",
+    "deal": "1/60",
+    "deck": "2/233",
+    "item": "6/203",
+    "ops_doc": "6/263",
+    "up": "1/74"
+   }
+  },
+  "zh_mach": {
+   "screens": 9,
+   "lines": 1309,
+   "kana_ui": 75,
+   "per_screen": {
+    "dash_home": "2/48",
+    "db": "3/179",
+    "deal": "1/60",
+    "deck": "5/233",
+    "item": "26/191",
+    "ops_doc": "32/315",
+    "ops_reg": "3/113",
+    "up": "3/74"
+   }
+  },
+  "es_food": {
+   "screens": 29,
+   "lines": 3013,
+   "kana_ui": 10,
+   "per_screen": {
+    "deal": "2/83",
+    "gloss": "6/219",
+    "task": "1/142",
+    "up": "1/73"
+   }
+  },
+  "es_fwd": {
+   "screens": 8,
+   "lines": 568,
+   "kana_ui": 0,
+   "per_screen": {}
+  },
+  "es_daily": {
+   "screens": 9,
+   "lines": 1249,
+   "kana_ui": 19,
+   "per_screen": {
+    "dash_home": "2/48",
+    "db": "3/178",
+    "deal": "1/61",
+    "deck": "2/234",
+    "item": "4/202",
+    "ops_doc": "6/264",
+    "up": "1/74"
+   }
+  },
+  "es_mach": {
+   "screens": 9,
+   "lines": 1314,
+   "kana_ui": 74,
+   "per_screen": {
+    "dash_home": "2/48",
+    "db": "3/178",
+    "deal": "1/61",
+    "deck": "5/234",
+    "item": "25/191",
+    "ops_doc": "32/316",
+    "ops_reg": "3/114",
+    "up": "3/74"
+   }
+  }
+ },
+ "jp_left_r2_same_count": {
+  "en_food30": 225,
+  "zh_12screens": 258,
+  "es_12screens": 308,
+  "en_fwd8": 42,
+  "zh_fwd3": 75,
+  "es_fwd3": 77
+ },
+ "mobile_numbers": {
+  "menu_close_shipper": "30 項目を押して 30 閉じた（閉じない 0）",
+  "menu_close_fwd": "14 項目のうち 13 閉じた・1 は押し損ない（閉じない 0）",
+  "h_overflow_shipper": "28 画面とも 画面の幅 390／中身の幅 390（はみ出し 0）",
+  "h_overflow_fwd": "8 画面とも 390／390（はみ出し 0）",
+  "window_x": "390：開いた窓 19 個（荷主 16・物流会社 3）とも × が画面の中に見え、押して閉じた（閉じない 0）",
+  "first_run": "ようこそ窓 18〜372（幅 354）・登録メニューの × 40x40・資料を入れると AI の質問（残り 2項目）に着く。画面の幅は 390 のまま",
+  "inputs_16px": "10 画面 58 個のうち 16px 未満 0"
+ }
+}
