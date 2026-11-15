@@ -1,0 +1,17 @@
+/* 21.92 r6a：刷新版の層（6巡目の直し） */
+/* AIバイヤー開拓：押せない間の理由 */
+.k-r6a-why { margin: 6px 0 0; font-size: 12.5px; font-weight: 700; color: #8a5a12; }
+/* 6/6 のあと・目標を入れる前：「次」に見えるのは提案の「目標を入れる」の1つ（右上は白いボタン） */
+html.rd.k-r6a-goal #well .rd-hero .k-hcta { background: #fff !important; color: var(--k-or-d, #c2410c) !important; border: 1px solid var(--k-or, #f97316) !important; box-shadow: none !important; }
+html.rd.k-r6a-goal #well .rd-hero .k-hcta svg { stroke: currentColor; }
+/* スペイン語の商品情報：完成度の札の項目名が長く、右の「Rellenado」が画面の外へ出る（xcut-R04）→ 項目名は折り返す */
+.rd-p2 .k-ck li .k-v92inm { white-space: normal !important; min-width: 0; overflow-wrap: anywhere; }
+.rd-p2 .k-ck li .k-v92ist { flex: none; }
+/* 物流会社の見積受信箱：英語・スペイン語は札とボタンの字が長く、表が枠より広い（xcut-R05 (1)）→ 右端のボタンは2行に、札の列を少し詰める */
+html.rd.k-r6a-en #well table.ux32inbox td:nth-child(9) .btn, html.rd.k-r6a-es #well table.ux32inbox td:nth-child(9) .btn { white-space: normal !important; max-width: 84px; line-height: 1.2; text-align: center; }
+html.rd.k-r6a-en #well table.ux32inbox td:nth-child(8), html.rd.k-r6a-es #well table.ux32inbox td:nth-child(8) { min-width: 186px !important; }
+html.rd.k-r6a-en #well table.ux32inbox th, html.rd.k-r6a-es #well table.ux32inbox th { overflow-wrap: anywhere; }
+/* 案件の詳細：AI商社マンの画面へ移る札の前の一言（auto-N12） */
+.k-r6a-ainote { display: block; margin: 0 0 6px; font-size: 12px; font-weight: 700; color: #6b7480; }
+html.rd.k-r6a-en #well table.ux32inbox td:nth-child(8) .v90fansb, html.rd.k-r6a-es #well table.ux32inbox td:nth-child(8) .v90fansb { white-space: normal !important; max-width: 168px; line-height: 1.25; text-align: center; }
+html.rd.k-r6a-en.k-r4c-finbox #well table.ux32inbox th, html.rd.k-r6a-en.k-r4c-finbox #well table.ux32inbox td, html.rd.k-r6a-es.k-r4c-finbox #well table.ux32inbox th, html.rd.k-r6a-es.k-r4c-finbox #well table.ux32inbox td { padding-left: 5px !important; padding-right: 5px !important; }
