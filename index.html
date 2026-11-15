@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-rVBajYo0QxTeSJiZES8GO7H7cldtjoEpuis7ygIU/Q0=' 'sha256-rKAouANr0NUSQYIzgErOcU395GxYe4mTNpwntDLxHnY=' 'sha256-jOsP5JOq6KXmnPObigydW1UWMjpya675iiqNgMZjK4k=' 'sha256-bzw0oDVwD7QDYxD55AsyzL1A/CLNbPTzEO1MF9qrIMw=' 'sha256-t5VpmcMf33s9gMOUXGq89Q8mGE5CckAd/Al1d1y1SvI=' 'sha256-rwNbx6B5wY2ninXspInrGst3kK1IKSuKy0YpsaDG9AU=' https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' data: blob: https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec https://script.googleusercontent.com https://*.googleusercontent.com https://docs.google.com/spreadsheets/ https://docs.google.com/document/ https://docs.google.com/presentation/ https://drive.google.com https://drive.usercontent.google.com https://api.openai.com https://api.anthropic.com https://generativelanguage.googleapis.com https://api.perplexity.ai https://api.frankfurter.dev https://r.jina.ai https://images.weserv.nl https://commons.wikimedia.org https://upload.wikimedia.org https://api.openverse.org https://api.onedrive.com https://onedrive.live.com https://*.1drv.com https://*.sharepoint.com https://*.livefilestore.com; frame-src 'self' blob: data: https://standage-boueki2.github.io https://script.google.com https://script.googleusercontent.com https://*.googleusercontent.com https://accounts.google.com https://docs.google.com https://drive.google.com; worker-src 'self' blob:; manifest-src 'self' data: blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-rVBajYo0QxTeSJiZES8GO7H7cldtjoEpuis7ygIU/Q0=' 'sha256-rKAouANr0NUSQYIzgErOcU395GxYe4mTNpwntDLxHnY=' 'sha256-ILpzBBPdrGjD5r87NDUQ6cOOhGJUVkRETPBdL0Sk48E=' 'sha256-bzw0oDVwD7QDYxD55AsyzL1A/CLNbPTzEO1MF9qrIMw=' 'sha256-t5VpmcMf33s9gMOUXGq89Q8mGE5CckAd/Al1d1y1SvI=' 'sha256-rwNbx6B5wY2ninXspInrGst3kK1IKSuKy0YpsaDG9AU=' https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' data: blob: https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec https://script.googleusercontent.com https://*.googleusercontent.com https://docs.google.com/spreadsheets/ https://docs.google.com/document/ https://docs.google.com/presentation/ https://drive.google.com https://drive.usercontent.google.com https://api.openai.com https://api.anthropic.com https://generativelanguage.googleapis.com https://api.perplexity.ai https://api.frankfurter.dev https://r.jina.ai https://images.weserv.nl https://commons.wikimedia.org https://upload.wikimedia.org https://api.openverse.org https://api.onedrive.com https://onedrive.live.com https://*.1drv.com https://*.sharepoint.com https://*.livefilestore.com; frame-src 'self' blob: data: https://standage-boueki2.github.io https://script.google.com https://script.googleusercontent.com https://*.googleusercontent.com https://accounts.google.com https://docs.google.com https://drive.google.com; worker-src 'self' blob:; manifest-src 'self' data: blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <script>(function(){
 var SK="bc20_ses_v1",TK="bc20_v65a_s",SID="bc20_v84k_sid",NOTE="bc20_v84k_note",ABS=432e5,IDLE=108e5;
 var P=Storage.prototype,G=P.getItem,S=P.setItem,R=P.removeItem,K=P.key;
@@ -5081,7 +5081,7 @@ body.locked .pg-ft {
 
 <script>
 "use strict";
-const BC20_BUILD="aec32d58f1f9";
+const BC20_BUILD="72b0656d44d9";
 const BC20_SYNC_URL = "https://script.google.com/macros/s/AKfycbxw23_UfyVvAgo3uERncVvXosCkoAH9t5h1wyrw4XjHg_yxRUu-HZkgKyNvgUL2W1nrJA/exec";
 (function () {
     try {
@@ -208117,6 +208117,874 @@ catch (e) { } });
 })();
 (function () {
     const W = window;
+    if (W.__v2192r5c)
+        return;
+    W.__v2192r5c = 1;
+    const E = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const LG = () => { try {
+        return (typeof I18N !== "undefined" && I18N && I18N.lang) || document.documentElement.lang || "ja";
+    }
+    catch (e) {
+        return "ja";
+    } };
+    const L2 = () => String(LG()).slice(0, 2);
+    const M = (ja, en, zh, es) => { const l = L2(); return l === "en" ? en : l === "zh" ? (zh || en) : l === "es" ? (es || en) : ja; };
+    const ten = () => { try {
+        return typeof TEN !== "undefined" ? TEN : null;
+    }
+    catch (e) {
+        return null;
+    } };
+    const ses = () => { try {
+        return typeof SES !== "undefined" ? SES : null;
+    }
+    catch (e) {
+        return null;
+    } };
+    const isFwd = () => { try {
+        return !!((typeof FWDON !== "undefined" && FWDON) || (ses() && ses().role === "fwd"));
+    }
+    catch (e) {
+        return false;
+    } };
+    const isAdm = () => { try {
+        return !!(ses() && ses().t === "admin");
+    }
+    catch (e) {
+        return false;
+    } };
+    const lsGet = (k) => { try {
+        return localStorage.getItem(k);
+    }
+    catch (e) {
+        return null;
+    } };
+    const lsSet = (k, v) => { try {
+        localStorage.setItem(k, v);
+    }
+    catch (e) { } };
+    const jget = (k) => { try {
+        return JSON.parse(lsGet(k) || "{}") || {};
+    }
+    catch (e) {
+        return {};
+    } };
+    const API = (W.v92r5c = W.v92r5c || {});
+    API.M = M;
+    const T0K = "bc20_v92r5c_t0";
+    let t0 = +(lsGet(T0K) || 0);
+    if (!t0) {
+        t0 = Date.now();
+        lsSet(T0K, String(t0));
+    }
+    const code = () => String((ses() && ses().code) || "");
+    const regId = (t) => String((t && (t.uid || t.item)) || "");
+    const hasCty = (t) => !!(t && t.ctySel && Array.isArray(t.ctySel.chosen) && t.ctySel.chosen.length);
+    function regSeen(t) {
+        try {
+            if (!t)
+                return false;
+            const rk = t.regKB || {};
+            if (Object.keys(rk).some((c) => rk[c] && (rk[c].appliedTxt || rk[c].txt)))
+                return true;
+            const id = regId(t);
+            if (!id)
+                return false;
+            if (jget("bc20_v92r5c_reg_" + code())[id])
+                return true;
+            const o = +(jget("bc20_v92core_reg_" + code())[id] || 0);
+            return !!(o && o < t0);
+        }
+        catch (e) {
+            return false;
+        }
+    }
+    API.regMark = function () {
+        try {
+            const t = ten();
+            if (!t || !code() || isFwd() || isAdm() || !hasCty(t))
+                return false;
+            if (typeof cur === "undefined" || cur !== "ops" || typeof opsTab === "undefined" || opsTab !== "reg")
+                return false;
+            const id = regId(t);
+            if (!id)
+                return false;
+            const F = jget("bc20_v92r5c_reg_" + code());
+            if (F[id])
+                return false;
+            const was = regSeen(t);
+            F[id] = Date.now();
+            lsSet("bc20_v92r5c_reg_" + code(), JSON.stringify(F));
+            return !was;
+        }
+        catch (e) {
+            return false;
+        }
+    };
+    API.regSeen = () => regSeen(ten());
+    if (typeof ux32Setup === "function") {
+        const __us5 = ux32Setup;
+        ux32Setup = function () {
+            const S = __us5.apply(this, arguments);
+            try {
+                if (Array.isArray(S)) {
+                    const r = S.find((x) => x && x[0] === "reg");
+                    if (r && r[4] && !regSeen(ten())) {
+                        r[4] = false;
+                        r[5] = M("「規制を調べる」の画面で、販売先の国の決まりごとをまだ確かめていません（画面の中の表まで見ると済みになります）", "You have not reviewed the regulations for your target countries yet (scroll to the table on the Regulations screen)", "尚未在“查法规”页面确认销售国的规定（看到页面中的表格即算完成）", "Aún no ha revisado las regulaciones de los países de venta (vea la tabla en la pantalla de regulaciones)");
+                    }
+                }
+            }
+            catch (e) { }
+            return S;
+        };
+    }
+    const SKK = () => "bc20_v92r5c_skip_" + code();
+    const skipped = (t) => { const a = jget(SKK())[regId(t)]; return Array.isArray(a) ? a : []; };
+    const needW = (k) => { try {
+        const n = NEED.find((x) => x.k === k);
+        return n ? n.w : 9;
+    }
+    catch (e) {
+        return 9;
+    } };
+    function fillBySkip(t) {
+        try {
+            if (!t || typeof scoreOf !== "function")
+                return false;
+            const ms = scoreOf(t).missing || [];
+            if (!ms.length)
+                return false;
+            const sk = skipped(t);
+            return ms.every((m) => m.w < 5 && sk.indexOf(m.k) >= 0);
+        }
+        catch (e) {
+            return false;
+        }
+    }
+    API.fillBySkip = () => fillBySkip(ten());
+    const lastAi = () => { try {
+        const L = FILL.log;
+        for (let i = L.length - 1; i >= 0; i--)
+            if (L[i].who === "ai")
+                return L[i];
+    }
+    catch (e) { } return null; };
+    const wrapSkip = (inner) => function () {
+        let k = "", n0 = 0;
+        try {
+            k = (FILL && FILL.cur && !FILL.cur.x && FILL.cur.k) || "";
+            n0 = FILL.log.length;
+        }
+        catch (e) { }
+        const r = inner.apply(this, arguments);
+        try {
+            const t = ten();
+            if (k && t && needW(k) < 5) {
+                const said = FILL.log.slice(n0).some((m) => m.who === "ai" && /無理に埋めなくて大丈夫/.test(String(m.html)));
+                if (said) {
+                    const F = jget(SKK()), id = regId(t);
+                    const a = Array.isArray(F[id]) ? F[id] : [];
+                    if (a.indexOf(k) < 0) {
+                        a.push(k);
+                        F[id] = a;
+                        lsSet(SKK(), JSON.stringify(F));
+                        try {
+                            if (typeof render === "function" && !FILL.cur)
+                                render();
+                        }
+                        catch (e) { }
+                    }
+                }
+            }
+        }
+        catch (e) { }
+        return r;
+    };
+    try {
+        if (typeof v54hearSkip === "function")
+            v54hearSkip = wrapSkip(v54hearSkip);
+    }
+    catch (e) { }
+    try {
+        if (typeof skipCurrent === "function")
+            skipCurrent = wrapSkip(skipCurrent);
+    }
+    catch (e) { }
+    if (typeof ux32Setup === "function") {
+        const __us5b = ux32Setup;
+        ux32Setup = function () {
+            const S = __us5b.apply(this, arguments);
+            try {
+                if (Array.isArray(S)) {
+                    const f = S.find((x) => x && x[0] === "fill");
+                    if (f && !f[4] && fillBySkip(ten())) {
+                        f[4] = true;
+                        f[5] = "";
+                        f[6] = "";
+                    }
+                }
+            }
+            catch (e) { }
+            return S;
+        };
+    }
+    try {
+        if (W.v92r4c && typeof W.v92r4c.state === "function") {
+            const st0 = W.v92r4c.state;
+            W.v92r4c.state = function () {
+                const s = st0.apply(this, arguments);
+                try {
+                    if (s && s.miss > 0 && fillBySkip(ten()))
+                        return Object.assign({}, s, { miss: 0, names: [] });
+                }
+                catch (e) { }
+                return s;
+            };
+        }
+    }
+    catch (e) { }
+    const GK = () => "bc20_v92r5c_got_" + code();
+    const isTrial = () => { try {
+        return !!(ses() && ses().t === "trial");
+    }
+    catch (e) {
+        return false;
+    } };
+    function fixLog() {
+        const t = ten();
+        if (!t || typeof FILL === "undefined" || !FILL || !Array.isArray(FILL.log))
+            return;
+        const id = regId(t), N = (typeof NEED !== "undefined" && NEED.length) || 21;
+        FILL.log.forEach((m) => {
+            if (!m || m.who !== "ai" || typeof m.html !== "string" || m.r5c)
+                return;
+            let h = m.html;
+            const a = h.match(/商品情報に入れました（<b>(\d+)項目<\/b>）|added it to the product information \(<b>(\d+) fields<\/b>\)/);
+            if (a) {
+                const n = +(a[1] || a[2]);
+                const G = jget(GK());
+                if (id && (!G[id] || G[id].file !== (t.file || ""))) {
+                    G[id] = { n, file: t.file || "", at: Date.now() };
+                    lsSet(GK(), JSON.stringify(G));
+                }
+                const mm = h.match(/読み取れなかった<b>(\d+)項目<\/b>|about the <b>(\d+) item\(s\)<\/b>/);
+                const f0 = mm ? N - +(mm[1] || mm[2]) : -1;
+                if (f0 >= 0) {
+                    h = h.replace(/いまの情報は <b>\d+\/\d+<\/b> です。/, `登録の項目（全体 ${N}件）は <b>${f0}/${N}</b> そろっています。`)
+                        .replace(/The information is now <b>\d+\/\d+<\/b>\./, `Registration items filled: <b>${f0}/${N}</b>.`);
+                }
+                m.r5c = 1;
+            }
+            const b = h.match(/個の表を検出し、(?:<b>)?(\d+)項目(?:<\/b>)?を取り込みました。/);
+            if (b && id) {
+                const g = jget(GK())[id];
+                let f = -1;
+                try {
+                    f = scoreOf(t).filled.length;
+                }
+                catch (e) { }
+                if (g && g.file === (t.file || "") && g.n > 0) {
+                    const now = +b[1];
+                    const tail = f >= 0 ? `<span data-noi18n>${E(M(`（登録の項目〔全体 ${N}件〕は、いま ${f}/${N} そろっています）`, ` (registration items filled now: ${f}/${N})`, `（登记项目〔共 ${N} 项〕目前已填 ${f}/${N}）`, ` (campos de registro completos ahora: ${f}/${N})`))}</span>` : "";
+                    h = h.replace(/(個の表を検出し、(?:<b>)?)\d+(項目(?:<\/b>)?を取り込みました。)/, "$1" + g.n + "$2" + tail);
+                    if (now !== g.n)
+                        h = h.replace(/取り込んだ項目：/, "いま入っている項目：");
+                }
+                m.r5c = 1;
+            }
+            if (isTrial()) {
+                h = h.replace(/STANDAGEの担当からあらためて確認します。/g, "あとで「商品情報」の画面から、いつでも入れられます。")
+                    .replace(/残りはSTANDAGEの担当が伺って埋めます。/g, "残りは、あとで「商品情報」の画面から入れられます。");
+            }
+            if (h !== m.html)
+                m.html = h;
+        });
+    }
+    if (typeof fillRender === "function") {
+        const __fr5 = fillRender;
+        fillRender = function () {
+            try {
+                fixLog();
+            }
+            catch (e) { }
+            return __fr5.apply(this, arguments);
+        };
+    }
+    try {
+        if (typeof I18N !== "undefined" && I18N && I18N.dict) {
+            const DI = I18N.dict;
+            ["en", "zh", "es"].forEach((l) => { if (!DI[l])
+                DI[l] = {}; });
+            const TR = (ja, en, zh, es) => { if (DI.en[ja] == null)
+                DI.en[ja] = en; if (DI.zh[ja] == null)
+                DI.zh[ja] = zh; if (DI.es[ja] == null)
+                DI.es[ja] = es; };
+            const L3 = (en, zh, es) => I18N.lang === "zh" ? zh : I18N.lang === "es" ? es : en;
+            const tr = (x, d) => { try {
+                const r = i18nStr(String(x), d || DI[I18N.lang] || {});
+                return r == null ? String(x) : r;
+            }
+            catch (e) {
+                return String(x);
+            } };
+            const PF = (re, f) => { if (Array.isArray(I18N.pat))
+                I18N.pat.unshift({ re, en: f, zh: f, es: f }); };
+            TR("止まっている相手はいません", "No stalled buyers", "没有停滞的对象", "No hay compradores estancados");
+            TR("バイヤーへの接触を開始", "Start contacting buyers", "开始联系买家", "Empezar a contactar con compradores");
+            TR("規制調査が終わった国から始めます。", "Start with the countries whose regulation check is done.", "从已完成法规调查的国家开始。", "Empiece por los países cuya revisión de regulaciones ya terminó.");
+            TR("商談記録を貯める", "Build up deal records", "积累商谈记录", "Acumular registros de negociación");
+            TR("42件ほど貯まると、国別・価格帯別の分析ができます。", "With about 42 records, analysis by country and price band becomes available.", "积累约42条后，可按国家・价格带进行分析。", "Con unos 42 registros se puede analizar por país y por franja de precio.");
+            TR("初回の見積を出す", "Send the first quote", "发出首次报价", "Enviar la primera cotización");
+            TR("AIが下書きを作ります。", "AI drafts it for you.", "由 AI 起草。", "La IA prepara el borrador.");
+            PF(/^期限切れ・7日以内の数は、分析・レポートと同じ数え方です(?:（見本の会社は、見本の日付 (\S+) を「今日」として数えています）)?(。?)$/, (m) => L3("Overdue and within-7-days counts use the same rules as Analytics & reports" + (m[1] ? " (for the sample company, the sample date " + m[1] + " is treated as “today”)" : "") + ".", "已逾期・7天内的数量与“分析・报告”采用相同的统计方式" + (m[1] ? "（样例公司以样例日期 " + m[1] + " 作为“今天”统计）" : "") + "。", "Los vencidos y los de 7 días se cuentan igual que en Análisis e informes" + (m[1] ? " (para la empresa de muestra, la fecha de muestra " + m[1] + " se toma como «hoy»)" : "") + "."));
+            PF(/^「規制を調べる」で自社で確かめる（STANDAGE への調査の依頼もそこから）(・制裁の対象国（輸出禁止の確認が先）)?$/, (m) => L3("Check it yourself on “Check regulations” (you can also request research from STANDAGE there)" + (m[1] ? " · sanctioned country (check export bans first)" : ""), "在“查法规”中自行确认（也可在那里委托 STANDAGE 调查）" + (m[1] ? "・制裁对象国（先确认出口禁令）" : ""), "Compruébelo usted en «Ver regulaciones» (desde ahí también puede pedir la investigación a STANDAGE)" + (m[1] ? " · país sancionado (primero confirme la prohibición de exportación)" : "")));
+            TR("が商談中〜契約交渉", " in talks to contract negotiation", " 处于商谈中～合同谈判", " entre conversaciones y negociación de contrato");
+            PF(/^(\d+)社$/, (m) => {
+                if (I18N.lang !== "es")
+                    return null;
+                let k = "";
+                try {
+                    k = (W.RDX && W.RDX.curKey) ? W.RDX.curKey() : String(cur);
+                }
+                catch (e) { }
+                if (isFwd() || !/^(inbox|today|dash:home|dash:case|db|deal|dash)$/.test(k))
+                    return null;
+                return m[1] + (m[1] === "1" ? " empresa" : " empresas");
+            });
+            TR("のデータを読み込み済みです。画面を見ながら、そのまま聞いてください。", " data is loaded. Ask me anything while you look at the screen.", "的数据已读取。请一边看画面，一边直接提问。", ": datos cargados. Pregunte lo que quiera mientras mira la pantalla.");
+            TR("いま見ている画面のことも、何でも質問できます（Enterで送信・Shift+Enterで改行）", "Ask anything, including about the screen you are viewing (Enter to send, Shift+Enter for a new line)", "可以提任何问题，包括当前画面的内容（Enter 发送・Shift+Enter 换行）", "Pregunte lo que quiera, también sobre esta pantalla (Enter envía, Shift+Enter salto de línea)");
+            TR("まだ直接メッセージでやり取り中の相手も、商談を記録した相手もいません。", "There are no buyers you are messaging directly or have recorded deals with yet.", "还没有正在直接消息往来的对象，也没有已记录商谈的对象。", "Aún no hay compradores con mensajes directos ni con negociaciones registradas.");
+            PF(/^STANDAGE の記録 (\d+)案件（さまざまな業種を含む区分「その他」。「(.+)」だけの記録はまだありません）から、道筋の目安を出します$/, (m, d) => {
+                const c = tr(m[2], d);
+                return L3("Estimates the roadmap from " + m[1] + " STANDAGE cases (the mixed-industry group “Other”; there are no records for “" + c + "” alone yet)", "根据 STANDAGE 的 " + m[1] + " 个案件记录（包含多种行业的分类“其他”。尚无仅“" + c + "”的记录）给出路线的参考", "Estima la ruta a partir de " + m[1] + " casos de STANDAGE (grupo mixto «Otros»; aún no hay registros solo de «" + c + "»)");
+            });
+            TR("通関統計エクスプローラーを開く", "Open the customs statistics explorer", "打开通关统计浏览器", "Abrir el explorador de estadísticas aduaneras");
+            TR("推奨FOB Japan Price を算出", "Calculate the recommended FOB Japan price", "计算推荐的 FOB Japan 价格", "Calcular el precio FOB Japan recomendado");
+            TR("物流会社にAI見積を依頼（相見積）", "Request AI quotes from forwarders (comparison)", "向物流公司请求 AI 报价（比价）", "Pedir cotizaciones con IA a transitarios (comparativa)");
+            TR("商品情報のアップロード", "Upload product information", "上传商品信息", "Subir información del producto");
+            const LGN = [
+                ["貿易業務を、もっと", "Make trade operations", "让贸易业务", "Haga el comercio exterior"],
+                ["かんたん・スマートに。", "simpler and smarter.", "更简单、更智能。", "más fácil e inteligente."],
+                ["AI商社マンは、", "AI Trade Agent is", "AI商社人是", "AI Trade Agent es"],
+                ["海外展開の調査・交渉・", "a cloud service that uses AI to support", "一项用 AI 支持", "un servicio en la nube que apoya con IA"],
+                ["規制確認などを", "overseas market research, negotiation", "海外拓展的调查、谈判、", "la investigación, la negociación"],
+                ["AI でサポートする、", "and regulation checks", "法规确认等的", "y la revisión de regulaciones"],
+                ["貿易業務の", "for your", "贸易业务", "de su"],
+                ["クラウドサービスです。", "trade operations.", "云服务。", "comercio exterior."],
+                ["ご利用までの", "Getting started in", "开始使用的", "Empiece en"],
+                ["3ステップ", "3 steps", "3个步骤", "3 pasos"],
+                ["ログイン方法を選ぶ", "Choose how to sign in", "选择登录方式", "Elija cómo iniciar sesión"],
+                ["メール・パスワード か コード", "Email & password, or a code", "邮箱・密码 或 访问码", "Correo y contraseña, o un código"],
+                ["必要な情報を入力", "Enter your details", "输入所需信息", "Introduzca sus datos"],
+                ["メール・パスワード または アクセスコード", "Email & password, or access code", "邮箱・密码 或 访问码", "Correo y contraseña, o código de acceso"],
+                ["利用を開始", "Start using it", "开始使用", "Empiece a usarlo"],
+                ["すぐにご利用いただけます", "Ready to use right away", "马上即可使用", "Listo para usar de inmediato"],
+                ["安心・安全について（データの暗号化と、AI・物流会社に送る範囲）", "Security & privacy (data encryption and what is sent to AI and forwarders)", "关于安全（数据加密，以及发送给 AI・物流公司的范围）", "Seguridad y privacidad (cifrado de datos y qué se envía a la IA y a los transitarios)"],
+                ["会員の方", "Members", "会员", "Miembros"],
+                ["（お客様ログイン）", "(customer sign-in)", "（客户登录）", "(acceso de clientes)"],
+                ["アカウントをお持ちの方", "If you have an account", "已有账号的用户", "Si ya tiene cuenta"],
+                ["アクセスコードでログイン", "Sign in with an access code", "用访问码登录", "Entrar con código de acceso"],
+                ["（体験用・デモ用のコード）", "(trial / demo codes)", "（体验・演示用访问码）", "(códigos de prueba / demo)"],
+                ["体験用・デモ用のコードをお持ちの方", "If you have a trial / demo code", "持有体验・演示用访问码的用户", "Si tiene un código de prueba / demo"],
+                ["くわしい版（はじめてガイド・別のタブ）", "Detailed version (getting-started guide, new tab)", "详细版（入门指南・新标签页）", "Versión detallada (guía de inicio, pestaña nueva)"],
+                ["アカウントの発行・再有効化は、STANDAGE の担当までご連絡ください。", "To have an account issued or reactivated, please contact your STANDAGE representative.", "账号的发放・重新启用，请联系 STANDAGE 负责人。", "Para emitir o reactivar una cuenta, contacte con su responsable de STANDAGE."],
+                ["ご担当者名（任意。招待された方は、招待状の氏名）", "Your name (optional; if invited, the name on the invitation)", "负责人姓名（选填。受邀者请填邀请函上的姓名）", "Su nombre (opcional; si fue invitado, el de la invitación)"]
+            ];
+            LGN.forEach((r) => TR(r[0], r[1], r[2], r[3]));
+            const co = (x, d) => tr(x, d);
+            const seg = (s, d) => {
+                let m;
+                if ((m = s.match(/^(\d+)社中 最安（合計 (¥[\d,]+)。次点 (.+) より (¥[\d,]+) 安い）$/)))
+                    return L3(`cheapest of ${m[1]} (total ${m[2]}; ${m[4]} cheaper than the runner-up, ${co(m[3], d)})`, `${m[1]}家中最便宜（合计 ${m[2]}。比第二名 ${co(m[3], d)} 便宜 ${m[4]}）`, `el más barato de ${m[1]} (total ${m[2]}; ${m[4]} menos que el siguiente, ${co(m[3], d)})`);
+                if ((m = s.match(/^最安ではない（最安 (.+) (¥[\d,]+) との差 (¥[\d,]+)）が、(最安案は希望納期に間に合わない|最安案は要望と違う輸送形態|所要日数・有効期限を含めた総合点で上回る)$/))) {
+                    const i = ["最安案は希望納期に間に合わない", "最安案は要望と違う輸送形態", "所要日数・有効期限を含めた総合点で上回る"].indexOf(m[4]);
+                    const why = L3(["the cheapest option misses the requested date", "the cheapest option uses a different transport mode", "it scores higher overall, including transit time and validity"][i], ["最便宜的方案赶不上希望交期", "最便宜的方案运输方式与要求不同", "综合时效和有效期的总分更高"][i], ["la opción más barata no llega a la fecha solicitada", "la opción más barata usa otro modo de transporte", "obtiene mejor puntuación global, incluidos el tránsito y la vigencia"][i]);
+                    return L3(`not the cheapest (cheapest: ${co(m[1], d)} ${m[2]}, difference ${m[3]}), but ${why}`, `不是最便宜（最便宜：${co(m[1], d)} ${m[2]}，差额 ${m[3]}），但${why}`, `no es el más barato (el más barato: ${co(m[1], d)} ${m[2]}, diferencia ${m[3]}), pero ${why}`);
+                }
+                if ((m = s.match(/^(回答は1社のみ（相見積なし）。)?所要 約(\d+)日(?:＋情勢見込み(\d+)日)?(?:(（最速）)|（最速の (.+) より \+(\d+)日）)?$/))) {
+                    const head = m[1] ? L3("only 1 forwarder answered (no comparison). Transit", "只有1家回复（无比价）。时效", "solo respondió 1 transitario (sin comparativa). Tránsito") : L3("transit", "时效", "tránsito");
+                    return head + L3(` approx. ${m[2]} days`, `约${m[2]}天`, ` aprox. ${m[2]} días`)
+                        + (m[3] ? L3(` + situation ${m[3]} days`, `＋形势预估${m[3]}天`, ` + situación ${m[3]} días`) : "")
+                        + (m[4] ? L3(" (fastest)", "（最快）", " (el más rápido)") : m[5] ? L3(` (+${m[6]} days vs the fastest, ${co(m[5], d)})`, `（比最快的 ${co(m[5], d)} 多${m[6]}天）`, ` (+${m[6]} días frente al más rápido, ${co(m[5], d)})`) : "");
+                }
+                if ((m = s.match(/^有効期限 (\d{4}-\d\d-\d\d)（あと(\d+)日）$/)))
+                    return L3(`valid until ${m[1]} (${m[2]} days left)`, `有效期 ${m[1]}（还剩${m[2]}天）`, `válido hasta ${m[1]} (quedan ${m[2]} días)`);
+                if ((m = s.match(/^⚠ 有効期限 (\S+) が間近（あと(\d+)日）。早めの仮押さえを$/)))
+                    return L3(`⚠ validity ${m[1]} is close (${m[2]} days left) — hold space early`, `⚠ 有效期 ${m[1]} 即将到期（还剩${m[2]}天）。请尽早预留舱位`, `⚠ la vigencia ${m[1]} está próxima (quedan ${m[2]} días); reserve pronto`);
+                if ((m = s.match(/^希望納期 (\S+) に間に合う見込み（通関・カット余裕3日込みで (-?\d+)日の余裕）$/)))
+                    return L3(`expected to meet the requested date ${m[1]} (${m[2]} days of slack, incl. 3 days for customs / cut-off)`, `预计赶得上希望交期 ${m[1]}（含通关・截关余量3天，尚有${m[2]}天余量）`, `se prevé cumplir la fecha solicitada ${m[1]} (margen de ${m[2]} días, incl. 3 de aduana / corte)`);
+                if ((m = s.match(/^⚠ 希望納期 (\S+) に (\d+)日 不足（航空便・直行便の再見積を推奨）$/)))
+                    return L3(`⚠ ${m[2]} days short of the requested date ${m[1]} (re-quoting by air or direct service is recommended)`, `⚠ 距希望交期 ${m[1]} 差 ${m[2]} 天（建议重新询价空运・直航）`, `⚠ faltan ${m[2]} días para la fecha solicitada ${m[1]} (se recomienda recotizar aéreo o directo)`);
+                if ((m = s.match(/^要望の (.+) は未登録のため (.+) で提示$/)))
+                    return L3(`the requested ${m[1]} is not registered, so it is quoted as ${m[2]}`, `要求的 ${m[1]} 未登记，因此以 ${m[2]} 报价`, `el ${m[1]} solicitado no está registrado; se cotiza como ${m[2]}`);
+                return null;
+            };
+            const cap = (s) => s.replace(/^(⚠ )?([a-zñ])/, (x, a, b) => (a || "") + b.toUpperCase());
+            PF(/^(?:\d+社中 最安（|最安ではない（最安 |回答は1社のみ（相見積なし）。所要 |所要 約\d+日).*$/, (m, d) => {
+                const parts = String(m[0]).split("／");
+                const out = [];
+                for (const p of parts) {
+                    const t = seg(p, d);
+                    if (t == null)
+                        return null;
+                    out.push(t);
+                }
+                return cap(out.join(I18N.lang === "zh" ? "／" : " / "));
+            });
+            PF(/^1位（(.+)）との差は主に(日数|金額)です。$/, (m, d) => L3(`The gap to No. 1 (${co(m[1], d)}) is mainly ${m[2] === "日数" ? "transit days" : "price"}.`, `与第1名（${co(m[1], d)}）的差距主要在${m[2] === "日数" ? "天数" : "金额"}。`, `La diferencia con el n.º 1 (${co(m[1], d)}) es sobre todo de ${m[2] === "日数" ? "días" : "precio"}.`));
+            if (typeof i18nStr === "function") {
+                const s5 = i18nStr;
+                i18nStr = function (s, d) {
+                    let r = s5.apply(this, arguments);
+                    try {
+                        if (I18N.lang !== "ja") {
+                            if (typeof r === "string" && r.indexOf("宛先：") >= 0)
+                                r = r.replace(/宛先：/g, L3("To: ", "收件方：", "Para: "));
+                            else if (r == null && /^\s*宛先：/.test(String(s)) && d && d === DI[I18N.lang])
+                                r = String(s).replace(/宛先：/, L3("To: ", "收件方：", "Para: "));
+                        }
+                    }
+                    catch (e) { }
+                    return r;
+                };
+            }
+            if (typeof uxPalItems === "function") {
+                const p5 = uxPalItems;
+                const memo = {};
+                const JP = /[ぁ-ゖァ-ヺ]/;
+                uxPalItems = function (q) {
+                    const items = p5.apply(this, arguments);
+                    try {
+                        const l = I18N.lang;
+                        if (l !== "ja" && Array.isArray(items) && DI[l]) {
+                            items.forEach((it) => {
+                                if (!it || typeof it.sub !== "string" || !/…$/.test(it.sub) || !JP.test(it.sub))
+                                    return;
+                                const head = it.sub.replace(/…$/, "");
+                                const key = l + "|" + head;
+                                if (!(key in memo)) {
+                                    memo[key] = null;
+                                    if (head.length >= 12)
+                                        for (const k in DI[l]) {
+                                            if (k.length > head.length && k.lastIndexOf(head, 0) === 0 && typeof DI[l][k] === "string") {
+                                                memo[key] = DI[l][k];
+                                                break;
+                                            }
+                                        }
+                                }
+                                const t = memo[key];
+                                if (t) {
+                                    const n = l === "zh" ? 60 : 110;
+                                    it.sub = t.length > n ? t.slice(0, n).replace(/\s+\S*$/, "") + "…" : t;
+                                }
+                            });
+                        }
+                    }
+                    catch (e) { }
+                    return items;
+                };
+            }
+        }
+    }
+    catch (e) {
+        try {
+            console.warn("v2192r5c i18n", e);
+        }
+        catch (x) { }
+    }
+    const LGFIX = [
+        ["このアカウントは無効化されています。", "This account has been disabled.", "此账号已被停用。", "Esta cuenta ha sido desactivada."],
+        ["このアカウントは有効期限が切れています。", "This account has expired.", "此账号已过期。", "Esta cuenta ha caducado."],
+        ["※ くわしい版の絵と道順は、刷新前の配置です", "* The pictures and paths in the detailed guide show the layout before the redesign", "※ 详细版中的图片和路径为改版前的布局", "* Las imágenes y rutas de la guía detallada muestran el diseño anterior"]
+    ];
+    const PH_SHORT = [["lg-code", "アクセスコード（例：BC-XXXX-XXXX-XXXX）", "コード（例：BC-XXXX-XXXX-XXXX）"], ["lg-name", "ご担当者名（任意。招待された方は、招待状の氏名）", "ご担当者名（任意・招待状の氏名）"]];
+    try {
+        if (typeof I18N !== "undefined" && I18N && I18N.dict) {
+            const DI = I18N.dict;
+            const put = (ja, en, zh, es) => { if (DI.en && DI.en[ja] == null)
+                DI.en[ja] = en; if (DI.zh && DI.zh[ja] == null)
+                DI.zh[ja] = zh; if (DI.es && DI.es[ja] == null)
+                DI.es[ja] = es; };
+            put("コード（例：BC-XXXX-XXXX-XXXX）", "Code (e.g. BC-XXXX-XXXX-XXXX)", "访问码（例：BC-XXXX-XXXX-XXXX）", "Código (ej. BC-XXXX-XXXX-XXXX)");
+            put("ご担当者名（任意・招待状の氏名）", "Your name (optional)", "负责人姓名（选填）", "Su nombre (opcional)");
+        }
+    }
+    catch (e) { }
+    const LIDX = () => { const l = L2(); return l === "en" ? 1 : l === "zh" ? 2 : l === "es" ? 3 : 0; };
+    function lgFix() {
+        try {
+            if (!document.body.classList.contains("locked"))
+                return;
+            const l = L2(), ix = LIDX();
+            const d = document.getElementById("v92e-lghelp");
+            if (d) {
+                if (!d.getAttribute("data-r5cl"))
+                    d.setAttribute("data-r5cl", d.getAttribute("data-r5cl0") || l);
+                else if (d.getAttribute("data-r5cl") !== l) {
+                    W.__r5cLgOpen = !!d.open;
+                    d.remove();
+                }
+                else if (W.__r5cLgOpen != null) {
+                    if (W.__r5cLgOpen)
+                        d.open = true;
+                    W.__r5cLgOpen = null;
+                }
+            }
+            if (window.innerWidth <= 480) {
+                const DL = (l !== "ja" && typeof I18N !== "undefined" && I18N && I18N.dict && I18N.dict[l]) || null;
+                PH_SHORT.forEach(([id, long, short]) => {
+                    const e = document.getElementById(id);
+                    if (!e)
+                        return;
+                    if (l === "ja") {
+                        if (e.placeholder === long)
+                            e.placeholder = short;
+                    }
+                    else if (DL && DL[short] && (e.placeholder === DL[long] || e.placeholder === long || e.placeholder === short))
+                        e.placeholder = DL[short];
+                });
+            }
+            document.querySelectorAll("#v92e-lgerr, .k-r4c-gnote").forEach((el) => {
+                const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+                let n;
+                while ((n = w.nextNode())) {
+                    const v = String(n.nodeValue || "").trim();
+                    if (!v)
+                        continue;
+                    const row = LGFIX.find((r) => r.indexOf(v) >= 0);
+                    if (row && row[ix] !== v)
+                        n.nodeValue = String(n.nodeValue).replace(v, row[ix]);
+                }
+            });
+        }
+        catch (e) { }
+    }
+    setInterval(lgFix, 700);
+    function smpNames() {
+        try {
+            if (L2() === "ja")
+                return;
+            const DI = (typeof I18N !== "undefined" && I18N && I18N.dict && I18N.dict[I18N.lang]) || {};
+            document.querySelectorAll(".v84smp .v84smp-row").forEach((b) => {
+                if (b.getAttribute("data-r5c"))
+                    return;
+                const a = String(b.getAttribute("data-arg") || "");
+                const x = /^s2:/.test(a) ? (typeof SAMPLES2 !== "undefined" ? SAMPLES2[a.slice(3)] : null) : (typeof PRODUCTS !== "undefined" ? PRODUCTS[a] : null);
+                if (!x)
+                    return;
+                b.setAttribute("data-r5c", "1");
+                const bb = b.querySelector(".v84smp-t b"), sm = b.querySelector(".v84smp-t small");
+                const item = x.itemEn || DI[x.item] || "", coN = x.coEn || DI[x.co] || "";
+                if (bb && item)
+                    bb.textContent = item;
+                if (sm) {
+                    const parts = String(sm.textContent || "").split("・");
+                    const kind = parts[parts.length - 1];
+                    const cat = DI[x.cat] || x.cat;
+                    sm.textContent = [coN || x.co, cat, kind].join(L2() === "zh" ? "・" : " · ");
+                }
+            });
+        }
+        catch (e) { }
+    }
+    try {
+        if (typeof v84SmpOpen === "function") {
+            const so5 = v84SmpOpen;
+            v84SmpOpen = function () { const r = so5.apply(this, arguments); try {
+                smpNames();
+                setTimeout(smpNames, 200);
+            }
+            catch (e) { } return r; };
+        }
+    }
+    catch (e) { }
+    const JAc = /[ぁ-んァ-ヶ一-龠々]/;
+    const UNITS = { 本: "pcs", 個: "pcs", 枚: "sheets", 袋: "bags", 缶: "cans", 箱: "boxes", 台: "units", セット: "sets", ケース: "cases", 足: "pairs", 着: "pcs", 点: "pcs", 冊: "copies", 粒: "tablets", 錠: "tablets", 瓶: "bottles", ボトル: "bottles", パック: "packs" };
+    const PORT = { 横浜: "Yokohama", 東京: "Tokyo", 名古屋: "Nagoya", 神戸: "Kobe", 大阪: "Osaka", 博多: "Hakata", 清水: "Shimizu", 門司: "Moji", 新潟: "Niigata", 苫小牧: "Tomakomai", 那覇: "Naha", 成田: "Narita", 関西: "Kansai", 羽田: "Haneda", 中部: "Chubu" };
+    const timeU = (u) => u === "日" ? "days" : u === "営業日" ? "business days" : u === "週間" ? "weeks" : u === "年" ? "years" : "months";
+    function enFixed(v) {
+        const raw = String(v == null ? "" : v);
+        if (!JAc.test(raw))
+            return raw;
+        let s = raw.normalize("NFKC").trim();
+        s = s.replace(/受注後\s*約?\s*(\d+)\s*(営業日|日|週間|[ヶかカヵ]月)(?:以内)?/g, (_m, n, u) => `${n} ${timeU(u)} after order`);
+        s = s.replace(/製造日?(?:から|より)\s*(\d+)\s*(日|週間|[ヶかカヵ]月|年)/g, (_m, n, u) => `${n} ${timeU(u)} from manufacture`);
+        s = s.replace(/\(要冷蔵\)/g, " (keep refrigerated)").replace(/\(要冷凍\)/g, " (keep frozen)").replace(/\(常温\)/g, " (ambient)");
+        s = s.replace(/(横浜|東京|名古屋|神戸|大阪|博多|清水|門司|新潟|苫小牧|那覇)港/g, (_m, p) => PORT[p]);
+        s = s.replace(/(成田|関西|羽田|中部)(?:国際)?空港/g, (_m, p) => PORT[p] + " Airport");
+        s = s.replace(/前払い?\s*\(出荷前に全額\)/g, "in advance (full payment before shipment)").replace(/前払い?\s*100%/g, "100% in advance").replace(/前払い?/g, "in advance").replace(/\s*\(信用状\)/g, "");
+        s = s.replace(/(\d[\d,]*)\s*(営業日|日|週間|[ヶかカヵ]月)(?![ぁ-んァ-ヶ一-龠々])/g, (_m, n, u) => `${n} ${timeU(u)}`);
+        s = s.replace(/(\d[\d,]*)\s*(セット|ケース|ボトル|パック|本|個|枚|袋|缶|箱|台|足|着|点|冊|粒|錠|瓶)(?![ぁ-んァ-ヶ一-龠々])/g, (_m, n, u) => `${n} ${UNITS[u]}`);
+        s = s.replace(/(\d [a-z]+)\s*[〜~]\s*$/, "$1 or more");
+        return s.replace(/\s{2,}/g, " ").trim();
+    }
+    API.enFixed = enFixed;
+    const midDot = (s) => typeof s === "string" ? s.replace(/([\x21-\x7e])・(?=[\x21-\x7e])/g, "$1 / ") : s;
+    const enLike = (s) => { const t = String(s || ""); const la = (t.match(/[A-Za-z]/g) || []).length, ja = (t.match(/[ぁ-んァ-ヶ一-龠々]/g) || []).length; return la > ja * 3; };
+    try {
+        if (typeof bmOfflineAdvice === "function") {
+            const o5 = bmOfflineAdvice;
+            bmOfflineAdvice = function (th, mode, b, lastBy) {
+                let b2 = b;
+                try {
+                    if (b && typeof b === "object") {
+                        b2 = Object.assign({}, b);
+                        ["moq", "lead", "shelf", "term", "pay"].forEach((k) => { if (typeof b2[k] === "string")
+                            b2[k] = enFixed(b2[k]); });
+                    }
+                }
+                catch (e) {
+                    b2 = b;
+                }
+                let h = o5.call(this, th, mode, b2, lastBy);
+                try {
+                    if (typeof BM !== "undefined" && BM && typeof BM.lastDraft === "string" && enLike(BM.lastDraft)) {
+                        const d0 = BM.lastDraft, d1 = midDot(d0);
+                        if (d1 !== d0) {
+                            BM.lastDraft = d1;
+                            if (typeof h === "string")
+                                h = h.split(E(d0)).join(E(d1));
+                        }
+                    }
+                }
+                catch (e) { }
+                return h;
+            };
+        }
+    }
+    catch (e) { }
+    try {
+        if (typeof v71obTpl === "function") {
+            const t5 = v71obTpl;
+            v71obTpl = function () {
+                const res = t5.apply(this, arguments);
+                try {
+                    if (res && Array.isArray(res.seq))
+                        res.seq.forEach((m) => { if (m && enLike(m.body)) {
+                            m.body = midDot(m.body);
+                            if (typeof m.subj === "string")
+                                m.subj = midDot(m.subj);
+                        } });
+                }
+                catch (e) { }
+                return res;
+            };
+        }
+    }
+    catch (e) { }
+    try {
+        if (typeof dmTemplateEN === "function") {
+            const d5 = dmTemplateEN;
+            dmTemplateEN = function () {
+                const res = d5.apply(this, arguments);
+                try {
+                    if (res && typeof res.body === "string" && enLike(res.body)) {
+                        res.body = midDot(res.body);
+                        if (typeof res.subj === "string")
+                            res.subj = midDot(res.subj);
+                    }
+                }
+                catch (e) { }
+                return res;
+            };
+        }
+    }
+    catch (e) { }
+    const FLD = [["moq", "MOQ"], ["lead", "リードタイム"], ["cert", "認証・規格"], ["shelf", "賞味期限・保証期間"], ["term", "取引条件"], ["pol", "仕出港"], ["pay", "支払条件"]];
+    try {
+        if (typeof v33CkText === "function") {
+            const c5 = v33CkText;
+            v33CkText = function (F, txt, o) {
+                const n0 = Array.isArray(F) ? F.length : 0;
+                const r = c5.apply(this, arguments);
+                try {
+                    const oo = o || {};
+                    const s = String(txt || "");
+                    if (!Array.isArray(F) || oo.ja || !JAc.test(s) || !enLike(s))
+                        return r;
+                    if (/中文|简体|簡体|繁體|繁体|Chinese|日本語|Japanese/i.test(String(oo.lang || "")))
+                        return r;
+                    const mine = F.slice(n0);
+                    if (mine.some((f) => f && f.lv === "red" && /^日本語が残っています/.test(String(f.t))))
+                        return r;
+                    const toks = Array.from(new Set(s.split(/[\s:：;,／\/\-–—]+/).map((x) => x.replace(/^[「『]+|[」』。、.]+$/g, "")).filter((x) => JAc.test(x))));
+                    if (!toks.length)
+                        return r;
+                    for (let i = F.length - 1; i >= n0; i--)
+                        if (F[i] && /^日本語が少し残っています/.test(String(F[i].t)))
+                            F.splice(i, 1);
+                    const show = toks.slice(0, 6).map((x) => "「" + x.slice(0, 24) + "」").join("");
+                    F.push({ lv: "yel", t: "本文に、日本語（漢字を含む）のままの所が " + toks.length + "か所あります：" + show + (toks.length > 6 ? " ほか" : ""), how: "相手は読めません。本文の中で、送る言語（固有名詞はローマ字）に直してください", go: oo.go });
+                    const d = (typeof D !== "undefined" && D) || ten() || {};
+                    const hit = FLD.filter(([k]) => { const v = String(d[k] || "").normalize("NFKC"); return v && JAc.test(v) && toks.some((t) => { const tt = t.normalize("NFKC"); return v.indexOf(tt) >= 0 || tt.indexOf(v) >= 0; }); });
+                    if (hit.length)
+                        F.push({ lv: "yel", t: "登録が日本語のままの欄：" + hit.map(([k, n]) => n + "「" + String(d[k]).slice(0, 24) + "」").join("・"), how: "「商品情報」で英語でも入れておくと、次から返信案に英語で入ります（この項目から「商品情報」を開けます。書きかけの本文は消えるので、先に写しておいてください）",
+                            go: () => { try {
+                                if (typeof closeDW === "function")
+                                    closeDW();
+                            }
+                            catch (e) { } try {
+                                go("item");
+                            }
+                            catch (e) { } } });
+                }
+                catch (e) { }
+                return r;
+            };
+        }
+    }
+    catch (e) { }
+    try {
+        if (typeof I18N !== "undefined" && I18N && Array.isArray(I18N.pat)) {
+            const L3 = (en, zh, es) => I18N.lang === "zh" ? zh : I18N.lang === "es" ? es : en;
+            const f1 = (m) => L3(`The message still contains Japanese text (including kanji) in ${m[1]} place(s): ${m[2]}`, `正文中有 ${m[1]} 处仍为日语（含汉字）：${m[2]}`, `El mensaje aún contiene texto en japonés (incluidos kanji) en ${m[1]} lugar(es): ${m[2]}`);
+            I18N.pat.unshift({ re: /^本文に、日本語（漢字を含む）のままの所が (\d+)か所あります：(.+)$/, en: f1, zh: f1, es: f1 });
+            const f2 = (m) => L3(`Fields registered in Japanese only: ${m[1]}`, `仅以日语登记的栏目：${m[1]}`, `Campos registrados solo en japonés: ${m[1]}`);
+            I18N.pat.unshift({ re: /^登録が日本語のままの欄：(.+)$/, en: f2, zh: f2, es: f2 });
+            const DI = I18N.dict;
+            const TR = (ja, en, zh, es) => { if (DI.en && DI.en[ja] == null)
+                DI.en[ja] = en; if (DI.zh && DI.zh[ja] == null)
+                DI.zh[ja] = zh; if (DI.es && DI.es[ja] == null)
+                DI.es[ja] = es; };
+            TR("相手は読めません。本文の中で、送る言語（固有名詞はローマ字）に直してください", "The buyer cannot read it. Rewrite it in the language you are sending (use romaji for proper names)", "对方看不懂。请在正文中改为发送的语言（专有名词用罗马字）", "El comprador no puede leerlo. Reescríbalo en el idioma de envío (nombres propios en romaji)");
+            TR("「商品情報」で英語でも入れておくと、次から返信案に英語で入ります（この項目から「商品情報」を開けます。書きかけの本文は消えるので、先に写しておいてください）", "If you also enter them in English in Product information, reply drafts will use the English from next time (this item opens Product information; copy your draft first, as it will be lost)", "在“商品信息”中同时用英语填写后，下次回复草稿将使用英语（此项可打开“商品信息”；正在写的正文会丢失，请先复制）", "Si también los introduce en inglés en Información del producto, los borradores usarán el inglés (este elemento abre esa pantalla; copie antes su borrador, se perderá)");
+        }
+    }
+    catch (e) { }
+    function simLabel() {
+        try {
+            const b = document.getElementById("bmSim");
+            if (!b || b.children.length)
+                return;
+            const m = String(b.textContent || "").match(/^\s*(🧪)\s*(.+)$/u);
+            if (!m)
+                return;
+            b.textContent = "";
+            const a = document.createElement("span");
+            a.setAttribute("aria-hidden", "true");
+            a.textContent = m[1] + " ";
+            const t = document.createElement("span");
+            t.textContent = m[2];
+            b.appendChild(a);
+            b.appendChild(t);
+        }
+        catch (e) { }
+    }
+    try {
+        if (typeof openDMThread === "function") {
+            const od5 = openDMThread;
+            openDMThread = function () { const r = od5.apply(this, arguments); try {
+                simLabel();
+                setTimeout(simLabel, 300);
+            }
+            catch (e) { } return r; };
+        }
+    }
+    catch (e) { }
+    const isAuto = () => { try {
+        const c = String((ten() && ten().cat) || "");
+        return c === "中古車" || c === "建設機械";
+    }
+    catch (e) {
+        return false;
+    } };
+    function bizFold() {
+        const box = document.querySelector(".v71bz");
+        if (!box)
+            return;
+        const auto = !isFwd() && isAuto();
+        const off = ["horeca", "spec"];
+        const chips = Array.from(box.querySelectorAll(".v71chip[data-v71bz]")).filter((c) => off.indexOf(c.getAttribute("data-v71bz")) >= 0);
+        let tg = box.querySelector(".v92r5c-bzmore");
+        if (!auto || !chips.length || chips.some((c) => c.classList.contains("on")) || box.getAttribute("data-r5copen")) {
+            chips.forEach((c) => { if (c.style.display === "none")
+                c.style.display = ""; });
+            if (tg)
+                tg.remove();
+            return;
+        }
+        chips.forEach((c) => { if (c.style.display !== "none")
+            c.style.display = "none"; });
+        if (!tg) {
+            tg = document.createElement("button");
+            tg.type = "button";
+            tg.className = "v71chip v92r5c-bzmore";
+            tg.setAttribute("data-noi18n", "1");
+            tg.style.cssText = "border-style:dashed;color:var(--ink-3,#667085)";
+            tg.textContent = M("＋ ほかの業態（" + chips.length + "）", "+ Other types (" + chips.length + ")", "＋ 其他业态（" + chips.length + "）", "+ Otros tipos (" + chips.length + ")");
+            tg.title = M("車両・機械では選ばれることの少ない業態（飲食・ホテル、専門店）をたたんでいます。押すと出ます", "Buyer types rarely used for vehicles and machinery are folded. Press to show them", "车辆・机械很少选择的业态已折叠，点击显示", "Tipos poco usados para vehículos y maquinaria están plegados. Pulse para mostrarlos");
+            tg.addEventListener("click", () => { box.setAttribute("data-r5copen", "1"); bizFold(); });
+            box.appendChild(tg);
+        }
+    }
+    function autoWords() {
+        try {
+            if (typeof cur === "undefined" || cur !== "item" || isFwd() || !isAuto())
+                return;
+            const well = document.getElementById("well");
+            if (!well)
+                return;
+            const ja = L2() === "ja";
+            well.querySelectorAll(".v33tab, .uxsc").forEach((b) => {
+                const w = document.createTreeWalker(b, NodeFilter.SHOW_TEXT);
+                let n;
+                while ((n = w.nextNode())) {
+                    const v = String(n.nodeValue || "");
+                    if (ja && v.trim() === "成分・仕様")
+                        n.nodeValue = v.replace("成分・仕様", "仕様・状態");
+                }
+            });
+            if (!ja)
+                return;
+            const tw = document.createTreeWalker(well, NodeFilter.SHOW_TEXT);
+            let n, i = 0;
+            while ((n = tw.nextNode()) && i++ < 6000) {
+                const v = String(n.nodeValue || "");
+                if (v.indexOf("成分表・材質表から") >= 0)
+                    n.nodeValue = v.replace("成分表・材質表から", "仕様の表から");
+            }
+        }
+        catch (e) { }
+    }
+    setInterval(() => { try {
+        if (document.body.classList.contains("locked"))
+            return;
+        bizFold();
+        autoWords();
+    }
+    catch (e) { } }, 900);
+    try {
+        if (typeof dk3Check === "function") {
+            const dk5 = dk3Check;
+            dk3Check = function () {
+                const r = dk5.apply(this, arguments);
+                try {
+                    if (r && Array.isArray(r.crit) && Array.isArray(r.warn) && r.warn.some((x) => x && x.k === "v79empty")) {
+                        const c = r.crit.find((x) => x && x.k === "spec");
+                        if (c)
+                            c.t = "成分・仕様のページを作れていません（成分表・規格の行は登録済みですが、値の入った行がありません。下の「値が入っていない行」を見てください）";
+                    }
+                }
+                catch (e) { }
+                return r;
+            };
+        }
+        if (typeof I18N !== "undefined" && I18N && I18N.dict) {
+            const DI = I18N.dict;
+            const k = "成分・仕様のページを作れていません（成分表・規格の行は登録済みですが、値の入った行がありません。下の「値が入っていない行」を見てください）";
+            if (DI.en && DI.en[k] == null)
+                DI.en[k] = "The ingredients/specifications page could not be made (rows are registered, but none has a value — see “Rows without a value” below)";
+            if (DI.zh && DI.zh[k] == null)
+                DI.zh[k] = "未能生成成分・规格页面（成分表・规格的行已登记，但没有填入数值的行。请看下方“未填数值的行”）";
+            if (DI.es && DI.es[k] == null)
+                DI.es[k] = "No se pudo crear la página de ingredientes/especificaciones (hay filas registradas, pero ninguna con valor; vea «Filas sin valor» abajo)";
+        }
+    }
+    catch (e) { }
+})();
+(function () {
+    const W = window;
     if (W.__v2192r3a)
         return;
     W.__v2192r3a = 1;
@@ -213684,6 +214552,1422 @@ catch (e) { } });
     }
     W.v92r4c.tariffEntry = tariffEntry;
     W.v92r4c.helpWords = helpWords;
+})();
+(function () {
+    const W = window;
+    if (W.__v2192r5a)
+        return;
+    W.__v2192r5a = 1;
+    const E = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const lang = () => { try {
+        const s = document.getElementById("lang");
+        const v = (s && s.value) || "ja";
+        return /^en/.test(v) ? "en" : /^zh/.test(v) ? "zh" : /^es/.test(v) ? "es" : "ja";
+    }
+    catch (e) {
+        return "ja";
+    } };
+    const M = (ja, en, zh, es) => { const l = lang(); return l === "en" ? en : l === "zh" ? (zh || en) : l === "es" ? (es || en) : ja; };
+    const warn = (k, e) => { try {
+        console.warn("[v92r5a] " + k, e);
+    }
+    catch (x) { } };
+    const ten = () => { try {
+        return (typeof TEN !== "undefined" && TEN) ? TEN : null;
+    }
+    catch (e) {
+        return null;
+    } };
+    const tens = () => { try {
+        const L = (typeof TENS !== "undefined" && Array.isArray(TENS)) ? TENS.slice() : [];
+        const t = ten();
+        if (t && L.indexOf(t) < 0)
+            L.unshift(t);
+        return L;
+    }
+    catch (e) {
+        const t = ten();
+        return t ? [t] : [];
+    } };
+    const dd = () => { try {
+        return (typeof D !== "undefined" && D) ? D : null;
+    }
+    catch (e) {
+        return null;
+    } };
+    const ship = () => { const d = dd(); return (d && d.ship) || null; };
+    const curCase = () => { try {
+        return (typeof SHIPS !== "undefined" && SHIPS && SHIPS[SHIPA]) || null;
+    }
+    catch (e) {
+        return null;
+    } };
+    const isPo = (S) => { try {
+        const c = curCase();
+        return !!(S && (S.poNo || (c && c.po && c.ship === S)));
+    }
+    catch (e) {
+        return !!(S && S.poNo);
+    } };
+    const isSmp = (S) => { try {
+        return typeof v54docIsSmp === "function" ? !!v54docIsSmp(S) : !!(S && /^（想定）/.test(String(S.buyer || "")));
+    }
+    catch (e) {
+        return false;
+    } };
+    const isCty = (s) => { try {
+        return typeof v56docIsCty === "function" && !!v56docIsCty(s);
+    }
+    catch (e) {
+        return false;
+    } };
+    const save = () => { try {
+        if (typeof saveTen === "function")
+            saveTen();
+    }
+    catch (e) { } };
+    const say = (m) => { try {
+        if (typeof toast === "function")
+            toast(m);
+    }
+    catch (e) { } };
+    const API = W.v92r5a = W.v92r5a || {};
+    const dict = (rows) => { try {
+        if (typeof I18N === "undefined" || !I18N || !I18N.dict)
+            return;
+        rows.forEach((r) => { ["en", "zh", "es"].forEach((l, i) => { const v = r[i + 1] || r[1]; if (v && I18N.dict[l] && I18N.dict[l][r[0]] == null)
+            I18N.dict[l][r[0]] = v; }); });
+    }
+    catch (e) { } };
+    const INC_RE = /\b(EXW|FCA|FAS|FOB|CFR|CNF|CIF|CPT|CIP|DAP|DPU|DDP)\b/i;
+    function termInfo(S) {
+        const raw = String((S && S.term) || "").replace(/[（(]?\s*Incoterms[^)）]*[)）]?/i, " ");
+        const m = raw.match(INC_RE);
+        const code = m ? m[1].toUpperCase() : "";
+        let place = code ? raw.replace(INC_RE, " ").replace(/\s+/g, " ").replace(/^[\s,、・:：\/／]+|[\s,、・:：\/／]+$/g, "").trim() : "";
+        if (/入れてください|未定|要確認|^（.*）$/.test(place) || /^[\d,.\s$¥￥]+$/.test(place))
+            place = "";
+        const cty = !!place && (place === String((S && S.country) || "") || isCty(place));
+        return { code, place, cty };
+    }
+    function hasPod(S) {
+        const v = String((S && S.pod) || "").trim();
+        return !!v && v !== String(S.country || "") && !/^（.*未|^—|未登録|未設定|未読取/.test(v) && !isCty(v);
+    }
+    function podState(S) {
+        if (!S)
+            return "ok";
+        if (hasPod(S))
+            return "ok";
+        const t = termInfo(S);
+        if (/^(EXW|FCA|FAS|FOB)$/.test(t.code))
+            return "na";
+        if (t.code && t.place && !t.cty)
+            return "term";
+        return "missing";
+    }
+    function podSync(S) {
+        try {
+            if (!S || isPo(S) || hasPod(S))
+                return false;
+            const t = termInfo(S);
+            if (/^(CFR|CNF|CIF)$/.test(t.code) && t.place && !t.cty) {
+                S.pod = t.place;
+                S.v92podTerm = 1;
+                return true;
+            }
+        }
+        catch (e) { }
+        return false;
+    }
+    API.podState = podState;
+    function openEdit(focusId) {
+        try {
+            if (typeof openStepEdit !== "function")
+                return;
+            try {
+                if (typeof closeDW === "function")
+                    closeDW();
+            }
+            catch (e) { }
+            setTimeout(() => {
+                try {
+                    openStepEdit((typeof shipStep !== "undefined" && shipStep) || 0);
+                    setTimeout(() => { const e = document.getElementById(focusId); if (e) {
+                        try {
+                            e.scrollIntoView({ block: "center" });
+                        }
+                        catch (x) { }
+                        e.focus();
+                    } }, 120);
+                }
+                catch (e) {
+                    warn("openEdit", e);
+                }
+            }, 60);
+        }
+        catch (e) {
+            warn("openEdit", e);
+        }
+    }
+    API.openEdit = openEdit;
+    const PORT_T = "仕向港がありません";
+    if (typeof v33CkQuote === "function") {
+        const __ck = v33CkQuote;
+        v33CkQuote = function () {
+            const S0 = ship();
+            try {
+                if (S0 && podSync(S0))
+                    save();
+            }
+            catch (e) { }
+            let F = __ck.apply(this, arguments);
+            try {
+                const S = ship();
+                if (Array.isArray(F) && S && !isPo(S)) {
+                    const st = podState(S);
+                    if (st !== "missing")
+                        F = F.filter((f) => !(f && f.t === PORT_T));
+                    else
+                        F.forEach((f) => { if (f && f.t === PORT_T)
+                            f.go = () => openEdit("v92r5aPod"); });
+                }
+            }
+            catch (e) {
+                warn("ck", e);
+            }
+            return F;
+        };
+    }
+    const today = () => { try {
+        return typeof v85docToday === "function" ? String(v85docToday()) : new Date().toISOString().slice(0, 10);
+    }
+    catch (e) {
+        return new Date().toISOString().slice(0, 10);
+    } };
+    const addDays = (ymd, n) => { try {
+        const d = new Date(ymd + "T00:00:00Z");
+        d.setUTCDate(d.getUTCDate() + n);
+        return d.toISOString().slice(0, 10);
+    }
+    catch (e) {
+        return "";
+    } };
+    const dayDiff = (a, b) => Math.round((Date.parse(a + "T00:00:00Z") - Date.parse(b + "T00:00:00Z")) / 86400000);
+    const md = (ymd) => String(ymd || "").slice(5).replace("-", "/");
+    function ymdOfMd(s) {
+        if (!/^\d{2}-\d{2}$/.test(String(s)))
+            return "";
+        const td = today();
+        let y = +td.slice(0, 4);
+        if (s < td.slice(5) && (+td.slice(5, 7) - +s.slice(0, 2)) > 2)
+            y++;
+        return y + "-" + s;
+    }
+    function realQuotes(S) { try {
+        const Q = (S && S.quotes) || [];
+        return Q.some((q) => q && String(q[4] || "") !== "（想定）");
+    }
+    catch (e) {
+        return false;
+    } }
+    function etdAuto(S) {
+        return !!S && !S.v92etdUser && !(S.etd && /^\d{4}-\d{2}-\d{2}/.test(String(S.etd))) && !isPo(S) && !isSmp(S) && !realQuotes(S);
+    }
+    function etdNow(S) {
+        try {
+            if (S && S.etd && /^\d{4}-\d{2}-\d{2}/.test(String(S.etd)))
+                return String(S.etd).slice(0, 10);
+            const it = ((S && S.sched) || []).find((x) => /ETD|出港/.test(String((x && x[1]) || "")));
+            return it ? ymdOfMd(String(it[0])) : "";
+        }
+        catch (e) {
+            return "";
+        }
+    }
+    function setEtd(S, ymd) {
+        const old = etdNow(S);
+        S.etd = ymd;
+        S.v92etdUser = 1;
+        try {
+            const delta = old ? dayDiff(ymd, old) : 0;
+            (S.sched || []).forEach((r) => {
+                if (!Array.isArray(r) || /入金/.test(String(r[1] || "")))
+                    return;
+                if (/ETD|出港/.test(String(r[1] || ""))) {
+                    r[0] = ymd.slice(5);
+                    return;
+                }
+                const y = ymdOfMd(String(r[0]));
+                if (y && delta) {
+                    const n = addDays(y, delta);
+                    if (n)
+                        r[0] = n.slice(5);
+                }
+            });
+        }
+        catch (e) {
+            warn("setEtd", e);
+        }
+    }
+    if (typeof v85docDue === "function") {
+        const __due = v85docDue;
+        v85docDue = function (ld) {
+            const r = __due.apply(this, arguments);
+            try {
+                const S = typeof v85docShip === "function" ? v85docShip() : ship();
+                const n = +ld || 0;
+                if (r && r.late && n > 0 && etdAuto(S)) {
+                    const etd = typeof v85docEtd === "function" ? String(v85docEtd() || "") : etdNow(S);
+                    const due = etd ? addDays(etd, -n) : "";
+                    return {
+                        t: M(`出港の${n}日前まで（出港の予定日が未入力です。仮の出港日 ${md(etd)} で数えると ${md(due)}。上の「出港の予定日を入れる」で入れると、数え直します）`, `${n} days before sailing (no sailing date entered yet; with the provisional date ${md(etd)} this would be ${md(due)}. Enter the planned sailing date above to recalculate)`, `出港前 ${n} 天（尚未填写预定出港日；按暂定出港日 ${md(etd)} 计算为 ${md(due)}。在上方填写预定出港日后重新计算）`, `${n} días antes de la salida (aún sin fecha de salida; con la fecha provisional ${md(etd)} sería ${md(due)}. Introduzca arriba la fecha prevista para recalcular)`), late: 0
+                    };
+                }
+            }
+            catch (e) {
+                warn("due", e);
+            }
+            return r;
+        };
+    }
+    function etdNote() {
+        try {
+            const prem = document.querySelector("#v85doc .v85doc-prem") || document.querySelector(".v85doc-prem");
+            const old = document.getElementById("v92r5a-etd");
+            const S = ship();
+            if (!prem || !S || isPo(S) || isSmp(S) || typeof openStepEdit !== "function") {
+                if (old)
+                    old.remove();
+                return;
+            }
+            const auto = etdAuto(S), etd = etdNow(S);
+            if (!auto && !S.v92etdUser) {
+                if (old)
+                    old.remove();
+                return;
+            }
+            const sig = [auto ? 1 : 0, etd, lang()].join("|");
+            if (old && old.isConnected && old.getAttribute("data-sig") === sig && old.previousElementSibling === prem)
+                return;
+            if (old)
+                old.remove();
+            const box = document.createElement("div");
+            box.id = "v92r5a-etd";
+            box.className = "v92r5a-note v92r5a-etd";
+            box.style.fontSize = "12px";
+            box.style.margin = "8px 0 10px";
+            box.setAttribute("data-noi18n", "1");
+            box.setAttribute("data-sig", sig);
+            box.setAttribute("role", "note");
+            const msg = auto
+                ? M(`出港の予定日がまだ入っていません。下の書類の期限は、アプリが仮に置いた出港日${etd ? "（" + etd + "）" : ""}から数えています。予定日を入れると、その日から数え直します。`, `No planned sailing date yet. The deadlines below are counted from a provisional sailing date set by the app${etd ? " (" + etd + ")" : ""}. Enter the planned date to recalculate them.`, `尚未填写预定出港日。下方单证的期限按系统暂定的出港日${etd ? "（" + etd + "）" : ""}计算。填写后将按该日重新计算。`, `Aún no hay fecha de salida prevista. Los plazos de abajo se cuentan desde una fecha provisional${etd ? " (" + etd + ")" : ""}. Introduzca la fecha prevista para recalcularlos.`)
+                : M(`出港の予定日：${etd}（受注内容の編集で入れた日）。下の書類の期限は、この日から数えています。`, `Planned sailing date: ${etd} (entered in “Edit order details”). The deadlines below are counted from this date.`, `预定出港日：${etd}（在“编辑订单内容”中填写）。下方单证的期限按该日计算。`, `Fecha de salida prevista: ${etd} (introducida en «Editar el pedido»). Los plazos de abajo se cuentan desde esta fecha.`);
+            box.innerHTML = `<span>${E(msg)}</span> <button type="button" class="btn g" data-v92r5a="etd">${E(auto ? M("出港の予定日を入れる", "Enter the sailing date", "填写预定出港日", "Introducir la fecha de salida") : M("出港の予定日を変える", "Change the sailing date", "修改预定出港日", "Cambiar la fecha de salida"))}</button>`;
+            prem.insertAdjacentElement("afterend", box);
+            const b = box.querySelector("button");
+            if (b)
+                b.addEventListener("click", () => openEdit("v92r5aEtd"));
+        }
+        catch (e) {
+            warn("etdNote", e);
+        }
+    }
+    if (typeof openStepEdit === "function") {
+        const __ose = openStepEdit;
+        openStepEdit = function (i) {
+            const r = __ose.apply(this, arguments);
+            try {
+                const S = ship();
+                const seI = document.getElementById("seI"), seW = document.getElementById("seW"), g = document.getElementById("seGo");
+                if (i === 0 && S && seI && seW && g && !isPo(S) && !document.getElementById("v92r5aPod")) {
+                    const t0 = termInfo(S);
+                    const lab = (s) => `<p class="lbl" style="margin-top:8px" data-noi18n>${E(s)}</p>`;
+                    const podV = hasPod(S) ? String(S.pod) : "";
+                    seI.insertAdjacentHTML("afterend", lab(M("仕向港（荷を降ろす港・空港）", "Port of discharge (destination port / airport)", "目的港（卸货港・机场）", "Puerto de destino (puerto / aeropuerto de descarga)")) +
+                        `<input class="sel" id="v92r5aPod" value="${E(podV)}" placeholder="${E(M("例：Le Havre／Bangkok", "e.g. Le Havre / Bangkok", "例：Le Havre／Bangkok", "p. ej. Le Havre / Bangkok"))}" style="width:100%;box-sizing:border-box" data-noi18n>` +
+                        `<p class="nn" style="margin-top:3px" data-noi18n>${E(M("CIF・CFR のときは、取引条件に書いた場所（例：CIF Le Havre）が仕向港です。空のままなら、その場所を入れます。FOB などでは、分かったときに入れてください（船積みの書類で使います）。", "For CIF / CFR, the place in the terms (e.g. CIF Le Havre) is the destination port; if left empty, that place is used. For FOB etc., enter it when known (used in shipping documents).", "CIF・CFR 时，贸易条件中的地点（例：CIF Le Havre）即目的港；留空则使用该地点。FOB 等可在确定后填写（用于装运单证）。", "Con CIF / CFR, el lugar indicado en las condiciones (p. ej. CIF Le Havre) es el puerto de destino; si se deja vacío se usa ese lugar. Con FOB, etc., introdúzcalo cuando lo sepa."))}</p>`);
+                    const auto = etdAuto(S), etd = etdNow(S);
+                    const etdV = (!auto && S.etd && /^\d{4}-\d{2}-\d{2}/.test(String(S.etd))) ? String(S.etd).slice(0, 10) : "";
+                    seW.insertAdjacentHTML("afterend", lab(M("出港の予定日（ETD）", "Planned sailing date (ETD)", "预定出港日（ETD）", "Fecha de salida prevista (ETD)")) +
+                        `<input type="date" class="sel" id="v92r5aEtd" value="${E(etdV)}" style="width:100%;box-sizing:border-box">` +
+                        `<p class="nn" style="margin-top:3px" data-noi18n>${E(etdV
+                            ? M("書類の期限（出港の◯日前まで）と、請求書の ETD / ETA は、この日から数えます。", "Document deadlines (N days before sailing) and ETD / ETA on the invoice are counted from this date.", "单证期限（出港前 N 天）和发票的 ETD / ETA 按该日计算。", "Los plazos de los documentos y ETD / ETA de la factura se cuentan desde esta fecha.")
+                            : M(`まだ入っていません${etd ? "（いまは、アプリが仮に置いた " + etd + " で数えています）" : ""}。入れると、書類の期限（出港の◯日前まで）と、請求書の ETD / ETA をこの日から数え直します。`, `Not entered yet${etd ? " (currently counted from the provisional date " + etd + " set by the app)" : ""}. Once entered, document deadlines and ETD / ETA on the invoice are recalculated from it.`, `尚未填写${etd ? "（目前按系统暂定的 " + etd + " 计算）" : ""}。填写后，单证期限和发票的 ETD / ETA 将按该日重新计算。`, `Aún sin introducir${etd ? " (ahora se cuenta desde la fecha provisional " + etd + ")" : ""}. Al introducirla se recalculan los plazos y ETD / ETA de la factura.`))}</p>`);
+                    const o = g.onclick;
+                    if (typeof o === "function") {
+                        g.onclick = function (ev) {
+                            let pv = null, ev2 = null;
+                            try {
+                                const a = document.getElementById("v92r5aPod"), b = document.getElementById("v92r5aEtd");
+                                pv = a ? String(a.value || "").trim() : null;
+                                ev2 = b ? String(b.value || "") : null;
+                            }
+                            catch (e) { }
+                            const rr = o.call(this, ev);
+                            try {
+                                const T = ship();
+                                if (T && T === S) {
+                                    let chg = false;
+                                    if (pv != null) {
+                                        if (pv && pv !== podV) {
+                                            T.pod = pv;
+                                            delete T.v92podTerm;
+                                            chg = true;
+                                        }
+                                        else if (!pv && podV) {
+                                            T.pod = T.country || "";
+                                            delete T.v92podTerm;
+                                            chg = true;
+                                        }
+                                        else if (pv && pv === podV && T.v92podTerm) {
+                                            const t1 = termInfo(T);
+                                            if (/^(CFR|CNF|CIF)$/.test(t1.code) && t1.place && !t1.cty && t1.place !== t0.place) {
+                                                T.pod = t1.place;
+                                                chg = true;
+                                            }
+                                        }
+                                    }
+                                    if (podSync(T))
+                                        chg = true;
+                                    if (ev2 != null) {
+                                        if (/^\d{4}-\d{2}-\d{2}$/.test(ev2) && ev2 !== etdV) {
+                                            setEtd(T, ev2);
+                                            chg = true;
+                                        }
+                                        else if (!ev2 && etdV) {
+                                            delete T.etd;
+                                            delete T.v92etdUser;
+                                            chg = true;
+                                        }
+                                    }
+                                    if (chg) {
+                                        try {
+                                            const t = ten();
+                                            if (t && t.shipEdit && typeof t.shipEdit === "object" && (t.src === "upload" || t.src === "sample2"))
+                                                t.shipEdit.v92r5a = { pod: hasPod(T) ? T.pod : "", podTerm: T.v92podTerm ? 1 : 0, etd: T.v92etdUser ? T.etd : "" };
+                                        }
+                                        catch (e) { }
+                                        save();
+                                        try {
+                                            if (typeof render === "function")
+                                                render();
+                                        }
+                                        catch (e) { }
+                                    }
+                                }
+                            }
+                            catch (e) {
+                                warn("editSave", e);
+                            }
+                            return rr;
+                        };
+                    }
+                }
+            }
+            catch (e) {
+                warn("ose", e);
+            }
+            return r;
+        };
+    }
+    function editBack() {
+        try {
+            const t = ten(), S = ship();
+            const x = t && t.shipEdit && t.shipEdit.v92r5a;
+            if (!x || !S || isPo(S) || !S.v54gen || S.v92case || S.v61fb)
+                return;
+            if (String(t.shipEdit.buyer || "") !== String(S.buyer || ""))
+                return;
+            if (x.pod && !hasPod(S)) {
+                S.pod = x.pod;
+                if (x.podTerm)
+                    S.v92podTerm = 1;
+            }
+            if (x.etd && /^\d{4}-\d{2}-\d{2}$/.test(String(x.etd)) && !S.v92etdUser)
+                setEtd(S, String(x.etd));
+        }
+        catch (e) {
+            warn("editBack", e);
+        }
+    }
+    const MAIL_RE = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+/;
+    const norm = (s) => String(s || "").trim().toLowerCase().replace(/\s+/g, " ");
+    function findMail(S) {
+        try {
+            const nm = norm(S && S.buyer);
+            if (!nm)
+                return "";
+            const pick = (o) => { for (const k of ["email", "mail", "contact", "person", "to"]) {
+                const m = String((o && o[k]) || "").match(MAIL_RE);
+                if (m)
+                    return m[0];
+            } return ""; };
+            for (const t of tens()) {
+                for (const b of (Array.isArray(t.myBuyers) ? t.myBuyers : [])) {
+                    if (b && norm(b.co || b.name) === nm) {
+                        const m = pick(b);
+                        if (m)
+                            return m;
+                    }
+                }
+            }
+            for (const t of tens()) {
+                const TH = (t && t.dmThreads) || {};
+                for (const id of Object.keys(TH)) {
+                    const th = TH[id];
+                    if (th && norm(th.co || th.name || th.buyer) === nm) {
+                        const m = pick(th);
+                        if (m)
+                            return m;
+                    }
+                }
+            }
+        }
+        catch (e) { }
+        return "";
+    }
+    API.findMail = findMail;
+    function mailFix() {
+        try {
+            const box = document.getElementById("v92r4a-next");
+            if (!box || box.getAttribute("data-v92r5a"))
+                return;
+            box.setAttribute("data-v92r5a", "1");
+            const a = box.querySelector('a[data-v92r4a="mail"]');
+            const S = ship();
+            if (!a || !S || isSmp(S))
+                return;
+            const href = String(a.getAttribute("href") || "");
+            if (!/^mailto:\?/.test(href))
+                return;
+            const em = findMail(S);
+            if (!em)
+                return;
+            a.setAttribute("href", "mailto:" + encodeURIComponent(em).replace(/%40/g, "@") + href.slice(7));
+            const sm = a.parentElement && a.parentElement.querySelector("small");
+            const tn = sm && sm.firstChild;
+            if (tn && tn.nodeType === 3)
+                tn.textContent = M("宛先", "To", "收件人", "Para") + "：" + em + M("（バイヤーの登録の連絡先から）", " (from the buyer's registered contact)", "（取自买家登记的联系方式）", " (del contacto registrado del comprador)") + "　" + M("件名", "Subject", "主题", "Asunto") + "：";
+        }
+        catch (e) {
+            warn("mailFix", e);
+        }
+    }
+    try {
+        new MutationObserver(() => { try {
+            const b = document.getElementById("v92r4a-next");
+            if (b && !b.getAttribute("data-v92r5a"))
+                mailFix();
+        }
+        catch (e) { } }).observe(document.documentElement, { childList: true, subtree: true });
+    }
+    catch (e) { }
+    const codeOf = (x) => { const m = String(x || "").match(INC_RE); return m ? m[1].toUpperCase() : ""; };
+    function smpNote() {
+        try {
+            const o = document.getElementById("dO");
+            const S = ship();
+            if (!o || !S || !S.v61fb || isPo(S) || isSmp(S))
+                return;
+            const p = Array.from(o.querySelectorAll("p.nn")).find((x) => !x.getAttribute("data-v92r5a") && /がそのまま入っています|手入力はありません|entered as[- ]is|No manual input/i.test(x.textContent || ""));
+            if (!p)
+                return;
+            const man = S.v61man || {};
+            let snap = null;
+            try {
+                const rec = typeof v68trRecOf === "function" ? v68trRecOf(S) : null;
+                snap = rec && typeof v61dlSnap === "function" ? v61dlSnap(rec) : null;
+            }
+            catch (e) { }
+            const ed = [];
+            if (man.unitPrice)
+                ed.push(["単価", "unit price", "单价", "precio unitario"]);
+            if (man.qty)
+                ed.push(["数量", "quantity", "数量", "cantidad"]);
+            const rc = codeOf(snap && snap.term), sc = codeOf(S.term);
+            if (man.term || (rc && sc && rc !== sc))
+                ed.push(["取引条件", "terms", "贸易条件", "condiciones"]);
+            if (!ed.length)
+                return;
+            p.setAttribute("data-v92r5a", "1");
+            const li = lang() === "en" ? 1 : lang() === "zh" ? 2 : lang() === "es" ? 3 : 0;
+            const names = ed.map((x) => x[li]).join(li ? ", " : "・");
+            const now = [S.unitPrice, String(S.qty || "").split("（")[0], S.term].filter(Boolean).join("／");
+            const recS = snap ? [snap.price, snap.qty, snap.term].filter(Boolean).join("／") : "";
+            const msg = M(`いまの値は ${now} です。このうち ${names} は、商談の記録から手で直した値です（「受注内容を編集」か、上の判断の欄で）。${recS ? "商談の記録は " + recS + " でした。" : ""}`, `Current values: ${now}. Of these, ${names} ${ed.length > 1 ? "were" : "was"} changed by hand from the meeting record (in “Edit order details” or the fields above).${recS ? " The meeting record had " + recS + "." : ""}`, `当前值为 ${now}。其中 ${names} 是在商谈记录的基础上手动修改的（在“编辑订单内容”或上方的判断栏）。${recS ? "商谈记录为 " + recS + "。" : ""}`, `Valores actuales: ${now}. De ellos, ${names} se ${ed.length > 1 ? "cambiaron" : "cambió"} a mano respecto al registro de la reunión.${recS ? " El registro decía " + recS + "." : ""}`);
+            const btn = p.querySelector("button");
+            Array.from(p.childNodes).forEach((n) => { if (n !== btn)
+                p.removeChild(n); });
+            const sp = document.createElement("span");
+            sp.setAttribute("data-noi18n", "1");
+            sp.className = "v92r5a-src";
+            sp.textContent = msg + "　";
+            p.insertBefore(sp, btn || null);
+        }
+        catch (e) {
+            warn("smpNote", e);
+        }
+    }
+    if (typeof poParseLocal === "function") {
+        const __pp = poParseLocal;
+        poParseLocal = function (text) {
+            const j = __pp.apply(this, arguments);
+            try {
+                const t = String(text || "").replace(/\r/g, "");
+                if (j && !/\d/.test(String(j.poNo || ""))) {
+                    const m = t.match(/(?:P\.?\s?O\.?|Purchase\s*Order|Order)\s*(?:No\.?|Number|#|№)\s*[:：]?\s*([A-Z0-9][A-Z0-9\-\/_.]*\d[A-Z0-9\-\/_]*)/i)
+                        || t.match(/(?:P\.?\s?O\.?|Purchase\s*Order)\s*[:：#]\s*([A-Z0-9][A-Z0-9\-\/_.]*\d[A-Z0-9\-\/_]*)/i);
+                    j.poNo = m ? String(m[1]).trim() : "";
+                }
+                if (j && j.poNo)
+                    j.poNo = String(j.poNo).replace(/[.,;:]+$/, "");
+                if (j && !String(j.delivery || "").trim()) {
+                    const m = t.match(/^\s*(?:Shipment|Shipping|Latest\s*Shipment|Ship\s*by|Time\s*of\s*Shipment|Delivery|納期|出荷)\s*[:：]\s*([^\n]{3,60})/im);
+                    if (m)
+                        j.delivery = String(m[1]).trim();
+                }
+            }
+            catch (e) {
+                warn("poParse", e);
+            }
+            return j;
+        };
+    }
+    if (typeof v54docSellerEdit === "function") {
+        const __se = v54docSellerEdit;
+        v54docSellerEdit = function () {
+            const r = __se.apply(this, arguments);
+            try {
+                const g = document.getElementById("v54sGo");
+                if (g && !g.getAttribute("data-v92r5a") && typeof g.onclick === "function") {
+                    g.setAttribute("data-v92r5a", "1");
+                    const o = g.onclick;
+                    g.onclick = function (ev) {
+                        let nm = "", ad = "";
+                        try {
+                            nm = String((document.getElementById("v54sCo") || {}).value || "").trim();
+                            ad = String((document.getElementById("v54sAd") || {}).value || "").trim();
+                        }
+                        catch (e) { }
+                        const rr = o.call(this, ev);
+                        try {
+                            if (nm && !ad && !/[\u3040-\u30ff\u3400-\u9fff]/.test(nm)) {
+                                let has = "";
+                                try {
+                                    has = String((v54docSeller() || {}).addr || "").trim();
+                                }
+                                catch (e) { }
+                                if (!has)
+                                    setTimeout(() => say(M("会社名を保存しました。住所はまだ空です（書類の Seller 欄は「住所 未登録」のままです。「会社名・住所を入れる」で英語の住所を入れてください）", "Company name saved. The address is still empty (the Seller field still shows no address; enter the English address under “Enter company name and address”)", "已保存公司名称。地址仍为空（单证的 Seller 栏仍显示未登记地址，请填写英文地址）", "Nombre guardado. La dirección sigue vacía (el campo Seller sigue sin dirección; introduzca la dirección en inglés)")), 30);
+                            }
+                        }
+                        catch (e) {
+                            warn("seller", e);
+                        }
+                        return rr;
+                    };
+                }
+            }
+            catch (e) {
+                warn("sellerEdit", e);
+            }
+            return r;
+        };
+    }
+    const payCat = (s) => { const p = String(s || ""); return /L\/C|信用状/i.test(p) ? "LC" : /D\/P|D\/A/i.test(p) ? "DP" : /前払|advance|prepay/i.test(p) ? "TT_PRE" : /後払|days|after|日/i.test(p) ? "TT_POST" : ""; };
+    if (typeof v85docSet === "function") {
+        const __ds = v85docSet;
+        v85docSet = function (k, v) {
+            const r = __ds.apply(this, arguments);
+            try {
+                const S = ship();
+                if (k === "pay" && v && S && String(S.pay || "").trim() && payCat(S.pay) !== v) {
+                    let shown = String(S.pay);
+                    try {
+                        if (typeof v54docPayEn === "function")
+                            shown = String(v54docPayEn(S.pay) || S.pay);
+                    }
+                    catch (e) { }
+                    const edit = isPo(S) ? M("発注書の内容の編集", "editing the order", "编辑订单", "la edición del pedido") : M("「受注内容を編集」の「支払」", "Payment in “Edit order details”", "“编辑订单内容”中的“付款”", "Pago en «Editar el pedido»");
+                    setTimeout(() => say(M(`ここの「支払」は、要る書類を判断するための区分です。見積書・請求書の Payment（いま「${shown}」）は変わりません。書類の支払条件を変えるときは、${edit}で直してください。`, `“Payment” here is only used to decide which documents are needed. Payment on the quotation and invoice (now “${shown}”) is not changed. To change it, use ${edit}.`, `此处的“付款”仅用于判断所需单证。报价单・发票的 Payment（现为“${shown}”）不会改变。如需修改，请使用${edit}。`, `«Pago» aquí solo sirve para decidir qué documentos hacen falta. El Payment de la cotización y la factura (ahora «${shown}») no cambia. Para cambiarlo use ${edit}.`)), 60);
+                }
+            }
+            catch (e) {
+                warn("paySet", e);
+            }
+            return r;
+        };
+    }
+    dict([["海上", "Sea", "海运", "Marítimo"], ["航空", "Air", "空运", "Aéreo"], ["クーリエ", "Courier", "快递", "Mensajería"], ["郵便", "Post", "邮政", "Correo postal"],
+        ["T/T 前払い", "T/T in advance", "T/T 预付", "T/T por adelantado"], ["T/T 後払い", "T/T after shipment", "T/T 后付", "T/T posterior al envío"],
+        ["L/C（信用状）", "L/C (letter of credit)", "L/C（信用证）", "L/C (carta de crédito)"], ["D/P・D/A", "D/P / D/A", "D/P・D/A", "D/P / D/A"], ["そのほか", "Other", "其他", "Otro"],
+        ["輸入者が不要と言った", "The importer said it is not needed", "进口商表示不需要", "El importador dijo que no hace falta"],
+        ["この国・この商材では要らない", "Not needed for this country / product", "该国・该商品不需要", "No hace falta para este país / producto"],
+        ["別の書類で代える", "Replaced by another document", "以其他单证代替", "Se sustituye por otro documento"],
+        ["今回は使わない（EPA など）", "Not used this time (EPA etc.)", "本次不使用（EPA 等）", "No se usa esta vez (EPA, etc.)"],
+        ["不要の理由", "Reason not needed", "不需要的理由", "Motivo por el que no hace falta"]]);
+    let tm = 0;
+    function after() { try {
+        editBack();
+        etdNote();
+        smpNote();
+        mailFix();
+    }
+    catch (e) {
+        warn("after", e);
+    } }
+    const later = () => { try {
+        clearTimeout(tm);
+        tm = setTimeout(after, 160);
+        setTimeout(after, 750);
+    }
+    catch (e) { } };
+    API.after = after;
+    if (typeof render === "function") {
+        const __r = render;
+        render = function () { try {
+            const S = ship();
+            if (S) {
+                editBack();
+                podSync(S);
+            }
+        }
+        catch (e) { } const r = __r.apply(this, arguments); later(); return r; };
+    }
+    if (typeof v85docRepaint === "function") {
+        const __rp = v85docRepaint;
+        v85docRepaint = function () { const r = __rp.apply(this, arguments); try {
+            etdNote();
+        }
+        catch (e) { } later(); return r; };
+    }
+    if (typeof rDoc === "function") {
+        const __rd = rDoc;
+        rDoc = function () { const r = __rd.apply(this, arguments); try {
+            smpNote();
+        }
+        catch (e) { } later(); return r; };
+    }
+    try {
+        setTimeout(after, 900);
+    }
+    catch (e) { }
+})();
+(function () {
+    const W = window;
+    if (W.__v2192r5b)
+        return;
+    W.__v2192r5b = 1;
+    const API = (W.v92r5b = W.v92r5b || {});
+    const E = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const lang = () => { try {
+        if (typeof I18N !== "undefined" && I18N && I18N.lang) {
+            const v = String(I18N.lang);
+            return /^en/.test(v) ? "en" : /^zh/.test(v) ? "zh" : /^es/.test(v) ? "es" : "ja";
+        }
+    }
+    catch (e) { } return "ja"; };
+    const M = (ja, en, zh, es) => { const l = lang(); return l === "en" ? en : l === "zh" ? (zh || en) : l === "es" ? (es || en) : ja; };
+    API.M = M;
+    const warn = (k, e) => { try {
+        console.warn("[v92r5b] " + k, e);
+    }
+    catch (x) { } };
+    const ten = () => { try {
+        return (typeof TEN !== "undefined" && TEN) ? TEN : null;
+    }
+    catch (e) {
+        return null;
+    } };
+    const dd = () => { try {
+        return (typeof D !== "undefined" && D) ? D : null;
+    }
+    catch (e) {
+        return null;
+    } };
+    const ships = () => { try {
+        return (typeof SHIPS !== "undefined" && Array.isArray(SHIPS) && SHIPS.length && (typeof PID === "undefined" || SHIPS._pid === PID)) ? SHIPS : null;
+    }
+    catch (e) {
+        return null;
+    } };
+    const isUserCase = (c) => { try {
+        const S = c && c.ship;
+        return !!(c && c.po) || !!(S && (S.poNo || S.v61fb || S.v56shipFb || S.v54copy));
+    }
+    catch (e) {
+        return true;
+    } };
+    const REC_NO = () => M("商談の記録", "Meeting record", "商谈记录", "Registro de reunión");
+    const recOrders = (us, have) => {
+        const out = [];
+        try {
+            (us || []).forEach((u) => {
+                const fb = (u && u.D && u.D.fb) || [];
+                fb.forEach((r) => {
+                    try {
+                        if (!r || Array.isArray(r) || r.st !== "受注" || !r.user)
+                            return;
+                        if (u.act && r.v61id && typeof v61dlCasesOf === "function" && (v61dlCasesOf(r.v61id) || []).length)
+                            return;
+                        if (have.some((o) => o && o.ref === u.ref && String(o.buyer || "") === String(r.b || "") && o.src !== "v92rec"))
+                            return;
+                        const p = typeof v61dlEffPrice === "function" ? v61dlEffPrice(r) : null;
+                        const a = p ? amtParse(p.s) : null;
+                        const q = typeof v61dlNum === "function" ? v61dlNum(r.lot) : null;
+                        if (!a || !a.cur || !(a.v > 0) || !(q > 0))
+                            return;
+                        const v = Math.round(a.v * q * 100) / 100;
+                        const total = (a.cur === "USD" ? "US$" : "¥") + v.toLocaleString("en-US", a.cur === "USD" ? { minimumFractionDigits: 2, maximumFractionDigits: 2 } : { maximumFractionDigits: 0 });
+                        out.push({ no: REC_NO(), buyer: r.b || "—", cty: r.c || "—", item: u.item, co: u.co, qty: r.lot || "—", unit: p.s, total, a: { cur: a.cur, v }, docRate: 0, dISO: String(r.d || "").slice(0, 10), ref: u.ref, src: "v92rec", v68k: "fb", v92rec: 1 });
+                    }
+                    catch (e) { }
+                });
+            });
+        }
+        catch (e) {
+            warn("recOrders", e);
+        }
+        return out;
+    };
+    try {
+        if (typeof dashOrders === "function") {
+            const o = dashOrders;
+            dashOrders = function (us) {
+                let us2 = us;
+                try {
+                    const S = ships();
+                    if (S && Array.isArray(us)) {
+                        us2 = us.map((u) => {
+                            if (!u || !u.act || !u.D || !u.D.ship)
+                                return u;
+                            const s0 = S[0] && S[0].ship;
+                            const own = (u.kind === "demo" && s0 && !isUserCase(S[0])) ? s0 : null;
+                            if (u.D.ship === own)
+                                return u;
+                            if (!own && !S.some((c) => c && c.ship === u.D.ship))
+                                return u;
+                            const D2 = Object.create(u.D);
+                            D2.ship = own;
+                            return Object.assign({}, u, { D: D2 });
+                        });
+                    }
+                }
+                catch (e) {
+                    warn("orders-us", e);
+                    us2 = us;
+                }
+                const out = o.call(this, us2) || [];
+                try {
+                    recOrders(us, out).forEach((x) => out.push(x));
+                }
+                catch (e) {
+                    warn("orders-rec", e);
+                }
+                return out;
+            };
+        }
+    }
+    catch (e) {
+        warn("orders", e);
+    }
+    const isQ = (r) => !!r && !Array.isArray(r) && ((!!r.price && r.price !== "—") || /見積提示|サンプル発送|受注/.test(String(r.st || "")));
+    try {
+        if (typeof dashAgg === "function") {
+            const o = dashAgg;
+            dashAgg = function (us) {
+                const A = o.apply(this, arguments);
+                try {
+                    if (A && A.K && !A.per && !A.v92r5bQ) {
+                        A.v92r5bQ = 1;
+                        (A.us || us || []).forEach((u) => {
+                            const fb = (u && u.D && u.D.fb) || [];
+                            if (u.kind === "demo")
+                                A.K.quotes += fb.filter((r) => r && r.user && isQ(r)).length;
+                            else
+                                A.K.quotes += Math.max(0, fb.filter(isQ).length - (+((u.D.kpi || {}).quotes) || 0));
+                        });
+                    }
+                    if (A && API._qd && Array.isArray(A.fb))
+                        A.fb.forEach((r) => { if (isQ(r) && !(r.price && r.price !== "—"))
+                            r.price = M("（価格の記録なし）", "(no price recorded)", "（未记录价格）", "(sin precio)"); });
+                }
+                catch (e) {
+                    warn("agg", e);
+                }
+                return A;
+            };
+        }
+        if (typeof dashDrill === "function") {
+            const o = dashDrill;
+            dashDrill = function (kind, arg) {
+                const q = kind === "funnel" && /見積/.test(String(arg || ""));
+                if (q)
+                    API._qd = 1;
+                let r;
+                try {
+                    r = o.apply(this, arguments);
+                }
+                finally {
+                    if (q)
+                        API._qd = 0;
+                }
+                try {
+                    if (kind === "orders") {
+                        const pn = document.getElementById("pn") || document.getElementById("dw");
+                        if (pn)
+                            pn.querySelectorAll("tr").forEach((tr) => {
+                                const td = tr.querySelector("td");
+                                if (!td || String(td.textContent || "").trim() !== REC_NO())
+                                    return;
+                                const b = tr.querySelector("button");
+                                if (b && b.parentElement)
+                                    b.parentElement.innerHTML = `<span class="nn" data-noi18n style="font-size:9.5px;margin:0">${E(M("単価×数量（書類をつくると Invoice の額に替わります）", "unit price × qty (replaced by the invoice amount once documents are made)", "单价×数量（制作单据后改为发票金额）", "precio × cantidad (se sustituye por la factura al crear documentos)"))}</span>`;
+                            });
+                    }
+                }
+                catch (e) {
+                    warn("drill", e);
+                }
+                return r;
+            };
+        }
+    }
+    catch (e) {
+        warn("quotes", e);
+    }
+    try {
+        if (typeof vDash === "function") {
+            const o = vDash;
+            vDash = function () {
+                let h = o.apply(this, arguments);
+                try {
+                    if (typeof h !== "string" || h.indexOf('id="v68qkd"') < 0)
+                        return h;
+                    h = h.replace('<div class="kd" id="v68qkd">', '<div class="kd" id="v68qkd" data-kqn="1">');
+                    const A = dashAgg(dashScopeUnits());
+                    const nOrd = (A.orders || []).filter((x) => x && x.src !== "base").length;
+                    if (nOrd) {
+                        h = h.replace("見積金額は見積書（PI）の合計で、まだ見積書がありません", M("見積金額は、受注がまだ決まっていない案件の見積書（PI）の合計です。受注が決まった案件の分は、累計受注金額に入れています", "", "", ""));
+                        h = h.replace("The quoted amount is the total of quotations (PI); none yet", "The quoted amount is the total of quotations (PI) for cases not yet ordered; confirmed orders are counted in the order total");
+                        h = h.replace(/(<span class="n" id="v68qamt">)(金額の記録なし|no amount recorded)(<\/span>)/, (m, a, b, c) => a + E(M("受注未確定の見積書はありません", "no open quotations", "没有未确定的报价单", "sin cotizaciones abiertas")) + c);
+                    }
+                    const qs = (A.quotes || []).filter((x) => x && x.a && x.a.cur === "USD");
+                    if (qs.length && (!DASH || DASH.cur !== "USD")) {
+                        const r = dashRate();
+                        const rates = [];
+                        qs.forEach((x) => { const t = x.docRate ? M(`${x.docRate}円（見積書に書いたレート）`, `¥${x.docRate} (rate on the quotation)`, `${x.docRate}日元（报价单上的汇率）`, `¥${x.docRate} (tipo de la cotización)`) : M(`${r.v.toFixed(2)}円（参照レート ${r.d || ""}）`, `¥${r.v.toFixed(2)} (reference rate ${r.d || ""})`, `${r.v.toFixed(2)}日元（参考汇率 ${r.d || ""}）`, `¥${r.v.toFixed(2)} (tipo de referencia ${r.d || ""})`); if (rates.indexOf(t) < 0)
+                            rates.push(t); });
+                        const a = h.indexOf('id="v68qkd"'), b = a >= 0 ? h.indexOf("</div>", a) : -1;
+                        if (b > a)
+                            h = h.slice(0, b) + `<br><span class="v92r5b-qrate" data-noi18n style="font-size:9px">${E(M("換算：1 US$＝", "Converted at 1 US$ = ", "换算：1 US$＝", "Conversión: 1 US$ = "))}${E(rates.join("／"))}</span>` + h.slice(b);
+                    }
+                }
+                catch (e) {
+                    warn("vdash", e);
+                }
+                return h;
+            };
+        }
+    }
+    catch (e) {
+        warn("vdash-wrap", e);
+    }
+    try {
+        const comma = (s) => s.replace(/US\$(\d{4,})(\.\d+)?/g, (m, a, b) => "US$" + a.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (b || ""));
+        const dirOf = (h) => h.indexOf("<span>高い金額です。</span>") >= 0 ? "high" : h.indexOf("自社の価格表の範囲に入っています") >= 0 ? "same" : "low";
+        if (typeof v56dCmpHtml === "function") {
+            const o = v56dCmpHtml;
+            v56dCmpHtml = function (c) {
+                let h = o.apply(this, arguments);
+                try {
+                    if (typeof h === "string" && h) {
+                        const key = "の価格に運賃などを足して比べる必要があるので、実際の差はもっと大きくなります。";
+                        const i = h.indexOf(key);
+                        if (i >= 0) {
+                            const d = dirOf(h);
+                            const t = d === "high" ? M("の価格に運賃などを足して比べる必要があるので、先方が高い分（余裕）は小さくなります（運賃しだいで、足りなくなることもあります）。", " price needs freight etc. added before comparing, so the buyer's margin above your price becomes smaller (and may turn negative depending on freight). ", "的价格需加上运费等再比较，因此对方高出的部分（余量）会变小（视运费而定，也可能不够）。", " debe sumar el flete, etc. antes de comparar, por lo que el margen a favor se reduce (y puede volverse negativo según el flete). ")
+                                : d === "same" ? M("の価格に運賃などを足して比べる必要があるので、足したあとは、先方の希望のほうが低くなることがあります。", " price needs freight etc. added before comparing; after that the buyer's offer may be lower than your price. ", "的价格需加上运费等再比较，加上之后对方的期望价可能更低。", " debe sumar el flete, etc. antes de comparar; después la oferta puede quedar por debajo. ") : "";
+                            if (t)
+                                h = h.slice(0, i) + `</span><span data-noi18n>${E(t)}</span><span>` + h.slice(i + key.length);
+                        }
+                        h = comma(h);
+                    }
+                }
+                catch (e) { }
+                return h;
+            };
+        }
+        if (typeof v56dCmpPlain === "function") {
+            const o = v56dCmpPlain;
+            v56dCmpPlain = function (c) {
+                let s = o.apply(this, arguments);
+                try {
+                    if (typeof s === "string" && s) {
+                        const key = "の価格に運賃などを足して比べるため、実際の差はもっと大きい";
+                        if (s.indexOf(key) >= 0) {
+                            const hi = /先方の希望は自社の価格より .* 高い/.test(s), same = /先方の希望は価格表の範囲内/.test(s);
+                            if (hi)
+                                s = s.replace(key, "の価格に運賃などを足して比べるため、先方が高い分（余裕）は小さくなる（足りなくなることもある）");
+                            else if (same)
+                                s = s.replace(key, "の価格に運賃などを足して比べるため、足したあとは先方の希望のほうが低くなることがある");
+                        }
+                        s = comma(s);
+                    }
+                }
+                catch (e) { }
+                return s;
+            };
+        }
+    }
+    catch (e) {
+        warn("cmp", e);
+    }
+    const cnt = (a) => Array.isArray(a) ? a.length : 0;
+    const rmTens = () => { try {
+        if (typeof v88Tens === "function")
+            return v88Tens() || [];
+    }
+    catch (e) { } const t = ten(); return t ? [t] : []; };
+    const isSample = () => { const t = ten(); return !!(t && t.src === "sample"); };
+    const setupDone = () => { const o = {}; try {
+        const S = (typeof ux32Setup === "function") ? ux32Setup() : null;
+        if (Array.isArray(S))
+            S.forEach((r) => { if (Array.isArray(r))
+                o[r[0]] = !!r[4]; });
+        else
+            return null;
+    }
+    catch (e) {
+        return null;
+    } return o; };
+    const contacted = () => {
+        let n = 0;
+        try {
+            rmTens().forEach((t) => {
+                n += cnt(t.outreach) + cnt(t.netConnects);
+                Object.values(t.dmThreads || {}).forEach((th) => {
+                    const ms = (th && Array.isArray(th.msgs)) ? th.msgs : [];
+                    if (ms.some((m) => m && !m.sim && (m.w !== "me" || !/^商談の記録（/.test(String(m.subj || "")))))
+                        n++;
+                });
+            });
+        }
+        catch (e) { }
+        return n;
+    };
+    const hasPriceTable = () => { try {
+        const d = dd();
+        if (d && cnt(d.priceRows))
+            return true;
+        return rmTens().some((t) => cnt(t.priceRows) || t.fobIn || Object.keys(t.ddpPx || {}).length);
+    }
+    catch (e) {
+        return false;
+    } };
+    const fbAll = () => { const L = []; try {
+        rmTens().forEach((t) => (Array.isArray(t.fbx) ? t.fbx : []).forEach((f) => { if (f && !Array.isArray(f))
+            L.push(f); }));
+    }
+    catch (e) { } return L; };
+    const taskDone = (re) => {
+        try {
+            const L = [];
+            rmTens().forEach((t) => (t.xtasks || []).forEach((x) => L.push(x)));
+            const d = dd();
+            if (d && Array.isArray(d.tasks))
+                d.tasks.forEach((x) => { L.push(x); (x.kids || []).forEach((k) => L.push(k)); });
+            const x = L.find((y) => y && y.st === "完了" && re.test(String(y.n || "")));
+            return x ? String(x.n || "").replace(/^🧭\s*/, "") : "";
+        }
+        catch (e) {
+            return "";
+        }
+    };
+    API.contacted = contacted;
+    try {
+        if (typeof v88Sig === "function") {
+            const o = v88Sig;
+            v88Sig = function () {
+                const s = o.apply(this, arguments);
+                try {
+                    if (s && !isSample()) {
+                        s.reach = contacted() ? 1 : 0;
+                        if (hasPriceTable())
+                            s.price = 1;
+                        const SD = setupDone();
+                        if (SD && SD.cty === false)
+                            s.tg = 0;
+                        if (SD && SD.reg === false)
+                            s.reg = 0;
+                    }
+                }
+                catch (e) {
+                    warn("sig", e);
+                }
+                return s;
+            };
+        }
+        if (typeof v88Phases === "function") {
+            const o = v88Phases;
+            v88Phases = function (G, B, st) {
+                const ph = o.apply(this, arguments);
+                try {
+                    const sig = (st && st.sig) || {};
+                    const smp = isSample();
+                    const W1 = (ja, en, zh, es) => M("済みの根拠：", "Done because: ", "已完成的依据：", "Hecho porque: ") + M(ja, en, zh, es);
+                    const byTask = (a, re) => { const n = taskDone(re); if (n) {
+                        a.done = true;
+                        a.why = W1(`タスク「${n}」を完了`, `task “${n}” completed`, `任务“${n}”已完成`, `tarea “${n}” completada`);
+                    }
+                    else {
+                        a.done = false;
+                        delete a.why;
+                    } };
+                    const set = (a, ok, why) => { if (ok) {
+                        a.done = true;
+                        a.why = why;
+                    }
+                    else {
+                        a.done = false;
+                        delete a.why;
+                    } };
+                    if (!smp)
+                        (ph || []).forEach((p) => (p.acts || []).forEach((a) => {
+                            if (!a)
+                                return;
+                            const t = String(a.t || "");
+                            if (a.tag === "tm")
+                                byTask(a, /商標|trademark/i);
+                            else if (a.tag === "fair") {
+                                if (/^展示会に出る|^Exhibit/.test(t)) {
+                                    const n = fbAll().filter((f) => /展示会/.test(String(f.ch || ""))).length;
+                                    if (n)
+                                        set(a, true, W1(`チャネルが「展示会」の商談の記録 ${n}件`, `${n} meeting record(s) with channel “Trade show”`, `渠道为“展会”的商谈记录 ${n} 条`, `${n} registro(s) con canal “Feria”`));
+                                    else
+                                        byTask(a, /展示会|trade show/i);
+                                }
+                                else
+                                    byTask(a, /認知|awareness/i);
+                            }
+                            else if (a.tag === "ec")
+                                byTask(a, /テスト販売|越境EC|e-commerce/i);
+                            else if (/^OEM|^Summarise how you take OEM/.test(t))
+                                byTask(a, /OEM/);
+                            else if (/^輸出の価格|^Set export prices/.test(t))
+                                set(a, hasPriceTable(), W1("価格表・輸出価格あり", "prices on file", "已有价格表・出口价格", "precios registrados"));
+                            else if (/^AIバイヤー開拓で毎月|^Reach out to buyers/.test(t)) {
+                                const n = contacted();
+                                set(a, n > 0, W1(`バイヤーへの連絡の記録あり（${n}件）`, `buyer outreach on file (${n})`, `已有联系买家的记录（${n} 条）`, `contactos con compradores registrados (${n})`));
+                            }
+                            else if (/^返事が来たら|^Reply fast/.test(t)) {
+                                const n = fbAll().length;
+                                set(a, n > 0, W1(`商談の記録 ${n}件`, `${n} meeting record(s)`, `商谈记录 ${n} 条`, `${n} registro(s) de reunión`));
+                            }
+                            else if (a.tag === "sample") {
+                                if (!sig.sample) {
+                                    a.done = false;
+                                    delete a.why;
+                                }
+                            }
+                            else if (/^契約の条件|^Agree terms/.test(t)) {
+                                if (!sig.nego) {
+                                    a.done = false;
+                                    delete a.why;
+                                }
+                            }
+                            else if (/^初回の出荷|^Prepare the first shipment/.test(t)) {
+                                if (!sig.deal) {
+                                    a.done = false;
+                                    delete a.why;
+                                }
+                            }
+                            else if (/^2回目の注文|^Turn the first order/.test(t)) {
+                                if (!((sig.deals | 0) >= 2 || (sig.orders | 0) >= 2)) {
+                                    a.done = false;
+                                    delete a.why;
+                                }
+                            }
+                            else if (/^2か国目へ|^Add a second market/.test(t)) {
+                                if (Object.keys(sig.dealCty || {}).length < 2) {
+                                    a.done = false;
+                                    delete a.why;
+                                }
+                            }
+                            else if (/^国ごとの代理店|^Standardise distributor/.test(t))
+                                byTask(a, /代理店|distributor/i);
+                        }));
+                    (ph || []).forEach((p) => { if (p && p.done && !(p.acts || []).every((a) => a && a.done))
+                        p.done = false; });
+                }
+                catch (e) {
+                    warn("phases", e);
+                }
+                return ph;
+            };
+        }
+    }
+    catch (e) {
+        warn("rm", e);
+    }
+    try {
+        if (typeof ux32Setup === "function") {
+            const o = ux32Setup;
+            ux32Setup = function () {
+                const S = o.apply(this, arguments);
+                try {
+                    if (Array.isArray(S))
+                        S.forEach((r) => { if (Array.isArray(r) && typeof r[5] === "string")
+                            r[5] = r[5].replace(/^(まだの理由：|Not yet: |Why not yet: |未完成的原因：|Pendiente: |Por qué falta: )/, ""); });
+                }
+                catch (e) { }
+                return S;
+            };
+        }
+    }
+    catch (e) {
+        warn("setup", e);
+    }
+    try {
+        const early = () => {
+            try {
+                if (typeof SES === "undefined" || !SES || SES.t !== "trial" || SES.role === "fwd")
+                    return false;
+                if (typeof PID !== "undefined" && PID)
+                    return false;
+                if (document.getElementById("lgv") || document.body.classList.contains("locked"))
+                    return false;
+                const t = loadTen();
+                if (!t)
+                    return false;
+                TEN = t;
+                PID = "custom";
+                try {
+                    syncTenant();
+                }
+                catch (e) { }
+                try {
+                    cur = scoreOf(TEN).missing.length ? "up" : "dash";
+                }
+                catch (e) { }
+                try {
+                    const w = document.getElementById("welv");
+                    if (w)
+                        w.remove();
+                }
+                catch (e) { }
+                API._early = (API._early | 0) + 1;
+                try {
+                    buildNav();
+                }
+                catch (e) { }
+                try {
+                    render();
+                }
+                catch (e) { }
+                return true;
+            }
+            catch (e) {
+                warn("early", e);
+                return false;
+            }
+        };
+        API.early = early;
+        if (!early()) {
+            let n = 0;
+            const iv = setInterval(() => { n++; try {
+                if (early() || (typeof PID !== "undefined" && PID) || n > 40)
+                    clearInterval(iv);
+            }
+            catch (e) {
+                clearInterval(iv);
+            } }, 150);
+        }
+    }
+    catch (e) {
+        warn("boot", e);
+    }
+    try {
+        if (typeof v38DashWait === "function") {
+            const o = v38DashWait;
+            v38DashWait = function () {
+                let h = String(o.apply(this, arguments));
+                try {
+                    let all = 0;
+                    try {
+                        const S = taskStats();
+                        const td = String((typeof TODAYS !== "undefined" && TODAYS) || "").slice(0, 10);
+                        if (td)
+                            all = (S.all || []).filter((t) => t && t.e && !/^(完了|中止)$/.test(String(t.st || "")) && String(t.e).slice(0, 10) <= td).length;
+                    }
+                    catch (e) { }
+                    let mine = 0;
+                    try {
+                        mine = (v38WaitCounts() || {}).today | 0;
+                    }
+                    catch (e) { }
+                    const sub = M("自分の番のもの（過ぎたものを含む）", "Yours only (incl. overdue)", "仅自己负责的（含已过期）", "Solo lo suyo (incl. vencido)")
+                        + (all > mine ? M(`。会社全体のタスクでは ${all}件（タスク・進行）`, `. Company-wide tasks: ${all} (Tasks)`, `。全公司任务为 ${all} 件（任务・进度）`, `. Tareas de toda la empresa: ${all} (Tareas)`) : "");
+                    h = h.replace(/(data-v38wf="today">[\s\S]*?<span class="v38ws")(>)[^<]*(<\/span>)/, (m, a, b, c) => a + " data-noi18n" + b + E(sub) + c);
+                }
+                catch (e) { }
+                return h;
+            };
+        }
+    }
+    catch (e) {
+        warn("wait", e);
+    }
+    const hidList = () => { try {
+        const t = ten();
+        return ((t ? t.v92r4bHid : W.__v92r4bHid) || []);
+    }
+    catch (e) {
+        return [];
+    } };
+    API.hidThreads = () => { const out = []; try {
+        hidList().forEach((h) => { (h.th || []).forEach((id) => out.push(String(id))); (h.k || []).forEach((k) => { const m = /^my:(.+)$/.exec(String(k)); if (m)
+            out.push(m[1]); }); });
+    }
+    catch (e) { } return out; };
+    try {
+        const nrm = (s) => { try {
+            if (typeof v30Norm === "function")
+                return v30Norm(s);
+        }
+        catch (e) { } return String(s || "").toLowerCase().replace(/\s+/g, ""); };
+        if (typeof v70dealActive === "function") {
+            const o = v70dealActive;
+            v70dealActive = function () {
+                const A = o.apply(this, arguments);
+                try {
+                    const H = hidList();
+                    if (H.length && A && Array.isArray(A.rows)) {
+                        const set = {};
+                        H.forEach((h) => (h.k || []).forEach((k) => { set[k] = 1; }));
+                        const rows = A.rows.filter((r) => { if (!r || r.my)
+                            return true; const n = nrm(r.name); return !(set[String(r.key)] || set["nm:" + n + "|" + (r.cty || "")] || set["nm:" + n + "|"]); });
+                        if (rows.length !== A.rows.length) {
+                            A.rows = rows;
+                            A.n = rows.length;
+                            A.hot = rows.filter((r) => r.prob === "高").length;
+                            A.ctys = new Set(rows.map((r) => r.cty).filter(Boolean)).size;
+                        }
+                    }
+                }
+                catch (e) { }
+                return A;
+            };
+            try {
+                W.V70DEAL_ACTIVE = v70dealActive;
+            }
+            catch (e) { }
+        }
+        if (typeof b30Remove === "function") {
+            const o = b30Remove;
+            b30Remove = function (key) {
+                let ids = [], n0 = 0;
+                try {
+                    const r0 = b30Find(key);
+                    n0 = hidList().length;
+                    if (r0) {
+                        [].concat(r0.ths || [], r0.th ? [r0.th] : []).forEach((x) => { const id = x && (x.id || (x.th && x.th.id)); if (id)
+                            ids.push(String(id)); });
+                        if (r0.my && r0.my.id)
+                            ids.push(String(r0.my.id));
+                    }
+                }
+                catch (e) { }
+                const r = o.apply(this, arguments);
+                try {
+                    const H = hidList();
+                    if (H.length > n0 && ids.length) {
+                        H[H.length - 1].th = ids.filter((x, i) => ids.indexOf(x) === i);
+                        try {
+                            saveTen();
+                        }
+                        catch (e) { }
+                    }
+                }
+                catch (e) { }
+                return r;
+            };
+        }
+    }
+    catch (e) {
+        warn("hid", e);
+    }
+    try {
+        const tabFix = () => {
+            try {
+                const b = document.querySelector("#b30tabs .optab b");
+                if (!b || typeof b30Collect !== "function")
+                    return;
+                const n = b30Collect().filter((r) => r && r.lead !== "失注").length;
+                const t = String(b.textContent || "");
+                const u = t.replace(/[（(]\d+[）)]/, (m) => m.charAt(0) + n + m.charAt(m.length - 1));
+                if (u !== t)
+                    b.textContent = u;
+            }
+            catch (e) { }
+        };
+        const dwFix = () => {
+            try {
+                const dw = document.getElementById("dw");
+                if (!dw)
+                    return;
+                const MB = (() => { try {
+                    const t = ten();
+                    return (t && Array.isArray(t.myBuyers)) ? t.myBuyers : [];
+                }
+                catch (e) {
+                    return [];
+                } })();
+                dw.querySelectorAll('[data-shipgo="dm"]:not([data-v92r5b])').forEach((btn) => {
+                    btn.setAttribute("data-v92r5b", "1");
+                    const row = btn.parentElement;
+                    if (!row)
+                        return;
+                    const m = /（ID ([^）]+)）\s*$/.exec(String(btn.getAttribute("data-buyer") || ""));
+                    const b = m ? MB.find((x) => x && String(x.id) === m[1] && x.co) : null;
+                    const tw = document.createTreeWalker(row, NodeFilter.SHOW_TEXT, null);
+                    let n;
+                    const T = [];
+                    while ((n = tw.nextNode()))
+                        T.push(n);
+                    T.forEach((x) => { if (/往復 \d+通/.test(x.nodeValue))
+                        x.nodeValue = x.nodeValue.replace(/往復 (\d+)通/, (q, k) => M(`やりとり ${k}通`, `${k} message(s)`, `往来 ${k} 条`, `${k} mensaje(s)`)); });
+                    if (b) {
+                        const cty = btn.getAttribute("data-cty") || b.cty || "";
+                        const first = T.find((x) => String(x.nodeValue || "").trim() && !btn.contains(x));
+                        if (first)
+                            first.nodeValue = b.co + (cty ? `（${cty}）` : "");
+                        btn.setAttribute("data-buyer", b.co);
+                    }
+                });
+                const w = dw.querySelector(".v79dtgt-w:not([data-v92r5b])");
+                if (w && /見本の商品です|sample product/.test(String(w.textContent || ""))) {
+                    w.setAttribute("data-v92r5b", "1");
+                    if (isSample())
+                        w.insertAdjacentHTML("beforeend", ` <span data-noi18n>${E(M("完成形の見本に足した記録は、アプリを開き直すと残りません（見本は毎回、最初の状態に戻ります）。", "Records added to a full sample are not kept when you reopen the app (the sample resets each time).", "添加到完整示例中的记录，重新打开应用后不会保留（示例每次都会恢复到初始状态）。", "Los registros añadidos al ejemplo completo no se conservan al reabrir la aplicación (el ejemplo se reinicia cada vez)."))}</span>`);
+                }
+            }
+            catch (e) { }
+        };
+        let tm = 0;
+        const soon = () => { if (tm)
+            return; tm = setTimeout(() => { tm = 0; tabFix(); dwFix(); }, 80); };
+        if (typeof render === "function") {
+            const o = render;
+            render = function () { const r = o.apply(this, arguments); soon(); return r; };
+        }
+        document.addEventListener("click", () => { soon(); setTimeout(soon, 400); }, true);
+        document.addEventListener("input", soon, true);
+    }
+    catch (e) {
+        warn("dom", e);
+    }
 })();
 try {
     if (typeof v35Restore === "function")

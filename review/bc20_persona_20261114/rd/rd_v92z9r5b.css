@@ -1,0 +1,5 @@
+/* 21.92 r5b の刷新版の層 */
+/* other-Q04：案件の詳細の「次の行動」の文の中で、用語（点線の語：CIF など）だけ小さい字になる → まわりと同じ大きさに */
+.k-cdnx abbr.tm, .k-cdnx .v54term,
+.k-cdmore abbr.tm,
+.k-h h2 abbr.tm, .k-h h3 abbr.tm { font-size: inherit !important; line-height: inherit !important; font-weight: inherit; }

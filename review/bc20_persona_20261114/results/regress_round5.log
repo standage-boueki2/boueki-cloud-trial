@@ -1,0 +1,30 @@
+food: 30 画面 OK
+cosme: 30 画面 OK
+parts: 30 画面 OK
+daily: 30 画面 OK
+car: 30 画面 OK
+liquor: 30 画面 OK
+apparel: 30 画面 OK
+medical: 30 画面 OK
+agri: 30 画面 OK
+supp: 30 画面 OK
+machine: 30 画面 OK
+culture: 30 画面 OK
+pet: 30 画面 OK
+fwd: 8 画面 OK
+ALL OK
+upload:商品情報_その他_other_pet.xlsx: 30 画面 OK
+upload:商品情報_食品_food_honey.xlsx: 30 画面 OK
+ALL OK
+food(mobile): 30 画面 OK
+fwd(mobile): 8 画面 OK
+ALL OK
+{"ver":"21.92","build":"72b0656d44d9","cat":true,"per":true,"rd":false,"s2":10}
+agri ok ten= グリーンアース農材株式会社／農業資材
+machine ok ten= 北関東マシナリー株式会社／建設機械
+culture ok ten= 株式会社墨雅堂／文化・教育用品
+daily ok ten= スドウ金属工業株式会社／日用雑貨
+smp dw: 拡大 🧪 サンプルで試す（見本・架空のデータ） 貴社の業種に近い見本を選んでください。見本は架空の会社のデータです。貴社の商品の一覧・ダッシュボードの数・成長レベルには入りません
+regdb dw: 拡大 🌐 規制をくわしく調べるには 「STANDAGE 規制データベース」は、STANDAGE の社員が調査に使う社内
+BASE OK errors []
+{"box":true,"hasNull":false,"groups":["依頼","レート・案件"],"tiles":["受信した見積依頼","AI自動回答率","仮押さえの依頼","登録レーン","期限切れのレート","要確認","未担当","30日以内に期限のレート","出せる状態（荷主待ち）","案件"]} errors 0
