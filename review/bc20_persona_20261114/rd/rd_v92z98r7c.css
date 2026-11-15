@@ -1,0 +1,17 @@
+/* 21.92 r7c：販売先国の選定の3か国の札（xcut-S04）。英語・スペイン語では点数の札（市場性・競合・規制・拠点）の名前が長く、
+   2列のままだと札の右へはみ出して隣の札・右の欄に重なる。英語・スペイン語のときだけ1列にして、入りきらない点数は次の行へ送る。
+   国名の横の「確定」の札も、入りきらなければ次の行へ。日本語・中国語の見た目は変えない */
+html.rd[data-lang="en"] .rd-p2 .k-tiles > .k-card > div[style*="grid-template-columns:repeat(2,1fr)"],
+html.rd[data-lang="es"] .rd-p2 .k-tiles > .k-card > div[style*="grid-template-columns:repeat(2,1fr)"]{grid-template-columns:minmax(0,1fr)!important}
+html.rd[data-lang="en"] .rd-p2 .k-tiles > .k-card > div[style*="grid-template-columns:repeat(2,1fr)"] > div,
+html.rd[data-lang="es"] .rd-p2 .k-tiles > .k-card > div[style*="grid-template-columns:repeat(2,1fr)"] > div{white-space:normal!important;min-width:0;flex-wrap:wrap;gap:2px 8px!important}
+html.rd[data-lang="en"] .rd-p2 .k-tiles > .k-card > div[style*="grid-template-columns:repeat(2,1fr)"] > div > small,
+html.rd[data-lang="es"] .rd-p2 .k-tiles > .k-card > div[style*="grid-template-columns:repeat(2,1fr)"] > div > small{min-width:0;line-height:1.35;display:inline-block}
+html.rd[data-lang="en"] .rd-p2 .k-tiles > .k-card > div[style*="grid-template-columns:repeat(2,1fr)"] > div > small::first-letter,
+html.rd[data-lang="es"] .rd-p2 .k-tiles > .k-card > div[style*="grid-template-columns:repeat(2,1fr)"] > div > small::first-letter{text-transform:uppercase}
+html.rd[data-lang="en"] .rd-p2 .k-tiles > .k-card > div[style*="grid-template-columns:repeat(2,1fr)"] > div > b,
+html.rd[data-lang="es"] .rd-p2 .k-tiles > .k-card > div[style*="grid-template-columns:repeat(2,1fr)"] > div > b{flex:0 0 auto;white-space:nowrap;margin-left:auto}
+html.rd[data-lang="en"] .rd-p2 .k-tiles > .k-card,
+html.rd[data-lang="es"] .rd-p2 .k-tiles > .k-card{min-width:0}
+html.rd[data-lang="en"] .rd-p2 .k-tiles > .k-card > div[style*="display:flex;align-items:center;gap:8px;margin-top:8px"],
+html.rd[data-lang="es"] .rd-p2 .k-tiles > .k-card > div[style*="display:flex;align-items:center;gap:8px;margin-top:8px"]{flex-wrap:wrap;row-gap:4px}

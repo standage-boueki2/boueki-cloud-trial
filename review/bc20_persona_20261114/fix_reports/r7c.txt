@@ -1,0 +1,134 @@
+r7c（7巡目の直し：英語・中国語・スペイン語で、0件から 6/6 までの通しの道に残る日本語と崩れ）報告　ポート 8873
+層：fix/r7c/src/logic_v2192r7c.ts（本体。辞書に訳 107件・文の形 76本を足すだけ。今の関数は1つも包んでいない）
+　　rd_v92r7c.css（刷新版。英語・スペイン語のときだけ、国の札の点数の札を折り返す）・rd_v92r7c.js（中身なし）
+道具：chain.sh（0件 → 6/6 を通し、段階ごとに数える）・walk.sh（右上の「次は」と光ったボタンだけで通す）・q/flow.cjs（評価担当 agents6/xcut/q/flow.cjs の写し＋ kn の段）
+　　q/kn.js（見えている文字の節のうち、かな〔中国語〕／かな・漢字〔英・西〕を含むものを拾う）・show.cjs・tab.cjs（下の表）・cmp.cjs（日本語の見比べ）・q/trq.cjs（文を辞書に通す）
+記録：kn/<版>_<言語>_<段階>.json（b＝直す前 8811／f＝直した後 8873／j0・j1＝日本語の層なし・あり）・out/*.log・out/table.txt・img/
+
+■ 洗い出し：通しの道で日本語が出ていた所と、その文の出どころ
+  画面・段階                         | 文の出どころ（直す前に最後に効いていた層）                         | 日本語のままだった理由
+  国選定：分析後・確定後（刷新版の札）| rd_pages2.js（3か国の札・比較の表・確定の欄）・rd_v90cty.js         | 訳が辞書に無い（順位・「選択中（押すと外す）」・「この3か国で確定する」ほか）
+  国選定：下の表と国ごとの詳細        | 本体 ctyWhyLocal・ctyRiskLocal・ctyNextLocal・v56priceCBaseTxt・cty の層 | 「／」でつないだ理由の文・「関税 …／通関 …／必要書類 …」の形が辞書に無い
+  国選定：確定の知らせ                | 本体 ctyConfirm → toast                                              | 文の形（国名が入る）が無い
+  登録：取り込みの報告                | rd.js（「残り N項目（…）」）・up の層（「産地・製造国 needed」）     | 文の形が無い／項目名が訳されずに英語の文へ入る
+  登録：会話（吹き出し .bb）          | 本体 fillSay・up の層・v68（Seller の英語の住所）                    | 吹き出しの中は今の辞書の対象外（i18nApply が .bb を飛ばす）
+  規制                                | rd_pages2.js「選択中の輸出先（仕向け国）」                           | 訳が無い
+  営業資料：完成後                    | rd_pages3.js（完成の札・「保存 N件」）・本体 v33aq                    | 訳が無い
+  バイヤー開拓：リスト                | 本体 v71ob（条件の行・見本の説明・知らせ）・v84c（「選んだN社を…送る」）| ひな形（{n}社…）の訳が無い → 日本語のひな形に値が入る
+  受信箱：確認・承認                  | 本体 v84c（「…に、…を送ります」「見込み B（56点）」「同じ会社…」）   | 同上
+  商談の記録の窓：記録後              | 本体 dealSave・dealAdviseLocal                                        | 訳が無い
+  案件一覧・案件の詳細                | rd_case.js・rd_v92flow.js・r3a（行の添え書き）・本体（記録の文）      | 訳が無い。最新のやりとりの文は rd_v90doc が後から日本語を書き戻す
+  中・西の英語：最初の知らせ          | up の層 M(日, 英)（2つしか持たない）                                  | 中・西には英語が出る
+  中・西の英語：ホームの提案の札      | 本体 v88M(日, 英)                                                     | 同上
+  → 直し方は1つ：どの場所の文も、今の辞書の仕組み（I18N.dict・I18N.pat）に訳と文の形を足す。吹き出しと data-noi18n の中だけは、この層の表にある文に限って当てる（元の文字は I18N.orig に残る＝言語を戻せば戻る）。
+    ひな形（{n} などが残っている文）には当てず、値が入った後の文に当てる（ひな形に当てると、[見本] の印や区分名が日本語のまま入るため）。
+
+■ 課題ごとの結果
+・xcut-S02／culture-S04／daily-S06（国選定の「おまかせ」のあとが日本語）— 直した（画面で確認済み）
+  かなを含む行（.stage）：英 56→0・中 54→0・西 63→0（分析後）。確定後：英 62→0・中 60→0・西 69→0（知らせ「Target markets confirmed: …」も）。
+  光るボタン：「Confirm these 3 countries」「确定这3个国家」「Confirmar estos 3 países」（r5c・r6a が探す語 Confirm／确定／Confirmar を含む。3言語とも「次は」→ 光る → 押して 2/6 になる）。
+  例（英）：Highest overall score／Overall No. 1／Overall rank: No. 1 of 10 countries／Selected (click to remove)／Key indicators compared／Scores are a 0–100 guide…／
+            Duty: to be confirmed / Customs clearance: 3–5 business days / Required documents: Invoice, Packing list, Certificate of origin／STANDAGE base planned (United States, FY2027)／
+            US additional tariff (imports from Japan: about 12.5% in total as a guide; …; as of October 2026; needs checking)
+  用語は前の層と同じ：Target markets／销售目标国／países de venta、Target countries／目标国家、Check regulations／查法规／Ver regulaciones、AI Trade Agent／AI商社专员／agente comercial IA。
+・xcut-S04（国の札の点数の札が右へはみ出す）— 直した（画面で確認済み）
+  直す前（8811・1440）：英 regulations 右端 617・50 右端 638／札の右端 514（＋124）、西 normativa 639・50 660（＋146）。確定後は「Confirmed」の札も 535（＋21）。
+  直し（CSS・英語とスペイン語だけ）：点数の札を1列に。名前は語の切れ目で折り返し、入りきらない点数は次の行へ。国名の横の「確定」の札も次の行へ。名前の頭文字は大文字（regulations → Regulations）。
+  直した後：英・西とも、札の右端を越える要素 0（1440・1366・390）。日本語・中国語は CSS が当たらない（はみ出し 0 のまま）。画像 img/en_cty_1440.png・es_cty_1440.png・ja_cty_1440.png。
+・xcut-S03（通しの途中の日本語の UI の行）— 直した（画面で確認済み）
+  登録の会話：「Origin / country of manufacture registered. Info 20/21」「All items are now complete. Info 21/21.」「Regulation checks, automatic document creation, … are all ready to run.」
+            「For the Seller (your company) field of quotes (PI) and invoices, the following is not registered yet: English address. …」／「2 items left (Origin / country of manufacture, Payment terms)」
+  規制「Selected destinations (countries)」／営業資料「Your sales deck is ready!」「1 saved」「Completed sales deck」「Open (preview · PowerPoint · PDF)」
+  バイヤー開拓：「✉ Review and send to the 10 selected, one by one」・条件の行「United States, Importers & wholesalers, …: 10 companies (created 11/16 04:24)」・
+            知らせ「Added 10 companies to your buyers (shown in the Deals & buyers list)」・見本の説明「Sample example: a company in “Retail chains” assumed to handle Japanese culture & education goods」・[Sample]
+  確認・承認：「Send the first outreach email (English) to [Sample] …」「Likelihood B (56 pts)」「: already sent to the same company (domain) on 11/16 (…)」
+  商談の記録の窓：「✓ Recorded. Reflected in the dashboard, the lead score and the AI's answers.」ほか
+  案件一覧・詳細：「Buyer · ID MY-…」「Case created from a meeting record (nothing sent yet)」「Meeting record (2026-11-16)」「Wait for the buyer's reply／Sent today」
+            「Due 2026/11/24 · “next action” from the meeting record (not sent to the buyer yet)」・記録の文「[Meeting record (2026-11-16 · Trade show)] Item: … Status: In talks Response: Mid * This case was created…」
+  やりとり・バイヤー開拓（送った後）：一覧の写し・題「Buyer in the United States」・「Only sent by you so far (awaiting reply)」も同じ形で。
+・xcut-S06 の2つ — 直した（画面で確認済み）
+  中・西の最初の知らせ：「请把商品资料拖放到这里（也可以点击选择文件）。」「Suelte aquí los documentos del producto (o haga clic para elegir archivos).」
+  荷主のホームの提案の札：「请告诉我您想实现的贸易目标。…／与 STANDAGE 在启动会上最先询问的项目相同…／将根据类似商品（…）的 STANDAGE 11 个案件记录…／填写目标」
+            「Cuénteme su objetivo de exportación: …／Son las mismas preguntas que STANDAGE hace al inicio…／Usaré los registros de STANDAGE de 50 proyectos similares (…)…／Indicar el objetivo」
+            （提案のほかの型〔止まっている・見直し・今週の情報 ほか〕の文の形も足した＝未確認。この通しでは1つ目の型だけ出る）
+  ついで：登録の会話で英語のまま出ていた文（中・西）— 「If you do not want the table contents (…) applied:」「The address in your document is “…”…」「Correct this answer」「Read … and added it to the product information」ほか。
+          「In which country was it manufactured?」と、ホームの「Buyers who replied and are waiting for you」は最後の組み立てで足した（文を辞書に通す所まで・画面は未確認）。
+
+■ 段階×言語の表（直す前 8811 → 直した後 8873。1440×900。資料：英＝文化教育・書道セット／中＝医療衛生・マスク／西＝建機・油圧ショベル）
+  行＝画面（.stage）＋開いている窓・知らせの行のうち、かな（中国語）／かな・漢字（英・西）を含む行の数。
+  UI＝その文字の節のうち、値（登録された値・ファイル名・商品名・見本のデータ・利用者が入れた文・規制DBの出どころの題）を除いた数（1行に節がいくつもあるので、行より多いことがある）。
+  「—」＝直す前の通しでは取っていない段階（英語の直す前は、送る → 自社に入れる の順で通したため）。
+段階 | 英語 行 前→後（UI の文 前→後） | 中国語 | スペイン語
+01 登録：はじめの画面 | 0→0（UI 0→0） | 0→0（UI 0→0） | 0→0（UI 0→0）
+02 登録：取り込みの報告 | 11→8（UI 3→0） | 2→1（UI 1→0） | 8→5（UI 3→0）
+03 登録：会話の途中 | 9→7（UI 2→0） | 4→2（UI 2→0） | 8→6（UI 2→0）
+04 登録：会話の終わり | 13→8（UI 9→0） | 8→3（UI 9→0） | 12→7（UI 9→0）
+05 商品情報 | 25→24（UI 0→0） | 11→11（UI 0→0） | 27→26（UI 0→0）
+06 国選定：分析前 | 1→1（UI 0→0） | 0→0（UI 0→0） | 1→1（UI 0→0）
+07 国選定：分析後（おまかせ） | 56→0（UI 79→0） | 54→0（UI 52→0） | 63→0（UI 75→0）
+08 国選定：確定後 | 62→0（UI 85→0） | 60→0（UI 58→0） | 69→0（UI 81→0）
+09 規制：開いた直後 | 3→1（UI 2→0） | 3→1（UI 2→0） | 3→1（UI 2→0）
+10 規制：確かめた後 | 3→1（UI 2→0） | 3→1（UI 2→0） | 3→1（UI 2→0）
+11 営業資料：下書き前 | 9→8（UI 1→0） | 4→3（UI 1→0） | 9→8（UI 1→0）
+12 営業資料：完成後 | 16→9（UI 8→0） | 8→3（UI 6→0） | 16→9（UI 8→0）
+13 バイヤー開拓：リスト前 | 2→2（UI 0→0） | 0→0（UI 0→0） | 2→2（UI 0→0）
+14 バイヤー開拓：リスト後 | 44→2（UI 42→0） | 22→0（UI 22→0） | 36→2（UI 34→0）
+15 バイヤー開拓：選んだ後 | 44→2（UI 42→0） | 22→0（UI 22→0） | 36→2（UI 34→0）
+16 受信箱：確認・承認 | 13→0（UI 16→0） | 13→0（UI 15→0） | 11→0（UI 14→0）
+17 受信箱：承認した後 | 12→0（UI 15→0） | 12→0（UI 14→0） | 10→0（UI 13→0）
+18 バイヤー開拓：自社に入れた後 | 45→2（UI 43→0） | 23→0（UI 23→0） | 37→2（UI 35→0）
+19 商談・バイヤー | 11→0（UI 11→0） | 1→0（UI 1→0） | 9→0（UI 9→0）
+20 商談の記録の窓 | 12→1（UI 11→0） | 2→1（UI 1→0） | 10→1（UI 9→0）
+21 商談の記録の窓：記録後 | 15→1（UI 14→0） | 5→1（UI 4→0） | 13→1（UI 12→0）
+22 案件一覧（6/6） | 3→0（UI 3→0） | 3→0（UI 3→0） | 3→0（UI 3→0）
+23 案件の詳細 | 8→0（UI 8→0） | 7→0（UI 7→0） | 8→0（UI 8→0）
+24 書類をつくる | 1→1（UI 0→0） | 1→1（UI 0→0） | 1→1（UI 0→0）
+25 分析 | 0→0（UI 0→0） | 0→0（UI 0→0） | 0→0（UI 0→0）
+26 今日やること | 1→0（UI 1→0） | 0→0（UI 0→0） | 0→0（UI 0→0）
+27 タスク・進行 | 1→1（UI 0→0） | 0→0（UI 0→0） | 1→1（UI 0→0）
+28 受信箱 | 10→0（UI 10→0） | 0→0（UI 0→0） | 0→0（UI 0→0）
+29 案件一覧（送った後） | —→0（UI —→0） | 6→0（UI 6→0） | 7→0（UI 7→0）
+30 商品情報を登録（6/6 の後） | —→7（UI —→0） | 6→4（UI 1→0） | 8→7（UI 2→0）
+31 バイヤー開拓（送った後） | —→2（UI —→0） | —→0（UI —→0） | —→2（UI —→0）
+32 やりとり | —→0（UI —→0） | —→0（UI —→0） | —→0（UI —→0）
+
+  残った UI の文：3言語とも 0。
+  残っている行（値）の中身：資料のファイル名（商品情報_….xlsx）／登録した商品名・強み・仕様・荷姿（書道セット…・カートン 20セット／ケース…）／会社名（🏢 株式会社…）／
+     資料の所在地から作った答えの候補（日本（奈良県奈良市））／答えた人の頭文字の丸／拠点のメンバーの頭文字（陳・佐）／営業資料の言語名（中文（简体））／
+     営業資料の点検の文の中の印そのもの（【未入力：…】）／書類をつくるの出どころの題（JETRO サウジアラビア 輸出入手続…。国名の注記は Saudi Arabia／Arabia Saudita に直した）。
+
+■ 進め方の確かめ
+・「次は」と光ったボタンだけの通し（walk.sh。入力は 資料・2つの答え・商談の記録の窓の相手名と国 だけ）
+  中国語・1366×768：0/6 → 1/6（2問）→ cty「在本页选择销售国（交给AI）」→ 光る「🤖 交给AI商社专员（一键）」→「在本页确定销售国」→ 光る「确定这3个国家」→ 2/6 →「在本页确认法规」→ 3/6
+     →「在本页制作资料」→ 光る下書き →「在本页选择语言并制作」→ 4/6 →「在本页制作买家名单」×2 →「在本页选择对象」→ 光る「全选」→ 光る「＋ 加入自有买家」→ 5/6 →「在本页记录商谈」→ 記録 → 6/6。足踏みなし。どの段も 1366/1366。
+  スペイン語・390：同じ順で 0/6 → 6/6（Elegir países aquí (automático) → Confirmar estos 3 países → … → ＋ Añadir a sus compradores → Registrar una negociación aquí）。どの段も 390/390。ページのエラー 0。
+     （390 では言語の欄が畳まれているので、言語だけは欄の値を直接替えた。あとは画面の操作）
+  英語・1440：chain.sh の通し（おまかせと「自社に入れる」は印で押した）で 0/6 → 6/6。光るボタン「Confirm these 3 countries」を「次は」が見つける。
+・横はみ出し：通しの全段階 1440/1440（3言語）。6/6 のあとの 13 画面（up・item・cty・ops:reg・deck・db・deal・dash:home・inbox・ops:doc・dash:rep・today・msg）：
+     英 1366・390／西 1366／中 390 とも 画面幅＝scrollWidth。国の札を越える要素 0。
+・日本語の画面：同じ通しを 層なし（8811）と層あり（8873）で流し、30 段階・6,416 節を見比べて ちがい 0（時刻・ID・版の番号を除く。node cmp.cjs ja j0 j1）。
+     作りの上でも、辞書は I18N.lang が ja のとき通らず、吹き出しの当て直しも ja では動かず、CSS は data-lang が en／es のときだけ。
+・中国語：かなを含まない日本語（漢字だけの言葉）が残っていないかを、日本語の画面の文字と突き合わせた（node cmp.cjs zh f j1）。同じ文字は「商品・理由・要点・注意・期限・件数」など中国語でも同じ語だけ。
+・回帰：BASE=8873 regress.cjs food,daily,machine,fwd → ALL OK（30・30・30・8 画面）。
+
+■ ほかの画面に効く変更（注意）
+・辞書に足した短い語は、どの画面でも効く：総合→Overall／综合／Global、要点→Key points、リスク→Risks、推奨理由、最初の一歩、選択する→Select、選び直す、確定済み、必要書類、「N点」→ N pts／N分、
+  英語・スペイン語では、単独の「、」→「, 」。
+・文の形で広く当たるもの：「（区分） · ID …」「（国）の（相手の区分）」「…（見本）」→ (sample)／（示例）／(muestra)、「[見本] …」→ [Sample]／[示例]／[Muestra]（表示の文字だけ。保存の名前は変えない）、
+  「／」でつないだ文のうち 拠点・関税・追加関税 の形を含むもの、「YYYY-MM-DD・（訳のある語）」。
+・前の多言語の層（i18n・r3c）は、自分の文の形を I18N.pat より先に見る。同じ文に両方が当たるときは前の層が勝つ（今回の文では食い違いなし）。
+・data-noi18n と登録の会話の吹き出しの中を、この層の表にある文に限って訳す見張り（MutationObserver・0.16秒に1回まで・日本語では動かない）を1つ足した。
+・物流会社の画面の訳（xcut-S05・S07、other-S05）には触っていない。
+
+■ 残した・別件
+・書類をつくる（中国語・送り先シンガポール）の EPA・国別の注記の本文と出どころ（「日シンガポール協定の原産地証明書」ほか）は日本語のまま（規制DBの本文。今回の割り当ての外・行数 1）。
+・中国語・スペイン語で英語のままの所が、通しの外に残る：ホームの下の「元のダッシュボード」の数え方の注記（Counted: …）、書類をつくるの書類名と注意書きの一部（スペイン語）、
+  提案の札の中の区分名（Medical & care／Industrial）。割り当ては「最初の知らせ」と「提案の札の本文」なので、ここまで。
+・xcut-S06 のうち、スペイン語の手順の札の1番が 0/6 でも「Producto registrado」、国の確定がブラウザ標準の確認の窓、受信箱の「次は」、商談の記録の窓の候補 は触っていない（割り当ての外）。
+・国選定の比較の図（レーダー）の右端の名前が英・西で切れる（regulati…／normati…）。前からの見た目で、今回は直していない。
+
+■ 補足（数え方と版）
+・表の「後」は、最後の1つ前の組み立てで通した数（kn/f_*）。そのあと足したのは、中・西で英語のまま出ていた文の訳（英語の文を鍵にした分）だけで、日本語の文に当たる訳・文の形は変えていない。
+  最後の組み立て（いま 8873 で配っている版）では、walk.sh の2本（中 1366・西 390）、幅の確かめ（英・中・西）、英語の画面の文字の読み直し（国選定・バイヤー開拓・案件一覧・案件の詳細）、回帰を流した。
+・直す前の「UI」の数は、後の版にも残った文（＝値）を引いて出した目安。行の数は、評価担当の道具（flow.cjs の jp）と同じ数え方。
+・組み立て：fix/mkfix.sh r7c → fix/r7c/work/redesign（rm/ は写した）。8873 で配っている。
