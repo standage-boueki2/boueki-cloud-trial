@@ -1,0 +1,7 @@
+/* 21.92 admin（刷新版の層）：管理者の上の帯（xi18n-91）
+   ③ 管理者のメニューでは、荷主向けの「表示している会社（未登録・商品情報を登録してください）」の区切りをたたむ
+   ④ 上の帯の「文字の大きさ 標準」：ラベルの入れ物（.k-dl）が、別の部品（項目の表 .k-dl）の枠線・角丸・切り抜きを拾い、「標準」に線が重なっていた */
+html.rd .k-dd.k-v92adm h4:has(+ .k-ddr[data-z="a"]),
+html.rd .k-dd.k-v92adm .k-ddr[data-z="a"],
+html.rd .k-dd.k-v92adm .k-ddnote{display:none!important}
+html.rd .k-dens .k-dl{border:0;border-radius:0;overflow:visible;gap:1px;font-size:inherit;grid-template-columns:none}

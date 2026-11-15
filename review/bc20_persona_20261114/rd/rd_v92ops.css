@@ -1,0 +1,15 @@
+/* 21.92 ops の刷新版の層：規制を調べる（ops:reg）の足した枠の見た目と、枠ごと2行でたたまれて文字が途中で切れる件 */
+html.rd #rO .v92o-pts{border-radius:14px;padding:14px 16px;font-size:13.5px}
+html.rd #rO .v92o-pts>b{font-size:15px}
+html.rd #rO .v92o-pts .v92o-sub,html.rd #rO .v92o-dt,html.rd #rO .v92o-why,html.rd #rO .v92o-lead{font-size:12.5px}
+html.rd #rO .v92o-h3{font-size:13.5px}
+html.rd #rO .v92o-ul>li>b{font-size:13.5px}
+html.rd #rO .v92o-tc{font-size:13px}
+html.rd #rO .v92o-sanc{border-radius:14px;font-size:14px;padding:14px 16px}
+html.rd #rO .v92o-sanc b{font-size:15px}
+html.rd #rO .v92o-none{border-radius:12px;font-size:13px}
+html.rd #rO .v92o-dn{font-size:11.5px}
+html.rd #rO .v92o-mis{border-radius:14px;font-size:13.5px}
+html.rd #rO .v92o-tag,html.rd #rO .v92o-lv{font-size:11px}
+/* 枠（.info の箱）は、たたまない：中の段落が途中で切れて見えるため */
+html.rd #rO .k-v92open{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important}

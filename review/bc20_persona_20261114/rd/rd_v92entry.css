@@ -1,0 +1,55 @@
+/* 貿易クラウドAI商社マン 21.92 entry（刷新版の層の見た目）— 2026-11-15 評価（xlogin）の直し */
+
+/* xlogin-02：高さの低い画面（1366×768 のノートPC など）では、ログインの入力欄とボタンが最初の画面に入るように、上の絵と3ステップの帯を低くする */
+@media (min-width:901px) and (max-height:840px){
+  html.rd #lgv.k-lgv{gap:8px!important;padding-top:8px!important}
+  html.rd #lgv .k-lgtop{min-height:96px!important;gap:2px!important}
+  html.rd #lgv .k-lglogo2{width:140px!important}
+  html.rd #lgv .k-lgbot{width:58px!important}
+  html.rd #lgv .k-lgcatch{gap:10px!important}
+  html.rd #lgv .k-lgcatch h1{font-size:20px!important;margin:0 0 2px!important;line-height:1.3!important}
+  html.rd #lgv .k-lgcatch p{font-size:12.5px!important;margin:0!important;line-height:1.5!important}
+  html.rd #lgv .k-lgcatch .k-chips{display:none!important}
+  html.rd #lgv .k-lgsteps{padding:4px 14px!important;gap:8px!important}
+  html.rd #lgv .k-lgsteps .k-step{padding-top:3px!important;padding-bottom:3px!important;min-height:0!important}
+  html.rd #lgv .k-lgsth{font-size:12.5px!important}
+  html.rd #lgv .k-lgsth span{font-size:17px!important}
+  html.rd #lgv .k-lgsth br{display:none}
+  html.rd #lgv .lgc{padding-top:10px!important}
+  html.rd #lgv .k-lgsafe{margin:0 0 8px!important;padding:5px 12px!important}
+  html.rd #lgv .lgtabs{margin-bottom:8px!important}
+  html.rd #lgv .k-lgp{padding:10px 16px 12px!important}
+  html.rd #lgv .k-lgph{margin-bottom:4px!important}
+  html.rd #lgv .k-lgph b{font-size:16px!important}
+  html.rd #lgv .k-lgp .lgin{margin-top:6px!important}
+}
+
+/* xlogin-24：文字の大きさ「ゆったり」でも、左メニューの「すべての機能（25）」を折り返さない */
+html.rd #rdside .rd-allh{flex-wrap:nowrap!important}
+html.rd #rdside .rd-allh .rd-allt{flex-wrap:nowrap!important;white-space:nowrap!important;overflow:visible!important;min-width:auto!important}
+html.rd #rdside .rd-allh .rd-allt small{white-space:nowrap!important;flex:none}
+
+/* xlogin-20：「貴社の商品に戻る」を、会社名のボタンの窓の中で見せる */
+html.rd .bar .k-dd .k-ddr #v84smpBack{display:inline-flex!important;align-items:center;justify-content:center;width:100%;margin-top:8px;min-height:40px;font-weight:800;border:1.5px solid var(--k-or-line,#F5B26B);background:#FFF6EC;color:#8A4A06;border-radius:10px;cursor:pointer}
+
+/* xlogin-06：下の枠へ送ったときの目印 */
+html.rd .k92e-flash{outline:3px solid #F08A1C!important;outline-offset:4px;transition:outline-color .3s}
+
+/* xlogin-12：はじめてガイドの窓の上に出す「刷新版での場所」 */
+#v40gd .k92e-gd{position:absolute;left:0;right:34px;bottom:calc(100% + 6px);z-index:3;display:flex;align-items:center;gap:10px;min-height:30px;padding:4px 14px;border-radius:10px;background:#fff;border:1px solid #F5B26B;box-shadow:0 2px 10px rgba(15,23,42,.18);font:700 13px/1.4 "Noto Sans JP",system-ui,sans-serif;color:#14233A;white-space:nowrap;overflow:hidden}
+#v40gd .k92e-gd b{flex:none;color:#B45309;font-weight:900}
+#v40gd .k92e-gd .k92e-gdp{display:inline-flex;align-items:center;gap:6px;min-width:0;font-weight:800}
+#v40gd .k92e-gd .k92e-gdp i{font-style:normal;color:#8A97AA}
+#v40gd .k92e-gd small{margin-left:auto;font-size:11.5px;font-weight:600;color:#5B6B82;overflow:hidden;text-overflow:ellipsis;min-width:0}
+@media (max-width:760px){#v40gd .k92e-gd{position:absolute;left:8px;right:52px;top:8px;bottom:auto;white-space:normal}#v40gd .k92e-gd small{display:none}}
+
+/* xlogin-21：商品一覧のカードは押せる */
+html.rd .k-pc.k92e-pc{cursor:pointer}
+html.rd .k-pc.k92e-pc:hover{border-color:var(--k-or-line,#F5B26B)}
+
+/* xlogin-16：用語集の画面の中の「用語集」へのリンク（いま居る画面） */
+html.rd .k-link.k92e-here{color:inherit!important;text-decoration:none!important;cursor:default!important;opacity:1}
+
+/* xlogin-20：ホーム（案件）・商品一覧では、今のアプリが会社・商品の切り替えを隠す（body.dashv）。刷新版では切り替えが会社名のボタンの窓の中にあり、
+   隠れると「いま表示している会社（見本）から戻る道」が無くなる → 窓の中ではいつも出す（アプリが hidden にした部品は出さない） */
+html.rd body.dashv .bar .k-dd .k-ddr > #psw:not([hidden]),html.rd body.dashv .bar .k-dd .k-ddr > #tenant:not([hidden]),html.rd body.dashv .bar .k-dd .k-ddr > #pfind:not([hidden]){display:inline-flex!important}

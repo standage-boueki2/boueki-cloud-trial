@@ -1,0 +1,86 @@
+/* 21.92 fwd（刷新版の層）：物流会社の画面。2026-11-14 8カテゴリー×ペルソナ評価 cross-03・04・10・11・14 ほか */
+
+/* ── cross-04 物流レート管理：1列・表は全幅・高さの上限なし・区間は折り返さない（本体の層 logic_v2192fwd の CSS で、今の版・刷新版の両方に）。ここは刷新版の大きさだけ ── */
+html.rd #well .tw table:has([data-frdel]){min-width:0}
+html.rd #well .tw table:has([data-frdel]) td:first-child{min-width:9em}
+html.rd #well .tw table:has([data-frdel]) td.v92fnote{min-width:9em;max-width:22em;font-size:12.5px;color:var(--k-ink2,#5B6B82);line-height:1.5}
+html.rd #well .tw table:has([data-frdel]) .v90fchkt{max-width:30em}
+/* 手入力の欄：見出しを上に・1行に並べる */
+html.rd #well .v92ffl{font-size:12.5px;font-weight:700;color:var(--k-ink2,#5B6B82)}
+html.rd #well .v92ffl input,html.rd #well .v92ffl select{font-size:15px}
+html.rd #well .g2:has(#frAdd) #frPol,html.rd #well .g2:has(#frAdd) #frPod{width:150px !important}
+html.rd #well .g2:has(#frAdd) #frPrice{width:130px !important}
+html.rd #well .g2:has(#frAdd) #frTt{width:90px !important}
+/* 上の箱（取り込み・手入力）は、2つを横に並べる（広い画面） */
+@media (min-width:1180px){
+  html.rd #well .g2:has(#frAdd) > .c:has(#fwdrop){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:6px 28px;align-items:start}
+  html.rd #well .g2:has(#frAdd) > .c:has(#fwdrop) > *{grid-column:1}
+  html.rd #well .g2:has(#frAdd) > .c:has(#fwdrop) > h3,
+  html.rd #well .g2:has(#frAdd) > .c:has(#fwdrop) > #fwdupst,
+  html.rd #well .g2:has(#frAdd) > .c:has(#fwdrop) > .v92fre{grid-column:1 / -1}
+  html.rd #well .g2:has(#frAdd) > .c:has(#fwdrop) > .v92fman{grid-column:2;grid-row:2 / span 6;align-self:start}
+}
+html.rd #well .v92fman{border:1px solid var(--k-line,#DCE5F0);border-radius:14px;padding:14px 16px;background:#FAFCFF}
+html.rd #well .v92fman > .lbl:first-child{margin-top:0 !important;font-size:15px;font-weight:800;color:#22324A}
+
+/* ── cross-03 見積受信箱：依頼の表を枠に収める（列の折り返し・幅は本体の層 logic_v2192fwd の CSS。ここは刷新版の大きさだけ）。スマホのカード表示（820px 以下）は今のまま ── */
+@media (min-width:821px){
+  html.rd #well table.ux32inbox{table-layout:auto}
+  html.rd #well table.ux32inbox th,html.rd #well table.ux32inbox td{padding-left:10px;padding-right:10px}
+  html.rd #well table.ux32inbox td.v33fwst{min-width:156px}
+  html.rd #well table.ux32inbox td.v33fwst .btn{min-height:32px;padding:4px 8px !important;font-size:12.5px !important}
+  html.rd #well table.ux32inbox td.v33fwst .v33lv{padding:2px 8px;font-size:12px}
+  html.rd #well table.ux32inbox td.v33fwst .v33who{display:inline-block;margin:0 0 2px}
+  html.rd #well table.ux32inbox td:nth-child(7){min-width:6.5em}
+}
+
+/* ── cross-14 数字の札：1枚だけ次の段に落ちない ── */
+html.rd .v70fov-g{grid-template-columns:repeat(auto-fit,minmax(118px,1fr)) !important;gap:10px}
+html.rd .v70fov-i{min-height:0;padding:10px 12px !important}
+html.rd .v70fov-i b{font-size:26px !important}
+html.rd .v70fov-i span{font-size:12.5px !important;line-height:1.35}
+html.rd .rd-tiles:has(> [data-v90ftile]):not(.k-v92ov){grid-template-columns:repeat(5,minmax(0,1fr))}
+html.rd .rd-tiles.k-v92ov{grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+html.rd .rd-tiles.k-v92ov .rd-tile{padding:14px 12px;gap:10px;align-items:flex-start}
+html.rd .rd-tiles.k-v92ov .rd-ti{width:40px;height:40px;flex:none}
+html.rd .rd-tiles.k-v92ov .rd-ti svg{width:22px;height:22px}
+html.rd .rd-tiles.k-v92ov .rd-tn{font-size:28px}
+html.rd .rd-tiles.k-v92ov .rd-ts{font-size:11.5px;line-height:1.45}
+html.rd .rd-tiles.k-v92ov b{font-size:13.5px}
+@media (max-width:1100px){html.rd .rd-tiles.k-v92ov{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.k-v92ovg{grid-column:1 / -1;margin:2px 0 -4px;font-size:12.5px;font-weight:800;color:var(--k-ink2,#5B6B82)}
+
+/* ── cross-10 見積受信箱：依頼の表を上へ（要確認のタスクは詰める・説明はたたむ） ── */
+html.rd #well .v33fwtask{padding:12px 14px}
+html.rd #well .v33fwtask .v33li{padding:8px 0}
+html.rd #well details.k-v92fold{margin:4px 0 8px;font-size:13px;color:var(--k-ink2,#5B6B82)}
+html.rd #well details.k-v92fold > summary{cursor:pointer;font-weight:700;color:var(--k-bl,#0064BF)}
+html.rd #well details.k-v92fold > summary + *{margin-top:6px}
+html.rd #well .k-v92more{margin-top:18px}
+html.rd #well .k-v92more > summary{cursor:pointer;font-size:15px;font-weight:800;color:#22324A;padding:10px 4px}
+html.rd #well .v33tabs:has(.v92fcap){padding:6px 8px;margin-bottom:10px;align-items:center}
+html.rd #well .v33tabs .v33tab{padding:7px 14px;min-height:0}
+html.rd #well .v92fcap{font-size:12.5px;font-weight:800;color:var(--k-ink2,#5B6B82);margin-right:2px;white-space:nowrap}
+html.rd #well .v33tabs .k-v92ql{flex:none;margin:0 4px 0 8px;display:inline-flex;align-items:center;gap:4px;font-size:12px;white-space:nowrap}
+html.rd #well .v92fempty{margin:10px 0 0;padding:18px;border:1px dashed var(--k-line,#DCE5F0);border-radius:14px;text-align:center;font-size:14px;color:var(--k-ink2,#5B6B82);line-height:1.8}
+
+/* 要確認のタスク：1行の見出しにたたむ */
+html.rd #well .v33fwtask details.k-v92task > summary{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;cursor:pointer;list-style:none;font-size:14px}
+html.rd #well .v33fwtask details.k-v92task > summary::-webkit-details-marker{display:none}
+html.rd #well .v33fwtask .k-v92tt{font-size:16px;font-weight:800;color:#22324A;display:inline-flex;align-items:center;gap:8px}
+html.rd #well .v33fwtask .k-v92ts{flex:1 1 300px;min-width:0;font-weight:600;color:var(--k-ink2,#5B6B82);line-height:1.5}
+html.rd #well .v33fwtask .k-v92to{font-size:12.5px;font-weight:800;color:var(--k-bl,#0064BF);white-space:nowrap}
+html.rd #well .v33fwtask .k-v92to::before{content:"▸ "}
+html.rd #well .v33fwtask details[open].k-v92task .k-v92to::before{content:"▾ "}
+html.rd #well .v33fwtask details.k-v92task[open] > summary{margin-bottom:8px}
+html.rd #well .v33fwtask .k-v92tq{float:right;margin:-2px 0 0 8px}
+/* 右下の「AI物流マンに質問」：小さくしたとき、文字がはみ出さない（共通の層の丸いボタン） */
+html.rd #askfab.k-v92min[data-act="fwddw"] .afl{display:none !important}
+html.rd #askfab.k-v92min[data-act="fwddw"]:hover .afl,html.rd #askfab.k-v92min[data-act="fwddw"]:focus-visible .afl{display:inline-flex !important}
+
+/* ── cross-12 ホーム：今日やること ── */
+.k-v92todo{font-size:13.5px;font-weight:700;color:var(--rd-ink2,#5B6B82)}
+
+/* ── 「見積回答」の窓・交渉記録（cross-09・18） ── */
+html.rd .v92fansn{font-size:13.5px;line-height:1.7}
+html.rd #pn .rd-x .k-v92route{white-space:normal !important;overflow:visible !important;text-overflow:clip !important;word-break:break-word}

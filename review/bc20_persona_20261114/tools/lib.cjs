@@ -67,7 +67,7 @@ async function dismissFirstRun(page) {
   for (let i = 0; i < 5; i++) {
     const st = await page.evaluate(() => { const vis = (id) => { const e = document.getElementById(id); if (!e) return false; const c = getComputedStyle(e), r = e.getBoundingClientRect(); return c.display !== 'none' && c.visibility !== 'hidden' && r.width > 0 && r.height > 0; }; return { wel: vis('welv'), menu: vis('v1811ov') }; });
     if (st.wel) { await page.getByText('さっそく始める', { exact: true }).first().click(); await page.waitForTimeout(800); continue; }
-    if (st.menu) { await page.locator('#v1811ov').getByText('閉じる（このまま画面を見る）').first().click(); await page.waitForTimeout(800); continue; }
+    if (st.menu) { await page.locator('#v1811ov').getByText(/^閉じる（/).first().click(); await page.waitForTimeout(800); continue; }
     break;
   }
 }

@@ -1,0 +1,12 @@
+/* 21.92 flow（刷新版の層） */
+html.rd .k-v92fx{margin-left:auto;font-size:13px;font-weight:700;color:#2A3B54;white-space:nowrap}
+html.rd .k-v92fx b{font-size:16px}
+html.rd .k-cdwarn .k-v92ft{min-width:0;flex:1 1 auto;display:block}
+html.rd .k-doc.k-v92cond{border-style:dashed}
+html.rd .k-doc.k-v92cond em{font-style:normal;font-size:10.5px;font-weight:800;margin-left:6px;padding:1px 7px;border-radius:999px;background:var(--k-am-soft,#FFF4E0);color:#8A5A06;white-space:nowrap}
+html.rd .k-doc.k-v92cond.no{opacity:.7}
+html.rd .k-doc.k-v92cond.no em{background:#EEF1F5;color:#5B6B82}
+html.rd .k-v92cn{margin-top:6px}
+html.rd .k-v92fn{margin:10px 0 0}
+/* 商談の記録の表：日付・国は折り返さない */
+html.rd #fbb td:nth-child(1),html.rd #fbb td:nth-child(3){white-space:nowrap}

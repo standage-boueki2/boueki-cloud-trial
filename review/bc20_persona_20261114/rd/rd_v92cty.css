@@ -1,0 +1,33 @@
+/* 21.92 cty（刷新版の層）：販売先国の選定の直し（2026-11-14 8カテゴリー×ペルソナ評価） */
+/* ② おすすめのカード：進出希望国／データ不足 の札 */
+html.rd .k-v92tags{display:flex;flex-wrap:wrap;gap:5px;min-height:25px;margin-top:6px}
+html.rd .k-v92tags .k-tag{font-size:12px;padding:2px 9px}
+html.rd .k-tag.k-v92thin{border:1px dashed #B8C4D4;background:#fff;color:var(--k-ink2,#5B6B82)}
+html.rd .k-tag.k-v92wrap{white-space:normal;text-align:left;line-height:1.45}
+/* ② この N か国の決め方 */
+html.rd .k-v92rule{margin:14px 0 0;padding:12px 14px;border-radius:12px;background:#fff;border:1px solid var(--k-or-line,#F8D3A8);border-left:5px solid var(--k-or,#F57C0F);font-size:13.5px;font-weight:600;line-height:1.75;color:#2A3B54}
+html.rd .k-v92rule p{margin:4px 0 0}
+html.rd .k-v92rh{display:flex;align-items:center;gap:6px;flex-wrap:wrap;color:#C25600}
+html.rd .k-v92rh b{font-size:14.5px;font-weight:900;color:#14233A}
+html.rd .k-v92rh span{font-size:12.5px;font-weight:700;color:var(--k-ink2,#5B6B82)}
+html.rd .k-v92outs{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}
+html.rd .k-v92ol{flex-basis:100%;font-size:12.5px;font-weight:800;color:var(--k-ink2,#5B6B82)}
+html.rd .k-v92out{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 8px 6px 10px;border:1px solid var(--k-line,#DCE5F0);border-radius:12px;background:#F7FAFE}
+html.rd .k-v92out b{font-size:14px;font-weight:900;color:#14233A}
+html.rd .k-v92out small{font-size:12px;font-weight:700;color:var(--k-ink2,#5B6B82)}
+html.rd .k-v92rule .k-link{margin-top:8px;font-size:13px}
+/* ③ 「おまかせ」のボタンは1つ（上の大きいボタンがある間だけ、下の同じボタンを隠す） */
+html.rd .k-v92dup{display:none !important}
+/* ⑤ 比較の表：見出しを固定しない（3行の表で、送ると見出しが行に重なっていた） */
+html.rd .rd-p2 .rd-tbl thead th{position:static}
+/* 本体の層の部品（表の印・決め方・選択中）を、刷新版の字の大きさに */
+html.rd .v92rule{font-size:13.5px;line-height:1.8;border-radius:12px;padding:12px 14px}
+html.rd .v92rule b{font-size:14px}
+html.rd .v92sel{font-size:13.5px}
+html.rd .v92hope,html.rd .v92thin{font-size:11.5px}
+html.rd .v92deepsel{font-size:13.5px}
+html.rd .v92basest{font-size:13px}
+@media (max-width:600px){
+  html.rd .k-v92out{width:100%;justify-content:flex-start}
+  html.rd .k-v92out .k-btn{margin-left:auto}
+}

@@ -1,0 +1,13 @@
+/* 21.92 up（刷新版の層）：商品情報を登録・商品情報の上のカード */
+/* ② AIヒアリングの箱：質問は文を切らずに出す（長いときは4行で「…」。マウスを乗せると全文） */
+html.rd .k-v92upq{border:1px solid var(--rd-line,#DCE5F0);border-radius:14px;padding:12px 14px;margin-bottom:10px;background:#fff}
+html.rd .k-v92upqn{color:var(--rd-bl,#1F6FD1);margin-right:6px}
+html.rd .k-v92upqt{font-size:15px;line-height:1.6;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
+html.rd .k-v92upq > .k-v92upqn{float:left;line-height:1.6;font-size:15px}
+html.rd .k-v92upqc{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center;clear:both}
+html.rd .k-v92upqc .rd-tag{font-size:12.5px;padding:5px 12px;white-space:normal;text-align:left}
+html.rd .k-v92upqm{margin:0 2px 10px;font-size:12.5px;color:var(--rd-ink2,#5B6B82);font-weight:600}
+/* ③ そろったあとの入口 */
+html.rd .k-v92updone{margin-top:12px;font-size:13.5px;justify-content:center;width:100%;text-decoration:underline;text-underline-offset:3px}
+/* ① 読み取り結果：長い値は1行で「…」（全文は title）。見出しの列を少し広く（梱包・入数／リードタイム が折れないように） */
+html.rd [data-rdprod] .rd-kv{grid-template-columns:132px minmax(0,1fr)}

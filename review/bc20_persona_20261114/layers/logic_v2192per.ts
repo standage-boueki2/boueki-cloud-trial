@@ -97,7 +97,7 @@ declare function v75tcStaff(): boolean;
 
     /* ───── ② 取引条件（建値）の答えの確かめ ───── */
     const INCO = /(?:^|[^A-Za-z])(EXW|FCA|FAS|FOB|CFR|CIF|CPT|CIP|DAP|DPU|DDP|C&F|CNF)(?![A-Za-z])/i;
-    const INCO_JA = /工場渡し|本船渡し|運賃込み|運賃保険料込み|仕向地持込|関税込み持込|未定|わからない|分からない|不明|相談|あとで/;
+    const INCO_JA = /工場渡し|本船渡し|運賃込み|運賃保険料込み|仕向地持込|関税込み持込|未定|決めていない|決まっていない|わからない|分からない|不明|相談|あとで/;
     if (typeof applyAnswer === "function") {
         const __aa92 = applyAnswer;
         applyAnswer = function (this: any, t: any, k: any, raw: any) {

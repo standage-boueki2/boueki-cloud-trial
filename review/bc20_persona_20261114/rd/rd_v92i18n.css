@@ -1,0 +1,9 @@
+/* 21.92 i18n（刷新版の層）：英語・中国語・スペイン語の画面だけに効く見た目の直し（日本語の画面には効かない）
+   ① 左メニュー「案件」の札の前置き「要対応」（CSS の ::before）を言語ごとに（xi18n-73）
+   ② ドキュメントの 4つの手順のカード：英語の長い語がカードからはみ出して矢印に重なる → カードの中で折り返す（xi18n-79）
+   （「この画面の中の目次」の札が語の途中で切れる件 xi18n-80 は、本体の層 logic_v2192i18n の fixSec で直す） */
+html[data-lang="en"] #rdside .rd-main[data-rdk="dash:home"] .rd-bdg.k-v90todo::before{content:"To do\00a0"}
+html[data-lang="zh"] #rdside .rd-main[data-rdk="dash:home"] .rd-bdg.k-v90todo::before{content:"待处理\00a0"}
+html[data-lang="es"] #rdside .rd-main[data-rdk="dash:home"] .rd-bdg.k-v90todo::before{content:"Pend.\00a0"}
+html.rd[data-lang="en"] .k-steps>.k-step:not(.big),html.rd[data-lang="es"] .k-steps>.k-step:not(.big){flex-wrap:wrap;row-gap:6px;align-content:center}
+html.rd[data-lang="en"] .k-steps>.k-step:not(.big)>:not(.k-sn):not(.k-si),html.rd[data-lang="es"] .k-steps>.k-step:not(.big)>:not(.k-sn):not(.k-si){flex:1 1 96px;min-width:0;overflow-wrap:break-word}

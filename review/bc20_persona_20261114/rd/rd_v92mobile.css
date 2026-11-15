@@ -1,0 +1,74 @@
+/* 貿易クラウドAI商社マン 21.92 mobile（刷新版の層の CSS）：スマホ幅と表示の直し（xmobile-01〜27 のうち刷新版の部品）。対象はスマホの幅の中・その部品だけ */
+
+/* ── xmobile-02 ホームの一覧の検索欄：カードの幅に収める（入力欄の元の幅がラベルを押し広げ、押すとカードの中身が左へずれた） ── */
+html.rd .k-clcard .k-clq{min-width:0;max-width:100%;box-sizing:border-box}
+html.rd .k-clcard .k-clq input{min-width:0;width:100%}
+@media (max-width:820px){
+  html.rd .k-clcard .k-cltool{min-width:0}
+  html.rd .k-clcard .k-clq{flex:1 1 100%}
+  html.rd .k-clcard .k-clsort{min-width:0;max-width:100%}
+}
+
+/* ── xmobile-04 タスク「停滞中の案件」：相手の名前を読める幅に（名前が 200px 取れないときは、日数とボタンを次の行へ） ── */
+html.rd .k-v92mstale .k-rows > .k-row{flex-wrap:wrap;row-gap:6px}
+html.rd .k-v92mstale .k-rows > .k-row .k-rt{flex:1 1 200px}
+@media (max-width:820px){
+  html.rd .k-v92mstale .k-rows > .k-row .k-rt{flex:1 1 calc(100% - 48px)}
+  html.rd .k-v92mstale .k-rows > .k-row .k-rt b,html.rd .k-v92mstale .k-rows > .k-row .k-rt small{white-space:normal;overflow-wrap:anywhere}
+  html.rd .k-v92mstale .k-rows > .k-row .k-rm{margin-left:39px}
+}
+
+/* ── xmobile-09 大きい主ボタン：画面の幅に収める（文字は折り返す） ── */
+@media (max-width:820px){
+  html.rd .k-btn.big{max-width:100%;box-sizing:border-box;white-space:normal;padding-left:22px;padding-right:22px;text-align:center;line-height:1.35}
+}
+
+/* ── xmobile-21 押す所（スマホ）：状態の絞り込み・パンくず・用語集 ── */
+@media (max-width:820px){
+  html.rd .k-stc{min-height:38px}
+  html.rd .rd-hero .k-bc .k-bcb{position:relative}
+  html.rd .rd-hero .k-bc .k-bcb::after{content:"";position:absolute;left:-4px;right:-4px;top:-9px;bottom:-9px}
+  html.rd .rd-hero .k-link{position:relative}
+  html.rd .rd-hero .k-link::after{content:"";position:absolute;left:-6px;right:-6px;top:-10px;bottom:-10px}
+  html.rd #well .k-link.k-mini{min-height:38px!important}
+}
+
+/* ── xmobile-25 通知センターの見出し：1行に ── */
+@media (max-width:560px){
+  html.rd .k-ntfhd .rd-hero h1{font-size:22px!important;white-space:nowrap}
+  html.rd .k-ntfhd .rd-hero .rd-bot{width:64px!important}
+}
+
+/* ── xmobile-23 高さの低い PC の画面（800px 未満）：右下の「AI商社マンに聞く」は最初から小さい丸に（中身を隠さない）。乗せる・選ぶと今のとおり広がる ── */
+@media (min-width:821px) and (max-height:799px){
+  html.rd #askfab:not(:hover):not(:focus-visible){width:54px!important;min-width:0!important;height:54px!important;padding:0!important;border-radius:50%!important;overflow:hidden;font-size:0!important;gap:0!important;justify-content:center}
+  html.rd #askfab:not(:hover):not(:focus-visible) > *{font-size:0!important}
+  html.rd #askfab:not(:hover):not(:focus-visible) > :first-child{font-size:26px!important;margin:0!important}
+  html.rd #askfab:not(:hover):not(:focus-visible) .afl{display:none!important}
+  html.rd #askfab:not(:hover):not(:focus-visible) .afi{font-size:24px!important;margin:0!important}
+}
+
+/* ── xmobile-07 文字「ゆったり」のホームの一覧 ──
+   PC（1500px 以下）：表がカードより広くなり、最後の列と「›」が切れた → ★の列の見出しの文字を出さない（列を細く）・相手と最終やりとりの幅を控える・セルの左右の余白を詰める
+   スマホ：相手の名前が「Hanoi M…」と切れた → 名前は折り返す（どの文字の大きさでも） */
+@media (min-width:821px) and (max-width:1500px){
+  html.rd body.dens-comfy .k-cltbl thead th:first-child{font-size:0!important;width:40px;padding-left:8px;padding-right:0}
+  html.rd body.dens-comfy .k-cltbl th,html.rd body.dens-comfy .k-cltbl td{padding-left:8px;padding-right:8px}
+  html.rd body.dens-comfy .k-cltbl .c-fav{width:40px;padding-right:0}
+  html.rd body.dens-comfy .k-cltbl .c-who{max-width:210px}
+  html.rd body.dens-comfy .k-cltbl .c-last{max-width:190px}
+  html.rd body.dens-comfy .k-cltbl .c-last .k-lt,html.rd body.dens-comfy .k-cltbl .k-lt.v90lt{max-width:130px}
+  html.rd body.dens-comfy .k-cltbl .c-nx{min-width:6.5em}
+}
+@media (max-width:820px){
+  html.rd .k-cltbl .c-who b{flex-wrap:wrap;white-space:normal;overflow:visible;row-gap:2px}
+  html.rd .k-cltbl .c-who b .k-v90nm,html.rd .k-cltbl .c-who b .k-v91nm{white-space:normal;overflow:visible;overflow-wrap:anywhere;min-width:0}
+  html.rd .k-cltbl .c-who small{white-space:normal;overflow:visible}
+}
+html.rd body.dens-comfy #rdside .rd-allh{white-space:nowrap}
+html.rd body.dens-comfy #rdside .rd-allh .rd-allt{white-space:nowrap!important;font-size:13px}
+
+/* ── xmobile-23 上の帯の言語の欄：「日本語」が「日本」で切れていた（PC の幅） ── */
+@media (min-width:821px){
+  html.rd .bar.k-bar2 select.uxlang{min-width:98px}
+}
