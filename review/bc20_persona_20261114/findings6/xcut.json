@@ -1,0 +1,495 @@
+{
+ "id": "xcut",
+ "category": "横断（入口と案内・スマホ幅・多言語・管理者）",
+ "base": "8817",
+ "status": "完了",
+ "personas": [
+  {
+   "id": "入口-P1",
+   "name": "田中 美咲（貿易素人）",
+   "overall_r5": 4,
+   "overall": 4,
+   "overall_reason": "1366×768・0件のアカウントから、右上の「次は」と、それが光らせたボタンだけで 6/6 まで進めた（xcut-R01 は直った）：資料を入れる → 2 問に答える（1/6）→「次は 販売先の国を選ぶ」→「この画面で国を選ぶ（おまかせ）」→ 光った「AI商社マンにおまかせ（1クリック）」→「この画面で国を確定する」→ 光った「この3か国で確定する」（2/6）→「規制を調べる」→「この画面で規制を確かめる」（3/6）→「この画面で資料を作る」→ 光った「下書き（空欄つき）を作る」→「この画面で言語を選んで作る」→ English（4/6）→「バイヤーを探す」→「この画面でリストを作る」→ 光った「条件を決めてリストを作る」→「AI商社マンにリストを作らせる」→「この画面で相手を選ぶ」→ 光った「すべて選ぶ」→「この画面で確かめて送る／自社のバイヤーに入れる」→ 光った「選んだ10社を1件ずつ確かめて送る」（5/6）→ ホーム「次は 商談を進める」→ 商談・バイヤー「次は この画面で商談を記録する」→ 記録（6/6）。足踏み・行き来なし。6/6 のあとのホームは案件 2 行・右上は「バイヤーを探す」。入り直し 3 回とも案件一覧から、商品・販売先国・案件 2 行・商談が残る。ページのエラー 0。残り：「確かめて送る」で入る確認・承認の 10 件のうち、承認できるのは 1 件目だけで、2 件目からは「この会社（example.com）には…初回を送っています。同じ会社への初回は 90日に1回までです」と断られる（別の会社。見本のリストの宛先がどれも *.example.com のため。xcut-S01）",
+   "to_5": "xcut-S01：見本（架空）のリストでも、別の会社への初回が「同じ会社」として断られないこと（または見本の宛先は 1 件ずつ記録だけ残せること）。磨き：受信箱の確認・承認の画面に「次は」が無い（左の「案件」で戻ると「次は 商談を進める」が出る）"
+  },
+  {
+   "id": "入口-P2",
+   "name": "小林 直樹（少し経験者）",
+   "overall_r5": 5,
+   "overall": 5,
+   "overall_reason": "5回目と同じ手順（メンバーの招待・役割の変更・停止・削除と監査の記録、停止の確認の窓〔ブラウザ標準の窓 0 回〕、検索〔商品があるとき 0 件 →「AI商社マンに聞く」〕、ログアウト、0件のときのメニューの戻り方）を 8817 で流し、結果は日付の違いだけ。ページのエラー 0",
+   "to_5": ""
+  },
+  {
+   "id": "入口-P3",
+   "name": "森田 浩一（商社経験豊富）",
+   "overall_r5": 5,
+   "overall": 5,
+   "overall_reason": "AI の答えは 5回目と同じ：1,000個＝US$6.10×1,000＝US$6,100.00（1,000〜4,999個の帯）、HSコード 9617.00 と 4 か国の関税（香港 0%・台湾 5%・シンガポール 0%・アメリカ 12.5%）、期限「残り 14日（11/30 まで）」、ログアウトの場所。検索・メンバーの画面も同じ",
+   "to_5": ""
+  },
+  {
+   "id": "スマホ-P1",
+   "name": "小林 由美（素人・390）",
+   "overall_r5": 4,
+   "overall": 4,
+   "overall_reason": "390・0件のアカウントから、「次は」と光ったボタンだけで 6/6 まで進めた（xcut-R01 は直った）。順は入口-P1 と同じで、相手を選んだあとは光った「＋ 自社のバイヤーに入れる」（5/6・その画面の「次は 商談を進める」）→「この画面で商談を記録する」→ 記録（6/6）。どの段も横はみ出し 0（390/390）、光ったボタンは押した時点で画面の中に見える。商談を記録する窓も 390 に収まる（0〜390）。入り直し 3 回とも案件一覧から、商品（今治タオル）・販売先国・案件が残る。ページのエラー 0。残り：390 でも「選んだ10社を1件ずつ確かめて送る」から入ると、2 件目の「承認して送る」が「この会社（example.com）には…（Harbor Bridge Trading）。同じ会社への初回は 90日に1回までです」で断られる（xcut-S01）",
+   "to_5": "xcut-S01。磨き：商談を記録する窓の「バイヤー名」に、入れたばかりのバイヤーの候補が出ない（見本の名前をそのまま打つと「Green Leaf Retail Group」と「Green Leaf Retail Group（見本）」の 2 行になる。xcut-S06）"
+  },
+  {
+   "id": "スマホ-P2",
+   "name": "松本 大輔（少し経験者・390）",
+   "overall_r5": 5,
+   "overall": 5,
+   "overall_reason": "見本「建設機械」で バイヤーを足す → 商談を記録 → 案件一覧 → 案件の詳細 → 書類をつくる（PI 2台×US$38,000＝US$76,000・FOB Yokohama）→「受注内容を編集」（仕向港・出港の予定日の欄が 390 に収まる）→ CIF にすると PI「CIF Haiphong, Vietnam」→ 梱包明細（2 units・24,800 kg）。分析「見積を出している案件 1件／見積金額（受注未確定）¥12,114,400」＝US$76,000×159.40、「累計受注金額 ¥0（受注 0件）」。入り直し 3 回とも案件一覧から、案件 1 行・商談 1 件が残る。5回目と同じ結果・横はみ出し 0・ページのエラー 0",
+   "to_5": ""
+  },
+  {
+   "id": "スマホ-P3",
+   "name": "石川 修（経験豊富・390／1280）",
+   "overall_r5": 5,
+   "overall": 5,
+   "overall_reason": "390 の 28 画面＋物流会社の画面の横はみ出し・34px 未満の押す所・1280×720 の右下のボタンの重なりを 5回目と同じ道具で流し、結果は同じ（違いは実行秒数だけ）。ページのエラー 0",
+   "to_5": ""
+  },
+  {
+   "id": "英語",
+   "name": "英語の利用者",
+   "overall_r5": 4,
+   "overall": 4,
+   "overall_reason": "0件のアカウントから英語で 6/6 まで通した。「次は」は全部英語（Next Upload documents (to the box below)／Answer the missing items (2 left)／Choose target markets／Confirm the countries on this screen／Check regulations／Review the regulations on this screen／Create the deck on this screen／Pick a language to create the deck／Find buyers／Build the buyer list on this screen／Pick buyers on this screen／Review & send, or add to your buyers／Advance your deals／Record a meeting on this screen／To case list）。xcut-R02（商品情報の「次は」）・xcut-R03（書類を足すの選択肢 83 件に日本語 0）は直った。商品情報は 1440/1440 で横はみ出し 0。物流会社：表は枠に収まり（1048/1048）、AI のあいさつも「回答の金額を直す」の案内も英語。残り：(1) 販売先国の選定で「おまかせ」を押したあとの結果が日本語のまま（317 行のうち 56 行。光るボタン「この3か国で確定する」・「主要指標の比較」・「総合点の順位：10か国中 1位」ほか。xcut-S02）(2) 同じ画面の 3 か国の札で、点数の札（regulations 50・Bases 60）が札の右へ約 125px はみ出して隣に重なる（xcut-S04）(3) 通しの途中の日本語の UI の行 約 25 行（登録の会話・営業資料の完成の札・バイヤー開拓の「✉ 選んだ10社を1件ずつ確かめて送る」と知らせ・案件一覧の行。xcut-S03）",
+   "to_5": "xcut-S02・xcut-S03・xcut-S04"
+  },
+  {
+   "id": "中国語",
+   "name": "中国語の利用者",
+   "overall_r5": 4,
+   "overall": 4,
+   "overall_reason": "0件のアカウントから中国語で 6/6 まで通した。「次は」は全部中国語（下一步 上传资料（到下方的框）／回答缺少的信息（还剩 2 项）／选择销售目标国／在本页选择销售国（交给AI）／在本页确定销售国／查法规／在本页确认法规／在本页制作资料／在本页选择语言并制作／寻找买家／在本页制作买家名单／在本页选择对象／在本页确认后发送／加入自有买家／推进商谈／在本页记录商谈／前往案件列表）。xcut-R02・xcut-R03（選択肢 82 件にかな 0）は直った。商品情報は横はみ出し 0。物流会社：表は枠に収まり、AI のあいさつは中国語。残り：(1) 販売先国の「おまかせ」の結果がかなを含む日本語のまま（324 行のうち 54 行。光るボタン「この3か国で確定する」を含む。xcut-S02）(2) 通しの途中のかなを含む UI の行 約 19 行（xcut-S03）(3) 物流会社の「修改已回复的金额」の窓：題が日本語「回答の金額を直す（区間のレートを直します）」、説明が英語、ボタン「この区間のレートを登録」。荷主のホームの提案の札の本文が英語（xcut-S05）(4) 物流会社の見積受信箱の表に、中国語のときだけ「担当・状態」の列（未担当・「担当する」のボタン）と担当の絞り込みが無い（列 8 本。日本語・英語・スペイン語は 9 本。xcut-S07）",
+   "to_5": "xcut-S02・xcut-S03・xcut-S05・xcut-S07"
+  },
+  {
+   "id": "スペイン語",
+   "name": "スペイン語の利用者",
+   "overall_r5": 4,
+   "overall": 4,
+   "overall_reason": "0件のアカウントからスペイン語で 6/6 まで通した。「次は」は全部スペイン語（Siguiente Subir documentos (al recuadro de abajo)／Responder lo que falta (2)／Elegir los países de venta／Elegir países aquí (automático)／Confirmar los países aquí／Ver regulaciones／Revisar las regulaciones aquí／Crear la presentación aquí／Elegir el idioma y crear aquí／Buscar compradores／Crear la lista aquí／Elegir compradores aquí／Revisar y enviar, o añadir a sus compradores／Avanzar las negociaciones／Registrar una negociación aquí／A la lista de casos）。xcut-R02・xcut-R03（選択肢 80 件に日本語 0）・xcut-R04（商品情報 1440/1440・「Rellenado」が全部見える）は直った。物流会社：表は枠に収まり（1048/1048）、英語の行なし、AI のあいさつはスペイン語。残り：(1) 販売先国の「おまかせ」の結果が日本語のまま（323 行のうち 63 行。xcut-S02）(2) 同じ画面の 3 か国の札で点数の札が右へ約 145px はみ出す（xcut-S04）(3) 通しの途中の日本語の UI の行（登録の会話 7 行・知らせ・案件一覧の行 ほか。xcut-S03）(4) 物流会社の「Editar importe cotizado」の窓：題が日本語、説明が英語、「日数 16日・有効期限」。ホームの提案の札の本文が英語（xcut-S05）",
+   "to_5": "xcut-S02・xcut-S03・xcut-S04・xcut-S05"
+  },
+  {
+   "id": "管理者",
+   "name": "管理者の運用担当",
+   "overall_r5": 5,
+   "overall": 5,
+   "overall_reason": "並べ替え、期限 +14日（2026/11/23 → 2026/12/7）・日付の入れ直し、配信の操作（代役のサーバーの答えの出し方）、CSV を 5回目と同じ手順で行い、結果は時刻の違いだけ。ページのエラー 0。残りは磨き（会社のメニューの「表示｜やさしい説明」）",
+   "to_5": ""
+  }
+ ],
+ "screens": [
+  {
+   "key": "login",
+   "name": "ログイン画面",
+   "入口-P1": 5,
+   "スマホ-P1": 5,
+   "英語": 5,
+   "中国語": 5,
+   "スペイン語": 5,
+   "exercised": [
+    "0件のアカウントで入る（1366・390・3言語）",
+    "ようこそ窓（3言語とも日本語の行 0）"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "up",
+   "name": "商品情報を登録（0件 → 資料 → AI の質問）",
+   "入口-P1": 5,
+   "スマホ-P1": 5,
+   "英語": 4,
+   "中国語": 4,
+   "スペイン語": 4,
+   "exercised": [
+    "ようこそ窓 → 資料 → 2 問に答える →「次は」（1366・390・3言語）"
+   ],
+   "to_5": "xcut-S03（3言語：答えたあとの会話「…を登録しました。情報 20/21」「これで全項目が揃いました。」ほかが日本語）"
+  },
+  {
+   "key": "cty",
+   "name": "販売先国の選定",
+   "入口-P1": 5,
+   "スマホ-P1": 5,
+   "英語": 3,
+   "中国語": 4,
+   "スペイン語": 3,
+   "exercised": [
+    "「次は」→ 光った「おまかせ」→「次は」→ 光った「確定する」（1366・390・3言語）",
+    "3 か国の札の右端を測る（4言語・1440）"
+   ],
+   "to_5": "xcut-S02（おまかせの結果が日本語）。英語・スペイン語は xcut-S04（札のはみ出し）も"
+  },
+  {
+   "key": "ops:reg・deck",
+   "name": "規制を調べる・外国語 営業資料",
+   "入口-P1": 5,
+   "スマホ-P1": 5,
+   "英語": 4,
+   "中国語": 4,
+   "スペイン語": 4,
+   "exercised": [
+    "「次は この画面で規制を確かめる」",
+    "「次は この画面で資料を作る」→ 光った下書き →「言語を選んで作る」→ English"
+   ],
+   "to_5": "xcut-S03（営業資料の完成の札「営業資料が完成しました！」ほか・規制の「選択中の輸出先（仕向け国）」）"
+  },
+  {
+   "key": "db → inbox → deal",
+   "name": "AIバイヤー開拓 → 確認・承認 → 商談・バイヤー（はじめの設定 4/6 → 6/6）",
+   "入口-P1": 4,
+   "スマホ-P1": 4,
+   "英語": 4,
+   "中国語": 4,
+   "スペイン語": 4,
+   "exercised": [
+    "リストを作る → 相手を選ぶ → 確かめて送る（1366・390）／自社のバイヤーに入れる（390・3言語）→ 商談を記録 → 6/6"
+   ],
+   "to_5": "xcut-S01（2 件目からの承認が断られる）。3言語は xcut-S03（「✉ 選んだ10社を1件ずつ確かめて送る」と知らせが日本語）"
+  },
+  {
+   "key": "item",
+   "name": "商品情報（3言語）",
+   "英語": 5,
+   "中国語": 5,
+   "スペイン語": 5,
+   "exercised": [
+    "自社の資料・見本 culture／machine を 3 言語で開き、横はみ出しと「次は」を見る"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "deal",
+   "name": "商談・バイヤー（390）",
+   "スマホ-P2": 5,
+   "スマホ-P3": 5,
+   "exercised": [
+    "バイヤーを追加",
+    "商談を記録する"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "dash:home",
+   "name": "案件一覧（6/6 のあと・390／1280）",
+   "入口-P1": 5,
+   "スマホ-P1": 5,
+   "スマホ-P2": 5,
+   "スマホ-P3": 5,
+   "英語": 4,
+   "中国語": 4,
+   "スペイン語": 4,
+   "exercised": [
+    "6/6 のあとのホーム",
+    "行を押して案件の詳細へ",
+    "入り直し 3 回 ×3"
+   ],
+   "to_5": "3言語：案件の行の「バイヤー · ID …」「商談の記録から作った案件（まだ送っていません）」「商談の記録（2026-11-16）」が日本語（xcut-S03）。中国語・スペイン語は提案の札の本文が英語（xcut-S05）"
+  },
+  {
+   "key": "ops:doc",
+   "name": "書類をつくる（390・3言語）",
+   "スマホ-P2": 5,
+   "英語": 5,
+   "中国語": 5,
+   "スペイン語": 5,
+   "exercised": [
+    "見積書・梱包明細",
+    "受注内容を編集（仕向港・出港の予定日・CIF）",
+    "3 言語で全部の選択肢を読む"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "today・task・inbox・dash:rep",
+   "name": "今日やること・タスク・進行・受信箱・分析（3言語・6/6 のあと）",
+   "英語": 5,
+   "中国語": 5,
+   "スペイン語": 5,
+   "exercised": [
+    "3 言語で開いて日本語の行を数える（UI の行 0。残りは取り込んだファイルの名前）"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "finbox・fai",
+   "name": "物流会社の画面（3言語）",
+   "英語": 5,
+   "中国語": 4,
+   "スペイン語": 4,
+   "exercised": [
+    "見積受信箱の表の幅（4言語・1440）",
+    "「回答の金額を直す」の窓",
+    "AI物流マンのあいさつと答え"
+   ],
+   "to_5": "xcut-S05（中国語・スペイン語の「回答の金額を直す」の窓が日本語＋英語）。中国語は xcut-S07（「担当・状態」の列が無い）も"
+  },
+  {
+   "key": "team",
+   "name": "メンバー・権限・セキュリティ",
+   "入口-P2": 5,
+   "入口-P3": 5,
+   "exercised": [
+    "招待 → 役割 → 停止（確認の窓）→ 削除、監査の記録"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "admin",
+   "name": "管理者の画面",
+   "管理者": 5,
+   "exercised": [
+    "並べ替え",
+    "期限 +14日・日付の入れ直し",
+    "配信の操作",
+    "CSV"
+   ],
+   "to_5": "（磨き）会社のメニューの「表示｜やさしい説明」"
+  }
+ ],
+ "recheck": [
+  {
+   "no": "xcut-R01",
+   "result": "fixed",
+   "seen": "リストが出ると「次は この画面で相手を選ぶ」→ 光った「すべて選ぶ」→「次は この画面で確かめて送る／自社のバイヤーに入れる」→（送る）受信箱の確認・承認へ・ホームは 5/6「次は 商談を進める」／（自社に入れる）その画面で 5/6「次は 商談を進める」→ 商談・バイヤー「次は この画面で商談を記録する」→ 光った「商談を記録する」→ 記録 →「次は 案件一覧へ」・6/6。案件一覧 ⇄ バイヤー開拓の行き来は無い。1366 と 390（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/d4.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/d8.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/d10.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/m4.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/m5.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/m6.log）"
+  },
+  {
+   "no": "xcut-R02",
+   "result": "fixed",
+   "seen": "はじめの設定 1/6 の商品情報の「次は」：「Next Choose target markets」「下一步 选择销售目标国」「Siguiente Elegir los países de venta」（自社の資料と見本の両方）（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/en7.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/zh1.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/es1.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/es5.log）"
+  },
+  {
+   "no": "xcut-R03",
+   "result": "fixed",
+   "seen": "「書類を足す」の選択肢（#v85doc-addk）：英語 83 件に日本語 0（Beneficiary's certificate／Bill of exchange (draft)／Air waybill (AWB)…）、中国語 82 件にかな 0（受益人证明／汇票…）、スペイン語 80 件に日本語 0（Certificado del beneficiario／Letra de cambio…）。同じ画面のほかの選択肢も日本語 0（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/en6.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/zh3.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/es4.log）"
+  },
+  {
+   "no": "xcut-R04",
+   "result": "fixed",
+   "seen": "スペイン語の商品情報（見本 machine・自社の資料）：scrollWidth 1440／幅 1440、右の「Rellenado」が 4 行とも全部見える（画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/img/es_item_sample.png／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/es5.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/es1.log）"
+  },
+  {
+   "no": "xcut-R05",
+   "result": "fixed",
+   "seen": "(1) 見積受信箱の表：日本語・英語・中国語・スペイン語とも 表 1048／枠 1048（英語の右端のボタン「Negotiation log」1271〜1355） (2) スペイン語・中国語に英語の行なし (3) AI に聞く のあいさつ：「Hello. I'm the AI logistics agent for Demo Logistics Co., Ltd.…」「您好。我是演示物流株式会社的AI物流专员。…」「Hola. Soy el agente logístico de IA de Demo Logistics Co., Ltd.…」 (4) 提案の札の日付の横：「11/16・已登记商品」「11/16・Producto registrado」（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/fwdtbl.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/fw_en.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/fw_g.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/zh4.log）。同じ画面の別の残りは xcut-S05"
+  },
+  {
+   "no": "xcut-M01",
+   "result": "partial",
+   "seen": "5回目に増えた 1 行（商品情報の「次は」）は消えた。6/6 のあとの 今日やること・受信箱・分析・書類をつくる・販売先国（おまかせの前）は日本語の UI の行 0。今回はじめて通した道（自社の資料で登録 → おまかせ → 資料 → リスト）に日本語の行が残る（xcut-S02・xcut-S03）"
+  },
+  {
+   "no": "xlogin-07",
+   "result": "partial",
+   "seen": "前と同じ：0 件で 案件・タスク・AI商社マン を押すと登録メニューに戻り、窓の頭に「商品を1つ登録する（または「サンプルで試す」）と…使えるようになります。それまでは、どのメニューを押してもこの登録の画面に戻ります。」（減点しない）（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/e_r02.log）"
+  },
+  {
+   "no": "xlogin-12",
+   "result": "partial",
+   "seen": "前と同じ：「使い方を見る」の窓の上に「刷新版での場所 左メニュー › …　このガイドの絵と道順は、刷新前の配置で書かれています」（5 画面）。本文は刷新前のまま（減点しない）（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/e_r08b.log）"
+  },
+  {
+   "no": "xlogin-15",
+   "result": "partial",
+   "seen": "今回も確かめていない（見本の環境の日時・差出人）。お問い合わせの画面は開いていない"
+  },
+  {
+   "no": "xi18n-91",
+   "result": "partial",
+   "seen": "前と同じ：管理者の会社のメニューに「表示｜やさしい説明」が残る（磨き）（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/a_v03.log）"
+  }
+ ],
+ "recheck_count": {
+  "fixed": 5,
+  "partial": 5
+ },
+ "issues": [
+  {
+   "no": "xcut-S01",
+   "screen": "inbox（受信箱の確認・承認）← db（AIバイヤー開拓）",
+   "title": "見本のリストから「選んだ10社を1件ずつ確かめて送る」と、承認できるのは 1 件目だけ。2 件目からは「同じ会社への初回は 90日に1回まで」と断られる（別の会社）",
+   "steps": "0件のアカウントで登録 → 国 → 規制 → 営業資料 → AIバイヤー開拓でリストを作る →「すべて選ぶ」→ 光った「✉ 選んだ10社を1件ずつ確かめて送る」→ 受信箱の確認・承認（1 / 10）で「承認して送る」を 2 回",
+   "expected": "10 社それぞれの文面を 1 件ずつ承認できる（見本の宛先は記録だけ残る）",
+   "actual": "1 件目は「記録に残しました（見本の宛先なので送っていません）」。2 件目（[見本] Kaze Specialty Store・宛先 info@kaze-specialty-store.example.com）は「この会社（example.com）には 2026/11/16 に初回を送っています（Harbor Fine Foods Trading）。同じ会社への初回は 90日に1回までです」と出て、アプローチの窓が開くだけ。「今日：承認 1」のまま、ホームと受信箱に「確認・承認 8〜9」が残る。見本のリストの宛先はどれも *.example.com。1366 と 390 で同じ。リストが見本（架空）になるのは AI 未接続のとき",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/d15.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/d16.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/m8.log／画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/img/m_inbox_dup.png・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/img/d_inbox_after1.png（2 件目の札に「前回との差分：同じ会社（ドメイン）に 11/16 に送っています（[見本] Harbor Fine Foods Trading）」）",
+   "personas": [
+    "入口-P1",
+    "スマホ-P1"
+   ],
+   "severity": "minor",
+   "type": "bug",
+   "fix_hint": "同じ会社かどうかを、見本の宛先（*.example.com）ではドメインの頭まで（kaze-specialty-store.example.com）で比べる。または見本の宛先は 90日の決まりから外す"
+  },
+  {
+   "no": "xcut-S02",
+   "screen": "cty（販売先国の選定）英語・中国語・スペイン語",
+   "title": "「おまかせ」を押したあとの結果（3 か国の札・比較の表・確定のボタン）が日本語のまま",
+   "steps": "言語を English／中文／Español にする → 販売先国の選定 →「Next …」→ 光った「🤖 Let the AI Trade Agent decide (one click)」を押す",
+   "expected": "結果の見出し・順位・ボタンがその言語で出る",
+   "actual": "英語：317 行のうち 56 行（44 種類）が日本語。「総合点が最も高い」「総合 1位」「総合点の順位：10か国中 1位」「選択中（押すと外す）」「主要指標の比較」「総合スコア」「点数は0〜100点の目安（高いほど有利）。配点は市場性35・規制25・競合20・拠点20。」「選択中の販売先国」「この3か国で確定する」（次に光るボタン）「③ 確定後の連動」「推奨理由」「リスク」「最初の一歩」。中国語：324 行のうち 54 行（かなを含む行）、確定のあとは「選び直す」「確定した国で次へ（規制を調べる）」。スペイン語：323 行のうち 63 行。確定の知らせも 3 言語とも「販売先国を確定しました：…（進出希望国・規制・価格・物流・出荷・AI商社マンに反映）」。5回目の版（8816）でも同じ 56 行（5回目は、おまかせを押さない道を通った）",
+   "evidence": "画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/img/en_cty_omakase.png／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/en7.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/zh2.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/es1.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/es2.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/en16.log",
+   "personas": [
+    "英語",
+    "中国語",
+    "スペイン語"
+   ],
+   "severity": "minor",
+   "type": "copy",
+   "fix_hint": "おまかせの結果の札・表・ボタン・知らせの文を辞書に足す（少なくとも見出し・順位・「この3か国で確定する」「選び直す」「確定した国で次へ」）"
+  },
+  {
+   "no": "xcut-S03",
+   "screen": "up・ops:reg・deck・db・dash:home（英語・中国語・スペイン語）",
+   "title": "0件から 6/6 までの通しの途中に、日本語の UI の行が残る（登録の会話・営業資料の完成の札・バイヤー開拓のボタンと知らせ・案件一覧の行）",
+   "steps": "言語を替えて、資料を入れる → 2 問に答える → 規制 → 営業資料（English の下書き）→ バイヤー開拓でリストを作る → 自社のバイヤーに入れる → 商談を記録 → 案件一覧",
+   "expected": "UI の行がその言語で出る（登録した値・見本のデータは日本語のままでよい）",
+   "actual": "英語で数えた UI の行（登録した値・見本の札を除く）約 25 行：(up) 「残り 2項目（産地・製造国・支払条件）」「産地・製造国 needed」、答えたあと「いまの情報は 19/21 です。貿易クラウドがフルパワーで動くには、あと2 items。…」「Origin / country of manufactureを登録しました。情報 20/21」「Payment termsを登録しました。情報 21/21」「これで全項目が揃いました。情報 21/21。」「規制判定・書類の自動作成・運賃の見積依頼・AIの商談準備、すべてが動く状態です。」「見積書（PI）・請求書の Seller…欄に入る英語の住所が、まだ登録されていません。…」、「前回の資料：…」／(ops:reg) 「選択中の輸出先（仕向け国）」／(deck・作ったあと) 「保存 1件」「完成した営業資料」「保存した資料から」「AI生成・要確認」「開く（見本・PowerPoint・PDF）」「営業資料が完成しました！」「バイヤーに送る前に内容を確認しましょう。」／(db) 条件の行「United States・輸入商社・卸・学校・教室・教育機関…：10社（11/16 03:34 作成）」、光るボタン「✉ 選んだ10社を1件ずつ確かめて送る」、知らせ「10社を自社のバイヤーに入れました（商談・バイヤーの一覧に出ます）」／(dash:home) 「バイヤー · ID MY-6COVZ」「商談の記録から作った案件（まだ送っていません）」「Today商談の記録（2026-11-16）」。中国語（かなを含む行）約 19 行、スペイン語も同じ所（up は 7 行）。3 言語とも、今日やること・受信箱・分析・書類をつくる・商談を記録する窓は日本語の UI の行 0",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/en1.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/en2.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/en3.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/en4.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/en5.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/en6.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/zh1.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/zh2.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/zh3.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/es1.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/es3.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/es4.log",
+   "personas": [
+    "英語",
+    "中国語",
+    "スペイン語"
+   ],
+   "severity": "minor",
+   "type": "copy",
+   "fix_hint": "登録の会話の定型文（…を登録しました／これで全項目が揃いました ほか）、営業資料の完成の札、バイヤー開拓の「選んだ◯社を1件ずつ確かめて送る」と知らせ、案件一覧の行の定型文を辞書に足す"
+  },
+  {
+   "no": "xcut-S07",
+   "screen": "finbox（物流会社・見積受信箱）中国語",
+   "title": "中国語のときだけ、依頼の表に「担当・状態」の列（要確認・未担当・「担当する」のボタン）と、担当の絞り込みが無い",
+   "steps": "物流会社で入る → 中文 → 見積受信箱。日本語に替えて同じ画面 → 中文に戻す",
+   "expected": "どの言語でも、依頼ごとに担当を引き受けるボタンと担当の絞り込みがある",
+   "actual": "中国語：表の見出し 8 本（接收日・请求编号・货主・区间・货物・报价合计・状态・操作）、1 行目のボタンは「谈判记录」「登记费率并回复」だけ。上の札には「5 未分配」「3 待确认」と出るが、表では引き受けられない。日本語：見出し 9 本、1 行目に「要確認／未担当／担当する／レートを登録して回答／交渉記録」と「担当・対応：」の絞り込み。英語（Owner / status・Take it）・スペイン語（Responsable / estado・Asignarme）も 9 本。日本語 → 中国語と替え直しても同じ。5回目の版（8816）でも中国語は 8 本だった（5回目は幅だけ測って、列の数を挙げていなかった）",
+   "evidence": "画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/img/zh_fwd_finbox.png／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/fw_col.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/fwdtbl.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/fw_zh.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents5/xcut/out/fwdtbl.log",
+   "personas": [
+    "中国語"
+   ],
+   "severity": "minor",
+   "type": "bug",
+   "fix_hint": "中国語でも「担当・状態」の列と絞り込みを出す（列を足す処理が、見出しの日本語・英語・スペイン語の文字で場所を探している可能性）"
+  },
+  {
+   "no": "xcut-S04",
+   "screen": "cty（販売先国の選定）英語・スペイン語・1440 幅",
+   "title": "「まず検討したい3か国」の札で、点数の札が札の右へはみ出して隣の札・右の欄に重なる",
+   "steps": "English／Español にして、販売先国の選定で「おまかせ」を押す（1440×900）",
+   "expected": "点数の札（市場性・競合・規制・拠点）が国の札の中で折り返す",
+   "actual": "英語：国の札の右端 514／733／952 に対し、「regulations 50」「Bases 60」の右端が 639／856／1075（約 125px 外）。スペイン語：「normativa 50」「Bases 60」が 660／878／1097（約 145px 外）、「40」「Sin evaluar」も 530 まで。3 枚目の札の分は右の「主要指標の比較」の欄の文に重なる。日本語・中国語では、はみ出し 0。5回目の版（8816）でも同じ値",
+   "evidence": "画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/img/en_cty_omakase.png／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/en8.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/en16.log",
+   "personas": [
+    "英語",
+    "スペイン語"
+   ],
+   "severity": "minor",
+   "type": "layout",
+   "fix_hint": "点数の札の並びを折り返す（flex-wrap）か、札の幅に合わせて縦に並べる"
+  },
+  {
+   "no": "xcut-S05",
+   "screen": "finbox（物流会社・見積受信箱）中国語・スペイン語／dash:home 中国語・スペイン語",
+   "title": "「回答の金額を直す」の窓が、中国語・スペイン語で 題は日本語・説明は英語。荷主のホームの提案の札の本文が英語",
+   "steps": "物流会社で入る → 中文／Español → 見積受信箱の「修改已回复的金额」／「Editar importe cotizado」（または「登记费率并回复」）を押す。荷主：中文／Español でホームを開く",
+   "expected": "窓の題・説明・ボタン、提案の札の本文がその言語で出る",
+   "actual": "窓：題「回答の金額を直す（区間のレートを直します）：RQ-GD4TUG」、説明「This edits the lane rate (a one-off price for this request alone is not available). …Nothing changes until you press Add.」、「Estados Unidos　横浜港 → ロサンゼルス・FCL20」「Flete ¥280,000/本・Total cotización ¥20,000・日数 16日・有効期限 2026-12-31」、区間が未登録の依頼では「貴社のレートでの見積なし（レーン未登録）」「この区間のレートを登録」。英語では題「Quote reply (edit price): RQ-GD4TUG」と説明は英語（「¥280,000/本」「Days 16日」だけ残る）。ホーム：中国語・スペイン語で提案の札の本文が「Tell me your export goal — I'll map the years, steps, costs and expected sales　Same questions STANDAGE asks at kickoff (about 5 minutes)…」。AI物流マンの答えの本文（「…の相見積とAI物流マンの推奨（標準2m³・希望納期なしの目安）」）が日本語なのは、画面の注意書き（AI の答えは AI をつなぐと訳される）のとおり",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/fw_zh.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/fw_es.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/fw_es2.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/fw_en2.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/zh4.log",
+   "personas": [
+    "中国語",
+    "スペイン語"
+   ],
+   "severity": "minor",
+   "type": "copy",
+   "fix_hint": "窓の題・説明・「日数」「有効期限」「この区間のレートを登録」を中国語・スペイン語の辞書に足す。提案の札の本文も"
+  },
+  {
+   "no": "xcut-S06",
+   "screen": "deal（商談・バイヤー）・inbox・cty・up",
+   "title": "磨き 4 つ：商談を記録する窓にバイヤーの候補が出ない／受信箱に「次は」が無い／国の確定がブラウザ標準の確認の窓／中国語・スペイン語の最初の知らせが英語",
+   "steps": "(1) 見本のリストを自社のバイヤーに入れる →「次は この画面で商談を記録する」→ バイヤー名に一覧の名前を打って記録 (2)「確かめて送る」で受信箱へ (3) 日本語・中国語で「この3か国で確定する」 (4) 中文／Español で「马上开始」",
+   "expected": "(1) 入れたばかりのバイヤーを選べる (2) 続きの案内がある (3) アプリの窓で確かめる (4) その言語の知らせ",
+   "actual": "(1) バイヤー名の欄は自由入力だけ（候補の一覧なし）。「Green Leaf Retail Group」と打つと、「Green Leaf Retail Group（見本）」とは別の行ができる（バイヤー一覧 11 → 12・未対応 10 のまま）。見本でないバイヤー（Kaze Specialty Store）は同じ名前で 2 回記録すると 1 行にまとまる（商談 2） (2) 受信箱には右上の「次は」が無い。左の「案件」を押すとホームに「次は 商談を進める」 (3) 「次の3か国を、販売先国に確定します：…外れる国：台湾 …」がブラウザ標準の確認の窓で出る（中国語では中国語の文） (4) 「Drop your product documents here (or click to choose files).」。スペイン語の手順の札の 1 番が 0/6 のときも「Producto registrado」",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/m7.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/d13.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/d5.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/d2.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/zh2.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/zh1.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents6/xcut/out/es1.log",
+   "personas": [
+    "入口-P1",
+    "スマホ-P1",
+    "中国語",
+    "スペイン語"
+   ],
+   "severity": "polish",
+   "type": "ux",
+   "fix_hint": "(1) バイヤー名の欄に、登録済みのバイヤーの候補を出す（見本の印は名前の照合から外す） (2) 受信箱の確認・承認にも「次は」を出す (3) アプリの確認の窓にする (4) 辞書に足す"
+  }
+ ],
+ "good": [
+  "0件のアカウントから 6/6 まで、右上の「次は」と、それが光らせたボタン（オレンジの枠が脈打つ・入力の位置も移る）だけで進める。1366・390・英語・中国語・スペイン語の 5 通りで、足踏み・行き来・行き止まりなし",
+  "リストのあとの「次は」が 相手を選ぶ → 確かめて送る／自社のバイヤーに入れる → 商談を進める → この画面で商談を記録する → 案件一覧へ と 1 段ずつ変わる（xcut-R01 の直し）",
+  "「次は」の名前は 3 言語とも全部その言語（15〜17 種類）。商品情報の「次は」・書類を足すの選択肢（80〜83 件）・商品情報の横はみ出し・物流会社の表とあいさつが直った",
+  "入り直し（同じ profile で閉じて開く）9 回（1366×3・390×3・390 の見本×3）とも案件一覧から始まり、商品・販売先国・案件・商談が残る",
+  "390：通しの全部の段で横はみ出し 0。商談を記録する窓・受注内容を編集の窓が 390 に収まる。PI US$76,000 → 分析の見積金額 ¥12,114,400、累計受注金額 ¥0",
+  "入口-P2・P3、スマホ-P2・P3、管理者の 5回目と同じ手順 19 本は、結果が日付・時刻の違いだけ。今回の全部の実行（約 80 回）でページのエラー 0"
+ ],
+ "not_checked": [
+  "本物の同期サーバーでの動き（メールの送信・招待・他の端末への反映）。代役のサーバーで確かめた",
+  "お問い合わせ（xlogin-15）の見本の環境での日時・差出人",
+  "目標と道筋の ✓（目標を入れたあと・受注を記録したあと）、US$ 以外の通貨の見積、受注を記録 → 書類 →「受注内容を編集」で数量・単価を直したときの数字、S/I・荷印・点検の仕向港、出港の予定日（過ぎた日）：業種ごとの担当の範囲で、今回は通していない（スマホ-P2 の見積提示＋見積書の数字だけ見た）",
+  "AI が未接続のため、バイヤーのリストは見本（架空）。本物のリストのときの確認・承認（xcut-S01 が起きるか）は確かめていない",
+  "スペイン語の営業資料を作ったあとの札の日本語の行は数えていない（英語 7 行・中国語 5 行は数えた）",
+  "中国語は漢字だけの日本語を機械では数えられない。かなを含む行で数えた",
+  "768×1024・1920×1080、5回目に流した細かい確かめの一部（ログイン画面の誤り・期限切れの文、用語集、通知、3 言語の食品の見本 29 画面）は今回は流していない",
+  "規制の画面の「次は」は、進むまでに押す回数が 2 回のときと 3 回のときがあった（日本語・スペイン語で 3 回、英語・中国語で 2 回）。原因は確かめていない"
+ ],
+ "numbers": {
+  "jp_ui_lines_on_walk": {
+   "note": "0件 → 6/6 の通しで、日本語（中国語はかな）を含む UI の行。登録した値・見本のデータを除く",
+   "en": {
+    "cty_after_omakase": "56/317",
+    "others": 25
+   },
+   "zh": {
+    "cty_after_omakase": "54/324",
+    "others": 19
+   },
+   "es": {
+    "cty_after_omakase": "63/323",
+    "others": "up 7・db 2・home 3・reg 1（deck は未計測）"
+   }
+  },
+  "add_doc_select_jp": {
+   "en": "0/83",
+   "zh": "0/82",
+   "es": "0/80"
+  },
+  "item_scrollWidth_1440": {
+   "en": 1440,
+   "zh": 1440,
+   "es": 1440
+  },
+  "fwd_inbox_columns": {
+   "ja": 9,
+   "en": 9,
+   "zh": 8,
+   "es": 9
+  },
+  "fwd_inbox_table": {
+   "ja": "1048/1048",
+   "en": "1048/1048",
+   "zh": "1048/1048",
+   "es": "1048/1048"
+  },
+  "cty_card_overflow_px": {
+   "ja": 0,
+   "zh": 0,
+   "en": 125,
+   "es": 145
+  },
+  "reentry": "9 回とも案件一覧から",
+  "page_errors": 0
+ }
+}
