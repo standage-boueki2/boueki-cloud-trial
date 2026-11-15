@@ -1,0 +1,477 @@
+{
+ "id": "xcut",
+ "category": "横断（入口と案内・スマホ幅・多言語・管理者）",
+ "base": "8815",
+ "status": "完了",
+ "personas": [
+  {
+   "id": "入口-P1",
+   "name": "田中 美咲（貿易素人）",
+   "overall_r3": 4,
+   "overall": 5,
+   "overall_reason": "期限切れ・無効のとき、案内文のすぐ下に窓口（株式会社STANDAGE・sales_domestic@standage.co.jp・電話 03-6435-3371）が出る。資料を入れると「次は 足りない情報に答える（残り 2項目）」→ 2 問に答えると「次は 販売先の国を選ぶ」・はじめの設定 1/6 → 国を確定すると 3/6 →「次は 営業資料をつくる」まで、1366×768 で止まらずに進めた。ページのエラー 0。残りは磨きだけ（xcut-Q03・0件のあいだは他の画面が開かない＝理由の説明つき・くわしいガイドは刷新前の絵＝断り書きつき）",
+   "to_5": ""
+  },
+  {
+   "id": "入口-P2",
+   "name": "小林 直樹（少し経験者）",
+   "overall_r3": 4,
+   "overall": 5,
+   "overall_reason": "メンバーの停止の確認が専用の窓（「メンバーを停止しますか？ 高橋 涼 さんを停止します。停止中はログインできません（あとで「再開」で戻せます）。 やめる／停止する」）になり、ブラウザ標準の窓は出ない。招待 → 役割 → 停止 → 削除、見本 ↔ 自社の切り替え、検索、通知、用語集（90語）を操作して誤りなし。ガイドの本文は刷新前のまま（窓の上に断り書き。BRIEF4 の決まりで減点しない）",
+   "to_5": ""
+  },
+  {
+   "id": "入口-P3",
+   "name": "森田 浩一（商社経験豊富）",
+   "overall_r3": 4,
+   "overall": 5,
+   "overall_reason": "操作の記録に 招待・役割・停止・削除 の 4 行（誰が＝小林 直樹）。検索で B/L・L/C・インコタームズが説明つきで出る。AI が CIF・HSコード・期限に答える（1,000個＝US$6.10×1,000＝US$6,100.00 と価格表が合う）。「ログインの履歴：準備中です。」は明記あり、HS 4桁「8482」は「AI商社マンに聞く」へ進める（行き止まりではない）ので減点しない",
+   "to_5": ""
+  },
+  {
+   "id": "スマホ-P1",
+   "name": "小林 由美（素人・390）",
+   "overall_r3": 4,
+   "overall": 5,
+   "overall_reason": "390 で 資料を入れた直後の「次は」が「足りない情報に答える（残り 2項目）」に変わった（xcut-M06 直った）。答えると 1/6 →「次は 販売先の国を選ぶ」→「この3か国で確定する」で 3/6 →「次は 営業資料をつくる」。ようこそ窓・登録メニューは画面の中、× あり、横はみ出し 0。残りは磨き（xcut-Q03・xcut-Q04）",
+   "to_5": ""
+  },
+  {
+   "id": "スマホ-P2",
+   "name": "松本 大輔（少し経験者・390）",
+   "overall_r3": 4,
+   "overall": 5,
+   "overall_reason": "見本「建設機械」で バイヤーを足す → 商談を記録 → 案件一覧に出る → 案件の詳細 → 書類をつくる（PI 2台×US$38,000＝US$76,000）→ 建値を CIF に変える（PI が「CIF Haiphong, Vietnam」に）→ 梱包明細（2 units・24,800 kg）→ タスク・受信箱・分析 まで 390 で通った。どの画面も横はみ出し 0、窓は 389/389 の中。商談の表のチェックは 34px 未満 0、書類のチェックは 34×34 で押すと切り替わる（xmobile-21 直った）",
+   "to_5": ""
+  },
+  {
+   "id": "スマホ-P3",
+   "name": "石川 修（経験豊富・390／1280）",
+   "overall_r3": 4,
+   "overall": 5,
+   "overall_reason": "1280×720 で右下の丸いボタン（46×46）が分析・商談・書類をつくるのどのボタンにも重ならない（xmobile-23 直った）。「ゆったり」でも一覧が収まる、戻るで案件の詳細に戻る、表の短い列が 1 行、28 画面はみ出し 0",
+   "to_5": ""
+  },
+  {
+   "id": "英語",
+   "name": "英語の利用者",
+   "overall_r3": 4,
+   "overall": 4,
+   "overall_reason": "食品の見本 29 画面・ほかの業種の主要 9 画面（daily 19→0・machine 73→24・medical 5・culture 26。残りは全部、見本の商品の売り文句・表・単位＝データ）で、かなを含む UI の行は 0。ようこそ窓・招待の窓・検索・用語集・管理者も英語。ただし、登録直後の見本（新しい利用者が最初に見る状態）では タスク（今日やること）4 行・タスク・進行 9 行・受信箱 1 行が日本語、書類をつくるの「Mode」の選択肢が「海上／郵便」、AI の窓のあいさつが半分日本語（xcut-Q01）",
+   "to_5": "xcut-Q01（登録直後の状態のタスク・受信箱の文、書類をつくるの選択肢、AI の窓のあいさつ）。xcut-Q02 は磨き"
+  },
+  {
+   "id": "中国語",
+   "name": "中国語の利用者",
+   "overall_r3": 4,
+   "overall": 4,
+   "overall_reason": "ようこそ窓が全部中国語（xcut-M02 直った）、商品情報④の業種の項目が中国語（xi18n-67 直った）、食品 29 画面・ほかの業種の主要 9 画面で かなを含む UI の行 0（残りは見本のデータ）。ただし登録直後の見本で タスク（今日やること）4 行・タスク・進行 9 行・受信箱「商谈进展：0家 が商談中〜契約交渉」・AI の窓「您好。…のデータを読み込み済みです。画面を見ながら、そのまま聞いてください。」が日本語（xcut-Q01）",
+   "to_5": "xcut-Q01"
+  },
+  {
+   "id": "スペイン語",
+   "name": "スペイン語の利用者",
+   "overall_r3": 4,
+   "overall": 4,
+   "overall_reason": "ようこそ窓が全部スペイン語、営業資料の円・ボタン・検索欄の文字が収まった（xcut-M05 直った）、食品 29 画面・ほかの業種の主要 9 画面で かなを含む UI の行 0（残りは見本のデータ）。ただし登録直後の見本で タスク 4 行・タスク・進行 9 行・受信箱「Avance de negociaciones:0 transitarios が商談中〜契約交渉」（「0社」が transitarios＝物流会社 と訳されている）・書類の「海上／郵便」・AI の窓のあいさつが日本語（xcut-Q01）",
+   "to_5": "xcut-Q01"
+  },
+  {
+   "id": "管理者",
+   "name": "管理者の運用担当",
+   "overall_r3": 4,
+   "overall": 5,
+   "overall_reason": "並べ替え（期限・コード・会社・状態）、期限 +14日／日付の入れ直し／過去の日付の断り、削除、個社版↔全社版、今すぐ配信に確認の窓、社員の絞り込み、CSV（1件・5件）、検索からアカウントへ、を操作して誤りなし。英語にすると日本語は会社名と人名の 7 行だけ、接続テストの結果も英語（xi18n-92 直った）。残りは磨き（会社のメニューの「表示｜やさしい説明」）。本物の同期サーバーでの動きは未確認（この環境の事情）",
+   "to_5": ""
+  }
+ ],
+ "screens": [
+  {
+   "key": "login",
+   "name": "ログイン画面",
+   "入口-P1": 5,
+   "スマホ-P1": 5,
+   "英語": 4,
+   "exercised": [
+    "空・誤り・未登録・期限切れ・無効のコードを入れる（1366×768・1440×900・390）",
+    "窓口の欄を開く",
+    "言語を切り替える"
+   ],
+   "to_5": "英語・中国語・スペイン語：「コードが分からない・期限が切れた・申し込みたいとき」の中と、期限切れ・無効の文の 1 行目が日本語のまま（xcut-Q01）"
+  },
+  {
+   "key": "up",
+   "name": "商品情報を登録（0件 → 資料 → AI の質問）",
+   "入口-P1": 5,
+   "スマホ-P1": 5,
+   "exercised": [
+    "ようこそ窓 → 資料を入れる → 2 問に答える → 「次は」"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "cty",
+   "name": "販売先国の選定",
+   "入口-P1": 5,
+   "スマホ-P1": 5,
+   "exercised": [
+    "AI商社マンにおまかせ → この3か国で確定する（390）／選んだ国を販売先国に確定する（1366）"
+   ],
+   "to_5": "（磨き）国を確定する前の「次は 規制を調べる」（xcut-Q03）"
+  },
+  {
+   "key": "deal",
+   "name": "商談・バイヤー（390）",
+   "スマホ-P2": 5,
+   "スマホ-P3": 5,
+   "exercised": [
+    "バイヤーを追加",
+    "商談を記録する"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "dash:home",
+   "name": "案件一覧（390／1280）",
+   "スマホ-P2": 5,
+   "スマホ-P3": 5,
+   "exercised": [
+    "行を押して案件の詳細へ",
+    "検索欄に入力",
+    "文字「ゆったり」"
+   ],
+   "to_5": "（磨き）見出しの「?」が 24×24（押せる範囲 42×25）"
+  },
+  {
+   "key": "ops:doc",
+   "name": "書類をつくる（390・3言語）",
+   "スマホ-P2": 5,
+   "英語": 4,
+   "中国語": 4,
+   "スペイン語": 4,
+   "exercised": [
+    "見積書・梱包明細を出す",
+    "受注内容を編集で建値を CIF に",
+    "チェックを押す",
+    "英語で Details を開く"
+   ],
+   "to_5": "英語・スペイン語：Mode の選択肢「海上／郵便」、Payment「L/C（信用状）」、Details の中の理由の選択肢 4 つが日本語（xcut-Q01）"
+  },
+  {
+   "key": "today",
+   "name": "タスク（今日やること）3言語・登録直後の見本",
+   "英語": 4,
+   "中国語": 4,
+   "スペイン語": 4,
+   "exercised": [
+    "見本 culture／medical／machine を 3 言語で開く"
+   ],
+   "to_5": "「止まっている相手はいません／バイヤーへの接触を開始／規制調査が終わった国から始めます。／商談記録を貯める」が日本語（xcut-Q01）"
+  },
+  {
+   "key": "task",
+   "name": "タスク・進行（3言語・登録直後の見本）",
+   "英語": 4,
+   "中国語": 4,
+   "スペイン語": 4,
+   "exercised": [
+    "同上"
+   ],
+   "to_5": "根拠の列「「規制を調べる」で自社で確かめる（STANDAGE への調査の依頼もそこから）」×4 と注記 1 行が日本語（xcut-Q01）"
+  },
+  {
+   "key": "team",
+   "name": "メンバー・権限・セキュリティ",
+   "入口-P2": 5,
+   "入口-P3": 5,
+   "exercised": [
+    "招待（空で押す・入れて押す）→ 役割 → 停止（確認の窓）→ 削除 → 操作の記録"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "admin",
+   "name": "管理者の画面",
+   "管理者": 5,
+   "exercised": [
+    "並べ替え 4 列",
+    "期限 +14日・日付の入れ直し",
+    "削除",
+    "個社版↔全社版",
+    "絞り込み・CSV",
+    "検索",
+    "接続テスト・今すぐ配信",
+    "英語で同じ操作"
+   ],
+   "to_5": "（磨き）会社のメニューの「表示｜やさしい説明」"
+  }
+ ],
+ "recheck": [
+  {
+   "no": "xcut-M01",
+   "result": "partial",
+   "seen": "主要 9 画面のかなを含む行：daily 英 19→0／中 21→0／西 19→0、machine 73→24／75→24／74→24、medical 5／5／6、culture 26／26／26。残りは全部、見本の商品の売り文句・仕様の表・単位（例「自社ヤードで点検・整備・洗浄してから出荷」「〜2,999時間 US$46,000 足回り80%以上」）＝データ。0 件のときの文は「No cases yet／When you contact a buyer, a case is created for each buyer.」。ただし主要 9 画面の外（タスク・受信箱）と選択肢に日本語が残る → xcut-Q01 に引き継ぎ"
+  },
+  {
+   "no": "xcut-M02",
+   "result": "fixed",
+   "seen": "中国語「您好，我是AI商社专员。…上传产品资料／补充缺失信息／之后交给AI…马上开始」、スペイン語「Encantado. Soy su Agente comercial IA.…Subir documentos del producto／Responder lo que falta／Luego pregunte o delegue a la IA…Empezar」。日本語の行 0"
+  },
+  {
+   "no": "xcut-M03",
+   "result": "partial",
+   "seen": "招待の窓 23 行のうち日本語 0 行（「Full name (required · the name entered at login)」「Products in charge／All products／Selected products only」）。ステータスの窓は 1 か所だけ「宛先：not set (a buyer you registered yourself)／Email sending not set up…」と見出しの「宛先：」が日本語（ほかの日本語は見本の商談の本文）"
+  },
+  {
+   "no": "xcut-M04",
+   "result": "fixed",
+   "seen": "英語「Contracts」→「Pages 📄 Contracts Assets (knowledge)」だけ（「Not found?」は出ない）。中国語「单证」、スペイン語「Contratos」も同じ。分類名「Research & regulations (screens related to “Documents”)」も英語"
+  },
+  {
+   "no": "xcut-M05",
+   "result": "fixed",
+   "seen": "スペイン語・営業資料：円の中は「Completitud 71 % (15/21 elementos)」が線の内側、右のボタン「Completar con el Agente comercial IA」「Importar del sitio oficial／Información de la empresa y fotos del producto desde su web」は 2〜3 行に折り返し。案件一覧の検索欄「Buscar por comprador, país o ID」が全部見える（画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/es_food_deck.png・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/es_food_dash_home.png）"
+  },
+  {
+   "no": "xcut-M06",
+   "result": "fixed",
+   "seen": "390：資料を入れたあと「次は 足りない情報に答える（残り 2項目）」。1 問答えると「（残り 1項目）」、2 問目のあと「次は 販売先の国を選ぶ」・「はじめの設定 1/6」（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/m_nx.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/q_p1a.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/q_p1a2.log）"
+  },
+  {
+   "no": "xi18n-92",
+   "result": "fixed",
+   "seen": "管理者を English に：264 行のうち日本語は会社名・人名の 7 行だけ。接続テスト「Result of “Test connection” (run at 21:36:10): ✓ Connected: backend v? / storage: / ledger: 0 account(s)」、確認の窓・並べ替えの知らせ・絞り込みも英語"
+  },
+  {
+   "no": "xmobile-21",
+   "result": "fixed",
+   "seen": "390：商談 押す所 49・34px 未満 0、やりとり 80・0、案件の詳細 22・0。書類をつくるのチェックは見た目 34×34、押すと before=true → after=false に切り替わる。残り：ホームの見出しの「?」1 個が 24×24（押せる範囲 42×25）＝磨き"
+  },
+  {
+   "no": "xmobile-23",
+   "result": "fixed",
+   "seen": "1280×720：右下のボタン [1230,656,46,46]、分析・商談・書類をつくる とも下に隠れるボタン 0（coverBtn: []）"
+  },
+  {
+   "no": "xlogin-03",
+   "result": "fixed",
+   "seen": "期限切れ・無効の案内文のすぐ下に「コードが分からない・期限が切れた・申し込みたいとき」と、いつも見える窓口「担当者が分からない・連絡がつかないときの窓口：株式会社STANDAGE sales_domestic@standage.co.jp ／ 電話 03-6435-3371　会社名と、お持ちであればアクセスコードをお伝えください」（画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/login_1366_contact.png）。390 でも横はみ出し 0（画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/login_390_expired.png）"
+  },
+  {
+   "no": "xlogin-07",
+   "result": "partial",
+   "seen": "前と同じ：0 件で 案件・タスク・AI商社マン を押すと登録メニューに戻る。窓の頭に理由「商品を1つ登録する（または「サンプルで試す」）と、案件・タスク・やりとり・AI商社マンなどの画面が使えるようになります。それまでは、どのメニューを押してもこの登録の画面に戻ります。」（理由が明示され行き止まりではないので減点しない）"
+  },
+  {
+   "no": "xlogin-13",
+   "result": "fixed",
+   "seen": "ようこそ窓の文が 4 言語とも画面の名前を挙げる形に：「「案件」（ホーム）と、商品・販売先の国・規制・営業資料・バイヤーの画面では、見出しの右の「次は」のボタンが…」／「在“案件”（首页）以及商品、销售目标国、法规、销售资料、买家的画面中…」。実際に「次は」があるのは 案件・バイヤー開拓・営業資料・商談・販売先国・規制・商品情報・商品情報を登録 の 8 画面"
+  },
+  {
+   "no": "xlogin-12",
+   "result": "partial",
+   "seen": "前と同じ：「使い方を見る」の窓の上に「刷新版での場所 左メニュー › すべての機能 › 調査・規制 › 販売先国の選定　このガイドの絵と道順は、刷新前の配置で書かれています」（5 画面）。本文と絵は刷新前のまま（別ファイルのガイド・アプリ側に断り書きあり＝BRIEF4 の決まりで減点しない）"
+  },
+  {
+   "no": "xlogin-28",
+   "result": "fixed",
+   "seen": "「停止」を押すと画面の中の窓「メンバーを停止しますか？ 高橋 涼 さんを停止します。停止中はログインできません（あとで「再開」で戻せます）。 やめる 停止する」。ブラウザ標準の窓は 0 回（画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/team_stop_confirm.png）。招待の誤りは氏名の欄のすぐ下（y=247）"
+  },
+  {
+   "no": "xlogin-15",
+   "result": "partial",
+   "seen": "前と同じ：お問い合わせの「どの画面で」はホームで「案件」。見本の環境の日時・差出人は今回も確かめていない"
+  },
+  {
+   "no": "xi18n-21",
+   "result": "fixed",
+   "seen": "英語・用語集：かなを含む UI の行 0（231 行）。CIP「Carriage and Insurance Paid To. CPT plus cargo insurance arranged by the seller.…」。ただし何でも検索の結果に出る用語 2 つ（List control・Catch-all control）の説明は日本語（xcut-Q02）"
+  },
+  {
+   "no": "xi18n-69",
+   "result": "fixed",
+   "seen": "xcut-M02 と同じ。中国語・スペイン語のようこそ窓に日本語の行 0"
+  },
+  {
+   "no": "xi18n-66",
+   "result": "partial",
+   "seen": "英語の「Try with samples」：分類の見出し（Food／Daily goods／Industry & agriculture／Health & beauty）と「Sample／Complete (2 years of data)／Day-1 state」は英語、「Organic Liquid Fertilizer AMINOGROW 1L」は英語名になった。ほかは「有機抹茶パウダー 100g／株式会社みどり製茶・食品」「純米大吟醸 湊 720ml」「ステンレス真空断熱タンブラー 350ml／スドウ金属工業株式会社・日用雑貨」など日本語のまま（画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/en_samplecards.png）"
+  },
+  {
+   "no": "xi18n-67",
+   "result": "fixed",
+   "seen": "中国語・見本 daily・商品情報④：「生活用品项目／材质・成分（质量标示） 未登记（例：棉100%／不锈钢 SUS304）／OEM・定制印字的条件 未登记（例：绣名定制100件起）／试验报告・安全标准 未登记」。残る日本語は見本の値（新潟県燕市・食品衛生法適合(370号試験)）だけ"
+  },
+  {
+   "no": "xi18n-73",
+   "result": "fixed",
+   "seen": "会社のメニュー（英・中・西）：28 行のうち日本語は見本の会社名だけ。「Plain language」「Register a new company's product」。左メニューの札のツールチップに日本語 0"
+  },
+  {
+   "no": "xi18n-91",
+   "result": "partial",
+   "seen": "前と同じ：管理者の会社のメニューに「表示｜やさしい説明」（荷主向けの切り替え）が残る（磨き）"
+  }
+ ],
+ "recheck_count": {
+  "partial": 7,
+  "fixed": 14
+ },
+ "issues": [
+  {
+   "no": "xcut-Q01",
+   "screen": "today・task・inbox・ops:doc・右下「AI商社マンに聞く」・ログイン画面（英語・中国語・スペイン語）",
+   "title": "登録直後の状態（新しい利用者が最初に見る状態）で、タスク・受信箱の文と、書類をつくるの選択肢、AI の窓のあいさつが日本語のまま",
+   "steps": "見本「文化教育（culture）」「医療・衛生用品（medical）」「建設機械（machine）」（どれも登録直後の状態）を開く → 言語を English／中文／Español → 左メニュー「Tasks」／すべての機能 › Tasks & progress／Inbox／Create documents を開く。右下の丸いボタンを押す。ログイン画面で無効のコードを入れてから言語を変える",
+   "expected": "食品の見本（29 画面で 0 行）と同じく、その言語で読める",
+   "actual": "3 言語とも同じ行が日本語：(1) タスク（今日やること）4 行「止まっている相手はいません」「バイヤーへの接触を開始」「規制調査が終わった国から始めます。」「商談記録を貯める」 (2) タスク・進行 9 行：注記「期限切れ・7日以内の数は、分析・レポートと同じ数え方です。」と、規制調査のタスク 4 件の根拠の列「「規制を調べる」で自社で確かめる（STANDAGE への調査の依頼もそこから）」（一覧と表の 2 か所） (3) 受信箱「Deal progress:0 companies が商談中〜契約交渉」／中「商谈进展：0家 が商談中〜契約交渉」／西「Avance de negociaciones:0 transitarios が商談中〜契約交渉」（西は「社」が transitarios＝物流会社） (4) 書類をつくる：Mode の選択肢が「海上／Air／Courier／郵便」（選ばれている値が「海上」）、Payment に「L/C（信用状）」、書類ごとの Details を開くと理由の選択肢「輸入者が不要と言った／この国・この商材では要らない／別の書類で代える／今回は使わない（EPA など）」 (5) AI の窓の最初のあいさつ「Hello.Japanese Calligraphy Starter Set (with English guide)のデータを読み込み済みです。画面を見ながら、そのまま聞いてください。」（中「您好。…のデータを…」、西「Hola.…のデータを…」） (6) ログイン画面：窓口の説明「コードが分からない・期限が切れた・申し込みたいとき…」の中が 3 言語とも日本語、無効・期限切れの文の 1 行目「このアカウントは無効化されています。」が日本語（2 行目は「To reactivate, please contact the STANDAGE representative…」と訳される） (7) 英語の契約書関連：Contract type の選択肢「売買契約書（Sales Agreement）…OEM製造委託契約書」、相手の選択肢「Hong Kong / 輸入商社（ID MY-SMPF01・往復 4通）」、案件のステータスの窓の見出し「宛先：」 (8) 物流会社の「集計」（3 言語）：今回の版で増えた行「回答は1社のみ（相見積なし）。所要 約3日／有効期限 2026-12-31（あと46日）」が日本語（3回目の版には無かった行。同じ行の上は「1 forwarder only」と英語） (9) 登録直後の見本の 契約書関連「まだ直接メッセージでやり取り中の相手も、商談を記録した相手もいません。」、AI商社マンに相談「STANDAGE の記録 12案件（さまざまな業種を含む区分「その他」。「文化・教育用品」だけの記録はまだありません）から、道筋の目安を出します」",
+   "evidence": "英語・culture：/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/en_xcut_cul/today.txt・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/en_xcut_cul/task.txt・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/en_xcut_cul/inbox.txt／中国語・medical：/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/zh_xcut_med/／スペイン語・machine：/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/es_xcut_mach/／物流会社：/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/en_xcut_fwd/fagg.txt／選択肢：/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/q_m2_es.log（\"cur\":\"海上\",\"jp\":[\"海上\",\"郵便\"]）／ログイン：/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/q_lg2.log／画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/en_opsdoc_selects.png・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/en_opsdoc_reason.png・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/en_today_jp.png・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/en_aipanel.png",
+   "personas": [
+    "英語",
+    "中国語",
+    "スペイン語"
+   ],
+   "severity": "minor",
+   "fix_hint": "登録直後の状態で出る文（今日やることの 3 つの提案・タスクの根拠・受信箱のまとめ・AI のあいさつ）と select の選択肢を辞書に入れる。数え直しは「完成形の見本」だけでなく「登録直後の見本」でも行う"
+  },
+  {
+   "no": "xcut-Q02",
+   "screen": "上の帯（何でも検索）英語・中国語・スペイン語",
+   "title": "検索に出る用語 2 つの説明と、操作 3 つの名前が日本語",
+   "steps": "言語を English → Ctrl+K →「regulation」と入れる／何も入れずに一覧を見る",
+   "expected": "その言語の説明",
+   "actual": "「Glossary (trade terms) 📖 List control 外為法にもとづく輸出規制のひとつ。武器や、軍事に転用できる性能の高い品物・技術を法令のリストで定め…」「📖 Catch-all control リスト規制に当たらない品物でも…」（用語集の画面では同じ用語が英語の説明）。一覧の操作に「通関統計エクスプローラーを開く」「推奨FOB Japan Price を算出」「物流会社にAI見積を依頼（相見積）」",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/i_combo_en.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/i_combo_zh.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/i_combo_es.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/i_chrome1_en.log",
+   "personas": [
+    "英語",
+    "中国語",
+    "スペイン語"
+   ],
+   "severity": "polish",
+   "fix_hint": "検索の結果も用語集と同じ辞書から出す"
+  },
+  {
+   "no": "xcut-Q03",
+   "screen": "cty・deck・db・ops:reg（見出しの右の「次は」）",
+   "title": "その画面の手順がまだ済んでいないときも「次は」が次の画面を指し、押すと行った先の「次は」で戻される",
+   "steps": "新しいアカウントで資料を入れて 2 問に答える →「次は 販売先の国を選ぶ」→ 販売先国の選定で、国を確定せずに「次は 規制を調べる」を押す",
+   "expected": "済んでいないあいだは、その画面でやること（例「国を確定する」）を指す（商品情報を登録では「次は 足りない情報に答える（残り 2項目）」とその画面の中を指す）",
+   "actual": "販売先国の選定（未確定）「次は 規制を調べる」→ 規制を調べる「次は 販売先の国を選ぶ」→ 戻る。営業資料（未作成）「次は バイヤーを探す」→ バイヤー開拓「次は 営業資料をつくる」→ 戻る。どちらの画面も、はじめの設定の帯でいまの手順が橙で示され、画面の中に大きいボタン（「AI商社マンにおまかせ（1クリック）」「選んだ国を販売先国に確定する」）があるので、自力で進める",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/q_p1a2.log（次は 1〜3）／画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/d1366_p1_cty_fresh.png・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/m390_p1_deck_next.png",
+   "personas": [
+    "入口-P1",
+    "スマホ-P1"
+   ],
+   "severity": "polish",
+   "fix_hint": "その画面の手順が未完了のあいだは「次は」をその画面の中の操作にするか、目立たない色にする"
+  },
+  {
+   "no": "xcut-Q04",
+   "screen": "ログイン画面・案件一覧（390）",
+   "title": "スマホ幅での小さな磨き 3 つ",
+   "steps": "390×844 でログイン画面／案件一覧を開く",
+   "expected": "",
+   "actual": "(1) ログイン画面の入力例が途中で切れる「アクセスコード（例：BC-XXXX-X」「ご担当者名（任意。招待された方」 (2) 案件一覧の説明「点線の言葉は、押すか、マウスを乗せると説明が出ます」（スマホにマウスは無い） (3) 見出しの「?」が 24×24（押せる範囲 42×25）",
+   "evidence": "画像 /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/login_390_expired.png・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/img/m390_home_after_deal.png／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents4/xcut/out/m_p15.log",
+   "personas": [
+    "スマホ-P1",
+    "スマホ-P2"
+   ],
+   "severity": "polish",
+   "fix_hint": "入力例を短く（例：BC-XXXX-XXXX）。スマホでは「押すと説明が出ます」"
+  }
+ ],
+ "good": [
+  "ログイン画面：誤りの案内が押したボタンのすぐ下・誤りのある欄に入力の位置が移る。期限切れ・無効のときの窓口（メール・電話）がいつも見える",
+  "390：28 画面＋物流会社 8 画面で横はみ出し 0、メニュー 30/30 が選ぶと閉じる、開く窓 16/16 で × が見えて閉じる、入力欄 58 個のうち 16px 未満 0",
+  "390 で主な流れ（バイヤー → 商談 → 案件 → 書類 → 建値 → タスク・受信箱・分析）が通る。PI の数字 2×US$38,000＝US$76,000、PL 2 units・24,800 kg（1 台 12,400 kg×2）",
+  "3 言語：食品の見本 29 画面・ほかの業種の主要 9 画面で、かなを含む UI の行 0（残りは見本のデータ）。物流会社 8 画面は 2 行。ようこそ窓・招待の窓・用語集・検索・管理者が各言語",
+  "管理者：変える操作（期限・削除・版・配信）に確認の窓、やめると変わらない、結果がボタンの下に残る",
+  "今回の全部の実行（約 110 回）でページのエラー 0"
+ ],
+ "not_checked": [
+  "本物の同期サーバーでの動き（メールの送信・招待・他の端末への反映）。代役のサーバーで確かめた",
+  "お問い合わせ（xlogin-15）の見本の環境での日時・差出人",
+  "768×1024 と 1920×1080 は今回は見ていない（3回目は問題なし）",
+  "営業資料の生成・バイヤーのリスト作成より先の P1 の流れ（業種ごとの担当が確かめる範囲）",
+  "中国語は漢字だけの日本語（例「海上」）を機械では数えられない。かなを含む行で数えた"
+ ],
+ "numbers": {
+  "kana_ui_lines_main9": {
+   "daily": {
+    "en": [
+     19,
+     0
+    ],
+    "zh": [
+     21,
+     0
+    ],
+    "es": [
+     19,
+     0
+    ]
+   },
+   "machine": {
+    "en": [
+     73,
+     24
+    ],
+    "zh": [
+     75,
+     24
+    ],
+    "es": [
+     74,
+     24
+    ]
+   },
+   "medical": {
+    "en": 5,
+    "zh": 5,
+    "es": 6
+   },
+   "culture": {
+    "en": 26,
+    "zh": 26,
+    "es": 26
+   },
+   "note": "[3回目, 今回]。今回の残りは全部、見本の商品のデータ"
+  },
+  "food29": {
+   "en": [
+    10,
+    0
+   ],
+   "zh": [
+    10,
+    0
+   ],
+   "es": [
+    10,
+    0
+   ]
+  },
+  "fwd8": {
+   "en": [
+    0,
+    2
+   ],
+   "zh": [
+    0,
+    2
+   ],
+   "es": [
+    0,
+    2
+   ],
+   "note": "今回の 2 行は「集計」に増えた「回答は1社のみ（相見積なし）。所要 約N日／有効期限…（あとN日）」"
+  },
+  "culture29_en": {
+   "total": 43,
+   "data": 27,
+   "ui": 16,
+   "note": "登録直後の見本 culture を英語で 29 画面。UI の 16 行＝today 4・task 9・inbox 1・ai 1・legal 1"
+  }
+ }
+}
