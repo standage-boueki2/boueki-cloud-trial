@@ -1,0 +1,29 @@
+/* 21.92 r4b の刷新版の層の見た目 */
+.k92r4b-flash{outline:3px solid var(--or,#f08300);outline-offset:4px;border-radius:10px;transition:outline-color .4s}
+/* ⑤ ホームの主のボタンは1つ（はじめの設定が終わるまでは「はじめの設定 次：…」） */
+html.rd .k-pill.k92r4b-main{background:var(--k-or,#F08300);border-color:var(--k-or,#F08300);color:#fff;box-shadow:0 2px 8px rgba(240,131,0,.28)}
+html.rd .k-pill.k92r4b-main b,html.rd .k-pill.k92r4b-main .k-pn{color:#fff}
+html.rd .k-pill.k92r4b-main svg{stroke:#fff}
+html.rd .rd-hero .k-hcta.k92r4b-sub{background:#fff;color:#B85400;border:1.5px solid var(--k-or-line,#F6C48F);box-shadow:none}
+html.rd .rd-hero .k-hcta.k92r4b-sub svg{stroke:#B85400}
+/* ⑥ cross-10：見積受信箱（物流会社）。依頼の表を1画面目に：上の札を1行の高さに、表の行のボタンを横に並べる */
+html.rd .k92r4b-fin .v70fov{padding-top:12px;padding-bottom:12px;margin-bottom:10px}
+html.rd .k92r4b-fin .v70fov-g{margin-top:6px;gap:8px}
+html.rd .k92r4b-fin .v70fov-i{flex-direction:row;align-items:center;gap:8px;min-height:0;padding:7px 12px}
+html.rd .k92r4b-fin .v70fov-i b{font-size:20px;line-height:1}
+html.rd .k92r4b-fin .v70fov-i span{line-height:1.25}
+html.rd .k92r4b-fin > .rd-x{margin-bottom:8px}
+html.rd .k92r4b-fin td.v33fwst .btn{display:inline-flex;width:auto;min-height:30px;padding:4px 10px;margin:3px 4px 0 0;font-size:12.5px;vertical-align:middle}
+html.rd .k92r4b-fin td.v33fwst .v33lv{vertical-align:middle}
+html.rd .k92r4b-fin .tw td{padding-top:8px;padding-bottom:8px}
+html.rd .k92r4b-fin > p.k-v90smpbar{cursor:pointer;margin-bottom:8px;padding-top:8px;padding-bottom:8px}
+html.rd .k92r4b-fin > p.k-v90smpbar.k92r4b-clamp{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html.rd .k92r4b-fin > [data-rdfin] .rd-card{margin-bottom:8px !important;padding-top:10px !important;padding-bottom:10px !important}
+html.rd .k92r4b-fin .k92r4b-phr{margin-left:auto;display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
+html.rd .k92r4b-fin > .ph.k92r4b-phempty{display:none}
+html.rd .k92r4b-fin > .c > h3:first-child{float:left;margin:6px 14px 0 0}
+@media (min-width:1100px){
+  html.rd .k92r4b-fin > [data-rdfin] .rd-card{flex-wrap:nowrap !important}
+  html.rd .k92r4b-fin > [data-rdfin] .rd-card > *{min-width:0}
+  html.rd .k92r4b-fin .k92r4b-phr{flex:none;flex-wrap:nowrap}
+}
