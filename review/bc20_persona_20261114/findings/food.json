@@ -1,0 +1,315 @@
+{
+ "id": "food",
+ "category": "食品",
+ "personas": [
+  {
+   "id": "P1",
+   "name": "田中 美咲",
+   "role": "営業・総務（輸出ははじめて。英語は苦手）",
+   "company": "株式会社信州はちみつ工房（長野県松本市・はちみつの生産者）",
+   "product": "国産アカシアはちみつ 250g（HS 0409.00・FOB 横浜 ¥1,450／本）",
+   "goal": "自社の資料（Excel）を入れて、画面の案内どおりに「商品登録 → 国選定 → 規制確認 → 提案準備 → バイヤー開拓 → 最初の連絡 → 見積書の下書き」まで進める",
+   "overall": 3,
+   "overall_reason": "（途中経過）商品登録〜国の確定〜規制の記録までは案内どおりに進めた。答えるたびに画面が上へ飛ぶ・詳細を開くと選択が消えたように見える・食品の書類の説明が無い、で手が止まる。",
+   "to_5": "（途中経過）下の課題 food-01／07／08／09／12／13 が直ること。"
+  },
+  {
+   "id": "P2",
+   "name": "佐藤 健一",
+   "role": "海外担当（商社経由の輸出を数回経験）",
+   "company": "株式会社みなと酒造（業種サンプル liquor）",
+   "product": "純米大吟醸 湊 720ml",
+   "goal": "引き合いを案件として管理し、やりとり・商談の記録・規制・書類（PI/CI/PL）・物流の見積・タスクを自分で回す",
+   "overall": 3,
+   "overall_reason": "（これから操作）",
+   "to_5": "（これから操作）"
+  },
+  {
+   "id": "P3",
+   "name": "山本 浩二",
+   "role": "食品商社で貿易実務 15 年",
+   "company": "東和フーズ商事株式会社（見本 food＝株式会社みどり製茶・有機抹茶パウダー）",
+   "product": "有機抹茶パウダー 100g（完成形の見本・2年分の商談つき）",
+   "goal": "案件一覧・案件の詳細・分析・商談の記録・書類・契約書・用語集・権限・書き出し・検索を、数字と条件の正確さで厳しく見る",
+   "overall": 3,
+   "overall_reason": "（これから操作）",
+   "to_5": "（これから操作）"
+  }
+ ],
+ "screens": [],
+ "issues": [
+  {
+   "screen": "cty",
+   "title": "上のカードとレーダーは「競合 0」、下の表と詳細は「競合 未評価」で食い違う",
+   "steps": "はちみつ（HS 0409.00）を登録 → 販売先国の選定 →「AI商社マンにおまかせ（1クリック）」",
+   "expected": "データが無い観点は、どこでも「未評価」と出る（0 点＝競合が最も多い、とは読めないようにする）",
+   "actual": "上の「総合点の上位 3か国」のカードは 香港・シンガポール・イギリスとも「競合 0」（赤字）、レーダーも競合が 0。同じ画面の下の表は「競合 未評価」、説明は「未評価は…配点から外し」。総合 62 は競合を外した計算（(40×35+94×25+60×20)÷80＝61.9）と合うので、カードの 0 が誤り",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_20_cty_1.png ／文言「競合 0」「競合（未評価）（高いほど競合が少ない）：通関統計に日本からの輸出実績が無い」",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "data",
+   "suggestion": "カードとレーダーも「未評価」（灰色・点なし）にそろえる。レーダーは未評価の軸を描かない",
+   "no": "food-01"
+  },
+  {
+   "screen": "cty",
+   "title": "国の「詳細」を押すと画面の一番上に戻り、詳細は 1.5 画面下。上のカードは「選択する」に戻り「選択中 0／3 まだ選んでいません」と出る",
+   "steps": "販売先国の選定で分析後、表の「詳細 →」またはカードの「詳細レポートを見る」を押す",
+   "expected": "押した国の詳細がすぐ見える。選んでいた 3 か国はそのまま",
+   "actual": "押した直後のスクロール位置は 0、詳細（COUNTRY DEEP-DIVE）の先頭は 1,371px 下（画面の高さ 900px）。画面上部は元の「総合点の上位 3か国」のままで、ボタンが「選択中」→「選択する」に変わり、「選択中の販売先国 0 / 3 か国　まだ選んでいません」と出る。「← 一覧へ戻る」を押すと 3 か国に戻る",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_23_detail_top.png ／実測 {\"scrollY\":0,\"deepTop\":1371,\"vh\":900} ／文言「選択中の販売先国 0 / 3 か国 まだ選んでいません（カードの「選択する」で1〜3か国）」",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "bug",
+   "suggestion": "詳細を開いたら詳細の見出しまで自動で送る。詳細の表示中も選択の数は保ち、上のカードは畳む",
+   "no": "food-02"
+  },
+  {
+   "screen": "item",
+   "title": "資料から取り込んだ「賞味期限（製造から24か月）」「認証（HACCP）」が商品情報のどこにも出ない。食品の項目は「保存方法」だけ",
+   "steps": "商品情報_食品_food_honey.xlsx を登録（賞味期限・使用期限＝製造から24か月（常温）、認証・規格＝有機JASなし・HACCP に沿った衛生管理 を含む）→ 商品情報を開く",
+   "expected": "食品の基本である 賞味期限・保存温度帯・アレルゲン・原材料表示・認証 が商品情報で見られ、直せる（見積・営業資料・規制の判定にも使われる）",
+   "actual": "ヒアリングは「取り込んだ項目：…認証・規格・賞味期限・保証期間…」と言うが、商品情報の画面の文字に「賞味」「認証」「HACCP」「24か月」は 1 つも無い。「④ 業種ごとの項目」の「食品の項目」は「保存方法」1 つだけ。編集の窓には食品に関係のない「中古品として扱う」のチェックが出る",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_18_item_ind_edit.png ／画面の文字を検索：賞味＝なし・認証＝なし・HACCP＝なし・24か月＝なし",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "missing",
+   "suggestion": "食品の項目に 賞味期限（日数・表示形式）・保存温度帯・アレルゲン・原材料／添加物・栄養成分・認証（HACCP・有機JAS・ハラル等）を置き、取り込んだ値を表示する。食品では「中古品として扱う」を出さない",
+   "no": "food-03"
+  },
+  {
+   "screen": "ops:reg",
+   "title": "規制の中身が「食品一般」の定型で、はちみつ（動物性の食品・産地 長野）に合っていない",
+   "steps": "はちみつ（HS 0409.00・産地 長野県松本市）で「規制を調べる」→ 送り先の国を切り替える",
+   "expected": "HS 0409（天然はちみつ）と産地に合わせた関税・必要な証明（衛生証明・輸入できる国の指定・産地による輸入停止 など）が出る。分からないものは「要確認」と出る",
+   "actual": "台湾：「気をつけること　茶葉・加工食品は関税17%」（はちみつなのに茶葉の注意）。UAE：「ハラル認証が必須です。取得まで約4〜6ヶ月・費用60〜120万円」と断定。フランス：書類に「残留農薬証明」、注意は残留農薬のみ。イギリス：手続きは「英国ラベル規則」だけで規制 97 点・推奨 3 位（動物性食品としての衛生証明・輸入できる国の指定に触れない）。中国：GACC 登録と中国語ラベルのみ（産地の県による輸入停止に触れない。産地は長野で登録済み）。アメリカ：「通常の関税 0%＋追加関税 12.5%」。※各国の実際の規定はこの環境では裏取りできず、担当の業務知識による指摘（要確認）",
+   "evidence": "画面の文言（規制を調べる・国を切り替え）：「気をつけること　茶葉・加工食品は関税17%。小売価格に転嫁できるか事前に確認してください。」「気をつけること　ハラル認証が必須です。取得まで約4〜6ヶ月・費用60〜120万円が目安。」「英国ラベル規則 未対応」／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_25_reg_2.png",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "data",
+   "suggestion": "規制の定型を HS の類（04 類＝動物性の産品 など）と産地で出し分ける。商品に合う定型が無い国は点数を付けず「この商品での確認が要る」と出す。注意書きは商品名に合わないものを出さない",
+   "no": "food-04"
+  },
+  {
+   "screen": "ops:reg",
+   "title": "「社内規制DBの関連レポートを見る」は STANDAGE 社員の Google アカウントが要り、荷主は先へ進めない",
+   "steps": "規制を調べる →「社内規制DBの関連レポートを見る」",
+   "expected": "荷主が自分で詳しい規制のレポートを読める。または荷主には出さない／「STANDAGE に依頼する」になる",
+   "actual": "窓に「現行の輸出規制調査DB（社内ポータル）に接続します。…standage.co.jp のGoogleアカウントでのサインインが必要です」と出る。荷主は standage.co.jp のアカウントを持たない。「社内」が自社なのか STANDAGE なのかも分からない",
+   "evidence": "文言「🌐 STANDAGE 規制データベース　現行の輸出規制調査DB（社内ポータル）に接続します。…standage.co.jp のGoogleアカウントでのサインインが必要です（初回はログイン画面が表示されます）。」／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_28_regdb.png",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "ux",
+   "suggestion": "荷主の画面では「STANDAGE に規制の調査を依頼する」に置き換える（依頼ページへ）。社員だけに「社内規制DB」を出す",
+   "no": "food-05"
+  },
+  {
+   "screen": "ops:reg",
+   "title": "食品で要る「放射性物質検査証明書」「成分分析表」に説明が無く、どこで取るのか分からない",
+   "steps": "規制を調べる（香港）→「通関・出荷で使う書類」の札を押す。AI詳細調査の窓で「③の必要書類の入手方法と所要期間を教えて」を押す",
+   "expected": "どの書類も、押すと「何の書類か・どこに頼むか・何日かかるか」が出る",
+   "actual": "「原産地証明書」「インボイス」「パッキングリスト」は「？」で説明が出るが、「放射性物質検査証明書」「成分分析表」は押しても何も出ない。AI の答えも「・成分分析表　この国の通関で求められる書類です　・放射性物質検査証明書　この国の通関で求められる書類です」だけで、入手方法と所要期間は答えない",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_25_reg_2.png ／AI の答えの文言「・放射性物質検査証明書　この国の通関で求められる書類です」",
+   "personas": [
+    "P1",
+    "P2"
+   ],
+   "severity": "minor",
+   "type": "missing",
+   "suggestion": "食品の書類（放射性物質検査証明書・成分分析表・衛生証明書・自由販売証明書・残留農薬の証明）を用語集に入れ、発行元（検査機関・保健所・農政局など）と目安の日数を出す",
+   "no": "food-06"
+  },
+  {
+   "screen": "up",
+   "title": "AIヒアリングで答えるたびに画面が上へ飛び、次の質問と入力欄が画面の外に出る",
+   "steps": "商品情報を登録 →「AIの質問に答える」→ 入力欄まで下げて、答えを送る（または選択肢を押す）",
+   "expected": "答えたあと、次の質問と入力欄がそのまま見えている",
+   "actual": "送る前：スクロール位置 1371・入力欄は画面の上から 577px。送った後：スクロール位置 556・入力欄は 1346px（画面の高さ 900px の外）。5 問あると 5 回、下へ送り直す",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_13_q2.png（送る前）／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_13_q3.png（送った後）／実測 {\"scrollY\":1371,\"taTop\":577} → {\"scrollY\":556,\"taTop\":1346,\"vh\":900}",
+   "personas": [
+    "P1",
+    "P2"
+   ],
+   "severity": "minor",
+   "type": "ux",
+   "suggestion": "答えを登録したあとは、やりとりの最後（次の質問）が見える位置を保つ",
+   "no": "food-07"
+  },
+  {
+   "screen": "up",
+   "title": "読み取り直後の「未反映／すべて登録する（1）」が、同じ商品が「登録済みの商品」に出ている横にあり、押すべきか分からない",
+   "steps": "資料（1 商品の Excel）をアップロードした直後の「商品情報を登録」",
+   "expected": "1 商品だけの資料なら、そのまま全部が登録される。押す必要があるなら理由が分かる",
+   "actual": "「この資料から 1 商品を読み取りました（未反映）」「すべて登録する（1）／反映しない」が出る一方、すぐ下の「登録済みの商品」には同じ「国産アカシアはちみつ 250g　情報 13/21・表示中」がある。押す前は充足度 64% で、ヒアリングは資料にある「単品と外装カートンのサイズと重量」を聞く。押すと 79% になり、「規格」の表示が「SH-ACA-250」から「カートン 24本／ケース・1ケース 10.4kg…」に変わる",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_08_up_2.png ／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_09_after_1.png ／文言「この資料から 1 商品を読み取りました（未反映）」",
+   "personas": [
+    "P1"
+   ],
+   "severity": "minor",
+   "type": "ux",
+   "suggestion": "商品が 1 つだけのときは自動で反映する。確認が要るなら「価格・寸法の表（1行）をこの商品に入れますか」と中身を言う",
+   "no": "food-08"
+  },
+  {
+   "screen": "up",
+   "title": "（内蔵エンジン）資料にある「商品の強み1〜3」「単価 ¥1,450／本（FOB 横浜）」の建値を読み取らず、聞き直す",
+   "steps": "商品情報_食品_food_honey.xlsx（シート「商品情報・強み」に 商品の強み1〜3、「価格表・寸法」に 単価 ¥1,450／本（FOB 横浜・税抜））を登録",
+   "expected": "資料に書いてあることは聞き直さない",
+   "actual": "「すべて登録する」の後も「残り 5項目（商品の強み・産地・製造国 など）」「Q1 他社と比べた強みを3つ以上教えてください」と聞く。「読み取り結果」の建値は「未入力」のまま、同じ画面に「💴 価格表を読み取りました。いつまでの価格ですか？」が出る。※AI 未接続（内蔵エンジン）での結果",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_09_after_1.png ／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_11_hear.png",
+   "personas": [
+    "P1"
+   ],
+   "severity": "minor",
+   "type": "data",
+   "suggestion": "内蔵の読み取りでも「商品の強み1」「強み①」のような番号つきの見出しと、単価の文字列の中の FOB／CIF＋港名を拾う",
+   "no": "food-09"
+  },
+  {
+   "screen": "up・ops:reg",
+   "title": "帯の「？ 説明」が 2 つ並ぶ",
+   "steps": "①はじめての窓を閉じたあとの「🏢 新しい会社の商品を登録」の帯　②規制を調べるの「🌏 販売先国（確定）：…」の帯",
+   "expected": "「？ 説明」は 1 つ",
+   "actual": "「？ 説明 ？ 説明」と 2 つ並ぶ",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_10_enter.png ／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_25_reg_1.png",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "polish",
+   "type": "bug",
+   "suggestion": "説明ボタンの差し込みが 2 回走らないようにする",
+   "no": "food-10"
+  },
+  {
+   "screen": "item",
+   "title": "「MOQ と単位」の値の閉じかっこが 1 つ多い",
+   "steps": "商品情報 →「価格の条件（有効期限・物流費・供給）」",
+   "expected": "240本（10ケース）（単位：ケース）",
+   "actual": "「240本（10ケース）（単位：ケース））」",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_17_item_3.png",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "polish",
+   "type": "copy",
+   "suggestion": "単位を足すときのかっこを直す",
+   "no": "food-11"
+  },
+  {
+   "screen": "cty",
+   "title": "はちみつなのに、国の詳細のチャネルに美容の店が並ぶ",
+   "steps": "販売先国の選定 → イギリスの「詳細」→ チャネル",
+   "expected": "食品の売り場（スーパー・食品の専門店・食品の EC）だけ",
+   "actual": "オンラインに「Cult Beauty（美容）：一般的なチャネル（要確認）」、オフラインに「Boots・Superdrug（美容・健康）：一般的なチャネル（要確認）」",
+   "evidence": "文言「Cult Beauty（美容）：一般的なチャネル（要確認）」「Boots・Superdrug（美容・健康）：一般的なチャネル（要確認）」（販売先国の選定・イギリスの詳細）",
+   "personas": [
+    "P1",
+    "P3"
+   ],
+   "severity": "minor",
+   "type": "data",
+   "suggestion": "チャネルの定型を商材カテゴリ（食品）で絞る",
+   "no": "food-12"
+  },
+  {
+   "screen": "全画面（deck・cty・item ほか）",
+   "title": "右下の「AI商社マンに聞く」が、主なボタンや表の右下に重なる",
+   "steps": "画面を開いたままの位置で右下を見る（外国語 営業資料／販売先国の選定／商品情報）",
+   "expected": "主なボタン・数字に重ならない",
+   "actual": "営業資料：主ボタン「下書き（空欄つき）を作る →」の右半分と、その下の説明に重なる。国選定：比較表の 3 行目（イギリスの総合スコア）に重なる。商品情報：「データ健全性チェック」に重なる",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_30_deck_1.png ／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_20_cty_1.png ／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_17_item_1.png",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "minor",
+   "type": "layout",
+   "suggestion": "本文の右下に余白を取る／主ボタンのある位置では丸いアイコンだけに縮める",
+   "no": "food-13"
+  },
+  {
+   "screen": "cty",
+   "title": "「開拓しない国（会社の方針）」の入力欄が、候補国・分析結果より上に開いたまま出る",
+   "steps": "販売先国の選定を開く",
+   "expected": "はじめての人には「おまかせ → 結果 → 確定」が先に見える",
+   "actual": "「AIが有望な販売先国を提案します」のすぐ下に、「開拓しない国（会社の方針）」の説明と 4 つの入力欄・チェック・ボタンが開いた状態で並び、候補国と結果はその下",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_19_cty_1.png",
+   "personas": [
+    "P1"
+   ],
+   "severity": "minor",
+   "type": "ux",
+   "suggestion": "「開拓しない国」は畳んでおく（登録があるときだけ件数を見せる）か、結果の下に置く",
+   "no": "food-14"
+  },
+  {
+   "screen": "はじめての窓・up・cty・ops:reg",
+   "title": "言葉のゆれ：ようこそ窓の「オレンジのバー」、手順の名前、画面の名前",
+   "steps": "はじめての窓 → 商品情報を登録 → 販売先国の選定 → 規制を調べる",
+   "expected": "同じものは同じ名前",
+   "actual": "ようこそ窓は「画面上部のオレンジのバーが、いつでも『次にやること』を教えてくれます」だが、刷新版は右上の「次は ○○」のボタン。手順の名前は 登録の画面「1 商品登録／2 国選定」、国選定の画面「商品を登録／2 販売先国の選定」。メニューは「規制を調べる」、開いた画面の見出しは「規制・必要な書類」",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_01_first.png ／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_08_up_1.png ／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_19_cty_1.png ／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_25_reg_1.png",
+   "personas": [
+    "P1"
+   ],
+   "severity": "polish",
+   "type": "copy",
+   "suggestion": "ようこそ窓は「右上の『次は』ボタン」に。手順と画面の名前を 1 つにそろえる",
+   "no": "food-15"
+  },
+  {
+   "screen": "up",
+   "title": "ヒアリングの質問の予告が文の途中で切れる／100% でも「あとで埋める（デモを見る）」が残る",
+   "steps": "商品情報を登録（読み取り後）の右の「AIヒアリング」／ヒアリングを開いた状態",
+   "expected": "切れるなら「…」を付ける。そろったら「あとで埋める」は出さない",
+   "actual": "「Q1 バイヤーに出す輸出用の価格（FOB など）を教えてください。数量帯ごとにあると、AIが「その数量」で終わる。充足度 100% でも「あとで埋める（デモを見る）」が出る",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_08_up_1.png ／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/food/img/p1_15_done_view.png",
+   "personas": [
+    "P1"
+   ],
+   "severity": "polish",
+   "type": "layout",
+   "suggestion": "質問の予告は 2 行で「…」。100% のときはボタンを隠す",
+   "no": "food-16"
+  }
+ ],
+ "good": [
+  "AIヒアリングの質問がやさしい：取引条件は FOB／CIF／DDP／EXW を 1 行ずつ日本語で説明し、「まだ決めていない」「わからない（あとで）」が選べる。支払条件は「初めての相手には前払いか L/C」と理由つきで勧める",
+  "各質問に「これは 見積書の条件欄・費用分担 に使われます」と使い道が出る。商品の情報（そろい具合）が「規制判定・関税 4/4 動きます」のように、何が動くかで示される",
+  "規制の「対応済みにする」が、根拠（メモ・書類の番号・URL）を残す作りで、「根拠なしで対応済みにする（自己申告）」と分けてある。だれがいつ確かめたかが残る",
+  "国選定の点数は配点（市場性35・規制25・競合20・拠点20）と、データの無い観点を外して割り戻す計算が画面に書いてあり、検算できる",
+  "用語（HSコード・MOQ・FOB・インコタームズ・通関 など）に点線と「？」があり、押すとその場で説明と「AI商社マンに、うちの場合を聞く」が出る",
+  "AI 未接続のとき、規制の詳細調査の窓が「何ができないか・代わりに何を見るか」を言い切っている"
+ ],
+ "not_checked": [
+  "「はじめまして」の窓：ブラウザを開き直すたびに毎回出た（商品を登録した後も。4 回確認）。この環境の入り方（セッションを直接入れる）に由来する可能性があり、課題には数えていない",
+  "各国の実際の規制（はちみつの EU・英国向けの可否、UAE のハラルの要否、台湾・米国の関税率、中国の産地による輸入停止）：外部に届かないため裏取りしていない。food の規制の課題は、画面の文言と担当の業務知識による「要確認」の指摘",
+  "メールの実送信・メンバー招待・実在の物流会社への依頼：同期サーバーが代役のため未確認",
+  "AI 接続時の読み取り・翻訳・調査の質：AI 未接続のため未確認"
+ ]
+}

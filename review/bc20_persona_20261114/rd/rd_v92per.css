@@ -1,0 +1,23 @@
+/* 21.92 per（刷新版の層）：2026-11-14 8カテゴリー×ペルソナ評価の直し */
+/* ① 左のメニュー「すべての機能」の札：絵と字に重ならないよう、ボタンの右上の角に置く（字は1行のまま） */
+#rdside .rd-allh .rd-bdg{left:auto;right:-6px;top:-8px;min-width:20px;height:20px;padding:0 6px;border-radius:10px;font-size:11.5px;box-shadow:0 0 0 2px #fff}
+/* ② 停滞中の案件：ほか N件 */
+.k-v92more{margin:8px 2px 0;font-size:12.5px;font-weight:700;color:var(--k-ink2,#5B6B82)}
+/* ③ AIヒアリングの箱：8つの大カテゴリー */
+.rd-tag.k-v92cat{font-size:12.5px;padding:5px 11px}
+.k-v92catn{margin:8px 0 0;font-size:12px;color:var(--rd-ink2,#5B6B82);line-height:1.6}
+/* ④ 販売先国：未評価 */
+.k-v92na{font-size:12.5px !important;font-weight:800;color:var(--k-ink3,#8A97AA) !important}
+.k-v92nan{margin:8px 0 0;font-size:12.5px;color:var(--k-ink2,#5B6B82);line-height:1.7;text-align:center}
+.rd-x.rd-p2.k-v92deep > *:not(.k-v92deepn){display:none !important}
+.k-v92deepn{margin:0 0 14px;padding:10px 14px;border:1px solid var(--k-line,#DCE5F0);border-radius:12px;background:#F7FAFE;font-size:13px;color:var(--k-ink2,#5B6B82);line-height:1.7}
+/* ⑥ AIヒアリングの箱：選択肢の例 */
+.rd-tag.k-v92ex{background:transparent !important;border:1px dashed var(--rd-line,#DCE5F0) !important;color:var(--rd-ink2,#5B6B82) !important;font-weight:600 !important;cursor:default}
+.k-v92exl{font-size:12px;color:var(--rd-ink3,#8A97AA);align-self:center}
+/* ⑦ 右下の「AI商社マンに聞く」：下へ送ったら小さく。いちばん下の内容がボタンに隠れないよう余白 */
+html.rd #well{padding-bottom:96px}
+#askfab.k-v92min{width:54px !important;min-width:0 !important;height:54px !important;padding:0 !important;border-radius:50% !important;overflow:hidden;font-size:0 !important;gap:0 !important;justify-content:center}
+#askfab.k-v92min > *{font-size:0 !important}
+#askfab.k-v92min > :first-child{font-size:26px !important;margin:0 !important}
+#askfab.k-v92min:hover,#askfab.k-v92min:focus-visible{width:auto !important;height:auto !important;padding:12px 18px !important;border-radius:28px !important;font-size:15px !important;gap:8px !important}
+#askfab.k-v92min:hover > *,#askfab.k-v92min:focus-visible > *{font-size:inherit !important}

@@ -1,0 +1,329 @@
+{
+ "id": "auto",
+ "category": "自動車・建機",
+ "status": "作業中（P1 の分まで）",
+ "issues": [
+  {
+   "no": "auto-01",
+   "screen": "ops:reg",
+   "title": "油圧ショベル（HS 8429.52）に「乗用自動車 8703.32」をHS候補として勧め、「8703.32 にする」を1回押すと確認なしで書き換わる。元に戻す場所が無い",
+   "steps": "建機の資料（HS 8429.52 と記載）を登録 →「規制を調べる」を開く →「商品名から考えられるHSコードの候補」の下の「8703.32 にする」を押す",
+   "expected": "資料に書いた HS（8429.52＝油圧ショベル）が尊重される。変える前に確認があり、変えたあとに元へ戻せる",
+   "actual": "候補は「8703.32 乗用自動車（ディーゼルエンジンのみ・1,500cc超2,500cc以下）」「8703.33 乗用自動車（…2,500cc超）」だけで、「⚠ 登録のHSコードは、商品名から考えられるいちばん目の候補と違います」と出る。押すと確認の窓なしで「HSコードを 8703.32 にしました（推定・正式な分類は税関の事前教示で確かめてください）」。商品情報の画面に HS を直す操作は無く（編集できるのは 強み・価格表・寸法・価格の条件・車両情報表・業種ごとの項目 だけ）、AI商社マンに「8429.52 に戻してください」と頼んでも「登録のHSコードは 8703.32（推定）です。…候補：8703.32 乗用自動車…」と返るだけ。変更後は商品情報の充足度が「全体 20/21・必須 8/9」に下がる",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_24_reg_2.png ／ /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_26_hs_change.png ／ /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_27_item_hs.png",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "data",
+   "suggestion": "HS が 84類・87類以外など車両でないときは乗用車の候補を出さない。候補は登録の HS の類・項に合わせる。「〜にする」は確認の窓＋「元に戻す」を付け、商品情報の画面で HS を手で直せるようにする"
+  },
+  {
+   "no": "auto-02",
+   "screen": "item／cty／ops:reg",
+   "title": "建設機械が「中古車」として扱われ、乗用車の決まり（右ハンドル・初度登録8年・輸出抹消仮登録・JEVIC・リサイクル料金）がそのまま出る。ケニアは「輸入できません」と断定",
+   "steps": "建機の資料を登録（商材カテゴリ「自動車・建機」、認証・規格に「輸出抹消は不要（建機）」と記載）→ 商品情報の「通関統計コネクト」／販売先国の選定の「詳細」／規制を調べる を見る",
+   "expected": "建機（登録・ナンバーの無い機械）には、乗用車の年式規制・ハンドル位置・輸出抹消の決まりを当てはめない。少なくとも「乗用車の決まりです。建機は別です」と分かる",
+   "actual": "商品情報の札は「中古車」。ケニアの欄に「⚠ ケニアに輸入できるのは右ハンドル車だけです（KRA）」「⛔ 初度登録から8年を超える車両は、ケニアに輸入できません（KRA・ケニア基準局の基準 KS 1515:2000）。この車両は年式から見て8年を超えているため、輸入できません。」「この国では、この車両を登録できないため、価格は出していません。」。UAE は「⚠ 右ハンドル車は、ドバイで登録できません」。規制の画面は「通関・出荷で使う書類：インボイス／船荷証券（B/L）／輸出抹消仮登録証明書（英訳）／第三者検査証明書（JEVIC等）」「中古車の確認事項：運輸支局で輸出抹消仮登録をして…自動車リサイクル料金は…取り戻せます」。販売先国の選定の「最初の一歩」も「インボイス・船荷証券（B/L）・輸出抹消仮登録証明書（英訳）の準備」",
+   "evidence": "商品情報の文言（上のとおり）／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_24_reg_1.png ／ /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_24_reg_2.png",
+   "personas": [
+    "P1",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "data",
+   "suggestion": "商材の種類に「建設機械・産業機械」を足し、HS 8429 などは車両の決まり（ハンドル・初度登録・輸出抹消・リサイクル料金）を外す。建機向けに 排ガス規制・中古機械の輸入許可・船積前検査・該非判定 を出す"
+  },
+  {
+   "no": "auto-03",
+   "screen": "ops:reg",
+   "title": "送り先に「ロシア」を選べるのに、対ロシアの輸出禁止措置（経済産業省）への注意が出ない",
+   "steps": "規制を調べる →「送り先の国」で「ロシア」を選ぶ（選択肢は UAE・ベトナム・フィリピン・ケニア・タンザニア・モンゴル・ロシア）",
+   "expected": "建設機械・一定の自動車はロシア向けの輸出が禁じられているため、まず「輸出できるかを経済産業省の情報で確かめる」注意が最初に出る",
+   "actual": "「この国は進出希望国に入っていません。下の表は、アプリに入っている規制のひな形（概算）です。＋ 進出希望国に足す」「関税率 要確認／通関にかかる日数 要確認」「通関・出荷で使う書類：インボイス／船荷証券（B/L）／輸出抹消仮登録証明書（英訳）／第三者検査証明書（JEVIC等）」だけ。制裁・輸出禁止の注意は無い（販売先国の選定の「開拓しない国」の欄には「制裁・輸出規制にあたるかは、経済産業省…で確かめてください」とある）",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_25_reg_russia.png",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "missing",
+   "suggestion": "制裁の対象になりうる国（ロシア・ベラルーシなど）を選んだら、いちばん上に輸出禁止措置の注意と確かめ先を出す。「進出希望国に足す」より前に置く"
+  },
+  {
+   "no": "auto-04",
+   "screen": "up",
+   "title": "AIヒアリングは、選択肢つきの質問にどんな文を送っても「登録しました」になる。登録した取引条件・支払条件・仕出港を見る・直す場所が無い",
+   "steps": "商品情報を登録 →「AIの質問に答える」→「取引条件（インコタームズ）」の質問（FOB／CIF／DDP／EXW のボタンあり）に、強みの文章をそのまま送る。「支払条件」「仕出港」の質問に「日本」と送る",
+   "expected": "選択肢と合わない答えは「FOB・CIF…のどれですか」と聞き直す。登録した値は商品情報の画面で見えて、直せる",
+   "actual": "「取引条件を登録しました。情報 18/21」「支払条件を登録しました。情報 20/21」「仕出港を登録しました。情報 21/21」「これで全項目が揃いました」。登録の画面の読み取り結果「建値」欄は「自社ヤードで点検・整備・洗浄済み（点検記録つき） 稼働時間・製造年の証明書類あり アフリカ向け 年間120台の実績」になる（文中の「東南アジア・」は「地域の名前のため、進出希望国としては登録していません」と別の質問の答えとして削られた）。商品情報の画面には「支払」「仕出港」の文字が1つも無く、値の表示も編集も無い。全項目がそろうと「AIの質問に答える」は「AI商社マンに相談する」に変わり、ヒアリングに戻れない。データ健全性チェックも「問題は見つかりませんでした」",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_11_hearing_end.png（建値欄）／ヒアリングの文言（上のとおり）",
+   "personas": [
+    "P1",
+    "P2"
+   ],
+   "severity": "major",
+   "type": "ux",
+   "suggestion": "選択肢のある質問は、自由入力を選択肢に寄せるか聞き直す。商品情報に「取引条件・支払条件・仕出港」の欄を出して直せるようにする。ヒアリングの履歴から「この答えを直す」を付ける"
+  },
+  {
+   "no": "auto-05",
+   "screen": "up",
+   "title": "登録済みの商品のカードで「✎ 商品名・会社名を編集」と「☆ マーク」が重なり、✎ を押すと ☆ が付く（編集を開けない）",
+   "steps": "商品情報を登録 →「登録済みの商品」のカード右上の ✎ を押す（1440×900）",
+   "expected": "商品名・会社名の編集が開く",
+   "actual": "✎ の位置（x544 y437 幅24 高26）と ☆ の位置（x546 y435 幅24 高20）がほぼ同じで、押すと「☆ マークしました（あなたの画面だけ）」になる。編集は開かない",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_32_card_zoom.png",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "layout",
+   "suggestion": "✎ と ☆ を並べて置く（重ねない）"
+  },
+  {
+   "no": "auto-06",
+   "screen": "up／item",
+   "title": "資料の読み取りの取り違え：強み3件を読み落とす／「アワーメーター 4,800h」がカンマで2行に割れる／「規格」欄に梱包の文が「カートン …」付きで入る／単価があるのに「建値 未入力」",
+   "steps": "「商品情報_自動車建機_machine_excavator.xlsx」（強み1〜3・単価「¥5,800,000／台（FOB 横浜・税抜）」・成分・材質「ディーゼル 72kW・排ガス 2014年基準適合・アワーメーター 4,800h・足回り 70%」）を登録する",
+   "expected": "資料に書いてある項目はそのまま入る",
+   "actual": "①「取り込んだ項目」に強みが無く、ヒアリングで「商品の強みを教えてください」と聞き直される（資料の「商品の強み1〜3」は未使用）。② 商品情報「③ 車両情報表」が「ディーゼル 72kW・排ガス 2014年基準適合・アワーメーター 4」「800h・足回り 70%」の2行に割れる。③ 読み取り結果の「規格」欄が、登録前は品番「KM-EX-2017-031」、登録後は「カートン RORO 船または フラットラック コンテナ（分解なし）」。④ 読み取り結果の「建値」は「未入力」（価格表には「¥5,800,000／台（FOB 横浜・税抜）」が入っている）。⑤「AI が埋めた欄」の「成分・材質表」の根拠が「賞味期限・使用期限：—」",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_03_uploaded.png ／ /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_12_item_4.png ／登録の画面・商品情報の文言",
+   "personas": [
+    "P1",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "data",
+   "suggestion": "「商品の強み1」のような連番のラベルを強みとして読む。値の中のカンマ（4,800）で行を割らない。「規格」欄に梱包を入れない（建機は「カートン」を付けない）。単価の文から建値（FOB 横浜）を拾う"
+  },
+  {
+   "no": "auto-07",
+   "screen": "item／up／ai",
+   "title": "建機に要る項目が無く、合わない項目・例が並ぶ（走行距離・排気量・ハンドル位置・登録の状況／外装カートン・パレット入数／付属品の例「元箱・充電器」）",
+   "steps": "建機の商品で、商品情報「④ 業種ごとの項目」「項目を編集」、登録の画面のヒアリング、AI商社マンの「商材の種類」を見る",
+   "expected": "建機なら アワーメーター（稼働時間）・機番（製造番号）・機体質量・バケット容量・足回りの残り・排ガス規制の区分・アタッチメント が入れられる。自分で項目を足せる",
+   "actual": "「車両の項目」は 型式（例：DAA-XXX10）・走行距離（例：48,000km）・車台番号・排気量（例：1,500cc）・燃料・駆動（例：ガソリン×モーター）・修復歴・ハンドル位置・登録の状況（例：輸出抹消登録済み）で固定。項目は足せない。「中古品の項目」の付属品の例は「元箱・充電器・バッテリー1個・説明書」。ヒアリングは「単品と外装カートンのサイズと重量を教えてください」、そろい具合は「パレット・コンテナ入数…が必要」。AI商社マンの「商材の種類」に建設機械は無く「🚗 中古車・車両」になる",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_12_item_4.png ／ /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_03_uploaded.png",
+   "personas": [
+    "P1",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "missing",
+   "suggestion": "「建設機械・産業機械」の項目のセットを足す（稼働時間・機番・質量・バケット・足回り・排ガス区分）。合わない項目は隠せるようにし、自由な項目を足せるようにする"
+  },
+  {
+   "no": "auto-08",
+   "screen": "up／ai／ようこそ",
+   "title": "例や質問の文が食品・小物のまま（建機・中古車に合わない）",
+   "steps": "建機の商品で、ヒアリングの質問の例、AI商社マンの入力欄・答え、ようこその窓を読む",
+   "expected": "登録した商材（1台単位の機械）に合う例が出る",
+   "actual": "強みの例「粒径5μm（競合15〜30μm）／有機JAS取得／残留農薬250項目 検出せず」、産地の例「静岡県掛川市」、AI商社マンの入力欄「例：香港に500袋送るといくら？」、答えの中の「『500袋だといくら？』（数量を入れる）」、ようこその窓「『500個でいくら？』」",
+   "evidence": "ヒアリング・AI商社マンの文言（上のとおり）／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_01_welcome.png",
+   "personas": [
+    "P1"
+   ],
+   "severity": "minor",
+   "type": "copy",
+   "suggestion": "商材の種類ごとに例を差し替える（車両・機械なら「年式・稼働時間・点検記録」「1台 FOB 横浜でいくら？」など）"
+  },
+  {
+   "no": "auto-09",
+   "screen": "cty",
+   "title": "国別の詳細（COUNTRY DEEP-DIVE）が消費財のひな形のままで、12トンの中古建機に「越境EC・ライブコマース・小売マージン・SKU追加」が出る",
+   "steps": "販売先国の選定 → 分析のあと、表の「ケニア」の「詳細 →」を開く",
+   "expected": "建機・車両の売り方（現地の輸入業者・ディーラー・在庫リスト→見積→前払い）に合った内容",
+   "actual": "「チャネル：オンライン（越境EC・EC）／ライブコマース／オフライン（小売・専門チャネル）」「オンライン（越境EC）単価分解：プラットフォーム手数料 15〜20%…」「オフライン（正規流通）単価分解：小売マージン 35〜40%」「越境ECの免税枠（de minimis）」「Phase 2：初回出荷・店頭／ECでの販売開始」「Phase 3：チャネル拡大・SKU追加」「提供できる支援：越境EC／ライブコマースの設計」「表示要件／言える表現（OK）／言えない表現（NG）／成分・規格の上限」",
+   "evidence": "国別の詳細の文言（上のとおり）／/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_22_kenya_detail.png（開いた直後の表示）",
+   "personas": [
+    "P1",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "data",
+   "suggestion": "商材の種類が車両・機械のときは、越境EC・ライブコマース・小売マージン・表示の欄を出さず、ディーラー網・検査・輸送（RORO）・前払いの枠に差し替える"
+  },
+  {
+   "no": "auto-10",
+   "screen": "cty",
+   "title": "国の選び方が2系統あり、表のチェックが上の「選択中の販売先国／この3か国で確定する」に反映されない",
+   "steps": "販売先国の選定 →「AI商社マンにおまかせ」で分析 → 下の表で 香港・シンガポール のチェックを外し、フィリピン・ベトナム にチェック",
+   "expected": "上の「選択中の販売先国」が UAE・フィリピン・ベトナム に変わる",
+   "actual": "上の帯は「選択中の販売先国 3 / 3 か国 UAE 香港 シンガポール この3か国で確定する」のまま（逆に、上のカードの「選択中（押すと外す）」は表のチェックに反映される）。表の下の「チェックした国で確定」を押すと「販売先国を確定しました：UAE・ベトナム・フィリピン」になるが、上の「この3か国で確定する」は別の3か国を指したまま。4か国目（ケニア）にもチェックが入り、上限の案内は出ない",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_23_selected3.png ／画面の文言（上のとおり）",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "bug",
+   "suggestion": "選んだ国は1か所で持ち、カード・表・帯のどこで変えても同じに映す。確定のボタンは1つにする。3か国を超えるチェックはその場で止めて理由を出す"
+  },
+  {
+   "no": "auto-11",
+   "screen": "cty",
+   "title": "表の「詳細 →」を押すと画面の先頭に戻り、詳細は下に出るので何も起きていないように見える。詳細の表示中は「選択中の販売先国 0 / 3」になる",
+   "steps": "販売先国の選定 → 表の「ケニア」の「詳細 →」を押す",
+   "expected": "その国の詳細が目の前に開く。選んだ国の表示は変わらない",
+   "actual": "スクロール位置が先頭（0）に戻り、見えるのは同じ「総合点の上位 3か国」のカード。「COUNTRY DEEP-DIVE 国別戦略：ケニア」はその下。開いている間は「選択中の販売先国 0 / 3 か国 まだ選んでいません」「国を選ぶと確定できます」と出て、カードも「選択する」に変わる（「← 一覧へ戻る」で 3 / 3 に戻る）",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_22_kenya_detail.png",
+   "personas": [
+    "P1",
+    "P2"
+   ],
+   "severity": "minor",
+   "type": "ux",
+   "suggestion": "詳細を開いたら詳細の見出しまで動かす。選択中の表示は詳細の間も保つ"
+  },
+  {
+   "no": "auto-12",
+   "screen": "cty",
+   "title": "おすすめの根拠が弱い：上のカードは「市場性 0・競合 0」、下の表は同じ国が「未評価」。希望国より「拠点の開設予定」だけで香港・シンガポールが推奨になる",
+   "steps": "進出希望国がフィリピン・ベトナム・UAE・ケニアの建機で「AI商社マンにおまかせ（1クリック）」",
+   "expected": "同じ数字は同じ表し方。推奨の理由が商材に合っている",
+   "actual": "推奨は UAE 49・香港 46・シンガポール 46。香港・シンガポールのカードは「市場性 0／規制 34／競合 0／拠点 60」、表は「市場性 未評価／競合 未評価」。推奨理由は「規制のひな形なし（関税・規制は要確認）／STANDAGE拠点は開設予定（香港・2027年度）」。希望国のベトナム 39・フィリピン 37・ケニア 35 は下位。競合の説明は「通関統計に日本からの輸出実績が無い（先行者不在＝開拓型）」",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_20_cty_done_1.png ／画面の文言",
+   "personas": [
+    "P1",
+    "P3"
+   ],
+   "severity": "major",
+   "type": "data",
+   "suggestion": "データの無い観点は、カードでも「未評価」と出す。データが足りない国は「推奨」にせず「調査が要る」と分ける。登録した進出希望国は別枠で先に見せる。統計が取れていないときは「実績なし」と言い切らない"
+  },
+  {
+   "no": "auto-13",
+   "screen": "up（ログイン直後）",
+   "title": "商品の登録と国の確定のあとも、ログインのたびに「はじめまして」→「何をしますか？」の窓が出て、閉じると登録済みの商品が隠れた表示になる",
+   "steps": "商品を登録して販売先国を確定 → ブラウザを閉じて入り直す →「さっそく始める」→「閉じる（このまま画面を見る）」",
+   "expected": "2回目からは窓が出ず、前の続き（案件や今日やること）から始まる。「このまま画面を見る」なら画面は変わらない",
+   "actual": "毎回「👋 はじめまして。AI商社マンです。」が出る（4回の入り直しで4回）。「さっそく始める」で「商品情報を登録 ― 何をしますか？」が出て、「閉じる（このまま画面を見る）」を押すと、画面は「🏢 新しい会社の商品を登録」の表示になり、読み取り結果が「AIが読み取る項目」の一覧に変わって登録済みの商品が見えなくなる。「通常表示に戻る」を押すと戻る",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_09_menu_again.png ／ /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_09_after_close.png",
+   "personas": [
+    "P1"
+   ],
+   "severity": "major",
+   "type": "ux",
+   "suggestion": "ようこその窓は初回だけにする。商品があるときの入口はホーム（案件・今日やること）にする。「このまま画面を見る」で表示を切り替えない"
+  },
+  {
+   "no": "auto-14",
+   "screen": "up",
+   "title": "読み取った直後、同じ商品が「未反映」と「登録済みの商品」の両方に出る",
+   "steps": "資料をアップロードした直後の登録の画面を見る",
+   "expected": "登録前か登録済みかが1つに決まって見える",
+   "actual": "上に「この資料から 1 商品を読み取りました（未反映）／すべて登録する（1）／反映しない」、すぐ下の「登録済みの商品」に同じ商品が「情報 13/21・表示中」、上の帯も会社名に変わる",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_05_up_2.png",
+   "personas": [
+    "P1"
+   ],
+   "severity": "minor",
+   "type": "copy",
+   "suggestion": "「未反映」は「読み取った内容をまだ商品情報に入れていません」など、何が済んで何が残っているかを一文で言う"
+  },
+  {
+   "no": "auto-15",
+   "screen": "up／ops:reg",
+   "title": "「? 説明」が2つ続けて出る",
+   "steps": "登録の画面で「新しい会社の商品を登録」の表示にする／規制を調べる を開く",
+   "expected": "説明の印は1つ",
+   "actual": "「🏢 新しい会社の商品を登録 ? 説明 ? 説明」「🌏 販売先国（確定）：UAE・ベトナム・フィリピン（3か国） ? 説明 ? 説明」",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_09_after_close.png ／ /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_24_reg_1.png",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "polish",
+   "type": "layout",
+   "suggestion": "重複した説明の印を1つにする"
+  },
+  {
+   "no": "auto-16",
+   "screen": "up",
+   "title": "AIヒアリングの質問文が途中で切れる（省略の印なし）",
+   "steps": "資料を読み取った直後の、右の「AIヒアリング」の Q1 を読む",
+   "expected": "文が最後まで読める、または「…」で切れていると分かる",
+   "actual": "「…数量帯ごとにあると、AIが「その数量」で終わる。登録後の Q1 も「AIはここを引用して商談の」で終わる",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_03_uploaded.png",
+   "personas": [
+    "P1"
+   ],
+   "severity": "polish",
+   "type": "copy",
+   "suggestion": "文の切れ目で切り「…」を付けるか、全文を出す"
+  },
+  {
+   "no": "auto-17",
+   "screen": "item",
+   "title": "データ健全性チェックが「問題は見つかりませんでした」と言ったすぐ下で指摘を出す。HS を変えたあと「全体 20/21・必須 8/9」なのに円は 100%",
+   "steps": "商品情報 →「データ健全性チェック」。また HS を候補に変えたあとの充足度を見る",
+   "expected": "指摘があるなら「1件あります」。件数と％が合う",
+   "actual": "「問題は見つかりませんでした。登録データはきれいな状態です。」の下に「💴 期限の無い価格表 いつまでの価格かが登録されていません」。充足度は「全体 20/21・必須 8/9」の横の円が「100%」",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_16_health.png ／ /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_27_item_hs.png",
+   "personas": [
+    "P1",
+    "P3"
+   ],
+   "severity": "minor",
+   "type": "data",
+   "suggestion": "指摘の件数を先に言う。％は件数と同じ元から出す"
+  },
+  {
+   "no": "auto-18",
+   "screen": "検索（Ctrl+K）",
+   "title": "何でも検索で「HSコード」が「該当がありません」。検索に出る画面名・分け方が左メニューと違う",
+   "steps": "Ctrl+K →「HSコード」と入れる。空のときの一覧も見る",
+   "expected": "用語集の「HSコード」や、規制・商品情報の画面に行ける。画面名はメニューと同じ",
+   "actual": "「該当がありません」。一覧の画面名は「ダッシュボード」「貿易実務・書類・出荷」「メンバー・担当」、分け方は「売り先を探す」「出荷・書類」「チーム」「自走する」（左メニューは「案件」「規制を調べる」「メンバー・権限・セキュリティ」、分け方は「ホーム／商談・案件／調査・規制／物流・出荷／資産／分析／設定」）",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_33_search_hs.png ／ /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_33_search_empty.png",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "minor",
+   "type": "ux",
+   "suggestion": "用語集の言葉・商品の項目名も検索に入れる。画面名と分け方を左メニューに合わせる"
+  },
+  {
+   "no": "auto-19",
+   "screen": "ops:reg",
+   "title": "自動で作られる見本の案件番号が「KM-EX--2608-01」（ハイフンが2つ・11月なのに 2608）",
+   "steps": "商品を登録 → 規制を調べる の下の「出荷の進み具合」を見る",
+   "expected": "番号の形がそろっている",
+   "actual": "「KM-EX--2608-01 見本 （想定）UAEの輸入商社 UAE 1台 FOB 日本 作成待ち 想定シナリオ」",
+   "evidence": "規制を調べる の文言（上のとおり）",
+   "personas": [
+    "P1"
+   ],
+   "severity": "polish",
+   "type": "data",
+   "suggestion": "品番の末尾のハイフンを落としてつなぐ。年月は作った月にする"
+  },
+  {
+   "no": "auto-20",
+   "screen": "全体（右下の「AI商社マンに聞く」）",
+   "title": "右下の「AI商社マンに聞く」が、画面の右下のボタン・札に重なる",
+   "steps": "1440×900 で 商品情報／販売先国の選定 を開く",
+   "expected": "浮いたボタンが操作の邪魔をしない",
+   "actual": "商品情報では「データ健全性チェック」「別の資料を読み込む」に重なる。販売先国の選定では候補国の札（フランス）に重なる",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_27_item_hs.png ／ /tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents/auto/img/p1_20_cty_done_2.png",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "severity": "polish",
+   "type": "layout",
+   "suggestion": "本文の下と右に、浮いたボタンの分の余白を取る"
+  }
+ ]
+}
