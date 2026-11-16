@@ -1,0 +1,17 @@
+トライアル共通 | 共有(代理) Claude | 許可 | ja | anthropic→anthropic | 道具なし/指示:Web禁止 → web_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | 道具なし/指示:Web可 → web_search/指示:Web可
+トライアル共通 | 共有(代理) Gemini | 許可 | ja | gemini→gemini | google_search/指示:Web禁止 → google_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | google_search/指示:Web可 → google_search/指示:Web可
+トライアル共通 | 共有(代理) ChatGPT | 許可 | ja | openai→openai | 道具なし/指示:Web禁止 → 道具なし/指示:Web禁止 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文＋ℹ 今回は Web検索をしていま・出典0 | 道具なし/指示:Web可 → 道具なし/指示:Web禁止（欄は押せない・理由つき）
+トライアル共通 | 共有(代理) Claude+ChatGPT | 許可 | ja | openai→anthropic | 道具なし/指示:Web禁止 → web_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | 道具なし/指示:Web可 → web_search/指示:Web可
+トライアル共通 | 共有(代理) Gemini | 許可しない | ja | gemini→gemini | google_search/指示:Web禁止 → 道具なし/指示:Web禁止 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文＋ℹ 今回は Web検索をしていま・出典0 | google_search/指示:Web可 → 道具なし/指示:Web禁止（欄は押せない・理由つき）
+トライアル共通 | 共有(キー配布) Claude | 許可 | ja | anthropic→anthropic | 道具なし/指示:Web禁止 → web_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | 道具なし/指示:Web可 → web_search/指示:Web可
+トライアル共通 | 未接続 | 許可 | ja | -→- | 依頼なし → 依頼なし | AI未接続の案内（依頼なし） → AI未接続の案内（依頼なし） | 依頼なし → 依頼なし（欄は押せない・理由つき）
+お客様 | 共有(代理) Claude | 許可 | ja | anthropic→anthropic | 道具なし/指示:Web禁止 → web_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | 道具なし/指示:Web可 → web_search/指示:Web可
+お客様 | 共有(代理) ChatGPT | 許可 | ja | openai→openai | 道具なし/指示:Web禁止 → 道具なし/指示:Web禁止 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文＋ℹ 今回は Web検索をしていま・出典0 | 道具なし/指示:Web可 → 道具なし/指示:Web禁止（欄は押せない・理由つき）
+お客様 | 共有(代理) Gemini | 許可しない | ja | gemini→gemini | google_search/指示:Web禁止 → 道具なし/指示:Web禁止 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文＋ℹ 今回は Web検索をしていま・出典0 | google_search/指示:Web可 → 道具なし/指示:Web禁止（欄は押せない・理由つき）
+管理者 | 直接 Claude | 許可 | ja | anthropic→anthropic | 道具なし/指示:Web禁止 → web_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | 道具なし/指示:Web可 → web_search/指示:Web可
+管理者 | 直接 Gemini | 許可 | ja | gemini→gemini | google_search/指示:Web禁止 → google_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | google_search/指示:Web可 → google_search/指示:Web可
+管理者 | 直接 ChatGPT | 許可 | ja | openai→openai | 道具なし/指示:Web禁止 → 道具なし/指示:Web禁止 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文＋ℹ 今回は Web検索をしていま・出典0 | 道具なし/指示:Web可 → 道具なし/指示:Web禁止（欄は押せない・理由つき）
+管理者 | 直接 Perplexity | 許可 | ja | perplexity→perplexity | 検索内蔵/指示:Web禁止 → 検索内蔵/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典2 → 冒頭は本文・出典2 | 検索内蔵/指示:Web可 → 検索内蔵/指示:Web可
+管理者 | 未接続 | 許可 | ja | -→- | 依頼なし → 依頼なし | AI未接続の案内（依頼なし） → AI未接続の案内（依頼なし） | 依頼なし → 依頼なし（欄は押せない・理由つき）
+トライアル共通 | 共有(代理) Claude | 許可 | en | anthropic→anthropic | 道具なし/指示:Web禁止 → web_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ This time the ・出典0 → 冒頭は本文・出典2 | 道具なし/指示:Web可 → web_search/指示:Web可
+トライアル共通 | 共有(代理) ChatGPT | 許可 | en | openai→openai | 道具なし/指示:Web禁止 → 道具なし/指示:Web禁止 | 冒頭「Web検索は利用できないため…」＋⚠ This time the ・出典0 → 冒頭は本文＋ℹ No web search ・出典0 | 道具なし/指示:Web可 → 道具なし/指示:Web禁止（欄は押せない・理由つき）

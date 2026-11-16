@@ -1,0 +1,145 @@
+r10w：AI の Web検索が「利用できないため」と出る件（10巡目・ポート 8911）
+
+■ 利用者の指摘
+デザイン刷新版の本番（21.94 build eb78e1188731）・Trial-2026 のアカウントで「規制を調べる」→「🤖 AIで最新規制を詳細調査」
+（シンガポール・純米大吟醸 湊 720ml・HS 2206.00）。答えの冒頭が「Web検索は利用できないため、以下は貿易クラウド内の規制調査データに基づく整理です」。
+管理画面では Web検索を ON にしている。
+
+■ 確かめ方（この環境は外へ出られないので、AI の返事は差し替え）
+・直す前：$SP/work/redesign（= 8811 と同じ eb78e1188731。8811 はこの環境では止まっていたため、写しを fix/r10w/before に置いて 8910 で配った）。
+・直した後：8911（mkfix.sh r10w）。
+・fix/r10w/p01.cjs：Playwright で「AIで最新規制を詳細調査」と追加調査（🌐 の付いた候補「④のラベル表示の必須項目を追加調査して 🌐」）を押し、
+  外へ出る AI への依頼（直接：AI の会社の URL／共有：同期サーバーへの ai_relay の body）を route で捕まえる。
+  捕まえるもの：エンジン・道具（tools）・システムの指示に「Web検索は使わず／使えません」か「使えます」か・問いに「Web検索で確認して」が残るか。
+  差し替えの返事：道具が付いていて、システムの指示が Web を禁じていなければ「Web検索あり」＋出典2件。Web を頼まれているのに道具が無い・
+  禁じられているときは、利用者の画面と同じ書き出し「Web検索は利用できないため、以下は…」を返す（実物の AI の言い方ではなく、最悪の場合の代役）。
+・アカウント：トライアルの共通アカウント TRIAL-2026（担当者名なし＝v5326pubIs で「共通アカウント」）、お客様 BC-FOOD-P101（担当者名あり）、
+  管理者（SES.t=admin）。管理画面の Web検索は、同期サーバーの代役が login で返すアカウントの web（true／false）で切り替え（本番と同じ届き方）。
+・AI 接続：共有(代理)＝同期サーバーの air_me が provs を返し、v63aApply がキーを「@air」にして、依頼は v63aRelay が ai_relay で同期サーバーに送る形。
+  共有(キー配布)＝bc20_llm_shared=1（前の「AI接続の共有」。依頼は直接と同じ形）。直接＝bc20_llm_v1 にキー。未接続。
+  Trial-2026 が本番でどのエンジンにつながっているか（管理者が預けたエンジン）は、この環境からは分からない（同期サーバーの中）。そのため組み合わせを全部試した。
+
+■ 原因（事実。直す前の 8910 で、全部の組み合わせで同じ答えの書き出しが出ることを確かめた）
+どの層の直しでも触れていない、index.html 本体の llmAsk・llmSysPrompt・llmRoute の作り（21.94 の index.html の行番号）。
+① システムの指示が Web検索を禁じている（いちばん大きい）
+   ・regAIRun（16742 → 40755 で置き換え → 88955 v54ask・127459 v66kb で包み直し）は llmAsk(問い, 2400, { forceWeb: 1, timeout: 150000 }) を sys なしで呼ぶ。
+   ・sys が無いと、本体の llmAsk（20565）は llmSysPrompt()（20535）を使う。その Web の一文は WEBON だけを見て決まる：
+       WEBON が偽 → 「Web検索は使わず、社内データと一般的な貿易知識だけで答えてください。」
+   ・WEBON（20075 let WEBON = false）は、AI商社マンの相談の画面の「🌐 Web検索」トグル（patchAiToggle 22113）でしか ON にならない、端末の画面の中だけの値。
+     既定は OFF。管理画面の設定（アカウントの web）も forceWeb も見ていない。後の層の llmSysPrompt の包み（16本）も、この一文には触れていない。
+   ・そのため「AIで最新規制を詳細調査」の依頼は、どのエンジンでも「問い：Web検索で確認して／指示：Web検索は使うな」という食い違った形で外へ出る。
+     Gemini には google_search の道具が付いていても（指示が禁じる）、Perplexity は検索内蔵でも、同じ。利用者の画面の「Web検索は利用できないため、
+     以下は貿易クラウド内の規制調査データに基づく整理です」は、この指示と問いの食い違いに AI が答えた文（「社内データ」＝ppContext の「規制調査（概算）」）。
+② 道具が付くエンジンが Perplexity・Gemini だけ
+   ・本体の llmAsk：webOK = (opts.forceWeb && P.search) || (WEBON && webPerm() && !opts.noWeb)。PROV の search は perplexity・gemini が 1、openai・anthropic が 0。
+   ・Gemini だけ body.tools = [{ google_search: {} }] を付ける。Claude（anthropic）・ChatGPT（openai）の枝には道具を付ける処理が無い。
+     WEBON が OFF なので、代わりの参考情報（llmWebCtx：為替・内蔵ナレッジ）も付かない。→ Claude・ChatGPT の経路では、forceWeb でも検索のしようが無い。
+③ 経路（llmRoute 20370）は、Web が要るとき pick(["perplexity","gemini"])、どちらも無ければ接続の1番目（PROV の順で ChatGPT が Claude より先）。
+   Claude＋ChatGPT の接続では ChatGPT が選ばれていた（8910：経路 openai「Web検索・最上位モデル」）。
+④ 管理画面の「🌐 Web検索」（アカウントごとの web）
+   ・保存先：管理者の端末の台帳 localStorage「bc20_trial_v1」の accounts[].web（発行の「🌐 Web検索を許可」#nweb・一覧の詳細の「Web検索を停止／許可」dw-web）。
+     同期サーバーへ push（v213 の accounts[].web）し、トライアル・お客様の端末には login／lookup の acct.web として届き、v213TakeSrv（44942）が台帳に写す。
+   ・トライアル・お客様の端末では webPerm()（20188：SES.t が admin なら常に真、ほかは findAcct(SES.code).web !== false）で読む。
+     ところが webPerm() が効くのは WEBON（相談の画面のトグル）を押せるかどうかと、WEBON の依頼だけ。forceWeb の依頼は webPerm を見ない。
+     → 「許可」にしても規制の調査の依頼は何も変わらず（①②③で決まる）、「許可しない」にしても Gemini には道具が付いていた（8910 で確かめた：web=false でも google_search）。
+   ・同期サーバーの「AI接続の共有」（air_conf：act・models・route・plan）には Web検索の設定は無い。
+⑤ 「AI接続の共有」の経路（同期サーバーの代理）
+   ・v63aPull（121483）が air_me で provs を受け、v63aApply（121388）がキーを「@air」にする。依頼は本体の llmAsk がエンジンごとの本文を作り、
+     window.fetch の包み（121590）が「@air」を見て v63aRelay（121526）で syncCall("ai_relay", { kid, dev, prov, path, body }) に載せる。
+   ・body は JSON.parse(init.body) をそのまま送る（tools も残る）。8910 で捕まえた ai_relay の body にも Gemini の google_search が入っていた。
+     → アプリの側では、代理の経路で Web検索の指定は落ちていない（落ちていたのは①②③④）。
+   ・前の「AI接続の共有（キーを端末に配る）」（llmSharePull 32211・bc20_llm_shared）は、キーが端末に入るだけで、依頼の形は直接の接続と同じ。
+⑥ Trial-2026：画像の左下「トライアル環境／（お客様デモ用の共通アカウント）」のとおり、担当者名の無いトライアルのアカウント（v5326pubIs：担当者名なし・BC- で始まらない
+   コード＝共通アカウント）。この環境では TRIAL-2026・担当者名なしで入り、v5326pubIs が真（共通アカウント）になることを確かめた。
+   本番の Trial-2026 が同期サーバーでどのエンジンを預かっているか（air_me の provs）は、この環境からは分からない。どのエンジンでも①で同じ書き出しになる。
+⑦ 既にあった知らせ（v54ask 88858〜）は「⚠ 今回はWeb検索で確かめられていません」を出すが、原因（指示が禁じている・管理画面・接続のエンジン）は言わず、
+   「もう一度調べる（Web検索つき）」を出すだけ（押しても同じ依頼になる）。利用者の画像では、その知らせは見えていない（詳細不明・未確認）。
+
+■ 直したこと（本体の層 fix/r10w/src/logic_v2192r10w.ts。今の版と刷新版の両方に効く。前の層の写し ovr・build.py の変更は無し。刷新版の層 rd_v92r10w.* は不要だったので作っていない）
+1. 依頼ごとの判断（llmAsk のいちばん外）
+   ・Web が要る依頼（forceWeb、または相談の画面の 🌐 が ON）について、使えるかを決める：AI 未接続 → noai／管理画面で「許可しない」（webPerm 偽）→ off／
+     接続のどれも検索に対応していない → noeng／それ以外 → 使う。
+   ・使わないときは、その依頼を noWeb にする（管理画面の「許可しない」が forceWeb にも効く）。
+   ・問いの末尾に印「 [[r10w:番号]]」を付け、下の fetch の包みで外へ出る前に消す（AI には届かない。8911 の捕まえた本文に印が残っていないことを確かめた）。
+2. 経路（llmRoute の包み）：Web が要る依頼で、選ばれたエンジンが検索に対応していなければ、接続のうち Perplexity → Gemini → Claude の順に選び直す（why は「Web検索」）。
+   AI の会社の自動切り替え（本体の 20707 の順番）も同じ順になる。
+3. 依頼の本文（window.fetch のいちばん外。直接の接続も、同期サーバーの代理も、ここを通ってから代理に載る）
+   ・使うとき：本体の指示の「Web検索は使わず…」を「この依頼では Web検索が使えます。最新の公的な情報を Web検索で確かめ…出典（サイト名・URL）を示してください。」にする。
+     Gemini は google_search（無ければ足す）、Claude は Web検索の道具 { type: "web_search_20250305", name: "web_search", max_uses: 5 } を足す、Perplexity は検索内蔵。
+     PROV.anthropic.search を 1 にする（管理画面の表の「🌐検索対応」・本体の webOK・費用の記録の Web の数がそろう）。
+     Claude の答えの出典（web_search_tool_result の url・text の citations）を拾い、本体が出典を拾わない Claude でも r.cits に入れる。
+     Claude の stop_reason が pause_turn なら、2回まで続きを頼む。Claude が道具を断った（HTTP 400 で web_search／tool の文）ときは、
+     その画面の間は Claude を検索に対応しない扱いにし、Web検索を頼まない形で送り直す（理由：reject）。
+   ・使わないとき：指示の Web の一文を「この依頼では Web検索は使えません（理由はアプリが伝えます）。…Web検索が使えないことは本文に書かず、確かめられない点は「要確認」」にし、
+     独自の指示（sys あり）の依頼には同じ趣旨を足す。問い・指示の「Web検索で（最新情報を）確認／調べ」を「手元の情報で確認／調べ」にする。Gemini の道具は外す。
+   ・ChatGPT（openai）は、この呼び出し方（chat/completions）では Web検索の道具を付けない（対応していない扱いのまま）。
+4. 答えの扱い：Web検索を頼まなかった答えの冒頭の「Web検索は利用できないため…」の1文は消す（理由はアプリが出す）。r.why に「Web検索あり・出典N件」
+   ／「Web検索を依頼・出典なし」／「Web検索なし」を足す。r.r10w に、使ったか・出典の数・理由・経路（直接／代理）を入れる。
+5. 規制の詳細調査の画面
+   ・上の知らせ（v54ask の知らせの仕組みを使う）：使えなかったときは「ℹ 今回は Web検索をしていません」＋理由（管理画面で許可しない／この AI 接続（ChatGPT）は対応していない
+     ＝管理画面の Web検索：許可／Claude の Web検索が AI の会社の側で使えない設定／検索に対応したエンジンがエラーで切り替わった）＋どうすれば使えるか。
+     道具を付けたのに出典が0件のときは「⚠ Web検索を頼みましたが、出典が返ってきませんでした」（代理の経路なら「同期サーバーを通ります（サーバーの側の扱いは確かめられません）」）＋もう一度調べる。
+     Web検索で出典が返ったときは、知らせは出さない（出典の箱が出る）。
+   ・「使用エンジン」の行の後ろに「🌐 Web検索あり・出典2件（Claude）」／「🌐 Web検索なし：（理由）」（お客様の画面は v56askRegEng・v65plan が行を書き直すので、そのあとに足す。保存して、キャッシュの表示にも出る）。
+   ・上の「Web検索で最新情報を確認して整理します。」は、使えないときは「登録データと一般的な知識で整理します（このアカウントでは、いまは Web検索を使えません）。」にする。
+   ・追加調査の「🌐 Web検索で追加調査」：使えないときは押せない（入力の言葉で自動で ON になる本体の動きも打ち消す）＋入力欄の下に「使えません（理由）」。
+     使えるときは title に「Web検索に対応した AI（Claude）が…」。
+   ・追加調査の答え：使えなかったときは答えの上に理由（「調べた手順」に畳まれない）、使ったときは「調べた手順」の中に「🌐 Web検索あり・出典N件（エンジン）」。
+6. 管理画面
+   ・AIエンジン設定：説明の下に「🌐 Web検索：いまの接続では Claude で Web検索します（対応：Perplexity✓・ChatGPT✗・Gemini✓・Claude✓）。アカウントの「🌐 Web検索」が許可のとき…」。
+     エンジンの表の Claude に「🌐検索対応」が付く（PROV.anthropic.search）。
+   ・アカウント一覧の「🌐Web検索」の列の見出し・発行の「🌐 Web検索を許可」に、許可／許可しないで何が変わるかの説明（title）。
+   ・「トライアル環境のしくみ」の古い説明（「ONにすると為替レートAPIとWikipediaをライブ検索…claude.ai上での表示は…」）を、今の動きの説明にする。
+   ・AI商社マンの画面の「Web検索ができる AI（Perplexity・Gemini）」に Claude を足す。
+7. 文言：新しい文は日・英・中・西（M(ja,en,zh,es)・data-noi18n）。英語は画面で確かめた。
+
+■ 前後の表（8910＝直す前 eb78e1188731 の写し → 8911＝直した後。fix/r10w/before.jsonl・after.jsonl、まとめ table.txt）
+列：アカウント｜AI 接続｜管理画面の Web検索｜言語｜経路のエンジン（前→後）｜詳細調査の依頼：道具/システムの指示（前 → 後）｜画面（前 → 後）｜追加調査（🌐の候補）の依頼（前 → 後）
+（「指示:Web禁止/使えない」＝前は本体の「Web検索は使わず」、後は r10w の「Web検索は使えません・書かないで」。差し替えの返事は「道具なし／指示が禁じる／Web を頼むのに道具なし」のとき
+  利用者の画面と同じ書き出しを返す代役なので、「前」の冒頭はどの行もその文になる。後で道具が無い行は、その文をアプリが消し、理由の知らせを出している）
+トライアル共通 | 共有(代理) Claude | 許可 | ja | anthropic→anthropic | 道具なし/指示:Web禁止/使えない → web_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | 道具なし/指示:Web可 → web_search/指示:Web可
+トライアル共通 | 共有(代理) Gemini | 許可 | ja | gemini→gemini | google_search/指示:Web禁止/使えない → google_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | google_search/指示:Web可 → google_search/指示:Web可
+トライアル共通 | 共有(代理) ChatGPT | 許可 | ja | openai→openai | 道具なし/指示:Web禁止/使えない → 道具なし/指示:Web禁止/使えない | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文＋ℹ 今回は Web検索をしていま・出典0 | 道具なし/指示:Web可 → 道具なし/指示:Web禁止/使えない（欄は押せない・理由つき）
+トライアル共通 | 共有(代理) Claude+ChatGPT | 許可 | ja | openai→anthropic | 道具なし/指示:Web禁止/使えない → web_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | 道具なし/指示:Web可 → web_search/指示:Web可
+トライアル共通 | 共有(代理) Gemini | 許可しない | ja | gemini→gemini | google_search/指示:Web禁止/使えない → 道具なし/指示:Web禁止/使えない | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文＋ℹ 今回は Web検索をしていま・出典0 | google_search/指示:Web可 → 道具なし/指示:Web禁止/使えない（欄は押せない・理由つき）
+トライアル共通 | 共有(キー配布) Claude | 許可 | ja | anthropic→anthropic | 道具なし/指示:Web禁止/使えない → web_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | 道具なし/指示:Web可 → web_search/指示:Web可
+トライアル共通 | 未接続 | 許可 | ja | -→- | 依頼なし → 依頼なし | AI未接続の案内（依頼なし） → AI未接続の案内（依頼なし） | 依頼なし → 依頼なし（欄は押せない・理由つき）
+お客様 | 共有(代理) Claude | 許可 | ja | anthropic→anthropic | 道具なし/指示:Web禁止/使えない → web_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | 道具なし/指示:Web可 → web_search/指示:Web可
+お客様 | 共有(代理) ChatGPT | 許可 | ja | openai→openai | 道具なし/指示:Web禁止/使えない → 道具なし/指示:Web禁止/使えない | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文＋ℹ 今回は Web検索をしていま・出典0 | 道具なし/指示:Web可 → 道具なし/指示:Web禁止/使えない（欄は押せない・理由つき）
+お客様 | 共有(代理) Gemini | 許可しない | ja | gemini→gemini | google_search/指示:Web禁止/使えない → 道具なし/指示:Web禁止/使えない | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文＋ℹ 今回は Web検索をしていま・出典0 | google_search/指示:Web可 → 道具なし/指示:Web禁止/使えない（欄は押せない・理由つき）
+管理者 | 直接 Claude | 許可 | ja | anthropic→anthropic | 道具なし/指示:Web禁止/使えない → web_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | 道具なし/指示:Web可 → web_search/指示:Web可
+管理者 | 直接 Gemini | 許可 | ja | gemini→gemini | google_search/指示:Web禁止/使えない → google_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文・出典2 | google_search/指示:Web可 → google_search/指示:Web可
+管理者 | 直接 ChatGPT | 許可 | ja | openai→openai | 道具なし/指示:Web禁止/使えない → 道具なし/指示:Web禁止/使えない | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典0 → 冒頭は本文＋ℹ 今回は Web検索をしていま・出典0 | 道具なし/指示:Web可 → 道具なし/指示:Web禁止/使えない（欄は押せない・理由つき）
+管理者 | 直接 Perplexity | 許可 | ja | perplexity→perplexity | 検索内蔵/指示:Web禁止/使えない → 検索内蔵/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ 今回はWeb検索で確かめられ・出典2 → 冒頭は本文・出典2 | 検索内蔵/指示:Web可 → 検索内蔵/指示:Web可
+管理者 | 未接続 | 許可 | ja | -→- | 依頼なし → 依頼なし | AI未接続の案内（依頼なし） → AI未接続の案内（依頼なし） | 依頼なし → 依頼なし（欄は押せない・理由つき）
+トライアル共通 | 共有(代理) Claude | 許可 | en | anthropic→anthropic | 道具なし/指示:Web禁止/使えない → web_search/指示:Web可 | 冒頭「Web検索は利用できないため…」＋⚠ This time the ・出典0 → 冒頭は本文・出典2 | 道具なし/指示:Web可 → web_search/指示:Web可
+トライアル共通 | 共有(代理) ChatGPT | 許可 | en | openai→openai | 道具なし/指示:Web禁止/使えない → 道具なし/指示:Web禁止/使えない | 冒頭「Web検索は利用できないため…」＋⚠ This time the ・出典0 → 冒頭は本文＋ℹ No web search ・出典0 | 道具なし/指示:Web可 → 道具なし/指示:Web禁止/使えない（欄は押せない・理由つき）
+
+
+regAIRun 以外の forceWeb（fix/r10w/p03.cjs・p03.log。トライアル共通・共有(代理)。状況を調べるための直接の呼び出し）
+・Claude＋ChatGPT：強みの提案 strengthsAI（sys なし）・バイヤーの実在の確認 buyerAICheck（sys なし）・国の詳しい調査 ctyDeepAI（JSON の sys）
+    前：3つとも ChatGPT・道具なし・前2つは指示「Web検索は使わず」 → 後：3つとも Claude・web_search の道具・前2つは指示「Web検索が使えます」（ctyDeepAI は独自の指示のまま）。
+・ChatGPT だけ：前：道具なし・「Web検索は使わず」（ctyDeepAI は問いに「Web検索で…確認」） → 後：道具なし・「使えません・書かないで」・問いの「Web検索で確認」を手元の情報に（理由 noeng）。
+・同じ経路（本体の llmAsk・llmSysPrompt・llmRoute）を通るので、営業資料 deckWizard・FOB の市況 fobRun・物流の運賃 ddpRun・会社の調査 dkResearch・物流会社の情勢 fwdSituAI・
+  今日やること todayGen・アプローチ先 v71obBuild・やりとりの返信案 も、同じ判断・道具・指示になる（上の3つと規制の詳細調査・追加調査のほかは、依頼の本文の確かめはしていない）。
+・相談の画面の 🌐 トグル（WEBON）の質問：検索に対応したエンジンへ回し、Claude なら道具を付ける作り（WEBON の依頼は使えないときは今までどおり。画面での確かめは未確認）。
+
+■ アプリの側で直せない部分（事実）
+・同期サーバー（GAS）の ai_relay の先：アプリは { prov, path, body } の body に tools（Gemini の google_search・Claude の web_search）を入れて送る（8911 で捕まえて確かめた）。
+  サーバーがこの body をそのまま AI の会社へ送るか、tools を外すか、どのモデル・どのキーで送るかは、この環境（同期サーバーは代役）からは確かめられない。
+  サーバーが tools を外す作りなら、アプリは「⚠ Web検索を頼みましたが、出典が返ってきませんでした（同期サーバーを通ります…）」と出す（直せるのはサーバーの側）。
+・本番の Trial-2026 がどのエンジンを預かっているか（air_me の provs）は同期サーバーの中。ChatGPT だけなら、直した後も Web検索はせず、理由を出す（管理者が Gemini・Perplexity・Claude を預ける必要がある）。
+・Claude の Web検索は、AI の会社（Anthropic）の側で組織の設定として有効になっている必要がある（無効なら道具を外して送り直し、理由を出す）。この環境では本物の API に届かないため、
+  本物の返事の形（断られ方の文・pause_turn・citations）は確かめていない（差し替えの返事で、出典の拾い方と知らせの出し分けだけを確かめた）。
+・ChatGPT の Web検索（Responses API の web_search や検索用のモデル）は、本体の呼び出し方（chat/completions・同期サーバーの代理も同じ）を変える必要があるので、足していない。
+
+■ 回帰
+BASE=http://127.0.0.1:8911/ node $SP/tools/regress.cjs food,daily,machine,cosme,fwd → food 30・daily 30・machine 30・cosme 30・fwd 8 画面 OK、ALL OK（regress_8911.log）。
+・前後の表（matrix）は、依頼の本文の作りを最後の形にした組み立てで取った。そのあと画面だけの直し（追加調査の「使えません」を入力欄の下へ・上の「Web検索で最新情報を確認して整理します。」の書き換え）
+  をして組み立て直し、同じ手順で ChatGPT の行（s2_openai.png）と管理画面（p02）を確かめ直した。回帰は最後の組み立てで行った。
+
+■ ファイル
+・層：fix/r10w/src/logic_v2192r10w.ts（組み立て：fix/mkfix.sh r10w。ovr・build.py の変更なし）
+・確かめ：fix/r10w/p01.cjs（詳細調査・追加調査）、p02.cjs（管理画面）、p03.cjs（ほかの forceWeb）、matrix.sh・cases.txt・summarize.cjs、
+  before.jsonl・after.jsonl・table.txt・table_compact.txt・p03.log、画像 s_*.png・s2_openai.png・a_adm_ai.png・b_adm_ai.png
+・直す前の写し：fix/r10w/before（8910 で配った）
