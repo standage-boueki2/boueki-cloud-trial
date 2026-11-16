@@ -1,0 +1,42 @@
+/* 21.94 r9b：刷新版の層（9巡目の直し） */
+/* ① 用語集の入口：左の帯の箱が見えている間は、見出しの下の「📖 用語集」のリンクだけを外す（説明の行は残す。other-U02）
+     r8b の印（k-r8b-glside）で行ごと隠すのはやめる（スマホの閉じた引き出しでも付くことがあり、説明の行まで消えるため） */
+html.k-r8b-glside .rd-ht .k-termhint.k-hint2{display:block}
+html.k-r9b-glside .rd-hero.k-slim p.k-termhint.k-hint2 .k-link{display:none}
+html.k-r9b-glside .rd-hero.k-slim p.k-termhint.k-hint2{margin:0!important;line-height:0}
+
+/* ② スマホ幅：横に送れる表の案内 */
+.k-r9b-swipe{margin:6px 0 4px;font-size:12px;font-weight:700;color:#5A6B82;text-align:right;letter-spacing:.02em}
+/* 目標と道筋の年ごとの見込みの表（棒）：390 では、年・棒の下に金額を積む（右の列が画面の外に切れない。xcut-U06） */
+@media (max-width:640px){
+  html.rd table.v88tbl.v88bars{display:block;width:100%;max-width:100%;min-width:0}
+  html.rd table.v88tbl.v88bars thead,html.rd table.v88tbl.v88bars tbody{display:block;width:100%}
+  html.rd table.v88tbl.v88bars thead tr{display:flex;flex-direction:column;gap:2px}
+  html.rd table.v88tbl.v88bars thead th{display:block;white-space:normal!important;min-width:0!important;width:auto!important;border:0;padding:6px 10px}
+  html.rd table.v88tbl.v88bars thead th:first-child{display:none}
+  html.rd table.v88tbl.v88bars thead th:last-child{padding-top:0;font-weight:600}
+  html.rd table.v88tbl.v88bars tbody tr{display:grid;grid-template-columns:56px minmax(0,1fr);align-items:center;column-gap:6px;border-top:1px solid var(--line,#e5e7eb)}
+  html.rd table.v88tbl.v88bars tbody th{grid-row:1 / span 2;border:0;min-width:0!important;width:auto!important}
+  html.rd table.v88tbl.v88bars tbody td{display:block;border:0;min-width:0;width:auto!important}
+  html.rd table.v88tbl.v88bars tbody td.v88barc{padding-bottom:0}
+  html.rd table.v88tbl.v88bars tbody td.v88num{grid-column:2;text-align:left!important;white-space:normal;padding-top:2px}
+}
+
+/* ⑤ 「Coming Soon・開発中」の札：語の途中で折らない（入りきらないときは「Coming Soon」と「・開発中」の間で折る。medical-U05） */
+html.rd .v71csx{display:inline-flex;flex-wrap:wrap;align-items:center;white-space:nowrap;word-break:keep-all;max-width:100%;letter-spacing:0;padding-left:6px;padding-right:6px}
+
+/* ⑥ 販売先国の選定：確定した国のカード（indagri-T05）
+     「確定」の札はどのカードも国名の下の行に置く（国名の長さで点の位置がずれない）。国名は幅に合わせて少し小さく。
+     4つの観点の札は、カードの幅に2つ入らないときは1列に（枠の外にはみ出さない）。下のボタンの文は折り返す */
+.k-r8b-ctyt > .k-card > div[style*="display:flex"]{flex-wrap:wrap}
+.k-r8b-ctyt > .k-card > div[style*="display:flex"]::after{content:"";flex-basis:100%;order:1;height:0}
+.k-r8b-ctyt > .k-card > div[style*="display:flex"] > .k-tag.gr{order:2}
+.k-r8b-ctyt > .k-card > div[style*="display:flex"] > b{font-size:clamp(16px,1.3vw,20px)!important}
+/* カードが細いとき（1280 幅など）は、どのカードも 旗／国名／確定 の3行（国名の長さでカードごとに並びが変わらない） */
+.k-r8b-ctyt > .k-card{container-type:inline-size}
+@container (max-width: 200px){
+  .k-r8b-ctyt > .k-card > div[style*="display:flex"] > b{flex-basis:100%}
+}
+.k-r8b-ctyt > .k-card > div[style*="grid-template-columns:repeat(2,1fr)"]{grid-template-columns:repeat(auto-fit,minmax(78px,1fr))!important}
+.k-r8b-ctyt > .k-card > div[style*="grid-template-columns:repeat(2,1fr)"] > div{padding:6px 8px!important;min-width:0}
+.k-r8b-ctyt > .k-card .k-btn.wide{white-space:normal;height:auto;min-height:44px;line-height:1.35;padding-top:8px;padding-bottom:8px}

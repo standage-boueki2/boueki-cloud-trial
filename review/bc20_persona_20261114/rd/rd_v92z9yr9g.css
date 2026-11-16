@@ -1,0 +1,46 @@
+/* 21.94 r9g（刷新版の層）：AI商社マンの画面の「成長レベル」の箱を、刷新版の色・角丸・字の太さの決まり（rd.css・rd2.css の --k-* / --rd-*）に合わせる。
+   並べ方・輪の描き方・大きさの段階は本体の層 logic_v2192r9g（#v2192r9gcss）。ここは見た目の色と太さだけ。
+   同じ成長レベルを出すほかの部品（ホームの右上の札 .k-lvchip・AI商社マンの画面の上の「AI商社マンの成長」）と、数字・段階の札・一人前ラインの印をそろえる：
+   数字＝#E06A06・太さ 900（% も同じ色）／段階の札＝白地にオレンジの線・#C25600 の字（.k-tag.or と同じ字の色）／一人前ライン＝濃紺の棒に白い縁。 */
+
+/* 左の箱：刷新版の「暖色のカード」（.k-card.warm）と同じ色の流れ・角丸 16px（--rd-r） */
+html.rd #well .c.grow .g2hero{background:linear-gradient(180deg,#FFF5EA 0%,#FFFAF4 100%);border:1px solid #F8D9B4;border-radius:var(--rd-r,16px);box-shadow:none}
+/* 輪：残りの帯は薄いオレンジ、内側は白、印は濃紺（--k-ink） */
+html.rd #well .c.grow .gseg.bg.g9trk{stroke:#FBE3C6}
+html.rd #well .c.grow .gmark{stroke:var(--k-ink,#13233B)}
+html.rd #well .c.grow .g2mk i{background:var(--k-ink,#13233B)}
+/* 円の中の数字：ホームの札・上の「AI商社マンの成長」と同じ #E06A06・900 */
+html.rd #well .c.grow .g2ctr b{color:#E06A06;font-weight:900}
+html.rd #well .c.grow .g2ctr b small{color:#E06A06;font-weight:800}
+html.rd #well .c.grow .g2ctr span{color:var(--k-ink2,#44546B);font-weight:700}
+/* 段階の札・あと何点・次の段階・凡例・次の一手 */
+html.rd #well .c.grow .g2stage{background:#fff;color:#C25600;border:1px solid var(--k-or-line,#FAD0A1);box-shadow:0 1px 2px rgba(194,86,0,.08);letter-spacing:.02em}
+html.rd #well .c.grow .g2to{color:var(--k-ink,#13233B);font-weight:900;letter-spacing:.01em}
+html.rd #well .c.grow .g2nx{color:var(--k-ink2,#44546B);font-weight:600}
+html.rd #well .c.grow .g2mk{color:var(--k-ink2,#44546B);font-weight:600}
+html.rd #well .c.grow .g2go{border-top-color:#F3D9BA!important}
+html.rd #well .c.grow .g2gol{color:#C25600}
+html.rd #well .c.grow .g2gos{color:var(--k-ink2,#44546B)}
+/* 5段階の帯：塗りは刷新版のオレンジの流れ（--k-grad）、いまの段階の字は #C25600、「いまここ」は塗りの札 */
+html.rd #well .c.grow .g2seg{height:10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px #F1DCC2}
+html.rd #well .c.grow .g2seg i{background:var(--k-grad,linear-gradient(180deg,#FF9B30 0%,#F26C0B 100%));border-radius:999px}
+html.rd #well .c.grow .g2st b{color:var(--k-ink2,#44546B)}
+html.rd #well .c.grow .g2st.done b{color:var(--k-ink,#13233B)}
+html.rd #well .c.grow .g2st.cur b{color:#C25600;font-weight:900}
+html.rd #well .c.grow .g2st small{color:var(--k-ink3,#7D8BA0)}
+html.rd #well .c.grow .g2st em{background:var(--k-grad,linear-gradient(180deg,#FF9B30 0%,#F26C0B 100%));color:#fff;box-shadow:0 2px 6px rgba(242,108,11,.22)}
+/* 右の6分野：刷新版のカードの線・角丸（14px）。開いたときの見出しの色 */
+html.rd #well .c.grow .growcat{border-color:var(--k-line,#E1E9F3);border-radius:14px;background:#fff}
+html.rd #well .c.grow .growcat > summary{border-radius:14px}
+html.rd #well .c.grow .growcat[open] > summary{border-radius:14px 14px 0 0}
+html.rd #well .c.grow .growcat:hover{border-color:var(--k-or-line,#FAD0A1)}
+html.rd #well .c.grow .g2cathd b{color:var(--k-ink,#13233B);font-weight:900}
+html.rd #well .c.grow .g2cathd span{color:var(--k-ink3,#7D8BA0)}
+
+/* ホームの右上の札：段階を札の形に・% も数字と同じ色（AI商社マンの画面の輪の中・上の「AI商社マンの成長」とそろえる） */
+html.rd .k-lvchip b small{color:inherit!important;font-weight:800}
+html.rd .k-lvchip > span > span{display:inline-flex;align-items:center;margin-top:2px;padding:1px 10px;border-radius:999px;background:var(--k-or-soft,#FFF3E6);border:1px solid var(--k-or-line,#FAD0A1);color:#C25600;font-size:13px;line-height:1.5;white-space:nowrap}
+/* AI商社マンの画面の上の「AI商社マンの成長」の帯に、一人前ライン（90%）の印（輪の印・凡例と同じ濃紺の棒に白い縁）。rd_v92r9g.js が .k-g9bar を付ける */
+html.rd .k-bar.k-g9bar{position:relative;overflow:visible}
+html.rd .k-bar.k-g9bar > i{border-radius:999px}
+html.rd .k-bar.k-g9bar::after{content:"";position:absolute;left:var(--g9pro,90%);top:-4px;width:5px;height:18px;margin-left:-2.5px;border-radius:3px;background:var(--k-ink,#13233B);box-shadow:0 0 0 2px #fff;pointer-events:none}

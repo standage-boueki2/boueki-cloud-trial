@@ -319,6 +319,8 @@ declare function v61dlRecTerm(rec: any): any;
     // 輸送の形：書類の画面の判断の表（doc85.mode）を先に見る。無ければ案件の mode
     const modeOf = (S: any): string => {
         try { if (typeof v85docCase === "function") { const m = String(((v85docCase() || {}).inp || {}).mode || ""); if (m) return m; } } catch (e) { }
+        // r9a（health-U01）：判断の表に入れていないときは、判断の表と同じ読み方（v85docModeOf：「LCL または 航空」→ 航空）。前は案件の mode をそのまま読み、表は「航空」なのに海上と判定していた
+        try { const f: any = (W as any).v85docModeOf; if (typeof f === "function") { const m2 = String(f(S) || ""); if (m2) return m2; } } catch (e) { }
         const x = String((S && S.mode) || "").toUpperCase();
         return x === "AIR" ? "air" : x === "COURIER" ? "courier" : x === "POST" ? "post" : "sea";
     };

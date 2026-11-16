@@ -418,6 +418,15 @@
             }
         }
         catch (e) { }
+        try {
+            const f = W.v85docModeOf;
+            if (typeof f === "function") {
+                const m2 = String(f(S) || "");
+                if (m2)
+                    return m2;
+            }
+        }
+        catch (e) { }
         const x = String((S && S.mode) || "").toUpperCase();
         return x === "AIR" ? "air" : x === "COURIER" ? "courier" : x === "POST" ? "post" : "sea";
     };

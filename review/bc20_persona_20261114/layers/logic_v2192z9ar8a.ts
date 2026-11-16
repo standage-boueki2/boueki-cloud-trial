@@ -159,7 +159,10 @@ declare let TEN: any, PID: any, cur: any;
         const m = nfkc(t).match(/^([\d,]+(?:\.\d+)?)(.*)$/);
         if (!m) return t;
         const n = parseFloat(m[1].replace(/,/g, ""));
-        return isFinite(n) ? n.toLocaleString("en-US", { maximumFractionDigits: 3 }) + m[2] : t;
+        // r9a（other-T06）：数字だけの数量（「300」）には商品の単位を付ける（書類の額の行「300個」と同じ書き方に）
+        let sfx = m[2];
+        if (!String(sfx || "").trim()) { try { const uf: any = (W as any).v83pxMoqUnit; let u = (typeof uf === "function" && typeof TEN !== "undefined" && TEN) ? String(uf(TEN) || "") : ""; if (!u) u = String(((dd() || {}) as any).unit || ""); if (/^[^\d\s]{1,4}$/.test(u)) sfx = u; } catch (e) { } }
+        return isFinite(n) ? n.toLocaleString("en-US", { maximumFractionDigits: 3 }) + sfx : t;
     };
     API.fmtQty = fmtQty;
     const recTxt = (r: any): string => {
@@ -214,7 +217,10 @@ declare let TEN: any, PID: any, cur: any;
             else { o.noAmt = 1; if (a && !a.cur) o.noCur = 1; }
             out.push(o);
         });
-        out.sort((a: any, b: any) => String(a.d).localeCompare(String(b.d)) || a.i - b.i);
+        // r9a（medical-U03・food-U04・xcut-U08・indagri-U01）：同じ日の注文は、記録した順（D.fb は新しい記録が先頭＝番号の大きい方が先に記録）。
+        //   前は「書類のある注文 → 記録だけの注文（新しい順）」の並びで、出荷案件を作ると番号が入れ替わった。記録につながっていない書類（発注書など）はその日の先頭
+        const age = (o: any) => (o.rec && o.rec.fi != null) ? -(+o.rec.fi || 0) : -1e9;
+        out.sort((a: any, b: any) => String(a.d).localeCompare(String(b.d)) || (age(a) - age(b)) || a.i - b.i);
         out.forEach((o: any) => o.parts.forEach((p: any) => { p.d = o.d; }));
         return out;
     };
@@ -427,24 +433,29 @@ declare let TEN: any, PID: any, cur: any;
         if (!cu) return "";
         const SH = allShips();
         const other = (id: any) => !!id && SH.some((T: any) => T && T !== S && T.v61fb && T.v61fb.id === id);
-        const more = B.slice(0, B.indexOf(cu)).filter((x: any) => x.r.st === "受注" && usableRec(x.r) && !other(x.r.v61id)).reverse();
-        if (!more.length) return null;
-        const items = more.map((x: any) => `${x.r.d || ""}：${recTxt(x.r)}`).join(M("／", " / ", "／", " / "));
+        const newer = B.slice(0, B.indexOf(cu)).filter((x: any) => x.r.st === "受注" && usableRec(x.r) && !other(x.r.v61id));
+        if (!newer.length) return null;
+        // r9a（daily-U03・indagri-U01・xcut-U08）：数えるのは「書類のまだ無い受注の記録」全部（前は、この書類より後の記録だけで、基準の書類が古いと数が合わなかった）
+        const more = B.filter((x: any) => x !== cu && x.r.st === "受注" && usableRec(x.r) && !other(x.r.v61id) && x.r.v61id !== L.id).reverse();
+        const items = more.map((x: any) => `${x.r.d || ""}${M("：", ": ", "：", ": ")}${recTxt(x.r)}`).join(M("／", " / ", "／", " / "));
         const A = more.map((x: any) => recAmt(x.r));
         const noAmt = A.filter((a: any) => !a || !a.cur).length;
         const nr: string[] = [];
         A.forEach((a: any) => { if (a && a.cur && a.cur !== "JPY" && !rateOf(a.cur) && nr.indexOf(a.cur) < 0) nr.push(a.cur); });
         const n = more.length;
-        let t = M(`この相手に、この書類（${S.no}）の注文（${cu.r.d || ""}）より後の「受注」の記録が ${n}件あります（${items}）。この書類は変えていません。後の記録は別の注文として、累計受注金額に足しています`,
-            `This buyer has ${n} “Order” record(s) after the order of these documents (${S.no}, ${cu.r.d || ""}): ${items}. These documents were not changed. The later record(s) are added to the total order value as separate orders`,
-            `该客户在本单据（${S.no}）的订单（${cu.r.d || ""}）之后还有 ${n} 条“接单”记录（${items}）。本单据未作更改。之后的记录作为另外的订单计入累计接单金额`,
-            `Este comprador tiene ${n} registro(s) de «Pedido» posteriores al pedido de estos documentos (${S.no}, ${cu.r.d || ""}): ${items}. Los documentos no se cambiaron. Los registros posteriores se suman al total como pedidos aparte`);
+        const kB = norm(S.buyer || L.b);
+        const docs = SH.filter((T: any) => T && T.v61fb && !T.poNo && !isMihon(T) && norm(T.buyer || T.v61fb.b) === kB).map((T: any) => String(T.no || "")).filter(Boolean);
+        const dl = (docs.length ? docs : [String(S.no || "")]).join(M("・", ", ", "・", ", "));
+        let t = M(`この相手には、書類のまだ無い「受注」の記録が ${n}件あります（${items}）。書類（${dl}）は変えていません。書類の無い記録も、1件ずつ別の注文として累計受注金額に足しています`,
+            `This buyer has ${n} “Order” record(s) without documents yet (${items}). The documents (${dl}) were not changed. Each record without documents is added to the total order value as a separate order`,
+            `该客户还有 ${n} 条尚无单据的“接单”记录（${items}）。单据（${dl}）未作更改。没有单据的记录也各自作为另外的订单计入累计接单金额`,
+            `Este comprador tiene ${n} registro(s) de «Pedido» sin documentos todavía (${items}). Los documentos (${dl}) no se cambiaron. Cada registro sin documentos se suma al total como un pedido aparte`);
         if (nr.length) t += M(`（${nr.join("・")} は円に換算するレートが無いため、合計とは別に「ほかに ${nr.join("・")} …」と出しています）`, ` (${nr.join(", ")} has no JPY rate, so it is shown separately as “Plus ${nr.join(", ")} …”)`, `（${nr.join("・")} 无日元汇率，另行显示为“另有 ${nr.join("・")} …”）`, ` (${nr.join(", ")} sin tipo a JPY; se muestra aparte)`);
         if (noAmt) t += M(`。ただし、確定単価か数量が入っていない ${noAmt}件は、金額が分からないため足していません`, `. ${noAmt} record(s) without a unit price or quantity are not added because the amount is unknown`, `。但未填写确定单价或数量的 ${noAmt} 条因金额不明未计入`, `. ${noAmt} registro(s) sin precio o cantidad no se suman`);
-        t += M("。同じ注文の言い直しなら、古い方の記録の状況を直してください。新しい注文の書類は、その記録の「出荷案件を作る」で作れます。",
-            ". If it restates the same order, change the status of the older record. Documents for the new order can be made with “Create a shipment case” on that record.",
-            "。如果是同一订单的更正，请修改旧记录的状态。新订单的单据可在该记录的“创建出货案件”中制作。",
-            ". Si es el mismo pedido, cambie el estado del registro anterior. Los documentos del nuevo pedido se crean con «Crear el caso de envío» en ese registro.");
+        t += M("。同じ注文の言い直しなら、古い方の記録の状況を直してください。その注文の書類は、その記録の「出荷案件を作る」で作れます。",
+            ". If it restates the same order, change the status of the older record. Documents for that order can be made with “Create a shipment case” on that record.",
+            "。如果是同一订单的更正，请修改旧记录的状态。该订单的单据可在该记录的“创建出货案件”中制作。",
+            ". Si es el mismo pedido, cambie el estado del registro anterior. Los documentos de ese pedido se crean con «Crear el caso de envío» en ese registro.");
         return t;
     };
     const dwOpen = () => { try { const dw: any = document.getElementById("dw"); if (!dw) return false; const cs = getComputedStyle(dw); const r = dw.getBoundingClientRect(); return cs.display !== "none" && cs.visibility !== "hidden" && r.width > 10 && r.left < window.innerWidth - 10; } catch (e) { return false; } };
@@ -650,7 +661,10 @@ declare let TEN: any, PID: any, cur: any;
                 }
             });
             // 換算のレート・数え方の文
-            const ex = extraRates(A).filter((x: string) => !/^1 US\$/.test(x));
+            // r9a（medical-U02・indagri-U03）：US$ も、窓の換算の行にまだ無ければ出す（前は US$ をいつも外していて、最初の注文が円・HKD のとき US$ のレートが窓に無かった）
+            const rn0: any = root.querySelector(".v92r6b-rn");
+            const have0 = String((rn0 && rn0.textContent) || "");
+            const ex = extraRates(A).filter((x: string) => { const k = x.match(/^1 (\S+?)＝/); return !(k && (have0.indexOf("1 " + k[1] + "＝") >= 0 || have0.indexOf("1 " + k[1] + " = ") >= 0)); });
             if (ex.length) {
                 const rn: any = root.querySelector(".v92r6b-rn");
                 if (rn) { const t = String(rn.textContent || ""); const k = t.search(/。|\. /); rn.textContent = k > 0 ? t.slice(0, k) + "／" + ex.join("／") + t.slice(k) : t + "／" + ex.join("／"); }
@@ -724,7 +738,16 @@ declare let TEN: any, PID: any, cur: any;
                             .replace(`total de ${n} pedido(s) confirmado(s) (sin cotizaciones)`, `total de ${n} caso(s) con pedido (${m} pedidos) (sin cotizaciones)`);
                     }
                     // 換算のレート：2件目からの注文の通貨も
-                    const ex = extraRates(A).filter((x: string) => !/^1 US\$/.test(x));
+                    // r9a（medical-U02）：US$ は、札にもう US$ のレート（「1 US$＝」か参照レートの「円/US$」）が見えているときだけ外す
+                    const lo9 = h.indexOf('<p class="lbl">累計受注金額');
+                    const hi9 = lo9 >= 0 ? h.indexOf('<span class="ddhint">', lo9) : -1;
+                    const seg9 = lo9 >= 0 ? h.slice(lo9, hi9 >= 0 ? hi9 : lo9 + 6000) : "";
+                    const ex = extraRates(A).filter((x: string) => {
+                        const k = x.match(/^1 (\S+?)＝/);
+                        if (!k) return true;
+                        if (seg9.indexOf("1 " + k[1] + "＝") >= 0 || seg9.indexOf("1 " + k[1] + " = ") >= 0) return false;
+                        return !(k[1] === "US$" && /円\/US\$|JPY\/US\$|\/US\$/.test(seg9));
+                    });
                     if (ex.length) {
                         const lo = h.indexOf('<p class="lbl">累計受注金額');
                         if (lo >= 0) {

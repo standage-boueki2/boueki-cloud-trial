@@ -1,0 +1,10 @@
+/* 21.94 r9p：読み込み中は、仕上がる前の画面（本体の前のデザイン・途中まで仕上げた画面）を見せず、「読み込み中」を出す。
+   build.py がこのファイルを head の <style id="r9pboot"> に入れる。rd_v92r9pboot.js が最初の仕上げのあとに html.rd-ready を付けて外す。
+   それでも外れないとき（層が読めなかった など）は、15 秒で中身が出て「読み込み中」が消える（CSS だけで戻る） */
+html:not(.rd-ready) body > *{opacity:0;pointer-events:none;animation:r9pShow 0s linear 15s forwards}
+@keyframes r9pShow{to{opacity:1;pointer-events:auto}}
+html:not(.rd-ready) body::before{content:"読み込み中…";position:fixed;left:0;top:0;right:0;bottom:0;z-index:2147483646;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding-top:96px;background:#F3F7FC url(rd/img/robot.png) no-repeat center calc(50% - 40px)/72px auto;color:#46546b;font:600 15px/1.6 "Noto Sans JP","Hiragino Sans","Yu Gothic UI",system-ui,sans-serif;letter-spacing:.04em;animation:r9pHide 0s linear 15s forwards}
+html[lang^=en]:not(.rd-ready) body::before{content:"Loading…"}
+html[lang^=zh]:not(.rd-ready) body::before{content:"加载中…"}
+html[lang^=es]:not(.rd-ready) body::before{content:"Cargando…"}
+@keyframes r9pHide{to{visibility:hidden;opacity:0}}

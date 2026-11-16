@@ -251,7 +251,19 @@
         if (!m)
             return t;
         const n = parseFloat(m[1].replace(/,/g, ""));
-        return isFinite(n) ? n.toLocaleString("en-US", { maximumFractionDigits: 3 }) + m[2] : t;
+        let sfx = m[2];
+        if (!String(sfx || "").trim()) {
+            try {
+                const uf = W.v83pxMoqUnit;
+                let u = (typeof uf === "function" && typeof TEN !== "undefined" && TEN) ? String(uf(TEN) || "") : "";
+                if (!u)
+                    u = String((dd() || {}).unit || "");
+                if (/^[^\d\s]{1,4}$/.test(u))
+                    sfx = u;
+            }
+            catch (e) { }
+        }
+        return isFinite(n) ? n.toLocaleString("en-US", { maximumFractionDigits: 3 }) + sfx : t;
     };
     API.fmtQty = fmtQty;
     const recTxt = (r) => {
@@ -342,7 +354,8 @@
             }
             out.push(o);
         });
-        out.sort((a, b) => String(a.d).localeCompare(String(b.d)) || a.i - b.i);
+        const age = (o) => (o.rec && o.rec.fi != null) ? -(+o.rec.fi || 0) : -1e9;
+        out.sort((a, b) => String(a.d).localeCompare(String(b.d)) || (age(a) - age(b)) || a.i - b.i);
         out.forEach((o) => o.parts.forEach((p) => { p.d = o.d; }));
         return out;
     };
@@ -670,22 +683,26 @@
             return "";
         const SH = allShips();
         const other = (id) => !!id && SH.some((T) => T && T !== S && T.v61fb && T.v61fb.id === id);
-        const more = B.slice(0, B.indexOf(cu)).filter((x) => x.r.st === "受注" && usableRec(x.r) && !other(x.r.v61id)).reverse();
-        if (!more.length)
+        const newer = B.slice(0, B.indexOf(cu)).filter((x) => x.r.st === "受注" && usableRec(x.r) && !other(x.r.v61id));
+        if (!newer.length)
             return null;
-        const items = more.map((x) => `${x.r.d || ""}：${recTxt(x.r)}`).join(M("／", " / ", "／", " / "));
+        const more = B.filter((x) => x !== cu && x.r.st === "受注" && usableRec(x.r) && !other(x.r.v61id) && x.r.v61id !== L.id).reverse();
+        const items = more.map((x) => `${x.r.d || ""}${M("：", ": ", "：", ": ")}${recTxt(x.r)}`).join(M("／", " / ", "／", " / "));
         const A = more.map((x) => recAmt(x.r));
         const noAmt = A.filter((a) => !a || !a.cur).length;
         const nr = [];
         A.forEach((a) => { if (a && a.cur && a.cur !== "JPY" && !rateOf(a.cur) && nr.indexOf(a.cur) < 0)
             nr.push(a.cur); });
         const n = more.length;
-        let t = M(`この相手に、この書類（${S.no}）の注文（${cu.r.d || ""}）より後の「受注」の記録が ${n}件あります（${items}）。この書類は変えていません。後の記録は別の注文として、累計受注金額に足しています`, `This buyer has ${n} “Order” record(s) after the order of these documents (${S.no}, ${cu.r.d || ""}): ${items}. These documents were not changed. The later record(s) are added to the total order value as separate orders`, `该客户在本单据（${S.no}）的订单（${cu.r.d || ""}）之后还有 ${n} 条“接单”记录（${items}）。本单据未作更改。之后的记录作为另外的订单计入累计接单金额`, `Este comprador tiene ${n} registro(s) de «Pedido» posteriores al pedido de estos documentos (${S.no}, ${cu.r.d || ""}): ${items}. Los documentos no se cambiaron. Los registros posteriores se suman al total como pedidos aparte`);
+        const kB = norm(S.buyer || L.b);
+        const docs = SH.filter((T) => T && T.v61fb && !T.poNo && !isMihon(T) && norm(T.buyer || T.v61fb.b) === kB).map((T) => String(T.no || "")).filter(Boolean);
+        const dl = (docs.length ? docs : [String(S.no || "")]).join(M("・", ", ", "・", ", "));
+        let t = M(`この相手には、書類のまだ無い「受注」の記録が ${n}件あります（${items}）。書類（${dl}）は変えていません。書類の無い記録も、1件ずつ別の注文として累計受注金額に足しています`, `This buyer has ${n} “Order” record(s) without documents yet (${items}). The documents (${dl}) were not changed. Each record without documents is added to the total order value as a separate order`, `该客户还有 ${n} 条尚无单据的“接单”记录（${items}）。单据（${dl}）未作更改。没有单据的记录也各自作为另外的订单计入累计接单金额`, `Este comprador tiene ${n} registro(s) de «Pedido» sin documentos todavía (${items}). Los documentos (${dl}) no se cambiaron. Cada registro sin documentos se suma al total como un pedido aparte`);
         if (nr.length)
             t += M(`（${nr.join("・")} は円に換算するレートが無いため、合計とは別に「ほかに ${nr.join("・")} …」と出しています）`, ` (${nr.join(", ")} has no JPY rate, so it is shown separately as “Plus ${nr.join(", ")} …”)`, `（${nr.join("・")} 无日元汇率，另行显示为“另有 ${nr.join("・")} …”）`, ` (${nr.join(", ")} sin tipo a JPY; se muestra aparte)`);
         if (noAmt)
             t += M(`。ただし、確定単価か数量が入っていない ${noAmt}件は、金額が分からないため足していません`, `. ${noAmt} record(s) without a unit price or quantity are not added because the amount is unknown`, `。但未填写确定单价或数量的 ${noAmt} 条因金额不明未计入`, `. ${noAmt} registro(s) sin precio o cantidad no se suman`);
-        t += M("。同じ注文の言い直しなら、古い方の記録の状況を直してください。新しい注文の書類は、その記録の「出荷案件を作る」で作れます。", ". If it restates the same order, change the status of the older record. Documents for the new order can be made with “Create a shipment case” on that record.", "。如果是同一订单的更正，请修改旧记录的状态。新订单的单据可在该记录的“创建出货案件”中制作。", ". Si es el mismo pedido, cambie el estado del registro anterior. Los documentos del nuevo pedido se crean con «Crear el caso de envío» en ese registro.");
+        t += M("。同じ注文の言い直しなら、古い方の記録の状況を直してください。その注文の書類は、その記録の「出荷案件を作る」で作れます。", ". If it restates the same order, change the status of the older record. Documents for that order can be made with “Create a shipment case” on that record.", "。如果是同一订单的更正，请修改旧记录的状态。该订单的单据可在该记录的“创建出货案件”中制作。", ". Si es el mismo pedido, cambie el estado del registro anterior. Los documentos de ese pedido se crean con «Crear el caso de envío» en ese registro.");
         return t;
     };
     const dwOpen = () => { try {
@@ -988,7 +1005,9 @@
                     el.appendChild(nt);
                 }
             });
-            const ex = extraRates(A).filter((x) => !/^1 US\$/.test(x));
+            const rn0 = root.querySelector(".v92r6b-rn");
+            const have0 = String((rn0 && rn0.textContent) || "");
+            const ex = extraRates(A).filter((x) => { const k = x.match(/^1 (\S+?)＝/); return !(k && (have0.indexOf("1 " + k[1] + "＝") >= 0 || have0.indexOf("1 " + k[1] + " = ") >= 0)); });
             if (ex.length) {
                 const rn = root.querySelector(".v92r6b-rn");
                 if (rn) {
@@ -1091,7 +1110,17 @@
                             .replace(`${n}个已确认订单的合计（不含报价）`, `${n}个已确认订单的案件（订单 ${m}个）的合计（不含报价）`)
                             .replace(`total de ${n} pedido(s) confirmado(s) (sin cotizaciones)`, `total de ${n} caso(s) con pedido (${m} pedidos) (sin cotizaciones)`);
                     }
-                    const ex = extraRates(A).filter((x) => !/^1 US\$/.test(x));
+                    const lo9 = h.indexOf('<p class="lbl">累計受注金額');
+                    const hi9 = lo9 >= 0 ? h.indexOf('<span class="ddhint">', lo9) : -1;
+                    const seg9 = lo9 >= 0 ? h.slice(lo9, hi9 >= 0 ? hi9 : lo9 + 6000) : "";
+                    const ex = extraRates(A).filter((x) => {
+                        const k = x.match(/^1 (\S+?)＝/);
+                        if (!k)
+                            return true;
+                        if (seg9.indexOf("1 " + k[1] + "＝") >= 0 || seg9.indexOf("1 " + k[1] + " = ") >= 0)
+                            return false;
+                        return !(k[1] === "US$" && /円\/US\$|JPY\/US\$|\/US\$/.test(seg9));
+                    });
                     if (ex.length) {
                         const lo = h.indexOf('<p class="lbl">累計受注金額');
                         if (lo >= 0) {
