@@ -1,0 +1,11 @@
+/* 21.94 r8b：刷新版の層（8巡目の直し） */
+/* 規制を調べる：「表で確かめる」 */
+.k-r8b-regok{display:inline-flex;align-items:center;gap:6px;margin:8px 0 4px;padding:8px 16px;border-radius:999px;font-weight:700}
+/* 左の帯の用語集の箱：「いま：〇〇」の札が出る画面でも縮めない（food-T01・daily-T11・indagri-T04） */
+#rdside .v92misc-gl{flex-shrink:0;min-height:max-content;height:auto}
+#rdside .v92misc-gl > span, #rdside .v92misc-gl > div{min-width:0}
+/* 用語集の入口：左の帯の箱が見えている間は、見出しの下の小さい入口を出さない（入口を2つに） */
+html.k-r8b-glside .rd-ht .k-termhint.k-hint2{display:none}
+/* 販売先国の選定：確定した国のカード。国名は1行（入りきらないときは旗・国名・「確定」の順に折り返す） */
+.k-r8b-ctyt > .k-card > div[style*="display:flex"]{flex-wrap:wrap;row-gap:4px}
+.k-r8b-ctyt > .k-card > div[style*="display:flex"] > b{white-space:nowrap;word-break:keep-all;min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis}
