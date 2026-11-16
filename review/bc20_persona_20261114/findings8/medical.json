@@ -1,0 +1,583 @@
+{
+ "id": "medical",
+ "category": "医療・衛生",
+ "base": "8819",
+ "personas": [
+  {
+   "id": "P1",
+   "name": "森田 沙織（貿易素人・株式会社ケアシールド／サージカルマスクを資料で登録）",
+   "overall_r7": 4,
+   "overall": 5,
+   "overall_reason": "7回目に P1 が引っかかった4件（T03・T05・T07・T08）はすべて直った。資料の登録（19/21 → 産地 → 20/21 → 支払条件 → 21/21）では、登録の画面の「任意 あと6件」と商品情報の「任意 0/6・あと6件」「任意の項目で未登録 6件」が、19/21・20/21・21/21 のどれでも合う（円は 19/21＝90%・20/21＝95%）。右上の「次は」と光ったボタンだけで 6/6：国（おまかせ → 「外れる国：アメリカ」の確認 → 確定する）→ 規制（「次は」で「✓ 表で確かめる」が光り、押すと 3/6）→ 営業資料（English）→ バイヤー（10社 → すべて選ぶ → 自社のバイヤーに入れる）→ 商談の記録。目標と道筋に「✓ 規制・認証と関税を確かめる 済みの根拠：規制の確認あり」が付き、その行の「開く」で規制を調べるへ移る。別の P1 の流れ（送るほう）では、「次は この画面で承認して送る（10件）」→「（残り 9件）」…と1件ずつ減り、10件目のあと「次は この画面で商談を記録する」へ。承認後は案件 10件・コンタクト中 10、分析のアプローチ 10。AI の「シンガポールの規制は？」は、必要な書類・認証＝インボイス・パッキングリスト・ISO13485証明書・ディーラーライセンス、条件つき（HSA 製品登録・CFS）は下の欄だけ。「3,000箱だといくら？」は「合計は ¥1,260,000」。ログインの担当者名の欄は「ご担当者名（招待状・申し込みのときの氏名）」で、空だと「入力してください」（食い違いなし）。書類の見積書には「仕出港（積出港）は、商品情報に登録の 大阪港 から入れています」「有効期限は 2026-12-16 まで」の注記。スマホ幅の主な 15画面・入り直しでもエラー・はみ出し 0。P1 の使う範囲に minor 以上は残っていない（残りは「Coming Soon・開発中」の札の折り返しだけ＝polish）ので 5。",
+   "to_5": "（5）"
+  },
+  {
+   "id": "P2",
+   "name": "川村 健太（少し経験者・営業・メディコア衛生材料株式会社／業種サンプル medical）",
+   "overall_r7": 4,
+   "overall": 4,
+   "overall_reason": "7回目の T01・T04 は直った。Siam：見積提示 US$3.60×3,000 → 書類 → 受注 US$3.50×4,000（「新しい記録に合わせて、書類（TH-1116-03）の値を更新しました」・累計 ¥2,231,600）→ 同じ相手の2件目 USD 1,000×US$3.60（累計 ¥2,805,440「1件（注文 2件）」）→ 3件目 EUR 2,000×EUR 3.20（累計 ¥3,909,440＝¥2,231,600＋¥573,840＋¥1,104,000、内訳「合計 US$17,600 ＋ EUR 6,400」「1 EUR＝172.50円」）。記録の知らせ「後の記録は別の注文として、累計受注金額に足しています…新しい注文の書類は、その記録の「出荷案件を作る」で作れます」は実際と合う。記録の窓の「この商談から出荷案件を作る」で TH-1116-04（EUR 6,400.00・FOB Osaka）ができ、内訳の出どころも「書類の額」に替わる。目標と道筋「✓ 2回目の注文につなげる 済みの根拠：同じ相手からの受注が2件以上」。希望価格を数字だけ（5.2）で入れると窓に「…選んでいる通貨（SGD）として記録します：SGD 5.20」と出て、見積書は SGD 5.20／SGD 10,400.00、見積金額 ¥1,229,280（1 SGD＝118.20円）。書類を先に開いた Meridian も、あとの記録（SGD 5.20×2,000・CIF Bangkok）が見積書に入り、手で数量を直したあとの受注で「記録に合わせる／このままにする」が出る（T04）。規制は「✓ 表で確かめる（タイ）」で 5/6、目標と道筋も ✓。全 30画面でエラー・はみ出し 0。ただし、営業メールを送ったあとに受注になった案件（Meridian・取引中）は、ホームと案件の「次の行動」が「相手の返事を待つ　今日 送信済み」のままで、受注の書類を送る手順が出ない（メールを送っていない Siam は「受注の書類を確かめて送る（見積書・請求書）」）（U01・minor・8818 も同じ）。そのため 4。",
+   "to_5": "営業メールを送ったあとに受注になった案件でも、ホームと案件の「次の行動」を「受注の書類を確かめて送る」にする（U01）"
+  },
+  {
+   "id": "P3",
+   "name": "大西 誠（商社経験豊富・東和メディカル商事株式会社／サージカルマスクを資料で登録）",
+   "overall_r7": 4,
+   "overall": 4,
+   "overall_reason": "7回目の T02・T06・T09・T10（と T01・T03）は直った。アメリカ（医療機器）の必須は「FDA 施設登録・機器リスティング（21 CFR Part 807）」と「米国代理人（US Agent）の指名」の2件に戻り、FDA だけ対応済みにすると「⚠ まだ「このまま輸出できる」とは言えません　未対応 1件／全2件　米国代理人（US Agent）の指名」、2件とも根拠つきで対応済みにして初めて「✅ 必須の手続きは、すべて「対応済み」」。510(k)・CFS は「該当するときだけ必要な手続き」で「対象外にする」を選べる。AI の「アメリカの規制は？」も2件を出す。輸送を航空にすると見積書の黄に「輸送は航空なのに、取引条件が FOB（海上の条件）です　航空なら FCA などが一般的です」、S/I は Airport of departure・Air Waybill。価格の有効期限を 2026-12-10 にすると、作ってある見積書も「Until 2026-12-10 (price list validity)」と理由つきで替わる。Meridian ¥420×3,000 の受注 →「この商談から出荷案件を作る」で SG-1116-02 → 2件目 ¥415×2,000・3件目 US$2.80×1,000 で累計 ¥2,516,720（「合計 ¥2,090,000 ＋ US$2,800」）、目標と道筋に ✓ 規制・✓ 2回目の注文。完成形の見本の注記は「商談記録の確定単価 US$1.15」。ただし、(1) 最初の受注が円で、あとの注文が US$ のとき、累計受注金額の札（¥2,516,720／$ 表示 US$16,514）にも内訳（US$2,800 ≒¥426,720）にも換算のレートが出ない（US$ だけ・US$＋EUR のときは「換算：1 US$＝…円」が出る）（U02・minor）、(2) 営業メールを送ったあとに受注した Meridian の「次の行動」が「相手の返事を待つ」のまま（U01・minor）。そのため 4。",
+   "to_5": "円の注文に別の通貨の注文が足されたときも、札と内訳に「換算：1 US$＝…円（出どころ・日付）」を出す（U02）／営業メールを送ったあとに受注になった案件の「次の行動」を受注の手順にする（U01）"
+  }
+ ],
+ "screens": [
+  {
+   "key": "up",
+   "name": "商品情報を登録",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P1・P3（と予備の P1）が資料で登録",
+   "exercised": [
+    "xlsx を登録（19/21・任意 あと6件）→ 産地 → 20/21 → 支払条件 → 21/21・任意 あと6件",
+    "価格表の期限の聞き取り（いつまでの価格ですか？）"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "item",
+   "name": "商品情報",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P1・P3",
+   "exercised": [
+    "充足度のドーナツ（19/21＝90%・20/21＝95%・21/21）と任意 0/6・未登録 6件",
+    "価格の有効期限を 2026-12-10 にする"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "cty",
+   "name": "販売先国の選定",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P1（おまかせ）・P2（手で）・P3（選び直す・UAE を外してアメリカ）",
+   "exercised": [
+    "おまかせ → 確定の確認の窓（外れる国）",
+    "選び直す → 外す・選択する → 確定"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "ops:reg",
+   "name": "規制を調べる",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P3 が深く（アメリカ・ドイツ）",
+   "exercised": [
+    "「次は」→「✓ 表で確かめる」で 3/6（P1・P3）・5/6（P2）",
+    "アメリカ：FDA 施設登録・US Agent を根拠つきで対応済み → 判定の文",
+    "510(k)・CFS を対象外にする"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "dash:home",
+   "name": "案件一覧（ホーム）",
+   "P1": 5,
+   "P2": 4,
+   "P3": 4,
+   "depth": "3人",
+   "exercised": [
+    "6/6 のあと",
+    "入り直し（各3回以上）",
+    "受注のあとの「次の行動」"
+   ],
+   "to_5": "営業メールを送ったあとに受注した案件の「次の行動」を受注の手順にする（U01）"
+  },
+  {
+   "key": "today",
+   "name": "今日やること（タスク）",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "開いてエラー・はみ出しを確認",
+   "exercised": [
+    "P1（スマホ幅）・P2・P3"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "rm",
+   "name": "目標と道筋",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P1・P2・P3 で目標を保存",
+   "exercised": [
+    "✓ 規制（自分の商品・見本）と「開く」",
+    "✓ 2回目の注文（同じ通貨・違う通貨）",
+    "比率・届く目安と期限の表"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "inbox",
+   "name": "受信箱",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P1（予備）が「次は」で 10件を承認",
+   "exercised": [
+    "次は この画面で承認して送る（10件）→（残り 9件）…→ 商談を記録する",
+    "確認・承認を開く → 承認して送る"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "ai",
+   "name": "AI商社マンに相談",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P1・P3",
+   "exercised": [
+    "シンガポールの規制は？",
+    "アメリカの規制は？",
+    "3,000箱だといくら？"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "db",
+   "name": "AIバイヤー開拓・拠点",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P1・P2・P3",
+   "exercised": [
+    "リスト 10社 → すべて選ぶ → 確かめて送る／自社のバイヤーに入れる",
+    "送った相手を選び直すと「初回をまだ送っていない会社を選んでください」・7社だけ入る"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "deck",
+   "name": "外国語 営業資料",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P1・P3（次は で English）",
+   "exercised": [
+    "下書き → English"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "deal",
+   "name": "商談・バイヤー",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P2・P3 が深く（同じ相手に 2〜3件目の受注）",
+   "exercised": [
+    "受注 → 同じ相手の2件目（同じ通貨・違う通貨）",
+    "この商談から出荷案件を作る",
+    "希望価格を数字だけ（SGD）"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "msg",
+   "name": "やりとり",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "開いてエラー・はみ出しを確認",
+   "exercised": [
+    "P2・P3"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "memo",
+   "name": "会議メモ・議事録",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "開いてエラー・はみ出しを確認",
+   "exercised": [
+    "P2・P3"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "rqp",
+   "name": "依頼ページ",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "開いてエラー・はみ出しを確認",
+   "exercised": [
+    "P2・P3"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "tcd",
+   "name": "商社デスク",
+   "P1": null,
+   "P2": null,
+   "P3": null,
+   "depth": "このアカウントでは出ない（案件一覧に戻る）",
+   "exercised": [],
+   "to_5": ""
+  },
+  {
+   "key": "dash:case",
+   "name": "案件の詳細",
+   "P1": 5,
+   "P2": 4,
+   "P3": 4,
+   "depth": "P2・P3",
+   "exercised": [
+    "取引中の案件の「次の行動」",
+    "ステータスの流れ"
+   ],
+   "to_5": "受注のあとの「次の行動」（U01）"
+  },
+  {
+   "key": "ops:doc",
+   "name": "書類をつくる",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P3 が深く（航空・有効期限）・P2（通貨・先に開いた案件）",
+   "exercised": [
+    "航空にしたときの黄の注意・S/I の Airport",
+    "価格の有効期限を入れたあとの Validity",
+    "仕出港の注記",
+    "先に開いた書類があとの記録で替わる・手で直したあとの「記録に合わせる」",
+    "案件の切り替え（TH-1116-04）"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "ops:ship",
+   "name": "出荷を進める（開発中）",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "開いてエラー・はみ出しを確認",
+   "exercised": [],
+   "to_5": ""
+  },
+  {
+   "key": "ops:ord",
+   "name": "受注・請求・入金（開発中）",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "開いてエラー・はみ出しを確認",
+   "exercised": [],
+   "to_5": ""
+  },
+  {
+   "key": "ops:file",
+   "name": "この案件の書類",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "開いてエラー・はみ出しを確認",
+   "exercised": [],
+   "to_5": ""
+  },
+  {
+   "key": "dash:prod",
+   "name": "商品一覧",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P1",
+   "exercised": [
+    "登録した商品・販売先国"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "docs",
+   "name": "ドキュメント",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "開いてエラー・はみ出しを確認",
+   "exercised": [],
+   "to_5": ""
+  },
+  {
+   "key": "legal",
+   "name": "契約書関連",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "開いてエラー・はみ出しを確認",
+   "exercised": [],
+   "to_5": ""
+  },
+  {
+   "key": "gloss",
+   "name": "用語集",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P1（左の「用語集（貿易のことば）」の箱から）",
+   "exercised": [
+    "箱を押すと用語集（90語・510(k)・CFS・ISO13485 あり）"
+   ],
+   "to_5": ""
+  },
+  {
+   "key": "srcs",
+   "name": "取り込んだ情報",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "開いてエラー・はみ出しを確認",
+   "exercised": [],
+   "to_5": ""
+  },
+  {
+   "key": "dash:rep",
+   "name": "分析・レポート",
+   "P1": 5,
+   "P2": 5,
+   "P3": 4,
+   "depth": "P2・P3 が深く",
+   "exercised": [
+    "累計受注金額（注文 2件・3件）と内訳",
+    "どこまで進んだか",
+    "直近7日の活動",
+    "見積金額（SGD）"
+   ],
+   "to_5": "P3：円の注文に US$ の注文が足されたときも、札と内訳に換算のレートを出す（U02）"
+  },
+  {
+   "key": "task",
+   "name": "タスク・進行",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "開いてエラー・はみ出しを確認",
+   "exercised": [],
+   "to_5": ""
+  },
+  {
+   "key": "team",
+   "name": "メンバー・権限・セキュリティ",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "開いてエラー・はみ出しを確認",
+   "exercised": [],
+   "to_5": ""
+  },
+  {
+   "key": "trash",
+   "name": "ゴミ箱",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "開いてエラー・はみ出しを確認",
+   "exercised": [],
+   "to_5": ""
+  },
+  {
+   "key": "login",
+   "name": "ログイン",
+   "P1": 5,
+   "P2": 5,
+   "P3": 5,
+   "depth": "P1",
+   "exercised": [
+    "担当者名を空で押す → 入力してください",
+    "名前を入れて入る"
+   ],
+   "to_5": ""
+  }
+ ],
+ "recheck": [
+  {
+   "no": "medical-T01",
+   "result": "fixed",
+   "seen": "P2：Siam の書類（4,000×US$3.50）のあと、同じ相手の受注 USD 1,000×US$3.60 → 累計 ¥2,805,440「1件（注文 2件）」、さらに EUR 2,000×EUR 3.20 → 累計 ¥3,909,440（＋¥1,104,000＝6,400×172.50）、内訳「合計 US$17,600 ＋ EUR 6,400」「1 EUR＝172.50円」。知らせ「後の記録は別の注文として、累計受注金額に足しています」は実際と合う。目標と道筋の「✓ 2回目の注文」も同じ判定（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/run_p2b_r3.log・run_p2b_r4.log・p2b_r4_uchi3.txt・run_p2b_g1.log）"
+  },
+  {
+   "no": "medical-T02",
+   "result": "fixed",
+   "seen": "アメリカの必須は「FDA 施設登録・機器リスティング（21 CFR Part 807）」「米国代理人（US Agent）の指名」の2件（未対応 2件／全2件）。FDA だけ対応済み →「⚠ まだ「このまま輸出できる」とは言えません　未対応 1件／全2件　米国代理人（US Agent）の指名」。2件とも根拠つきで対応済み →「✅ 必須の手続きは、すべて「対応済み」…対応済み 2件は、すべて根拠を残しています」。510(k)・CFS は「該当するときだけ」で対象外にできる。AI の答えも2件（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/p3_reg_アメリカ.txt・run_p3_reg3.log・run_p3_reg3b.log・run_p3_ask.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/img/p3_reg_done_アメリカ.png）"
+  },
+  {
+   "no": "medical-T03",
+   "result": "fixed",
+   "seen": "自分で登録した商品（P1・P3）で、「次は」→「✓ 表で確かめる」で 3/6、目標と道筋に「✓ 規制・認証と関税を確かめる（止まる国を先に外す）　済みの根拠：規制の確認あり」。その行の「開く」で規制を調べるへ（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/run_p1_n1.log・run_p1_g1.log・run_p1_rmopen.log・run_p3_rm3.log）"
+  },
+  {
+   "no": "medical-T04",
+   "result": "fixed",
+   "seen": "P2：Meridian の書類を先に開く（1,000×US$3.70・FOB Osaka の見本の値）→ 見積提示 SGD 5.20×2,000・CIF Bangkok を記録 → 見積書「2,000 SGD 5.20 SGD 10,400.00・CIF Bangkok」。数量を手で 3,000 に直したあと受注 SGD 4.80×4,000 を記録 →「⚠ 新しい記録…と書類の値が違います。書類（TH-1116-02）の 数量 は「受注内容を編集」で手で直した値（3,000セット）なので、変えていません。記録に合わせる／このままにする」。内訳「商談の記録では SGD 19,200。書類の額を使っています」（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/p2b_doc_mer0_見積書.txt・p2b_doc_mer1_見積書.txt・run_p2b_r7.log・p2b_r7_uchi7.txt）"
+  },
+  {
+   "no": "medical-T05",
+   "result": "fixed",
+   "seen": "19/21：登録の画面「任意 あと6件」、商品情報「全体 19/21・必須 9/9」「任意 0/6・あと6件」「登録の項目で未登録 2件：産地・製造国・支払条件」「任意の項目で未登録 6件」。20/21・21/21 も同じ数（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/run_p3_t05_19.log・run_p1_t05_20.log・run_p1b.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/img/p3_t05_item_19.png）"
+  },
+  {
+   "no": "medical-T06",
+   "result": "fixed",
+   "seen": "輸送を航空にすると、見積書の黄「輸送は航空なのに、取引条件が FOB（海上の条件）です　航空なら FCA などが一般的です…「受注内容を編集」で取引条件を直してください」と注記「輸送は航空にしています。要確認：FOB は海上・内陸水路の輸送の条件です」。S/I は「Airport of departure [To be confirmed]・Transport document Air Waybill (AWB)」（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/run_p3_air.log・run_p3_pv2.log・p3_doc_air_SI.txt）"
+  },
+  {
+   "no": "medical-T07",
+   "result": "fixed",
+   "seen": "「シンガポールの規制は？」：必要な書類・認証＝インボイス・パッキングリスト・ISO13485証明書・輸入者のディーラーライセンス（HSA）。HSA 製品登録・CFS は「該当するときだけ必要な手続き（該当するか未確認）」だけに出る（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/run_p1_ask.log・p1_ai0.txt）"
+  },
+  {
+   "no": "medical-T08",
+   "result": "fixed",
+   "seen": "欄は「ご担当者名（招待状・申し込みのときの氏名）」（任意の文字なし）。空のまま押すと「ご担当者名を入力してください…」、名前を入れると入れる（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/run_login1.log・run_login_empty.log・run_login_ok.log）"
+  },
+  {
+   "no": "medical-T09",
+   "result": "fixed",
+   "seen": "完成形の見本（工業部品）で受注（希望 US$1.10・確定 US$1.15）→ 梱包明細「商談記録の確定単価 US$1.15／10,000個／CIF Bangkok がそのまま入っています」。12,500個に直すと「商談の記録は US$1.15／10,000／CIF Bangkok」（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/x_pl0.txt・x_pl.txt・run_x_smp2.log）"
+  },
+  {
+   "no": "medical-T10",
+   "result": "fixed",
+   "seen": "AI「合計は ¥1,260,000 になります」。見積書は通貨ごとにそろう：SGD 5.20／SGD 10,400.00、EUR 3.20／EUR 6,400.00、US$3.50／US$14,000.00、¥420／¥1,260,000（/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/run_p1_ask.log・p2b_doc_sg_見積書.txt・p2b_doc_th04.txt・p2b_doc_r1_見積書.txt・p3_doc_fob0_見積書.txt）"
+  }
+ ],
+ "recheck_count": {
+  "fixed": 10,
+  "partial": 0,
+  "open": 0,
+  "worse": 0
+ },
+ "r8_flow": [
+  "受注と金額（r8a）：同じ相手の2件目（同じ通貨）・3件目（違う通貨）→ 累計受注金額・内訳・どこまで進んだか・目標と道筋の ✓ がそろう。知らせの文も実際と合う。出荷案件を作ると内訳の出どころが「書類の額」に替わる。円＋US$ のときだけ換算のレートが出ない（U02）。注文の番号が入れ替わる（U03・polish）。",
+  "希望価格を数字だけ：窓で選んだ通貨（SGD）で記録・見積書・見積金額（1 SGD＝118.20円）がそろう。",
+  "規制：「次は」→「✓ 表で確かめる」→ はじめの設定 3/6（P2 は 5/6）→ 目標と道筋の ✓ と「開く」。アメリカは FDA 施設登録・US Agent が必須、CFS・510(k) は条件つき。",
+  "商品情報の任意の数と円の %：19/21＝90%・20/21＝95%・21/21、任意 0/6・あと6件・未登録 6件がそろう。",
+  "書類：仕出港の注記・作ったあとの有効期限（価格の期限が早いと替わる）・航空の注意・S/I の Airport／AWB。カートンの無い貨物は医療の範囲に無い。",
+  "受信箱：「次は（残り N件）」が減り、最後は商談の記録へ。用語集の箱・ログインも良い。",
+  "直しで壊れた所は見つからなかった。前からある「次の行動」の食い違い（U01・8818 も同じ）を新しく記録した。"
+ ],
+ "issues": [
+  {
+   "no": "medical-U01",
+   "screen": "dash:home・dash:case（次の行動）",
+   "title": "営業メールを送ったあとに受注になった案件は、ホームと案件の「次の行動」が「相手の返事を待つ　今日 送信済み」のままで、受注の書類を送る手順が出ない",
+   "type": "ux",
+   "severity": "minor",
+   "personas": [
+    "P2",
+    "P3"
+   ],
+   "steps": "P2（業種サンプル）：AIバイヤー開拓で Meridian に営業メールを「承認して送る」→ Meridian に見積提示・受注を記録 → 案件一覧。P3：見本のリストの Meridian に営業メールを承認 → 受注 ¥420×3,000 →「この商談から出荷案件を作る」（SG-1116-02）→ 2件目・3件目の受注 → 案件一覧・案件の詳細。",
+   "expected": "メールを送っていない相手（Siam）と同じく、取引中の案件の次の行動は「受注の書類を確かめて送る（見積書・請求書）」。",
+   "actual": "P2：Meridian「タイ 取引中 相手の返事を待つ 今日 送信済み 貴社 今日 Sterile Gauze & First Aid Kit from Japan – proposal for Meridian…」、同じ画面の Siam は「タイ 取引中 受注の書類を確かめて送る（見積書・請求書） 受注を記録した案件です。書類は「書類をつくる」に入っています（案件 No. TH-1116-04）」。P3：Meridian（受注 3件・書類 SG-1116-02）も「シンガポール 取引中 相手の返事を待つ 今日 送信済み」。案件の詳細も「取引中…次の行動 ¦ 相手の返事を待つ ¦ 今日 送信済み」。",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/run_p2b_home.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/run_p3_home.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/p3k3_case.txt・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/c18_p2_home.log（8818 も同じ：Meridian「取引中 相手の返事を待つ 今日 送信済み」）",
+   "since": "8818 も同じ",
+   "fix_hint": "状況が受注（取引中）になったら、次の行動は送ったメールの返事待ちより受注の手順（書類を確かめて送る）を優先する。"
+  },
+  {
+   "no": "medical-U02",
+   "screen": "dash:rep（累計受注金額の札・内訳）",
+   "title": "最初の受注が円で、同じ相手のあとの注文が US$ のとき、累計受注金額の札にも内訳にも換算のレートが出ない（US$ だけ・US$＋EUR のときは出る）",
+   "type": "data",
+   "severity": "minor",
+   "personas": [
+    "P3"
+   ],
+   "steps": "P3：Meridian に受注 ¥420×3,000 → 出荷案件を作る → 受注 ¥415×2,000 → 受注 US$2.80×1,000 → 分析・レポートの累計受注金額（¥／$）と「クリックで金額の内訳」。",
+   "expected": "US$ の注文を円に換算しているので、ほかの場合と同じく「換算：1 US$＝152.40円（出どころ・日付）」を札と内訳に出す。",
+   "actual": "札「累計受注金額 ¥2,516,720 ? 説明」（$ を押すと US$16,514）だけで、換算の行が無い。内訳も「US$2,800 ≒¥426,720」とあるが換算の行が無い（¥426,720÷2,800＝152.4）。US$ の受注だけの予備の P1 では「換算：1 US$＝152.40円（欧州中央銀行の参照レート・2026-11-13）」、P2（US$＋EUR）では内訳に「換算：1 US$＝159.40円（参照レート・2026-08-28）／1 EUR＝172.50円」が出る。レートは記録の窓の「価格と条件の差」にだけ「1 US$＝152.4円（参照レート 2026-11-13）」と出る。",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/p3_r3_nums_c.txt・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/p3_r3_uchi3.txt・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/img/p3_card_uchi.png・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/p1xk3_nums_x.txt（US$ だけ：換算の行あり）・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/p2bk2_uchi4.txt（US$＋EUR：換算の行あり）・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/run_p3_r3.log（記録の窓の換算）",
+   "since": "8818 では別の通貨の2件目が累計に入らなかった（T01）ので、この表示は今回の直しで出た（8818 では比べられない）",
+   "fix_hint": "札と内訳の換算の行を、書類の通貨だけでなく、足した注文の通貨（記録の通貨）からも出す。"
+  },
+  {
+   "no": "medical-U03",
+   "screen": "dash:rep（内訳）",
+   "title": "同じ相手の注文の「N件目」が、出荷案件を作ると入れ替わる（記録の順と合わない）",
+   "type": "copy",
+   "severity": "polish",
+   "personas": [
+    "P2",
+    "P3"
+   ],
+   "steps": "P2：Siam に受注 US$3.50×4,000（書類あり）→ 受注 US$3.60×1,000 → 受注 EUR 3.20×2,000 → 内訳を見る → EUR の記録で「この商談から出荷案件を作る」→ 内訳を見る。",
+   "expected": "注文の番号は記録した順（US$3,600 が2件目、EUR 6,400 が3件目）のまま。",
+   "actual": "作る前：「US$3,600 … 受注・2件目の注文（3件中）」「EUR 6,400 … 受注・3件目の注文（3件中）」。作った後：「TH-1116-04 … EUR 6,400 … 受注・2件目の注文（3件中）」「商談の記録 … US$3,600 … 受注・3件目の注文（3件中）」。金額・合計は正しい。",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/p2b_r4_uchi3.txt・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/p2bk2_uchi4.txt",
+   "since": "8818 には注文の番号が無い（今回の直しで出た）",
+   "fix_hint": "N件目は記録の日時の順で振る。"
+  },
+  {
+   "no": "medical-U04",
+   "screen": "deal（記録の知らせ）",
+   "title": "見本の値のままの書類が、あとの記録で記録の値に替わっても、知らせは「✓ 商談を記録しました」だけ（Siam では「書類の値を更新しました」と出る）",
+   "type": "copy",
+   "severity": "polish",
+   "personas": [
+    "P2"
+   ],
+   "steps": "P2：Meridian の「書類をつくる」を先に開く（見本の値 1,000×US$3.70）→ 見積提示 SGD 5.20×2,000・CIF Bangkok を記録。",
+   "expected": "Siam と同じく「新しい記録に合わせて、書類（TH-1116-02）の値を更新しました：2,000セット・SGD 5.20・CIF Bangkok」。",
+   "actual": "知らせは「✓ 商談を記録しました（Meridian Medical Supply（見本））。案件一覧にも出ます」だけ。書類は SGD 10,400.00・CIF Bangkok に替わっている（値は正しい）。",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/run_p2b_r6.log・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/p2b_doc_mer0_見積書.txt・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/p2b_doc_mer1_見積書.txt・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/out/run_p2b_r2.log（Siam の知らせ）",
+   "since": "8818 では書類が替わらなかった（T04）。今回の直しで出た",
+   "fix_hint": "見本の値を記録の値に置き換えたときも、同じ「書類の値を更新しました」を出す。"
+  },
+  {
+   "no": "medical-U05",
+   "screen": "ops:reg・ops:doc（出荷までの流れのタブ）",
+   "title": "「Coming Soon・開発中」の札が、1440px の幅で「開発 / 中」と2行に折れる",
+   "type": "layout",
+   "severity": "polish",
+   "personas": [
+    "P1",
+    "P2",
+    "P3"
+   ],
+   "steps": "規制を調べる（または書類をつくる）の「出荷までの流れ」のタブを見る。",
+   "expected": "札の中で語が折れない。",
+   "actual": "「③ 出荷を進める」「④ 受注・請求・入金」の札が「Coming Soon・開発」「中」の2行。",
+   "evidence": "/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents8/medical/img/p2b_reg_top.png・/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents7/medical/img/p1_reg_pulse.png（8818 も同じ）",
+   "since": "8818 も同じ",
+   "fix_hint": "札を折り返さない（white-space: nowrap）か、文言を短くする。"
+  }
+ ],
+ "good": [
+  "アメリカ（医療機器）の必須に FDA 施設登録と US Agent の2件が戻り、1件だけ済んだときは未対応の名前を出して「このまま輸出できる」とは言わない。510(k)・CFS は条件つきの欄で「対象外」を選べ、対応済みには根拠（メモ・日時・担当者）が残る。AI の答えも同じ分け方。",
+  "同じ相手の2件目・3件目の受注は、同じ通貨でも違う通貨でも累計受注金額と内訳に足され、知らせ（別の注文として足しています／新しい注文の書類は「出荷案件を作る」で）と内訳の「N件目の注文（3件中）」「金額の出どころ」が実際と合う。",
+  "記録の窓の「この商談から出荷案件を作る」で、その注文だけの案件（TH-1116-04・EUR 6,400.00・FOB Osaka）が作られ、書類をつくるへ移る。",
+  "希望価格を数字だけで入れると、窓に「通貨が書いていないので…（SGD）として記録します：SGD 5.20。違う通貨なら…」と出て、見積書・見積金額もその通貨で作られる。",
+  "書類を先に開いた案件も、あとの記録が書類に入り、手で直した値は残して「記録に合わせる／このままにする」を出す。",
+  "規制の画面の「✓ 表で確かめる（国）」と「この手順は、下の「表で確かめる」を押すと済みになります…開いただけ・見ただけでは済みになりません」で、P1 が迷わず 3/6 に進める。目標と道筋の ✓ と「開く」も同じ判定。",
+  "受信箱の承認で「次は この画面で承認して送る（残り N件）」が1件ずつ減り、最後は「商談を記録する」へつながる。送った相手を選び直しても「初回をまだ送っていない会社」だけが入る。",
+  "航空にしたときの FOB の注意（黄と注記）、S/I の Airport of departure・Air Waybill、価格の有効期限を入れたあとの「Until 2026-12-10 (price list validity)」と理由の注記、「仕出港（積出港）は、商品情報に登録の 大阪港 から」の注記。",
+  "充足度の任意の数（あと N件・未登録 N件・0/6）が、19/21・20/21・21/21 のどれでも登録の画面と商品情報で合う。",
+  "左の「用語集（貿易のことば）」の箱から用語集（90語・510(k)・CFS・ISO13485）へ移れる。ログインの担当者名の欄の文言と必須がそろった。",
+  "全 30画面（P2・P3）・主な 15画面（P1・スマホ幅）でエラー 0・横のはみ出し 0。入り直し（各ペルソナ 10回以上）はすべて案件一覧から始まり、商品・案件・記録が残る。"
+ ],
+ "not_checked": [
+  "カートンの無い貨物：医療・衛生の商品（マスク・滅菌ガーゼ）はどれもカートン入りで、この業種の範囲では出ない（工業部品の見本の梱包明細はカートンで計算されることだけ見た）。",
+  "為替：この環境では同期サーバーの代役が返すレート（1 US$＝152.4円・2026-11-13）と、内蔵の参照レート（159.40円・2026-08-28）のどちらが使われるかがプロフィールで違った（P2 は内蔵、P1・P3 は代役）。レートの値そのものは評価していない。",
+  "Excel・PDF の書き出しのファイル：この環境ではダウンロードを受け取れない（前回と同じ）。",
+  "AI エンジン接続時の答え・詳細調査、メールの実送信（見本の宛先は記録だけ）。",
+  "物流会社の画面・多言語（担当外）。",
+  "U02 の 8818 での見え方：8818 では別の通貨の2件目が累計に入らない（T01）ため、比べられない。"
+ ]
+}
