@@ -1,0 +1,39 @@
+7回目の評価（最終版 21.94・build 3d000ac28559・8818）　担当：food（食品）
+
+■ ペルソナ別の総合点（6回目 → 今回）
+- P1 田中 美咲（信州はちみつ工房・はちみつ・資料を登録）：5 → 4
+  「次は」だけで 6/6、10社を確かめて送る → 受信箱で 10件承認、数字の照合、入り直し 3回は問題なし。
+  下がった理由：道筋の「規制・認証と関税を確かめる」に ✓ が付かない（food-T02・8817 では付いた）、左の用語集の札のはみ出し（food-T01）。
+- P2 佐藤 健一（みなと酒造・日本酒・業種サンプル liquor）：4 → 4
+  6回目の 3件（HK$・S$ の換算、直近7日の数字、希望着荷を空にする）は直った。同じ相手に 2〜4件目の記録・手直しのあとの「記録に合わせる／このままにする」・別の注文としての受注まで、書類・札・内訳がそろう。
+  残り：英文書類の単価に「/本」（T06）、数字だけの希望価格の案内（T08）、T01、航空のときの書類（T07）。
+- P3 山本 浩二（完成形の見本 food・抹茶）：4 → 4
+  S$ の見積・見本での受注の記録・数量変更（梱包明細の計算し直し）・規制は合う。
+  残り：AI の価格の答えの「合計の目安」が合計×数量（T03・major）、見本の単位が「K」（T04）、1社あたりの推定が別の SKU の単価（T05）、T06・T07・T01。
+
+■ 6回目の課題の結果
+fixed 3（food-S01・S02・S03）／partial 0／open 0／worse 0。
+前からの partial：food-03 は partial のまま（polish）。前に直った food-M03（道筋の ✓）は worse（food-T02）。
+
+■ 21.93 とのかみ合わせ
+- よい：充足度が 19/21・90% と数で出る（8817 は 93%）、右の札・商品情報の数と合う。国の確定がページ内の窓。同点の順位の文言が表と合う。見積書に英文社名・有効期限の日付・仕出港の注記。航空で B/L → AWB。為替の替わりが全画面に同時に反映。MOQ 未満・CIF への注意。規制は商材に合う（合わない申告なし）。
+- かみ合っていない：T02（道筋の規制の ✓・土台で出た）、T04（見本の単位 K・土台で出た）、T01（21.93 の用語集の札が刷新版の左メニューで縮む）、T09（見積書の有効期限の直しが見本に届かない・polish）。
+- 二重：用語集への入口が1画面に3つ。規制の「気をつけること」が上の行と同じ内容（8817 も同じ・polish）。数字・札の二重表示は無し。
+
+■ 残っている課題（重い順）
+1. food-T03［major］ai（見本 food）：価格の答えの「合計の目安 US$4,740.00 × 300袋 ＝ US$1,422,000」（合計にもう一度数量を掛ける）— P3（8817 も同じ）
+2. food-T02［minor］rm：規制を済ませても道筋の ✓ が付かない（国を選ぶ・対応済み・AI調査のどれでも）— P1（8817 では付いた）
+3. food-T01［minor］左メニュー共通：「いま：」の札が出る画面で用語集の札が 44px に縮み文字がはみ出す — P1・P2・P3（21.93 で入った札）
+4. food-T04［minor］ai（見本 food）：単位が「K」（「香港に500K送るといくら？」「2,500K の場合」）— P3（8817 は袋）
+5. food-T05［minor］rm（見本 food）：1社あたり＝30g の単価 ¥884 × 100g の MOQ 500 ＝ 177万円 — P3（8817 も ¥925）
+6. food-T06［minor］ops:doc：英文の見積書・請求書の単価「HK$115/本」「S$18.50/本」（EUR・US$ は直る）— P2・P3（8817 も同じ）
+7. food-T07［minor］ops:doc：輸送「航空」でも請求書は B/L No.・Vessel・FOB、S/I は Mode Air なのに FOB・B/L type — P3・P2（8817 も請求書は同じ）
+8. food-T08［minor］dash:rep：希望価格「16」だけ → 札「単価と数量を記録に入れるか…」、窓「— × —」— P2（8817 も同じ）
+9. food-T09［polish］ops:doc（見本）：見積書の Validity が「30 days」だけ — P3
+10. food-T10［polish］dash:rep（見本）：窓「受注に進んだ案件 0件」と札「初めての受注 1件」— P3
+
+■ 証拠の画像（主なもの）
+/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents7/food/img/crop_side_reg.png
+/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents7/food/img/p1_7d_商談.png
+/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents7/food/img/p2_7d_見積.png
+/tmp/claude-0/-home-user-boueki-cloud-trial/9bd64fd7-6adf-583d-a69f-9f4adbf0ff2a/scratchpad/agents7/food/img/p3_ai_ans.png
